@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main_danka_detail.css" type="text/css" id="zen_main_danka_detail">
+<link rel="stylesheet" href="stylesheets/zen_parts_danka_detail.css" type="text/css" id="zen_parts_danka_detail">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script>
+ <!-- 表中の偶数行の色を変える -->
+ $(function(){
+     $("form").submit(function(){
+         
+         // エラーの初期化
+         $("p.error").remove();
+         $("td").removeClass("error");
+         
+         $("input[type='text'].validate").each(function(){
+            // 必須項目チェック
+            if($(this).hasClass("require")){
+                if($(this).val() == ""){
+                    $(this).parent().append("<p class='error'>値が設定されていません。</p>");
+                    $(this).parent().addClass("error");
+                }
+            } 
+            // 数字項目チェック
+            if($(this).hasClass("number")){
+                if(isNaN($(this).val())){
+                    $(this).parent().append("<p>数値が設定されていません。</p>");
+                    $(this).parent().addClass("error");
+                }
+            }            
+         });
+
+         // エラーチェック
+         if($("p.error").length > 0){
+             return false;
+         }
+     });
+ });
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div id="inner_title">
+        <div id="title">
+   	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
+        </div>
+        <div class="kosyu_info">
+   	      <table>
+              <thead>
+                <tr>
+                  <th id="kosyu" rowspan="2">戸主名</th>
+                  <th id="type_so">総代</th>
+                  <th id="type_se">世話   </th>
+                  <th id="tel" rowspan="2">電話番号</th>
+                  <th id="tiku" rowspan="2">地区</th>
+                  <th id="sewa" rowspan="2">世話人</th>
+                  <th id="sou" rowspan="2">担当[僧]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="100">
+                  <td>山田　太郎</td>
+                  <td>○</td>
+                  <td>-</td>
+                  <td>080-3255-8854</td>
+                  <td>座間</td>
+                  <td>世話人　太郎</td>
+                  <td>田中　新太郎</th></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div id="menu_sub">
+          <ul>
+            <li><a href="/danka_detail_kihon">基本情報</a></a> 
+            <li><a href="/danka_detail_genzai">過去帳</a>
+            <li><a href="/danka_detail_kako">現在帳</a> 
+            <li><a href="/danka_detail_nenki">年回忌</a>
+            <li><a href="/dummy">寄付帳</a>
+            <li><a href="/dummy">お参り帳</a>
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div id="inner_main">
+        <form action="danka_detail_kihon" method="post">
+          <div class="table_main_kihon">
+            <table>
+              <thead>
+                <tr id="header">
+                  <th id="newtype">登録項目</td>
+                  <th id="newnaiyo">登録内容</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="name_type">戸主名(※必須)</td>
+                  <td id="name">
+                      <label for="name_seimei">姓名: </label><input type="text" name="name_sei" class="validate require">
+                      <label for="name_seimei">名前: </label><input type="text" name="name_namae" class="validate require">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="furigana_type">ふりがな(※必須)</td>
+                  <td id="furigana">
+                      <label for="furi_seimei">せいめい: </label><input type="text" name="furigana_sei" class="validate require">
+                      <label for="furi_namae">なまえ: </label><input type="text" name="furigana_namee" class="validate require">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sex_type">性別(※必須)</td>
+                  <td id="sex">
+                      <input type="radio" name="sex" class="dummay" value="0" checked><label for="man">男</label>
+                      <input type="radio" name="sex" class="dummay" value="1"><label for="woman">女</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_yubin">郵便番号</td>
+                  <td id="address">
+                      <input type="text" name="yubin-pre" class="dummay"> - <input type="text" name="yubin-end" class="dummay">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_region">都道府県</td>
+                  <td id="address_region">
+                      <input type="text" name="address_region" class="dummay">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_region_sub">市区町村</td>
+                  <td id="address_region_sub">
+                      <input type="text" name="address_region_sub" class="dummay">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_region_no">番地</td>
+                  <td id="address_region_no">
+                      <input type="text" name="address_region_no" class="dummay">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_ohter">ビル名等</td>
+                  <td id="address_other">
+                      <input type="text" name="address_other" class="dummay">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="yaku_type">役職</td>
+                  <td id="yaku">
+                      <input type="checkbox" name="job_sou" class="dummay" value="総代"><label for="job_sou">総代</label>
+                      <input type="checkbox" name="job_sewa" class="dummay" value="世話人"><label for="job_sewa">世話人</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(※必須)</td>
+                  <td id="tel">
+                      <input type="text" name="telno" class="validate require number">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tiku_type">地区名</td>
+                  <td id="tiku">
+                     <select id="tiku_list">
+                       <option value="tiku1">地区1</option>
+                       <option value="tiku2">地区2</option>
+                       <option value="tiku3">地区3</option>
+                       <option value="tiku4">地区4</option>
+                     </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sewa_type">世話人</td>
+                  <td id="sewa">
+                      <label for="sewa_seimei">姓名: </label><input type="text" name="name_sei" class="dummay">
+                      <label for="sewa_namae">名前: </label><input type="text" name="name_namae" class="dummay">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sou_type">担当者[僧]</td>
+                  <td id="sou">
+                      <label for="sou_seimei">姓名: </label><input type="text" name="name_sei" class="dummay">
+                      <label for="sou_namae">名前: </label><input type="text" name="name_namae" class="dummay">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="new_submit"><input type="submit" value="変更内容反映" id="submit"></div>
+        </form>
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>

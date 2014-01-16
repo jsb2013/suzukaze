@@ -1,0 +1,239 @@
+@charset "Shift_JIS";
+
+/* ã§í íËã` */
+#inner_main{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'ÉÅÉCÉäÉI' ,Meiryo, 'ÉqÉâÉMÉmäpÉS Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ÇlÇr ÇoÉSÉVÉbÉN' , 'Osaka' ,sans-serif;
+    color: #666666; /* ïWèÄï∂éöêF */
+}
+
+  #form_box{
+      margin: 10px 0 0 0;
+      padding: 10px 0 10px 10px;
+      height: 65px;
+      width: 620px;
+      border: solid 1px #BA802F;
+  }
+    #schedule_filter{
+        margin: 0;
+        padding: 0;
+        float: left;
+    }
+
+      #so_filter{
+        margin: 0;
+        padding: 0 0 10px 0;
+        text-align: left;
+        font-size: 14px;
+        border-bottom-style: dotted;
+        border-bottom-width: 1px;
+        border-bottom-color: #BA802F;
+      }
+      #term_filter{
+        margin: 0;
+        padding: 10px 0 0 0;
+        text-align: left;
+        font-size: 14px;
+      }
+    #filter_submit{
+      margin: 0;
+      padding: 0;
+      float: left;
+      font-size: 25px;
+    }
+    #filter_submit input{
+      margin: 5px 0 0 15px;
+      padding: 0;
+      font-size: 30px;
+    }
+  #schedule_table{
+    margin: 0;
+    padding: 0;
+    width: 630px;
+    height: 350px;
+    clear: both;
+  }
+/* ì˙éwíËÇÃíËã` */
+    #table_sum{
+      margin: 10px 0 0 0;
+      padding: 0;
+    }
+      #table_sum h2{
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        font-size: 14px;
+      }
+    #table_main{
+      margin: 0;
+      padding: 0;
+      width: 630px;
+      height: 330px;
+      border: solid 0.5px #BA802F;
+      border-collapse: collapse;
+      overflow-y: scroll;
+    }
+      #table_main th{
+        margin: 0;
+        padding: 0;
+        height: 15px;
+        color: #ffffff;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        background-color : #804000;
+      }
+      #table_main tr{
+        margin: 0;
+        padding: 0;
+        height: 15px;
+      }
+      #table_main td{
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+      }
+      #table_main th#date{
+        margin: 0;
+        padding: 0;
+        width: 70px;
+      }
+      #table_main th#time{
+        margin: 0;
+        padding: 0;
+        width: 70px;
+      }
+      #table_main th#hoyo{
+        margin: 0;
+        padding: 0;
+        width: 50px;
+      }
+      #table_main th#kosyu{
+        margin: 0;
+        padding: 0;
+        width: 120px;
+      }
+      #table_main th#tanto{
+        margin: 0;
+        padding: 0;
+        width: 120px;
+      }
+      #table_main th#sewa{
+        margin: 0;
+        padding: 0;
+        width: 120px;
+      }
+      #table_main th#other{
+        margin: 0;
+        padding: 0;
+        width: 100px;
+      }
+      .even{
+        background: #ffdfbf;
+      }
+      #table_main tr:hover{
+        margin: 0;
+        padding: 0;
+        height: 15px;
+        background: orange;
+      }
+      #table_main td{
+        cursor: pointer;
+      }
+
+/* ÉJÉåÉìÉ_Å[éwíËÇÃíËã` */
+    #cal_head{
+      margin: 10px 0 0 0;
+      padding: 5px 0 5px 0;
+      height: 30px;
+      border: solid 1px #BA802F;
+    }
+    #cal_head h3{
+      margin: 0;
+      padding: 2px 0 0 0;
+      text-align: center;
+      width: fit-content;
+      height: 21px;  
+      font-size: 15px;
+      background-color: rgba(255, 165, 0, 0.50);
+    }
+    #cal_head h2{
+      margin: 0;
+      padding: 5px 0 0 0;
+      text-align: center;
+      font-size: 15px;
+      height: 30px;           
+    }
+    .cal_m_before{
+      margin: 2px 0 2px 0;
+      padding: 0;
+      float: left;
+      width: 209px;
+      height: 30px; 
+    }
+    .cal_m_main{
+      margin: 2px 0 2px 0;
+      padding: 0;
+      float: left;
+      width: 210px;
+      height: 30px;                
+    }
+    .cal_m_after{
+      margin: 2px 0 2px 0;
+      padding: 0;
+      float: right;
+      width: 209px;
+      height: 30px;                
+    }
+
+    #cal_main{
+      margin: 0;
+      padding: 0;
+      clear: both;
+      border: solid 0.5px #BA802F;
+      border-collapse: collapse;
+    }
+    #cal_main table {
+      margin: 0;
+      padding: 0;  
+    }
+    #cal_main tr {
+      margin: 0;
+      padding: 0;  
+    }    
+    #cal_main th{
+      margin: 0;
+      padding: 0;
+      width: 89px;
+      height: 30px;
+      color: #ffffff;
+      text-align: center;
+      border: solid 0.1px #BA802F;
+      border-collapse: collapse;
+      background-color : #804000;
+    }
+    #cal_main td{
+      margin: 0;
+      padding: 2px 0 0 2px;
+      width: 89px;
+      height: 42px;
+      vertical-align: top;
+      text-align: left;
+      border: solid 0.1px #BA802F;
+      border-collapse: collapse;
+    }
+    #cal_main label{
+      margin: 0;
+      padding: 0;
+    }
+    #today{
+      background-color: orange;
+    }
+    .on{
+      background-color: #ffdfbf;
+    }
+    

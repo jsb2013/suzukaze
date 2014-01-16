@@ -1,0 +1,331 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main.css" type="text/css" id="zen_main">
+<link rel="stylesheet" href="stylesheets/zen_parts_schedule_day.css" type="text/css" id="zen_parts_schedule_day">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script>
+ <!-- 表中の偶数行の色を変える -->
+ $(function(){
+   $("td").click(function(){
+     var id = $(this).parent().attr("id");
+     location.href = "dummy";
+   });
+   $("tr:nth-child(even)").addClass("even");
+ });
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div id="inner_title">
+        <div id="title">
+   	  <h2><span class="ja">スケジュール</span><span class="en">schedule</span></h2>
+        </div>
+        <div id="menu_sub">
+          <ul>
+            <li><a href="/schedule_day">日指定</a> 
+            <li><a href="/schedule_month">カレンダー指定</a>
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div id="inner_main">
+        <div id="form_box">
+          <form action=" check" method="post">
+            <!-- schedule_filter -->
+            <div id="schedule_filter">
+              <div id="so_filter">
+                <label><strong>[僧選択]： </strong></label>
+                <input type="checkbox" checked name="so1" value="僧 太郎1" id="so1">
+                <label>僧 太郎1</label>
+                <input type="checkbox" checked name="so2" value="僧 太郎2" id="so2">
+                <label>僧 太郎2</label>
+              </div>
+              <div id="term_filter">
+                <strong>[指定期間]： </strong>
+                <select id="from_year">
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                </select>
+                <label>年</label>
+                <select id="from_month">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <label>月</label>
+                <select id="from_day">
+                  <option value="1">1</option>
+                  <option value="1">2</option>
+                  <option value="1">3</option>
+                  <option value="1">4</option>
+                  <option value="1">5</option>
+                  <option value="1">6</option>
+                  <option value="1">7</option>
+                  <option value="1">8</option>
+                  <option value="1">9</option>
+                  <option value="1">10</option>
+                  <option value="1">11</option>
+                  <option value="1">12</option>
+                  <option value="1">13</option>
+                  <option value="1">14</option>
+                  <option value="1">15</option>
+                  <option value="1">16</option>
+                  <option value="1">17</option>
+                  <option value="1">18</option>
+                  <option value="1">19</option>
+                  <option value="1">20</option>
+                  <option value="1">21</option>
+                  <option value="1">22</option>
+                  <option value="1">23</option>
+                  <option value="1">24</option>
+                  <option value="1">25</option>
+                  <option value="1">26</option>
+                  <option value="1">27</option>
+                  <option value="1">28</option>
+                  <option value="1">29</option>
+                  <option value="1">30</option>
+                  <option value="1">31</option>
+                </select>
+                <label>日 ～ </label>
+                <select id="to_year">
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                </select>
+                <label>年</label>
+                <select id="to_month">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <label>月</label>
+                <select id="from_day">
+                  <option value="1">1</option>
+                  <option value="1">2</option>
+                  <option value="1">3</option>
+                  <option value="1">4</option>
+                  <option value="1">5</option>
+                  <option value="1">6</option>
+                  <option value="1">7</option>
+                  <option value="1">8</option>
+                  <option value="1">9</option>
+                  <option value="1">10</option>
+                  <option value="1">11</option>
+                  <option value="1">12</option>
+                  <option value="1">13</option>
+                  <option value="1">14</option>
+                  <option value="1">15</option>
+                  <option value="1">16</option>
+                  <option value="1">17</option>
+                  <option value="1">18</option>
+                  <option value="1">19</option>
+                  <option value="1">20</option>
+                  <option value="1">21</option>
+                  <option value="1">22</option>
+                  <option value="1">23</option>
+                  <option value="1">24</option>
+                  <option value="1">25</option>
+                  <option value="1">26</option>
+                  <option value="1">27</option>
+                  <option value="1">28</option>
+                  <option value="1">29</option>
+                  <option value="1">30</option>
+                  <option value="1">31</option>
+                </select>
+                <label>日</label>
+              </div>
+            </div>
+            <!-- schedule_filter end -->
+            <div id="filter_submit"><input type="submit" value="更新" id="submit">
+            </div>
+          </form>
+        </div>
+        <!-- form_box end -->
+        <!-- schedule_table -->
+        <div id="schedule_table">
+          <div id="table_sum">
+            <h2>予定件数： 2件</h2>
+          </div>
+          <div id="table_main">
+            <table>
+              <thead>
+                <tr>
+                  <th id="date">日程</th>
+                  <th id="time">時間</th>
+                  <th id="hoyo">法要</th>
+                  <th id="kosyu">戸主</th>
+                  <th id="tanto">担当者</th>
+                  <th id="sewa">世話人</th>
+                  <th id="other">備考</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="100">
+                  <td id="date">12/21</td>
+                  <td id="time">20:00<br>～21:00</td>
+                  <td id="hoyo">月忌</td>
+                  <td id="kosyu">あああ　ああああ</td>
+                  <td id="tanto">いいい　いいいい</td>
+                  <td id="sewa">ううう　うううう</td>
+                  <td id="other"></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+                <tr id="100">
+                  <td>12/21</td>
+                  <td>20:00<br>～21:00</td>
+                  <td>月忌</td>
+                  <td>あああ　ああああ</td>
+                  <td>いいい　いいいい</td>
+                  <td>ううう　うううう</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- schedule_table end -->
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>

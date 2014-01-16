@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka">
+<link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script>
+ <!-- 表中の偶数行の色を変える -->
+ $(function(){
+
+ });
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div id="inner_title">
+        <div id="title">
+   	  <h2><span class="ja">檀家管理</span><span class="en">danka manage</span></h2>
+        </div>
+        <div id="menu_sub">
+          <ul>
+            <li><a href="/danka_50">50音別</a> 
+            <li><a href="/danka_tiku">地区別</a>
+            <li><a href="/danka_sewa">世話人別</a> 
+            <li><a href="/danka_syosai">詳細検索</a>
+            <li><a href="/danka_tuika">追加(戸主)</a> 
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div id="inner_main">
+        <form action="serch" method="post">
+          <div class="table_main_syosai">
+            <table>
+              <thead>
+                <tr id="pre">
+                  <th id="pre" colspan="2">[使い方] 一部の項目のみで検索可能です。</td>
+                </tr>
+                <tr id="header">
+                  <th id="serchtype">検索項目</td>
+                  <th id="serchnaiyo">検索内容</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="name_type">戸主名</td>
+                  <td id="name">
+                      <label for="name_seimei">姓名: </label><input type="text" name="name_sei" class="name_sei">
+                      <label for="name_seimei">名前: </label><input type="text" name="name_namae" class="name_namae">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="furigana_type">ふりがな</td>
+                  <td id="furigana">
+                      <label for="furi_seimei">せいめい: </label><input type="text" name="furigana_sei" class="furigana_sei">
+                      <label for="furi_namae">なまえ: </label><input type="text" name="furigana_namee" class="furigana_namae">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="yaku_type">役職</td>
+                  <td id="yaku">
+                      <input type="checkbox" name="job_sou" class="job_sou" value="総代"><label for="job_sou">総代</label>
+                      <input type="checkbox" name="job_sewa" class="job_sewa" value="世話人"><label for="job_sewa">世話人</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号</td>
+                  <td id="tel">
+                      <input type="text" name="telno" class="telno">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tiku_type">地区名</td>
+                  <td id="tiku">
+                     <select id="tiku_list">
+                       <option value="tiku1">地区1</option>
+                       <option value="tiku2">地区2</option>
+                       <option value="tiku3">地区3</option>
+                       <option value="tiku4">地区4</option>
+                     </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sewa_type">世話人</td>
+                  <td id="sewa">
+                      <label for="sewa_seimei">姓名: </label><input type="text" name="name_sei" class="name_sei">
+                      <label for="sewa_namae">名前: </label><input type="text" name="name_namae" class="name_namae">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sou_type">担当者[僧]</td>
+                  <td id="sou">
+                      <label for="sou_seimei">姓名: </label><input type="text" name="name_sei" class="name_sei">
+                      <label for="sou_namae">名前: </label><input type="text" name="name_namae" class="name_namae">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="serch_submit"><input type="submit" value="検索" id="submit"></div>
+        </form>
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>

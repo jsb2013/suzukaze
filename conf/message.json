@@ -1,0 +1,10 @@
+{
+    "ILOGIN10":    "LOGIN-OK",
+    
+    "WLOGIN10":    "LOGIN-NG (valid password)",
+    "WLOGIN20":    "LOGIN-NG (user not found)",
+    
+    
+    "ELOGIN10":    "LOGIN-NG (Exception-error)",
+    "ELOGIN20":    "LOGIN-NG (Database-error)"
+}

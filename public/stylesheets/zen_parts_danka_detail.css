@@ -1,0 +1,318 @@
+@charset "Shift_JIS";
+
+/* 共通定義 */
+#inner_main{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'メイリオ' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;
+    color: #666666; /* 標準文字色 */
+}
+
+ /* 現在帳結果表示の個別定義 */
+    .table_main_genzai{
+      margin: 20px 0 0 0;
+      padding: 0;
+      width: 630px;
+      height: 300px;
+      overflow-y: scroll;
+    }
+      .table_main_genzai th{
+        margin: 0;
+        padding: 0;
+        height: 30px;
+        color: #ffffff;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        background-color : #804000;
+      }
+      .table_main_genzai #zokumei{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 120px;
+      }
+      .table_main_genzai #relation{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_genzai #sex{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_genzai #born{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 120px;
+      }
+      .table_main_genzai #jukai{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_genzai #other{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 240px;
+      }
+      .table_main_genzai tr{
+        margin: 0;
+        padding: 0;
+      }
+      .table_main_genzai td{
+        margin: 0;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        cursor: pointer;
+      }
+      .even{
+        background: #ffdfbf;
+      }
+      .table_main_genzai tr:hover{
+        margin: 0;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        cursor: pointer;
+        background: orange;
+      }
+
+/* 過去帳結果表示の個別定義 */
+     .table_main_kako{
+      margin: 20px 0 0 0;
+      padding: 0;
+      width: 630px;
+      height: 300px;
+      overflow-y: scroll;
+    }
+      .table_main_kako th{
+        margin: 0;
+        padding: 0;
+        height: 30px;
+        color: #ffffff;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        background-color : #804000;
+      }
+      .table_main_kako #zokumei{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 140px;
+      }
+      .table_main_kako #kaimyo{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 220px;
+      }
+      .table_main_kako #relation{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_kako #sex{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_kako #meinichi{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 120px;
+      }
+      .table_main_kako #kyonen{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_kako tr{
+        margin: 0;
+        padding: 0;
+      }
+      .table_main_kako td{
+        margin: 0;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        cursor: pointer;
+      }
+      .even{
+        background: #ffdfbf;
+      }
+      .table_main_kako tr:hover{
+        margin: 0;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        cursor: pointer;
+        background: orange;
+      }
+
+/* 基本情報画面表示の個別定義 */
+     .table_main_kihon{
+      margin: 20px 0 0 0;
+      padding: 0;
+      width: 630px;
+      height: 300px;
+      overflow-y: scroll;
+    }
+      .table_main_kihon #header{
+        margin: 0;
+        padding: 0;
+        height: 30px;
+        color: #ffffff;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        background-color : #804000;
+      }
+      .table_main_kihon #newtype{
+        margin: 0;
+        padding: 0;
+        width: 130px;
+      }
+      .table_main_kihon #newnaiyo{
+        margin: 0;
+        padding: 0;
+        width: 500px;
+      }
+      .table_main_kihon tr{
+        margin: 0;
+        padding: 0;
+        height: 40px;
+      }
+      .table_main_kihon td{
+        margin: 0;
+        padding: 2px 0 0 10px;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+      }
+      .table_main_kihon label{
+        margin: 0;
+        padding: 0 5px 0 5px;
+      }
+      .table_main_kihon td:hover{
+        margin: 0;
+        padding: 2px 0 0 10px;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        background: orange;
+      }
+      #new_submit{
+        margin: 10px 0 0 0;
+        padding: 0;
+        height: 30px;
+        text-align: center;
+      }
+      #new_submit input{
+        text-align: center;
+        font-size: 25px;
+      }
+      .error{
+        color: #f00;
+        background-color: orange;
+      }
+
+/* 年回忌表示の個別定義 */
+     .table_main_nenki{
+      margin: 20px 0 0 0;
+      padding: 0;
+      width: 630px;
+      height: 300px;
+      overflow-y: scroll;
+    }
+     .table_main_nenki th{
+        margin: 0;
+        padding: 0;
+        height: 30px;
+        color: #ffffff;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        background-color : #804000;
+      }
+      .table_main_nenki #zokumei{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 140px;
+      }
+      .table_main_nenki #kaiki{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 50px;
+      }
+      .table_main_nenki #kijitsu{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 120px;
+      }
+      .table_main_nenki #ekou_date{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 120px;
+      }
+      .table_main_nenki #sou{
+        margin: 0;
+        padding: 0 0 0 10px;
+        width: 120px;
+      }
+      .table_main_nenki #kyonen{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_nenki #check{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 50px;
+      }
+      .table_main_nenki tr{
+        margin: 0;
+        padding: 0;
+      }
+      .table_main_nenki td{
+        margin: 0;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        cursor: pointer;
+      }
+      .even{
+        background: #ffdfbf;
+      }
+      .table_main_nenki tr:hover{
+        margin: 0;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        cursor: pointer;
+        background: orange;
+      }
