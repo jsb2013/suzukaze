@@ -1,0 +1,263 @@
+﻿﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka">
+<link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+    <script>
+<%
+    var name = webItemJson.name_sei + " " + webItemJson.name_na;
+    var furigana = webItemJson.furigana_sei + " " + webItemJson.furigana_na;
+    var sex = "男";
+    if (webItemJson.sex === 1){
+        var sex = "女";
+    }
+    var zipCode = webItemJson.zip_code_pre + " - " + webItemJson.zip_code_last;
+    var region = webItemJson.region;
+    var city = webItemJson.city;
+    var address_line1 = webItemJson.address_line1;
+    var address_line2 = webItemJson.address_line2;
+    var telno_1 = webItemJson.telno_1;
+    var telno_2 = webItemJson.telno_2;
+    var telno_3 = webItemJson.telno_3;
+    var email_1 = webItemJson.email_1;
+    var email_2 = webItemJson.email_2;
+    var email_3 = webItemJson.email_3;
+    var tiku_name = webItemJson.tiku_name;
+    var sewa_name = webItemJson.sewa_name;
+    var sou_name = webItemJson.sou_name;
+%>
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div id="inner_title">
+        <div id="title">
+   	  <h2><span class="ja">檀家管理</span><span class="en">danka manage</span></h2>
+        </div>
+        <div id="menu_sub">
+          <ul>
+            <li><a href="/danka_50">50音別</a> 
+            <li><a href="/danka_tiku">地区別</a>
+            <li><a href="/danka_sewa">世話人別</a> 
+            <li><a href="/danka_syosai">詳細検索</a>
+            <li><a href="/danka_tuika">追加(戸主)</a> 
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div id="inner_main">
+        <div id="title_comment">
+   	      <h2><span class="ja">登録内容確認</span><span class="en">※問題が無ければ登録ボタンを押して下さい</span></h2>
+        </div>
+        <form action="/danka_tuika_update" method="post">
+          <div class="table_main_tuika_confirm">
+            <table>
+              <thead>
+                <tr id="header">
+                  <th id="newtype">登録項目</td>
+                  <th id="newnaiyo">登録内容</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="name_type">戸主名(※必須)</td>
+                  <% if(isDuplicate){ %>
+                     <td id="name" class="warn">
+                          <label for="name"><span class="main"><%= name %></span><span class="sub">※【注意】同じ名前の方が既に登録されています。</span></label>
+                     </td>
+                  <% } else { %>
+                  <td id="name">
+                       <label for="name"><%= name %></label>
+                  </td>
+                  <% } %>  
+                </tr>
+                <tr>
+                  <td id="furigana_type">ふりがな(※必須)</td>
+                  <% if(isDuplicate){ %>
+                     <td id="furigana_warn" class="warn">
+                          <label for="furigana"><span class="main"><%= furigana %></span><span class="sub">※【注意】同じ名前の方が既に登録されています。</span></label>
+                     </td>
+                  <% } else { %>
+                     <td id="furigana">
+                          <label for="furigana"><%= furigana %></label>
+                     </td>
+                  <% } %>   
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sex_type">性別(※必須)</td>
+                  <td id="sex">
+                      <label for="sex"><%= sex %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="zip_code_type">郵便番号</td>
+                  <td id="zip_code">
+                      <label for="zip_code"><%= zipCode %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="region_type">都道府県</td>
+                  <td id="region">
+                      <label for="region"><%= region %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="city_type">市区町村</td>
+                  <td id="city">
+                      <label for="city"><%= city %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_line1_type">番地</td>
+                  <td id="address_line1">
+                      <label for="address_line1"><%= address_line1 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_line2_type">ビル名等</td>
+                  <td id="address_line2">
+                      <label for="address_line2"><%= address_line2 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(1)</td>
+                  <td id="tel">
+                      <label for="tel1"><%= telno_1 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(2)</td>
+                  <td id="tel">
+                      <label for="tel2"><%= telno_2 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(3)</td>
+                  <td id="tel">
+                      <label for="tel3"><%= telno_3 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(1)</td>
+                  <td id="email">
+                      <label for="email1"><%= email_1 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(2)</td>
+                  <td id="email">
+                      <label for="email2"><%= email_2 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(3)</td>
+                  <td id="email">
+                      <label for="email3"><%= email_3 %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tiku_type">地区名</td>
+                  <td id="tiku">
+                     <label for="tiku"><%= tiku_name %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sewa_type">世話人</td>
+                  <td id="sewa">
+                     <label for="sewa"><%= sewa_name %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sou_type">担当者[僧]</td>
+                  <td id="sou">
+                     <label for="sou"><%= sou_name %></label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <input type="hidden" name="name_sei" value=<%= webItemJson.name_sei %>>
+            <input type="hidden" name="name_na" value=<%= webItemJson.name_na %>>
+            <input type="hidden" name="furigana_sei" value=<%= webItemJson.furigana_sei %>>
+            <input type="hidden" name="furigana_na" value=<%= webItemJson.furigana_na %>>
+            <input type="hidden" name="sex" value=<%= webItemJson.sex %>>
+            <input type="hidden" name="zip_code_pre" value=<%= webItemJson.zip_code_pre %>>
+            <input type="hidden" name="zip_code_last" value=<%= webItemJson.zip_code_last %>>
+            <input type="hidden" name="region" value=<%= webItemJson.name_sei %>>
+            <input type="hidden" name="city" value=<%= webItemJson.city %>>
+            <input type="hidden" name="address_line1" value=<%= webItemJson.address_line1 %>>
+            <input type="hidden" name="address_line2" value=<%= webItemJson.address_line2 %>>
+            <input type="hidden" name="telno_1" value=<%= webItemJson.telno_1 %>>
+            <input type="hidden" name="telno_2" value=<%= webItemJson.telno_2 %>>
+            <input type="hidden" name="telno_3" value=<%= webItemJson.telno_3 %>>
+            <input type="hidden" name="email_1" value=<%= webItemJson.email_1 %>>
+            <input type="hidden" name="email_2" value=<%= webItemJson.email_2 %>>
+            <input type="hidden" name="email_3" value=<%= webItemJson.email_3 %>>
+            <input type="hidden" name="tiku_name" value=<%= webItemJson.tiku_name %>>
+            <input type="hidden" name="sewa_name" value=<%= webItemJson.sewa_name %>>
+            <input type="hidden" name="sou_name" value=<%= webItemJson.sou_name %>>
+          <div id="new_submit"><input type="submit" value="登録" id="submit"></div>
+        </form>
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>

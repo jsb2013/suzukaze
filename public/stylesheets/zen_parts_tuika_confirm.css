@@ -1,0 +1,121 @@
+@charset "Shift_JIS";
+
+/* ‹¤’Ê’è‹` */
+body{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 75%;
+    font-family: 'ƒƒCƒŠƒI' ,Meiryo, 'ƒqƒ‰ƒMƒmŠpƒS Pro W3' , 'Hiragino Kaku Gothic Pro' , '‚l‚r ‚oƒSƒVƒbƒN' , 'Osaka' ,sans-serif;
+    color: #666666; /* •W€•¶šF */
+    background-image : url(../img/bg_3Da_01.png);
+    background-position: top center;
+    background-repeat: repeat-y;
+    background-color: #E5D6AB;
+}
+#container{
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    width: 900px;
+    background-color: #FFFFFF;
+    background-image : url(../img/header_img.png);
+    background-position: top center;
+    background-repeat: repeat-x;
+    font-family: 'ƒƒCƒŠƒI' ,Meiryo, 'ƒqƒ‰ƒMƒmŠpƒS Pro W3' , 'Hiragino Kaku Gothic Pro' , '‚l‚r ‚oƒSƒVƒbƒN' , 'Osaka' ,sans-serif;
+}
+        #title{
+          margin: 0;
+          padding: 0;
+          height: 45px;
+          text-align: left;
+          overflow: hidden;
+          background-image : url(../img/titlebar.png);
+          background-position: top left;
+          background-repeat: no-repeat;
+        }
+          #title h2{
+            margin: 0;
+            padding: 10px 0 0 15px;
+          }
+
+            #title h2 span.ja{
+              margin: 0;
+              padding: 0 15px 0 0;
+              font-size: 15px;
+              color: #ffffff;
+            }
+          #title h2 span.en{
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+            color: #F7C05B;
+          }
+
+/* ’Ç‰Á‰æ–Ê•\¦‚ÌŒÂ•Ê’è‹` */
+     .table_main_tuika_confirm{
+      margin: 20px 0 0 0;
+      padding: 0;
+      width: 630px;
+      height: 370px;
+      overflow-y: scroll;
+    }
+      .table_main_tuika_confirm #header{
+        margin: 0;
+        padding: 0;
+        height: 30px;
+        color: #ffffff;
+        background-color : #804000;
+      }
+      .table_main_tuika_confirm #newtype{
+        margin: 0;
+        padding: 0;
+        width: 130px;
+      }
+      .table_main_tuika_confirm #newnaiyo{
+        margin: 0;
+        padding: 0;
+        width: 500px;
+      }
+      .table_main_tuika_confirm tr{
+        margin: 0;
+        padding: 0;
+        height: 40px;
+      }
+      .table_main_tuika_confirm td{
+        margin: 0;
+        padding: 2px 0 0 10px;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 1px #BA802F;
+        border-collapse: collapse;
+      }
+      .table_main_tuika_confirm label{
+        margin: 0;
+        padding: 0 5px 0 5px;
+      }
+      .table_main_tuika_confirm td:hover{
+        margin: 0;
+        padding: 2px 0 0 10px;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 1px #BA802F;
+        border-collapse: collapse;
+        background: orange;
+      }
+      #new_submit{
+        margin: 10px 0 0 0;
+        padding: 0;
+        height: 30px;
+        text-align: center;
+      }
+      #new_submit input{
+        text-align: center;
+        font-size: 25px;
+      }
+      .error{
+        color: #f00;
+        background-color: orange;
+      }

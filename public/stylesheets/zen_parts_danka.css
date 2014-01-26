@@ -295,11 +295,143 @@
         border: solid 1px #BA802F;
         border-collapse: collapse;
       }
+      .telno_size{ width: 50px;}
+      .telno_yoto{ width: 150px;}
+      #telno_box{
+        margin: 0 30px 0 0;
+      }
+      .email_size{ width: 200px;}
+      .email_yoto{ width: 150px;}
+      #email_box{
+        margin: 0 30px 0 0;
+      }
+      tbody{
+    margin: 0;
+    padding: 0;
+}
+      #comment{
+        margin: 0;
+        padding: 10px 0 0 5px;
+}
+      .textarea_size{
+         width: 470px;
+         height: 100px;
+         resize: none;
+         border:inherit;
+}
       .table_main_tuika label{
+        margin: 0;
+        padding: 0 5px 5px 5px;
+      }
+
+      .table_main_tuika td:hover{
+        margin: 0;
+        padding: 2px 0 0 10px;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 1px #BA802F;
+        border-collapse: collapse;
+        background: orange;
+      }
+
+      #new_submit{
+        margin: 10px 0 0 0;
+        padding: 0;
+        height: 30px;
+        text-align: center;
+      }
+      #new_submit input{
+        text-align: center;
+        font-size: 25px;
+      }
+      .error{
+        color: #f00;
+        background-color: orange;
+      }
+
+/* 追加確認画面表示の個別定義 */
+    
+    #title_comment{
+      margin: 5px auto;
+      height: 30px;
+    }
+     #title_comment{
+      margin: 0;
+      padding: 0;
+      width: 600px;
+      background: red;
+    }
+      #title_comment h2 span.ja{
+              margin: 0;
+              padding: 3px 30px 5px 20px;
+              display: block;
+              text-align: left;
+              float: left;
+              color: white;
+              font-size: 17px;
+      }
+      #title_comment h2 span.en{
+              margin: 0;
+              padding: 5px 0 5px 0;
+              display: block;
+              text-align: left;
+              color: white;
+              font-size: 14px;
+      }
+     .table_main_tuika_confirm{
+      margin: 10px 0 0 0;
+      padding: 0;
+      width: 630px;
+      height: 350px;
+      overflow-y: scroll;
+    }
+      .table_main_tuika_confirm #header{
+        margin: 0;
+        padding: 0;
+        height: 30px;
+        color: #ffffff;
+        background-color : #804000;
+      }
+      .table_main_tuika_confirm #newtype{
+        margin: 0;
+        padding: 0;
+        width: 130px;
+      }
+      .table_main_tuika_confirm #newnaiyo{
+        margin: 0;
+        padding: 0;
+        width: 500px;
+      }
+      .table_main_tuika_confirm span.main{
+        margin: 0 20px 0 0;
+        padding: 0;
+        
+      }
+      .table_main_tuika_confirm span.sub{
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+      }
+      .table_main_tuika_confirm tr{
+        margin: 0;
+        padding: 0;
+        height: 40px;
+      }
+      .table_main_tuika_confirm td{
+        margin: 0;
+        padding: 2px 0 0 10px;
+        height: 30px;
+        text-align: left;
+        font-size: 12px;
+        border: solid 1px #BA802F;
+        border-collapse: collapse;
+      }
+      .table_main_tuika_confirm label{
         margin: 0;
         padding: 0 5px 0 5px;
       }
-      .table_main_tuika td:hover{
+      .table_main_tuika_confirm td:hover{
         margin: 0;
         padding: 2px 0 0 10px;
         height: 30px;
@@ -315,14 +447,15 @@
         height: 30px;
         text-align: center;
       }
-      #new_submit input{
-        text-align: center;
-        font-size: 25px;
-      }
       .error{
         color: #f00;
         background-color: orange;
       }
+      .warn{
+        color: #f00;
+        background-color: orange;
+      }
+
 
  /* 檀家検索結果表示の個別定義 */
     .table_main_result{

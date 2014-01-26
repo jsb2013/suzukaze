@@ -52,22 +52,17 @@ app.get('/danka_50', routes.danka_50);
 app.get('/danka_sewa', routes.danka_sewa);
 app.get('/danka_syosai', routes.danka_syosai);
 app.get('/danka_tiku', routes.danka_tiku);
+
+// 3.50音別検索
+app.get('/danka_result', routes.danka_result);
+
+
+// 檀家追加画面
 app.get('/danka_tuika', routes.danka_tuika);
-
-
-
-app.post('/login', routes.loginpost);
-
-// 2.ユーザ登録画面
-app.get('/create', routes.create);
-app.post('/create', routes.createpost);
-
-// 3.メイン画面（ログイン後）
-app.get('/header', routes.header);
-app.get('/main', routes.main);
-app.get('/register', routes.register);
-app.get('/delete', routes.delete);
-app.get('/logout', routes.logout);
+// 檀家追加画面→確認画面
+app.post('/danka_tuika_conform', routes.dankaTuikaConform);
+// 檀家追加画面→確認画面→檀家追加処理
+app.post('/danka_tuika_update', routes.dankaTuikaUpdate);
 
 //***************************************
 //***************************************
