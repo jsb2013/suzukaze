@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+    <!-- Browser selector -->
+    <script src="/js/css_browser_selector.js" type="text/javascript"></script>
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/stylesheets/haraikomi.css" media="screen,print" />
+
+    <title>払込取扱票</title>
+
+  </head>
+
+  <body>
+
+    <!--ご依頼人の人数でループ -->
+    <% for(var i=0; i<page.goiraiMei.length; i++) {%>
+
+      <!-- 印刷コンテンツ -->
+      <div>
+
+        <!-- 帳票画像(郵送窓＋払込票) -->
+        <div class="backImage">
+          <img src="/img/haraikomi_hyou.jpg" width=99%;>
+        </div>
+
+        <div class="text" style="top: 5mm; left: 15mm;">
+
+          <table style="border: 1px solid #595959;">
+	          <tr>
+		          <td width="350" height="130"></td>
+	          </tr>
+          </table>
+
+        </div>
+
+        <!-- 封筒窓_郵便番号 -->
+        <div class="text" style="top: 10mm; left: 20mm;">
+          <atena><%= page.goiraiYubin[i] %></atena>
+        </div>
+
+        <!-- 封筒窓_住所1 -->
+        <div class="text" style="top: 15mm; left: 20mm;">
+          <atena><%= page.goiraiJusyo1[i] %></atena>
+        </div>
+
+        <!-- 封筒窓_住所2 -->
+        <div class="text" style="top: 20mm; left: 20mm;">
+          <atena><%= page.goiraiJusyo2[i] %></atena>
+        </div>
+
+        <!-- 封筒窓_宛名 -->
+        <div class="text" style="top: 30mm; left: 20mm;">
+          <atena><%= page.goiraiMei[i] %>様</atena>
+        </div>
+
+        <!-- 題名 -->
+        <div class="text" style="top: 80mm; left: 20mm;">
+          <daimei><%= page.daimei %></daimei>
+        </div>
+
+        <!-- 送付状 -->
+        <div class="text" style="top: 95mm; left: 20mm; width: 660px; word-wrap: break-word;">
+          <souhujo><%= page.souhujo %></souhujo>
+        </div>
+
+        <!-- 金額 -->
+        <div class="text" style="top: 140mm; left: 150mm;">
+          <kingaku><u>￥<%= String( page.kingaku ).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,' ) %>也</u></kingaku>
+        </div>
+
+        <!-- 口座番号1 -->
+        <div class="text" style="top: 197mm; left: 20mm;">
+          <kouzaNo1 class="ketafont"><%= page.kouzaNo1[i] %></kouzaNo1>
+        </div>
+
+        <!-- 口座番号2 -->
+        <div class="text" style="top: 197mm; left: 48mm;">
+          <kouzaNo2 class="ketafont"><%= page.kouzaNo2[i] %></kouzaNo2>
+        </div>
+
+        <!-- 口座番号3 -->
+        <div class="text" style="top: 197mm; left: 55mm;">
+          <kouzaNo3 class="ketafont"><%= page.kouzaNo3[i] %></kouzaNo3>
+        </div>
+
+        <!-- 金額 -->
+        <div class="textKingakuPosition">
+          <table style="border-style:none" width="200px">
+	          <tr>
+		          <td class="ketafont" text-align="right"><%= page.kingaku %></td>
+	          </tr>
+          </table>
+        </div>
+
+        <!-- 料金 -->
+        <div class="text" style="top: 207mm; left: 95mm;">
+          <ryoukin><%= page.ryoukin %></ryoukin>
+        </div>
+
+        <!-- 特殊 -->
+        <div class="text" style="top: 207mm; left: 118mm;">
+          <tokyusyu><%= page.tokyusyu %></tokyusyu>
+        </div>
+
+        <!-- 加入者名 -->
+        <div class="text" style="top: 206mm; left: 30mm;">
+          <kanyuName><%= page.kanyusyaMei %></kanyuName>
+        </div>
+
+        <!-- 通信欄 -->
+        <div class="text" style="top: 216mm; left: 30mm; width: 380px; word-wrap: break-word;">
+          <tuusin><%= page.tusinRan %></tuusin>
+        </div>
+
+        <!-- ご依頼人_郵便番号 -->
+        <div class="text" style="top: 250mm; left: 43mm;">
+          <iraiJusyo><%= page.goiraiYubin[i] %></iraiJusyo>
+        </div>
+
+        <!-- ご依頼人_住所1 -->
+        <div class="text" style="top: 253mm; left: 45mm;">
+          <iraiJusyo><%= page.goiraiJusyo1[i] %></iraiJusyo>
+        </div>
+
+        <!-- ご依頼人_住所2 -->
+        <div class="text" style="top: 256mm; left: 45mm;">
+          <iraiJusyo><%= page.goiraiJusyo2[i] %></iraiJusyo>
+        </div>
+
+        <!-- ご依頼人_名 -->
+        <div class="text" style="top: 260mm; left: 45mm;">
+          <iraiName><%= page.goiraiMei[i] %></iraiName>
+        </div>
+
+        <!-- ご依頼人_TEL -->
+        <div class="text" style="top: 265mm; left: 60mm;">
+          <iraiJusyo><%= page.goiraiTel[i] %></iraiJusyo>
+        </div>
+
+        <div class="textGoiraiKingakuPosition">
+          <table style="border-style:none" width="200px">
+	          <tr>
+		          <td class="ketafont" text-align="right"><%= page.kingaku %></td>
+	          </tr>
+          </table>
+        </div>
+
+        <!-- 受領_ご依頼人_名 -->
+        <div class="text" style="top: 245mm; left: 155mm;">
+          <iraiName><%= page.goiraiMei[i] %></iraiName>
+        </div>
+
+        <!-- 改行 -->
+        <div class="page-breaker"></div>
+
+        <!-- 帳票画像(裏) -->
+        <div class="backImage">
+          <img src="/img/haraikomi_hyou_rv.jpg" width=99%;>
+        </div>
+
+        <!-- 改行 -->
+        <div class="page-breaker"></div>
+
+      </div>
+
+    <% } %>
+
+
+  </body>
+</html>
+

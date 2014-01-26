@@ -64,6 +64,9 @@ app.post('/danka_tuika_conform', routes.dankaTuikaConform);
 // 檀家追加画面→確認画面→檀家追加処理
 app.post('/danka_tuika_update', routes.dankaTuikaUpdate);
 
+app.get('/haraikomi', routes.haraikomi);
+app.get('/tyohyo_main', routes.tyohyo_main);
+
 //***************************************
 //***************************************
 
