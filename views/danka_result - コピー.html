@@ -4,14 +4,15 @@
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
 <link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka">
+<link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
 <title>檀家管理システム　禅</title>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
    $("td").click(function(){
-     var id = $(this).parent().attr("id");
-     location.href = "dummy";
+     var id = $(this).attr("id");
+     location.href = "danka_detail_top.html?id=" + id;
    });
    $("tr:nth-child(even)").addClass("even");
  });
@@ -45,7 +46,7 @@
             <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
             <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
             <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
-            <li><a href="/danka_tyohyo"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
             <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
@@ -76,6 +77,53 @@
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div id="inner_main">
+          <div class="table_main_result">
+            <table>
+              <thead>
+                <tr>
+                  <th id="kosyu" rowspan="2">戸主名</th>
+                  <th id="type" colspan="2">区分</th>
+                  <th id="tel" rowspan="2">電話番号</th>
+                  <th id="tiku" rowspan="2">地区</th>
+                  <th id="sewa" rowspan="2">世話人</th>
+                  <th id="sou" rowspan="2">担当[僧]</th>
+                </tr>
+                <tr>
+                  <th id="type_so">総</th>
+                  <th id="type_se">世</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="100">
+                  <td id="kosyu">山田　太郎</td>
+                  <td id="type_so">○</td>
+                  <td id="type_se">-</td>
+                  <td id="tel">080-3255-8854</td>
+                  <td id="tiku">座間</td>
+                  <td id="sewa">世話人　太郎</td>
+                  <td id="sou">田中　新太郎</th></td>
+                </tr>
+                <tr id="200">
+                  <td id="kosyu">天道　あかね</td>
+                  <td id="type_so">-</td>
+                  <td id="type_se">○</td>
+                  <td id="tel">080-3255-8854</td>
+                  <td id="tiku">座間</td>
+                  <td id="sewa">世話人　太郎</td>
+                  <td id="sou">田中　新太郎</th></td>
+                </tr>
+                <tr id="300">
+                  <td id="kosyu">天道　あかね</td>
+                  <td id="type_so">-</td>
+                  <td id="type_se">○</td>
+                  <td id="tel">080-3255-8854</td>
+                  <td id="tiku">座間</td>
+                  <td id="sewa">世話人　太郎</td>
+                  <td id="sou">田中　新太郎</th></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
       </div>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
     </div>

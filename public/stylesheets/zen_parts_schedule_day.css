@@ -237,3 +237,124 @@
       background-color: #ffdfbf;
     }
     
+
+
+    #aaa{
+      margin: 0;
+      padding: 0;
+      width: 630px;
+      height: px;
+      border: solid 0.5px #BA802F;
+      border-collapse: collapse;
+      overflow-y: scroll;
+    }
+      #aaa th{
+        margin: 0;
+        padding: 0;
+        height: 15px;
+        color: #ffffff;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+        background-color : #804000;
+      }
+      #aaa tr{
+        margin: 0;
+        padding: 0;
+        height: 25px;
+      }
+      #aaa td{
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        border: solid 0.5px #BA802F;
+        border-collapse: collapse;
+      }
+      #aaa th#check{
+        margin: 0;
+        padding: 0;
+        width: 70px;
+      }
+      #aaa th#kosyu{
+        margin: 0;
+        padding: 0;
+        width: 150px;
+      }
+      #aaa th#tiku{
+        margin: 0;
+        padding: 0;
+        width: 150px;
+      }
+      #aaa th#kosyu{
+        margin: 0;
+        padding: 0;
+        width: 120px;
+      }
+      #aaa th#other{
+        margin: 0;
+        padding: 0;
+        width: 250px;
+      }
+      .even{
+        background: #ffdfbf;
+      }
+      #aaa tr:hover{
+        margin: 0;
+        padding: 0;
+        height: 25px;
+        background: orange;
+      }
+      #aaa td{
+        cursor: pointer;
+      }
+      #tyohyo_submit{
+        margin: 10px 0 0 0;
+        padding: 0;
+        height: 30px;
+        text-align: center;
+      }
+      #tyohyo_submit input{
+        text-align: center;
+        font-size: 25px;
+      }
+
+  #form_box{
+      margin: 10px 0 0 0;
+      padding: 10px 0 10px 10px;
+      height: 65px;
+      width: 620px;
+      border: solid 1px #BA802F;
+  }
+    #aaa_filter{
+        margin: 0;
+        padding: 0;
+        float: left;
+    }
+
+      #so_filter{
+        margin: 0;
+        padding: 0 0 10px 0;
+        text-align: left;
+        font-size: 14px;
+
+        border-bottom-style: dotted;
+        border-bottom-width: 1px;
+        border-bottom-color: #BA802F;
+      }
+      #term_filter{
+        margin: 0;
+        padding: 10px 0 0 0;
+        float: left;
+        text-align: left;
+        font-size: 14px;
+      }
+    #aaa_submit{
+      margin: 0 0 0 20px;
+      padding: 0;
+      float: left;
+      font-size: 35px;
+    }
+    #filter_submit input{
+      margin: 5px 0 0 15px;
+      padding: 0;
+      font-size: 30px;
+    }

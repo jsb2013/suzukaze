@@ -1,6 +1,7 @@
 {
     "type": 
         {
+            "danka_type": ["require", "integer"],
             "name_sei": ["require", "string"],
             "name_na": ["require", "string"],
             "furigana_sei": ["require", "string"],
@@ -34,13 +35,18 @@
             "email_3": ["string"],
             "emamil_3_yoto": ["string"],
             "job_name": ["integer"],
+            "job_name_mei": ["string"],
             "tiku_name": ["integer"],
+            "tiku_name_mei": ["string"],
             "sewa_name": ["integer"],
+            "sewa_name_mei": ["string"],
             "sou_name": ["integer"],
+            "sou_name_mei": ["string"],
             "comment": ["string"]
         },
     "size":
         {
+            "danka_type": "1",
             "name_sei": "50",
             "name_na": "50",
             "furigana_sei": "50",
@@ -67,13 +73,16 @@
             "telno_3_mid": "4",
             "telno_3_last": "4",
             "telno_3_yoto": "100",
-            "job_name": "10",
             "email_1": "100",
             "email_1_yoto": "100",
             "email_2": "100",
             "email_2_yoto": "100",
             "email_3": "100",
             "email_3_yoto": "100",
+            "job_name_mei": "50",
+            "tiku_name_mei": "50",
+            "sewa_name_mei": "50",
+            "sewa_name_mei": "50",
             "comment": "500"
         }
 }

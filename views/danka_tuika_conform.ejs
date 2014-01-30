@@ -9,6 +9,10 @@
 <script src="js/jquery-1.10.2.min.js"></script>
 <script>
 <%
+    var danka_type = "檀家";
+    if (webItemJson.danka_type === '1'){
+        var danka_type = "信徒";
+    }
     var name = webItemJson.name_sei + "  " + webItemJson.name_na;
     var furigana = webItemJson.furigana_sei + "  " + webItemJson.furigana_na;
     var sex = "男";
@@ -34,9 +38,13 @@
     var email_2_yoto = webItemJson.email_2_yoto;
     var email_3_yoto = webItemJson.email_3_yoto;
     var job_name = webItemJson.job_name;
+    var job_name_mei = webItemJson.job_name_mei;
     var tiku_name = webItemJson.tiku_name;
+    var tiku_name_mei = webItemJson.tiku_name_mei;
     var sewa_name = webItemJson.sewa_name;
-    var sou_name = webItemJson.sou_name
+    var sewa_name_mei = webItemJson.sewa_name_mei;
+    var sou_name = webItemJson.sou_name;
+    var sou_name_mei = webItemJson.sou_name_mei;
     var comment = webItemJson.comment;
 %>
 </script>
@@ -113,6 +121,12 @@
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <td id="danka_type">登録区分(※必須)</td>
+                  <td id="danka_type">
+                      <label for="danka_type"><%= danka_type %></label>
+                  </td>
+                </tr>
                 <tr>
                   <td id="name_type">戸主名(※必須)</td>
                   <% if(isDuplicate){ %>
@@ -249,25 +263,25 @@
                 <tr>
                   <td id="job_type">職業</td>
                   <td id="job">
-                     <label for="job"><%= job_name %></label>
+                     <label for="job"><%= job_name_mei %></label>
                   </td>
                 </tr>
                 <tr>
                   <td id="tiku_type">地区名</td>
                   <td id="tiku">
-                     <label for="tiku"><%= tiku_name %></label>
+                     <label for="tiku"><%= tiku_name_mei %></label>
                   </td>
                 </tr>
                 <tr>
                   <td id="sewa_type">世話人</td>
                   <td id="sewa">
-                     <label for="sewa"><%= sewa_name %></label>
+                     <label for="sewa"><%= sewa_name_mei %></label>
                   </td>
                 </tr>
                 <tr>
                   <td id="sou_type">担当者[僧]</td>
                   <td id="sou">
-                     <label for="sou"><%= sou_name %></label>
+                     <label for="sou"><%= sou_name_mei %></label>
                   </td>
                 </tr>
                 <tr>
@@ -279,6 +293,7 @@
               </tbody>
             </table>
           </div>
+            <input type="hidden" name="danka_type" value=<%= webItemJson.danka_type %>>
             <input type="hidden" name="name_sei" value=<%= webItemJson.name_sei %>>
             <input type="hidden" name="name_na" value=<%= webItemJson.name_na %>>
             <input type="hidden" name="furigana_sei" value=<%= webItemJson.furigana_sei %>>

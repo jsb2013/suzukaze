@@ -7,21 +7,21 @@
  * スケジュール画面
  */
 // 1-1.スケジュールTOP画面（get:/schedule_top）
-exports.schedule_top = function(req, res){
+exports.getScheduleTop = function(req, res){
     res.render('schedule_top', {
         loginFailed: false
     });
 };
 
 // 1-2.スケジュール画面（カレンダー指定）（get:/schedule_month）
-exports.schedule_month = function(req, res){
+exports.getScheduleMonth = function(req, res){
     res.render('schedule_month', {
         loginFailed: false
     });
 };
 
 // 1-3.スケジュール画面（日指定）（get:/schedule_day）
-exports.schedule_day = function(req, res){
+exports.getScheduleDay = function(req, res){
     res.render('schedule_day', {
         loginFailed: false
     });
@@ -31,59 +31,102 @@ exports.schedule_day = function(req, res){
  * 檀家検索画面
  */
 // 2-1.檀家検索TOP画面（get:/danka_top）
-exports.danka_top = function(req, res){
+exports.getDankaTop = function(req, res){
     res.render('danka_top', {
         loginFailed: false
     });
 };
 
-// 2-2.檀家検索-50音指定画面（get:/danka_50）
-exports.danka_50 = function(req, res){
+//***************************************
+// 檀家追加画面
+//***************************************
+// 50音別検索画面
+exports.getDanka50 = function(req, res){
     res.render('danka_50', {
         loginFailed: false
     });
 };
+// 50音別検索画面→検索結果画面
+exports.getDanka50Result = function (req, res) {
+
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var dankaResultModel = require("../model/getDanka50ResultModel");
+    var serchId = req.query.id;
+
+    function authCallback(isError) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_result', {});
+        return;
+    }
+
+    dankaResultModel.serchDankaFrom50onId(serchId, authCallback);
+};
+
 
 // 2-3.檀家検索-世話人指定画面（get:/danka_sewa）
-exports.danka_sewa = function(req, res){
+exports.getDankaSewa = function(req, res){
     res.render('danka_sewa', {
         loginFailed: false
     });
 };
 
 // 2-4.檀家検索-詳細指定画面（get:/danka_syosai）
-exports.danka_syosai = function(req, res){
+exports.getDankaSyosai = function(req, res){
     res.render('danka_syosai', {
         loginFailed: false
     });
 };
 
 // 2-5.檀家検索-地区指定画面（get:/danka_tiku）
-exports.danka_tiku = function(req, res){
+exports.getDankaTiku = function(req, res){
     res.render('danka_tiku', {
         loginFailed: false
     });
 };
 
 // 2-6.檀家追加画面（get:/danka_tuika）
-exports.danka_tuika = function(req, res){
-    res.render('danka_tuika', {
+exports.getTyohyoMain = function(req, res){
+    res.render('danka_tyohyo', {
         loginFailed: false
     });
 };
 
-// 2-6.檀家追加画面（get:/danka_tuika）
-exports.tyohyo_main = function(req, res){
-    res.render('tyohyo_main', {
-        loginFailed: false
-    });
+//***************************************
+// 檀家追加画面
+//***************************************
+// 檀家追加画面（get:/danka_tuika）
+exports.getDankaTuika = function(req, res){
+
+    var getDankaTuikaModel = require("../model/getDankaTuikaModel");
+  
+    function authCallback(isError, jobCodeInfo, tikuCodeInfo, souMemberIdInfo){
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_tuika', {
+            jobCodeInfo : jobCodeInfo,
+            tikuCodeInfo : tikuCodeInfo,
+            souMemberIdInfo : souMemberIdInfo
+        });
+        return;
+    }
+
+    getDankaTuikaModel.main(authCallback);
 };
 
-// 5.ユーザ情報登録成功画面への推移（post:/danka_tuika）
-exports.dankaTuikaConform = function(req, res) {
+// 檀家追加画面→確認画面（post:/danka_tuika）
+exports.postDankaTuikaConform = function(req, res) {
     
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var dankaTuikaConfirm = require("../model/dankaTuikaConfirm");
+    var postDankaTuikaConformModel = require("../model/postDankaTuikaConformModel");
     var webItemJson = req.body;
     
     function authCallback(isError, isDuplicate){
@@ -100,14 +143,14 @@ exports.dankaTuikaConform = function(req, res) {
         return;
     }
 
-    dankaTuikaConfirm.validateWebItemJson(webItemJson, authCallback);
+    postDankaTuikaConformModel.main(webItemJson, authCallback);
 };
 
-// 5.ユーザ情報登録成功画面への推移（post:/danka_tuika_update）
-exports.dankaTuikaUpdate = function(req, res) {
+// 檀家追加画面→確認画面→檀家情報DB追加処理（post:/danka_tuika_update）
+exports.postDankaTuikaDBUpdate = function(req, res) {
     
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var dankaTuikaConfirm = require("../model/dankaTuikaConfirm");
+    var postDankaTuikaDBUpdate = require("../model/postDankaTuikaDBUpdateModel");
     var webItemJson = req.body;
     
     function authCallback(isError){
@@ -121,29 +164,10 @@ exports.dankaTuikaUpdate = function(req, res) {
         return;
     }
 
-    dankaTuikaConfirm.updateDBFromWebItemJson(webItemJson, authCallback);
+    postDankaTuikaDBUpdate.main(webItemJson, authCallback);
 };
 
-// 3.50音別検索移（get:/danka_result）
-exports.danka_result = function (req, res) {
 
-    // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var danka_result = require("../model/danka_result");
-    var serchId = req.query.id;
-
-    function authCallback(isError) {
-        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
-        if (isError) {
-            res.render('dummy', {});
-            return;
-        }
-        // ログイン成功画面へ推移
-        res.render('danka_result', {});
-        return;
-    }
-
-    danka_result.serchDankaFrom50onId(serchId, authCallback);
-};
 
 exports.haraikomi = function (req, res) {
   //テストデータ。本番は配列を渡せばOK。印刷数はgoiraiMeiの配列数に依存(キー)。

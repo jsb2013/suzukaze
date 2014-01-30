@@ -42,30 +42,38 @@ if ('development' == app.get('env')) {
 //***************************************
 
 // 1.スケジュール画面
-app.get('/schedule_top', routes.schedule_top);
-app.get('/schedule_month', routes.schedule_month);
-app.get('/schedule_day', routes.schedule_day);
+app.get('/schedule_top', routes.getScheduleTop);
+app.get('/schedule_month', routes.getScheduleMonth);
+app.get('/schedule_day', routes.getScheduleDay);
 
 // 2.檀家検索画面
-app.get('/danka_top', routes.danka_top);
-app.get('/danka_50', routes.danka_50);
-app.get('/danka_sewa', routes.danka_sewa);
-app.get('/danka_syosai', routes.danka_syosai);
-app.get('/danka_tiku', routes.danka_tiku);
+app.get('/danka_top', routes.getDankaTop);
 
-// 3.50音別検索
-app.get('/danka_result', routes.danka_result);
+app.get('/danka_sewa', routes.getDankaSewa);
+app.get('/danka_syosai', routes.getDankaSyosai);
+app.get('/danka_tiku', routes.getDankaTiku);
 
-
+//***************************************
 // 檀家追加画面
-app.get('/danka_tuika', routes.danka_tuika);
+//***************************************
+// 50音別検索画面
+app.get('/danka_50', routes.getDanka50);
+// 50音別検索画面→検索結果画面
+app.get('/danka_result', routes.getDanka50Result);
+
+//***************************************
+// 檀家追加画面
+//***************************************
+// 檀家追加画面
+app.get('/danka_tuika', routes.getDankaTuika);
 // 檀家追加画面→確認画面
-app.post('/danka_tuika_conform', routes.dankaTuikaConform);
-// 檀家追加画面→確認画面→檀家追加処理
-app.post('/danka_tuika_update', routes.dankaTuikaUpdate);
+app.post('/danka_tuika_conform', routes.postDankaTuikaConform);
+// 檀家追加画面→確認画面→檀家情報DB追加処理
+app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
+
 
 app.get('/haraikomi', routes.haraikomi);
-app.get('/tyohyo_main', routes.tyohyo_main);
+app.get('/danka_tyohyo', routes.getTyohyoMain);
 
 //***************************************
 //***************************************

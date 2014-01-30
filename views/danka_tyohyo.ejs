@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main.css" type="text/css" id="zen_main">
+<link rel="stylesheet" href="stylesheets/zen_parts_schedule_day.css" type="text/css" id="zen_parts_schedule_day">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script>
+ <!-- 表中の偶数行の色を変える -->
+ $(function(){
+     $("#tyohyo_submit").click(function(){
+     location.href = "/haraikomi";
+   });
+   $("tr:nth-child(even)").addClass("even");
+ });
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div id="inner_title">
+        <div id="title">
+   	  <h2><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></h2>
+        </div>
+        <div id="menu_sub">
+          <ul>
+            <li><a href="/danka_tyohyo">払込取扱票</a> 
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div id="inner_main">
+        <div id="form_box">
+          <form action="/haraikomi" method="post">
+            <!-- schedule_filter -->
+            <div id="schedule_filter">
+              <div id="so_filter">
+                <label><strong>[払込済]： </strong></label>
+                <input type="checkbox" name="so1" value="僧 太郎1" id="so1">
+              </div>
+              <div id="term_filter">
+                <strong>[地区]： </strong>
+                <select id="from_year">
+                  <option value="2014">指定なし</option>
+                  <option value="2015">座間</option>
+                  <option value="2016">荻窪</option>
+                  <option value="2017">品川</option>
+                </select>
+              </div>
+            </div>
+            <!-- schedule_filter end -->
+            <div id="aaa_submit"><input type="submit" value="更新" id="submit">
+            </div>
+          </form>
+        </div>
+        <!-- form_box end -->
+        <!-- schedule_table -->
+        <div id="schedule_table">
+          <div id="table_sum">
+            <h2>検索件数： 3件</h2>
+          </div>
+          <div id="aaa">
+            <table>
+              <thead>
+                <tr>
+                  <th id="check">chk</th>
+                  <th id="kosyu">戸主</th>
+                  <th id="tiku">地区</th>
+                  <th id="other">備考</th>
+                  <th id="done">済</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="100">
+                  <td id="check"><input type="checkbox" name="so1" value="僧 太郎1" id="so1"></td>
+                  <td id="kosyu">宮本　武蔵</td>
+                  <td id="tiku">座間</td>
+                  <td id="other">テスト</td>
+                  <td id="done"><input type="checkbox" name="so1" value="僧 太郎1" id="so1"></td>
+                </tr>
+                <tr id="100">
+                  <td id="check"><input type="checkbox" name="so1" value="僧 太郎1" id="so1"></td>
+                  <td id="kosyu">山下　修史</td>
+                  <td id="tiku">荻窪</td>
+                  <td id="other">テスト</td>
+                  <td id="done"><input type="checkbox" name="so1" value="僧 太郎1" id="so1"></td>
+                </tr>
+                <tr id="100">
+                  <td id="check"><input type="checkbox" name="so1" value="僧 太郎1" id="so1"></td>
+                  <td id="kosyu">金森　雅人</td>
+                  <td id="tiku">品川</td>
+                  <td id="other">テスト</td>
+                  <td id="done"><input type="checkbox" name="so1" value="僧 太郎1" id="so1"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <div id="tyohyo_submit"><input type="submit" value="帳票出力" id="submit"></div>
+        </div>
+        <!-- schedule_table end -->
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>

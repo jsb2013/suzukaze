@@ -1,0 +1,4 @@
+[33m[2014-01-27 17:45:14.260] [WARN] console - [39mconnect.multipart() will be removed in connect 3.0
+[33m[2014-01-27 17:45:14.266] [WARN] console - [39mvisit https://github.com/senchalabs/connect/wiki/Connect-3.0 for alternatives
+[33m[2014-01-27 17:45:14.266] [WARN] console - [39mconnect.limit() will be removed in connect 3.0
+[32m[2014-01-27 17:45:14.275] [INFO] console - [39mExpress server listening on port \\.\pipe\ce6a3513-6943-4cbd-b65f-241274153a69
