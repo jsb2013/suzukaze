@@ -14,7 +14,7 @@
      var id = $(this).attr("id");
      location.href = "danka_result?id=" + id;
    });
-   $("tr:nth-child(even)").addClass("even");
+   $("tbody tr:nth-child(even)").addClass("even");
  });
 </script>
 </head>
@@ -88,71 +88,71 @@
                   <th id="na">な行</td>
                   <th id="ha">は行</td>
                   <th id="ma">ま行</td>
-                  <th id="ra">ら行</td>
-                  <th id="ya">や行</td>
+                  <th id="ra">や行</td>
+                  <th id="ya">ら行</td>
                   <th id="wa">わ行</td>
                 </tr>
               </thead>
               <tbody>
                 <tr id="100">
-                  <td id=""><span class="main">あ</span><span class="count"></span></td>
-                  <td id=""><span class="main">か</span><span class="count"></span></td>
-                  <td id=""><span class="main">さ</span><span class="count"></span></td>
-                  <td id=""><span class="main">た</span><span class="count"></span></td>
-                  <td id=""><span class="main">な</span><span class="count"></span></td>
-                  <td id=""><span class="main">は</span><span class="count"></span></td>
-                  <td id=""><span class="main">ま</span><span class="count"></span></td>
-                  <td id="ya"><span class="main">や</span><span class="count"></span></td>
-                  <td id=""><span class="main">ら</span><span class="count"></span></td>
-                  <td id=""><span class="main">わ</span><span class="count"></span></td>
+                  <td id="a" class="selectable"><span class="main">あ</span><span class="count"></span></td>
+                  <td id="ka" class="selectable"><span class="main">か</span><span class="count"></span></td>
+                  <td id="sa" class="selectable"><span class="main">さ</span><span class="count"></span></td>
+                  <td id="ta" class="selectable"><span class="main">た</span><span class="count"></span></td>
+                  <td id="na" class="selectable"><span class="main">な</span><span class="count"></span></td>
+                  <td id="ha" class="selectable"><span class="main">は</span><span class="count"></span></td>
+                  <td id="ma" class="selectable"><span class="main">ま</span><span class="count"></span></td>
+                  <td id="ya" class="selectable"><span class="main">や</span><span class="count"></span></td>
+                  <td id="ra" class="selectable"><span class="main">ら</span><span class="count"></span></td>
+                  <td id="wa" class="selectable"><span class="main">わ</span><span class="count"></span></td>
                 </tr>
                 <tr id="200">
-                  <td id=""><span class="main">い</span><span class="count"></span></td>
-                  <td id=""><span class="main">き</span><span class="count"></span></td>
-                  <td id=""><span class="main">し</span><span class="count"></span></td>
-                  <td id=""><span class="main">ち</span><span class="count"></span></td>
-                  <td id=""><span class="main">に</span><span class="count"></span></td>
-                  <td id=""><span class="main">ひ</span><span class="count"></span></td>
-                  <td id=""><span class="main">み</span><span class="count"></span></td>
+                  <td id="i" class="selectable"><span class="main">い</span><span class="count"></span></td>
+                  <td id="ki" class="selectable"><span class="main">き</span><span class="count"></span></td>
+                  <td id="si" class="selectable"><span class="main">し</span><span class="count"></span></td>
+                  <td id="ti" class="selectable"><span class="main">ち</span><span class="count"></span></td>
+                  <td id="ni" class="selectable"><span class="main">に</span><span class="count"></span></td>
+                  <td id="hi" class="selectable"><span class="main">ひ</span><span class="count"></span></td>
+                  <td id="mi" class="selectable"><span class="main">み</span><span class="count"></span></td>
                   <td id=""><span class="main"></span><span class="count"></span></td>
-                  <td id=""><span class="main">り</span><span class="count"></span></td>
+                  <td id="ri" class="selectable"><span class="main">り</span><span class="count"></span></td>
                   <td id=""><span class="main"></span><span class="count"></span></td>
                 </tr>
                 <tr id="300">
-                  <td id=""><span class="main">う</span><span class="count"></span></td>
-                  <td id=""><span class="main">く</span><span class="count"></span></td>
-                  <td id=""><span class="main">す</span><span class="count"></span></td>
-                  <td id=""><span class="main">つ</span><span class="count"></span></td>
-                  <td id=""><span class="main">ぬ</span><span class="count"></span></td>
-                  <td id=""><span class="main">ふ</span><span class="count"></span></td>
-                  <td id=""><span class="main">む</span><span class="count"></span></td>
-                  <td id=""><span class="main">ゆ</span><span class="count"></span></td>
-                  <td id=""><span class="main">る</span><span class="count"></span></td>
-                  <td id=""><span class="main">を    </span><span class="count"></span></td>
+                  <td id="u" class="selectable"><span class="main">う</span><span class="count"></span></td>
+                  <td id="ku" class="selectable"><span class="main">く</span><span class="count"></span></td>
+                  <td id="su" class="selectable"><span class="main">す</span><span class="count"></span></td>
+                  <td id="tu" class="selectable"><span class="main">つ</span><span class="count"></span></td>
+                  <td id="nu" class="selectable"><span class="main">ぬ</span><span class="count"></span></td>
+                  <td id="hu" class="selectable"><span class="main">ふ</span><span class="count"></span></td>
+                  <td id="mu" class="selectable"><span class="main">む</span><span class="count"></span></td>
+                  <td id="yu" class="selectable"><span class="main">ゆ</span><span class="count"></span></td>
+                  <td id="ru" class="selectable"><span class="main">る</span><span class="count"></span></td>
+                  <td id=""><span class="main"></span><span class="count"></span></td>
                 </tr>
                 <tr id="400">
-                  <td id=""><span class="main">え</span><span class="count"></span></td>
-                  <td id=""><span class="main">け</span><span class="count"></span></td>
-                  <td id=""><span class="main">せ</span><span class="count"></span></td>
-                  <td id=""><span class="main">て</span><span class="count"></span></td>
-                  <td id=""><span class="main">ね</span><span class="count"></span></td>
-                  <td id=""><span class="main">へ</span><span class="count"></span></td>
-                  <td id=""><span class="main">め</span><span class="count"></span></td>
+                  <td id="e" class="selectable"><span class="main">え</span><span class="count"></span></td>
+                  <td id="ke" class="selectable"><span class="main">け</span><span class="count"></span></td>
+                  <td id="se" class="selectable"><span class="main">せ</span><span class="count"></span></td>
+                  <td id="te" class="selectable"><span class="main">て</span><span class="count"></span></td>
+                  <td id="ne" class="selectable"><span class="main">ね</span><span class="count"></span></td>
+                  <td id="he" class="selectable"><span class="main">へ</span><span class="count"></span></td>
+                  <td id="me" class="selectable"><span class="main">め</span><span class="count"></span></td>
                   <td id=""><span class="main"></span><span class="count"></span></td>
-                  <td id=""><span class="main">れ</span><span class="count"></span></td>
+                  <td id="re" class="selectable"><span class="main">れ</span><span class="count"></span></td>
                   <td id=""><span class="main"></span><span class="count"></span></td>
                 </tr>
                 <tr id="500">
-                  <td id=""><span class="main">お</span><span class="count"></span></td>
-                  <td id=""><span class="main">こ</span><span class="count"></span></td>
-                  <td id=""><span class="main">そ</span><span class="count"></span></td>
-                  <td id=""><span class="main">と</span><span class="count"></span></td>
-                  <td id=""><span class="main">の</span><span class="count"></span></td>
-                  <td id=""><span class="main">ほ</span><span class="count"></span></td>
-                  <td id=""><span class="main">も</span><span class="count"></span></td>
-                  <td id=""><span class="main">よ</span><span class="count"></span></td>
-                  <td id=""><span class="main">ろ</span><span class="count"></span></td>
-                  <td id=""><span class="main">ん</span><span class="count"></span></td>
+                  <td id="o" class="selectable"><span class="main">お</span><span class="count"></span></td>
+                  <td id="ko" class="selectable"><span class="main">こ</span><span class="count"></span></td>
+                  <td id="so" class="selectable"><span class="main">そ</span><span class="count"></span></td>
+                  <td id="to" class="selectable"><span class="main">と</span><span class="count"></span></td>
+                  <td id="no" class="selectable"><span class="main">の</span><span class="count"></span></td>
+                  <td id="ho" class="selectable"><span class="main">ほ</span><span class="count"></span></td>
+                  <td id="mo" class="selectable"><span class="main">も</span><span class="count"></span></td>
+                  <td id="yo" class="selectable"><span class="main">よ</span><span class="count"></span></td>
+                  <td id="ro" class="selectable"><span class="main">ろ</span><span class="count"></span></td>
+                  <td id=""><span class="main"></span><span class="count"></span></td>
                 </tr>
               </tbody>
             </table>

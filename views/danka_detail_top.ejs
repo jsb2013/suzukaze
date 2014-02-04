@@ -3,19 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-<link rel="stylesheet" href="stylesheets/zen_main_danka_detail.css" type="text/css" id="zen_main_danka_detail">
-<link rel="stylesheet" href="stylesheets/zen_parts_danka_datail.css" type="text/css" id="zen_parts_danka_datail">
+<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
+<link rel="stylesheet" href="stylesheets/zen_parts_danka_detail.css" type="text/css" id="zen_parts_danka_datail">
 <title>檀家管理システム　禅</title>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script>
- <!-- 表中の偶数行の色を変える -->
- $(function(){
-   $("td").click(function(){
-     var id = $(this).attr("id");
-     location.href = "dummy.html?id=" + id;
-   });
-   $("tr:nth-child(even)").addClass("even");
- });
 </script>
 </head>
 <body>
@@ -68,13 +60,11 @@
    	      <table>
               <thead>
                 <tr>
-                  <th id="kosyu" rowspan="2">戸主名</th>
-                  <th id="type_so">総代</th>
-                  <th id="type_se">世話</th>
-                  <th id="tel" rowspan="2">電話番号</th>
-                  <th id="tiku" rowspan="2">地区</th>
-                  <th id="sewa" rowspan="2">世話人</th>
-                  <th id="sou" rowspan="2">担当[僧]</th>
+                  <th class="kosyu_info_kosyu_th">戸主名</th>
+                  <th class="kosyu_info_type_danka_th">檀家</th>
+                  <th class="kosyu_info_type_shinto_th">信徒</th>
+                  <th class="kosyu_info_tiku_th">地区</th>
+                  <th class="kosyu_info_sewa_th">世話人</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,10 +72,8 @@
                   <td>山田　太郎</td>
                   <td>○</td>
                   <td>-</td>
-                  <td>080-3255-8854</td>
                   <td>座間</td>
-                  <td>世話人　太郎</td>
-                  <td>田中　新太郎</th></td>
+                  <td>座間</td>
                 </tr>
               </tbody>
             </table>

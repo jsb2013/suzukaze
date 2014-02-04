@@ -3,24 +3,24 @@
  * GET home page.
  */
 
-/*
- * スケジュール画面
- */
-// 1-1.スケジュールTOP画面（get:/schedule_top）
+//***************************************
+// スケジュール管理画面
+//***************************************
+// スケジュールTOP画面（get:/schedule_top）
 exports.getScheduleTop = function(req, res){
     res.render('schedule_top', {
         loginFailed: false
     });
 };
 
-// 1-2.スケジュール画面（カレンダー指定）（get:/schedule_month）
+// スケジュール画面（カレンダー指定）（get:/schedule_month）
 exports.getScheduleMonth = function(req, res){
     res.render('schedule_month', {
         loginFailed: false
     });
 };
 
-// 1-3.スケジュール画面（日指定）（get:/schedule_day）
+// スケジュール画面（日指定）（get:/schedule_day）
 exports.getScheduleDay = function(req, res){
     res.render('schedule_day', {
         loginFailed: false
@@ -36,37 +36,6 @@ exports.getDankaTop = function(req, res){
         loginFailed: false
     });
 };
-
-//***************************************
-// 檀家追加画面
-//***************************************
-// 50音別検索画面
-exports.getDanka50 = function(req, res){
-    res.render('danka_50', {
-        loginFailed: false
-    });
-};
-// 50音別検索画面→検索結果画面
-exports.getDanka50Result = function (req, res) {
-
-    // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var dankaResultModel = require("../model/getDanka50ResultModel");
-    var serchId = req.query.id;
-
-    function authCallback(isError) {
-        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
-        if (isError) {
-            res.render('dummy', {});
-            return;
-        }
-        // ログイン成功画面へ推移
-        res.render('danka_result', {});
-        return;
-    }
-
-    dankaResultModel.serchDankaFrom50onId(serchId, authCallback);
-};
-
 
 // 2-3.檀家検索-世話人指定画面（get:/danka_sewa）
 exports.getDankaSewa = function(req, res){
@@ -94,6 +63,43 @@ exports.getTyohyoMain = function(req, res){
     res.render('danka_tyohyo', {
         loginFailed: false
     });
+};
+
+
+//***************************************
+// 檀家検索画面（50音別）
+//***************************************
+// 50音別検索画面
+exports.getDanka50 = function(req, res){
+    res.render('danka_50', {
+        loginFailed: false
+    });
+};
+
+// 50音別検索画面→検索結果画面
+exports.getDanka50Result = function (req, res) {
+
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var getDanka50Result = require("../model/getDanka50ResultModel");
+    var serchId = req.query.id;
+
+    function authCallback(isError, resultRows, tikuInfoJson, tikuCodeInfo, searchMoji) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_result', {
+            resultRows: resultRows,
+            tikuInfoJson: tikuInfoJson,
+            tikuCodeInfo: tikuCodeInfo,
+            searchMoji: searchMoji
+        });
+        return;
+    }
+
+    getDanka50Result.main(serchId, authCallback);
 };
 
 //***************************************
@@ -166,6 +172,34 @@ exports.postDankaTuikaDBUpdate = function(req, res) {
 
     postDankaTuikaDBUpdate.main(webItemJson, authCallback);
 };
+
+//***************************************
+// 檀家検索結果画面
+//***************************************
+// 結果TOP画面
+exports.getDankaDetailTop = function (req, res) {
+    res.render('danka_detail_top', {
+        loginFailed: false
+    });
+};
+
+// 結果TOP画面
+exports.getDankaDetailKihon = function (req, res) {
+    res.render('danka_detail_kihon', {
+        loginFailed: false
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 

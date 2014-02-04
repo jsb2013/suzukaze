@@ -12,7 +12,7 @@
  $(function(){
    $("td").click(function(){
      var id = $(this).attr("id");
-     location.href = "danka_result.html?id=" + id;
+     location.href = "danka_detail_top.html?id=" + id;
    });
    $("tbody tr:nth-child(even)").addClass("even");
  });
@@ -66,7 +66,7 @@
         </div>
         <div id="menu_sub">
           <ul>
-            <li><a href="/danka_50">50音別</a> 
+            <li><a href="/danka_50">50音別</a>
             <li><a href="/danka_tiku">地区別</a>
             <li><a href="/danka_sewa">世話人別</a> 
             <li><a href="/danka_syosai">詳細検索</a>
@@ -75,32 +75,84 @@
         </div>
       </div>
       <!-- title end-->
+      <!-- inner_title -->
+      <div id="inner_filter">
+          <div id="inner_fiter_sum">
+            <label><span id="inner_fiter_sum_method">[検索結果] 50音別検索：や～</span><span id="inner_fiter_sum_count">[検索件数]：3件</span></label>          
+          </div>
+          <div id="inner_fiter_main">
+            <div class="inner_filter_main_item">
+                <label>[地区]</label></label>          
+                <select id="birthday_y_list"  name="birthday_y" >
+                 <option value="1981">1981</option>
+                 <option value="1982">1982</option>
+                 <option value="1983">1983</option>
+                 <option value="1984">1984</option>
+                </select>
+            </div>
+            <div class="inner_filter_main_item">
+                <label>[世話人]</label></label>          
+                <select id="birthday_y_list"  name="birthday_y" >
+                 <option value="1981">1981</option>
+                 <option value="1982">1982</option>
+                 <option value="1983">1983</option>
+                 <option value="1984">1984</option>
+                </select>
+            </div>
+            <div id="inner_filter_main_checkbox" class="inner_filter_main_item">
+                <input type="checkbox" name="riyu" value="1" checked="checked">戸主
+                <input type="checkbox" name="riyu" value="1">過去
+            </div>
+          </div>
+            <div id="inner_filter_main_button">
+                <button type="submit">フィルタ
+            </div>
+      </div>
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div id="inner_main">
-          <div class="table_main_tiku">
+          <div class="table_main_result">
             <table>
               <thead>
                 <tr>
-                  <th id="tiku">地区名</td>
-                  <th id="count">件数</td>
-                  <th id="other">補足</td>
+                  <th id="namae" rowspan="2">氏名</th>
+                  <th id="type" colspan="2">区分</th>
+                  <th id="tiku" rowspan="2">地区</th>
+                  <th id="sewa" rowspan="2">世話人</th>
+                  <th id="kosyu" rowspan="2">戸主</th>
+                  <th id="kako" rowspan="2">過</th>
+                </tr>
+                <tr>
+                  <th id="type_danka">檀家</th>
+                  <th id="type_shinto">信徒</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td id="">座間</td>
-                  <td id="">新田宿</td>
-                  <td id="">てすと</td>
+                <tr class="not_th" id="100">
+                  <td id="namae">山田　太郎</td>
+                  <td id="type_so">○</td>
+                  <td id="type_se">-</td>
+                  <td id="tiku">座間</td>
+                  <td id="sewa">座間</td>
+                  <td id="tel">-</td>
+                  <td id="isKako">-</td>
                 </tr>
-                <tr>
-                  <td id="">100</td>
-                  <td id="">20</td>
-                  <td id="">5</td>
+                <tr class="not_th" id="200">
+                  <td id="namae">山田　太郎</td>
+                  <td id="type_so">○</td>
+                  <td id="type_se">-</td>
+                  <td id="tiku">座間</td>
+                  <td id="sewa">座間</td>
+                  <td id="tel">山田　太郎</td>
+                  <td id="isKosyu">○</td>
                 </tr>
-                <tr>
-                  <td id="">てすと</td>
-                  <td id=""></td>
-                  <td id=""></td>
+                <tr class="not_th" id="300">
+                  <td id="namae">山田　太郎</td>
+                  <td id="type_so">○</td>
+                  <td id="type_se">-</td>
+                  <td id="tiku">座間</td>
+                  <td id="sewa">座間</td>
+                  <td id="tel">-</td>
+                  <td id="isKako">-</td>
                 </tr>
               </tbody>
             </table>

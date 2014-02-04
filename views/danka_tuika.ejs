@@ -137,65 +137,65 @@
               <tbody>
                 <tr>
                   <td id="danka_type">登録区分</td></td>
-                  <td id="danka">
+                  <td id="danka" class="table_main_tuika_selectable">
                       <input type="radio" name="danka_type" class="dummay" value="0" checked><label for="danka">檀家</label>
                       <input type="radio" name="danka_type" class="dummay" value="1"><label for="shinto">信徒</label>
                   </td>
                 </tr>
                 <tr>
                   <td id="name_type">戸主名(※必須)</td>
-                  <td id="name">
+                  <td id="name" class="table_main_tuika_selectable">
                       <label for="name_seimei">姓: </label><input type="text" name="name_sei" class="validate require duplicate_pre">
                       <label for="name_seimei">名: </label><input type="text" name="name_na" class="validate require duplicate_end">
                   </td>
                 </tr>
                 <tr>
                   <td id="furigana_type">ふりがな(※必須)</td>
-                  <td id="furigana">
+                  <td id="furigana" class="table_main_tuika_selectable">
                       <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="validate require duplicate_pre">
                       <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="validate require duplicate_end">
                   </td>
                 </tr>
                 <tr>
                   <td id="sex_type">性別(※必須)</td>
-                  <td id="sex">
+                  <td id="sex" class="table_main_tuika_selectable">
                       <input type="radio" name="sex" class="dummay" value="0" checked><label for="man">男</label>
                       <input type="radio" name="sex" class="dummay" value="1"><label for="woman">女</label>
                   </td>
                 </tr>
                 <tr>
                   <td id="zip_code_type">郵便番号</td>
-                  <td id="zip_code">
+                  <td id="zip_code" class="table_main_tuika_selectable">
                       <input type="text" name="zip_code_pre" class="validate number"> - <input type="text" name="zip_code_last" class="validate number">
                   </td>
                 </tr>
                 <tr>
                   <td id="region_type">都道府県</td>
-                  <td id="region">
+                  <td id="region" class="table_main_tuika_selectable">
                       <input type="text" name="region" class="dummay">
                   </td>
                 </tr>
                 <tr>
                   <td id="city_type">市区町村</td>
-                  <td id="city">
+                  <td id="city" class="table_main_tuika_selectable">
                       <input type="text" name="city" class="dummay">
                   </td>
                 </tr>
                 <tr>
                   <td id="address_line1_type">番地</td>
-                  <td id="address_line1">
+                  <td id="address_line1" class="table_main_tuika_selectable">
                       <input type="text" name="address_line1" class="dummay">
                   </td>
                 </tr>
                 <tr>
                   <td id="address_line2_type">ビル名等</td>
-                  <td id="address_line2">
+                  <td id="address_line2" class="table_main_tuika_selectable">
                       <input type="text" name="address_line2" class="dummay">
                   </td>
                 </tr>
                 <tr>
                   <td id="birthday_type">生年月日</td>
-                  <td id="birthday_y">
+                  <td id="birthday_y" class="table_main_tuika_selectable">
                      <select id="birthday_y_list"  name="birthday_y" >
                        <option value="1981">1981</option>
                        <option value="1982">1982</option>
@@ -237,7 +237,7 @@
                 </tr>
                 <tr>
                   <td id="tel_type">電話番号(優先1)</td>
-                  <td id="tel">
+                  <td id="tel" class="table_main_tuika_selectable">
                       <span id="telno_box">
                       <input type="text" name="telno_1_pre" class="validate number telno_size">
                        - <input type="text" name="telno_1_mid" class="validate number telno_size">
@@ -250,7 +250,7 @@
                 </tr>
                 <tr>
                   <td id="tel_type">電話番号(優先2)</td>
-                  <td id="tel">
+                  <td id="tel" class="table_main_tuika_selectable">
                       <span id="telno_box">
                       <input type="text" name="telno_2_pre" class="validate number telno_size">
                        - <input type="text" name="telno_2_mid" class="validate number telno_size">
@@ -263,7 +263,7 @@
                 </tr>
                 <tr>
                   <td id="tel_type">電話番号(優先3)</td>
-                  <td id="tel">
+                  <td id="tel" class="table_main_tuika_selectable">
                       <span id="telno_box">
                       <input type="text" name="telno_3_pre" class="validate number telno_size">
                        - <input type="text" name="telno_3_mid" class="validate number telno_size">
@@ -276,7 +276,7 @@
                 </tr>
                 <tr>
                   <td id="email_type">Email(優先1)</td>
-                  <td id="email">
+                  <td id="email" class="table_main_tuika_selectable">
                       <span id="email_box">
                         <input type="text" name="email_1" class="email_size">
                       </span>
@@ -287,7 +287,7 @@
                 </tr>
                 <tr>
                   <td id="email_type">Email(優先2)</td>
-                  <td id="email">
+                  <td id="email" class="table_main_tuika_selectable">
                       <span id="email_box">
                         <input type="text" name="email_2" class="email_size">
                       </span>
@@ -298,7 +298,7 @@
                 </tr>
                 <tr>
                   <td id="email_type">Email(優先3)</td>
-                  <td id="email">
+                  <td id="email" class="table_main_tuika_selectable">
                       <span id="email_box">
                         <input type="text" name="email_3" class="email_size">
                       </span>
@@ -309,7 +309,7 @@
                 </tr>
                 <tr>
                   <td id="job_type">職業</td>
-                  <td id="job">
+                  <td id="job" class="table_main_tuika_selectable">
                      <select id="job_list"  name="job_name" >
                       <% for(var i in jobCodeInfo){
                          var jobCode = jobCodeInfo[i].job_code;
@@ -321,7 +321,7 @@
                 </tr>
                 <tr>
                   <td id="tiku_type">地区名</td>
-                  <td id="tiku">
+                  <td id="tiku" class="table_main_tuika_selectable">
                      <select id="tiku_list"  name="tiku_name" >
                       <% for(var i in tikuCodeInfo){
                          var tikuCode = tikuCodeInfo[i].tiku_code;
@@ -333,7 +333,7 @@
                 </tr>
                 <tr>
                   <td id="sewa_type">世話人</td>
-                  <td id="sewa">
+                  <td id="sewa" class="table_main_tuika_selectable">
                      <select id="sewa_list" name="sewa_name" >
                        <option value="9999" selected>---</option>
                        <% for(var i in tikuCodeInfo){
@@ -347,7 +347,7 @@
                 </tr>
                 <tr>
                   <td id="sou_type">担当者[僧]</td>
-                  <td id="sou">
+                  <td id="sou" class="table_main_tuika_selectable">
                      <select id="sou_list" name="sou_name" >
                        <% for(var i in souMemberIdInfo){
                          var souMemberId = souMemberIdInfo[i].member_id;
@@ -361,7 +361,7 @@
                 </tr>
                 <tr>
                   <td id="comment_type">備考<br>※500文字以内</td>
-                  <td id="comment">
+                  <td id="comment" class="table_main_tuika_selectable">
                      <textarea name="comment" class="textarea_size"></textarea></p>
                   </td>
                 </tr>

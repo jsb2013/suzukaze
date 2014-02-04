@@ -1,8 +1,55 @@
 @charset "Shift_JIS";
 
 /* 共通定義 */
-#inner_main{
+#inner_filter{
+    margin: 10px 0 0 0;
+    padding: 0;
+    height: 77px;
+    font-size: 14px;
+    font-family: 'メイリオ' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;
+    color: #666666; /* 標準文字色 */
+}
+#inner_fiter_sum{
+    padding: 0;
+    text-align: left;
+    font-size: 14px;
+    color: red;
+}
+#inner_fiter_sum_method{
+    margin: 0 10px 0 0;
+    text-align: left;
+    font-size: 14px;
+}
+#inner_fiter_main{
+    margin: 10px 0 0 0;
+    padding: 0;
+    text-align: left;
+    float: left;
+    border: solid 1px #BA802F;
+    border-collapse: collapse;
+}
+#inner_filter_main_button{
+    float: left;
+    margin: 20px 0 0 15px;
+}
+#inner_fiter_main label{
+    padding: 0;
     margin: 0;
+}
+#inner_fiter_main .inner_filter_main_item{
+    float: left;
+    padding: 5px;
+    margin: 5px;
+}
+#inner_filter_main_checkbox{
+    border: dotted 1px #BA802F;
+    border-collapse: collapse;
+}
+
+/* 共通定義 */
+#inner_main{
+    height: 350px;
+    margin: 10px 0 0 0;
     padding: 0;
     text-align: center;
     font-size: 14px;
@@ -40,12 +87,11 @@
         font-size: 12px;
         border: solid 1px #BA802F;
         border-collapse: collapse;
-        cursor: pointer;
       }
       .even{
         background: #ffdfbf;
       }
-      #table_main td:hover{
+      td.selectable:hover{
         margin: 0;
         padding: 2px;
         vertical-align: top;
@@ -54,6 +100,7 @@
         border: solid 1px #BA802F;
         border-collapse: collapse;
         background: orange;
+        cursor: pointer;
       }
       
 /* 地区別表示の個別定義 */
@@ -104,16 +151,6 @@
       }
       .even{
         background: #ffdfbf;
-      }
-      .not_th:hover{
-        margin: 0;
-        padding: 2px;
-        height: 30px;
-        text-align: center;
-        font-size: 15px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        background: orange;
       }
 
 /* 世話人別表示の個別定義 */
@@ -174,16 +211,6 @@
       }
       .even{
         background: #ffdfbf;
-      }
-      .not_th:hover{
-        margin: 0;
-        padding: 2px;
-        height: 30px;
-        text-align: center;
-        font-size: 15px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        background: orange;
       }
 
 /* 詳細検索表示の個別定義 */
@@ -324,14 +351,7 @@
         padding: 0 5px 5px 5px;
       }
 
-      .table_main_tuika td:hover{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
+      .table_main_tuika_selectable:hover{
         background: orange;
       }
 
@@ -459,10 +479,10 @@
 
  /* 檀家検索結果表示の個別定義 */
     .table_main_result{
-      margin: 20px 0 0 0;
+      margin: 10px 0 0 0;
       padding: 0;
       width: 630px;
-      height: 400px;
+      height: 350px;
       overflow-y: scroll;
     }
       .table_main_result th{
@@ -474,45 +494,6 @@
         border-collapse: collapse;
         background-color : #804000;
       }
-      .table_main_result #kosyu{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .table_main_result #type_so{
-        margin: 0;
-        padding: 0;
-        width: 30px;
-      }
-      .table_main_result #type_se{
-        margin: 0;
-        padding: 0;
-        width: 30px;
-      }
-      .table_main_result #tel{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .table_main_result #tiku{
-        margin: 0;
-        padding: 0;
-        width: 90px;
-      }
-      .table_main_result #sewa{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .table_main_result #sou{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .table_main_result tr{
-        margin: 0;
-        padding: 0;
-      }
       .table_main_result td{
         margin: 0;
         padding: 2px 0 0 10px;
@@ -523,16 +504,37 @@
         border-collapse: collapse;
         cursor: pointer;
       }
+      .table_name_full_th{
+        width: 135px;
+      }
+      .table_danka_type_danka_th{
+        width: 30px;
+      }
+      .table_danka_type_shinto_th{
+        width: 30px;
+      }
+      .table_tiku_name_th{
+        width: 120px;
+      }
+      .table_sewa_name_th{
+        width: 120px;
+      }
+      .table_name_full_kosyu_th{
+        width: 135px;
+      }
+      .table_kako_th{
+        width: 30px;
+      }
+      .table_main_result tr{
+        margin: 0;
+        padding: 0;
+      }
       .even{
         background: #ffdfbf;
       }
-      .table_main_result tr:hover{
-        margin: 0;
-        padding: 2px;
-        height: 30px;
-        text-align: left;
-        font-size: 15px;
-        border: solid 0.5px #BA802F;
-        border-collapse: collapse;
+      .table_main_result tbody tr:hover{
         background: orange;
+      }
+      .hide{
+        display: none;
       }

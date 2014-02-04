@@ -9,6 +9,81 @@
     font-family: 'ƒƒCƒŠƒI' ,Meiryo, 'ƒqƒ‰ƒMƒmŠpƒS Pro W3' , 'Hiragino Kaku Gothic Pro' , '‚l‚r ‚oƒSƒVƒbƒN' , 'Osaka' ,sans-serif;
     color: #666666; /* •W€•¶šF */
 }
+/* ’h‰ÆŒŸõŒ‹‰Ê•\¦‚ÌŒÂ•Ê’è‹` */
+.kosyu_info{
+    margin: 10px 0 0 0;
+    padding: 0;
+    width: 510px;
+    height: 70px;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'ƒƒCƒŠƒI' ,Meiryo, 'ƒqƒ‰ƒMƒmŠpƒS Pro W3' , 'Hiragino Kaku Gothic Pro' , '‚l‚r ‚oƒSƒVƒbƒN' , 'Osaka' ,sans-serif;
+    color: #666666; /* •W€•¶šF */
+}
+.kosyu_info th{
+    height: 30px;
+    color: #ffffff;
+    border: solid 0.5px #BA802F;
+    border-collapse: collapse;
+    background-color : #804000;
+}
+.kosyu_info td{
+    margin: 0;
+    padding: 2px 0 0 10px;
+    height: 30px;
+    text-align: left;
+    font-size: 12px;
+    border: solid 0.5px #BA802F;
+    border-collapse: collapse;
+}
+      .kosyu_info_kosyu_th{
+        width: 120px;
+      }
+      .kosyu_info_type_danka_th{
+        width: 50px;
+      }
+      .kosyu_info_type_shinto_th{
+        width: 50px;
+      }
+      .kosyu_info_tiku_th{
+        width: 120px;
+      }
+      .kosyu_info_sewa_th{
+        width: 120px;
+      }
+      .kosyu_info tr{
+        margin: 0;
+        padding: 0;
+      }
+      tbody tr{
+        background: #ffdfbf;
+      }
+
+ /* ------------------------------ */
+
+/* ‹¤’Ê’è‹` */
+#inner_main{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'ƒƒCƒŠƒI' ,Meiryo, 'ƒqƒ‰ƒMƒmŠpƒS Pro W3' , 'Hiragino Kaku Gothic Pro' , '‚l‚r ‚oƒSƒVƒbƒN' , 'Osaka' ,sans-serif;
+    color: #666666; /* •W€•¶šF */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  /* Œ»İ’ Œ‹‰Ê•\¦‚ÌŒÂ•Ê’è‹` */
     .table_main_genzai{

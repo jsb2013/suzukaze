@@ -10,11 +10,85 @@
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
-   $("td").click(function(){
+   $("tbody tr").click(function(){
      var id = $(this).attr("id");
-     location.href = "danka_detail_top.html?id=" + id;
+     location.href = "/danka_detail_top?id=" + id;
    });
-   $("tr:nth-child(even)").addClass("even");
+   $("tbody tr:nth-child(even)").addClass("even");
+
+    $("button").click(function(){
+        $(".hide").removeClass("hide");
+        var trCount = $("tr").size() -2;
+        var filterSelectedTiku = $("select[name='tiku_name']").val();
+        var filterSelectedSewa = $("select[name='sewa_name']").val();
+
+        // [地区]フィルタの実装
+        if(filterSelectedTiku !== '9999'){
+            $(".table_tiku_name").each(function(){
+                var itemValue = $(this).attr("id");
+                if(itemValue !== filterSelectedTiku){
+                    $(this).parent().addClass("hide");
+                    trCount--;
+                }
+            });
+        }
+        // [世話人]フィルタの実装
+        if(filterSelectedSewa !== '9999'){
+            $(".table_sewa_name").each(function(){
+                if($(this).parent().hasClass("hide")){
+                    return true;
+                }
+                var itemValue = $(this).attr("id");
+                if(itemValue !== filterSelectedSewa){
+                    $(this).parent().addClass("hide");
+                    trCount--;
+                }
+            });
+        }
+        // [檀家種別]フィルタの実装 (戸主チェック）
+        var isKosyu = $(".isKosyu").prop('checked');
+        if(!isKosyu){
+            $(".table_kako").each(function(){
+                if($(this).parent().hasClass("hide")){
+                    return true;
+                }
+                var itemValue = $(this).text();
+                if(itemValue === "-"){
+                    $(this).parent().addClass("hide");
+                    trCount--;
+                }
+            });
+        }
+
+        // [檀家種別]フィルタの実装（過去チェック）
+        var isKako = $(".isKako").prop('checked');
+        if(!isKako){
+            $(".table_kako").each(function(){
+                if($(this).parent().hasClass("hide")){
+                    return true;
+                }
+                var itemValue = $(this).text();
+                if(itemValue === "○"){
+                    $(this).parent().addClass("hide");
+                    trCount--;
+                }
+            });
+        }
+
+        // .evenを付け替える
+        $("tbody tr").removeClass("even");
+        var evenCount = 1;
+        $("tbody tr:not(.hide)").each(function(){
+           if(evenCount%2 === 0){
+               evenCount++;
+               return true;
+           }
+           $(this).addClass("even");
+           evenCount++;
+        });
+        $("#inner_fiter_sum_count").text("[検索件数]：" + trCount + "件");
+
+    });
  });
 </script>
 </head>
@@ -66,7 +140,7 @@
         </div>
         <div id="menu_sub">
           <ul>
-            <li><a href="/danka_50">50音別</a> 
+            <li><a href="/danka_50">50音別</a>
             <li><a href="/danka_tiku">地区別</a>
             <li><a href="/danka_sewa">世話人別</a> 
             <li><a href="/danka_syosai">詳細検索</a>
@@ -75,52 +149,98 @@
         </div>
       </div>
       <!-- title end-->
+      <!-- inner_title -->
+      <div id="inner_filter">
+          <div id="inner_fiter_sum">
+            <% var searchCount = resultRows.length;%>
+            <label><span id="inner_fiter_sum_method">[検索結果] 50音別検索：<%= searchMoji %>～</span><span id="inner_fiter_sum_count">[検索件数]：<%= searchCount %>件</span></label>          
+          </div>
+          <div id="inner_fiter_main">
+            <div class="inner_filter_main_item">
+                <label>[地区]</label></label>          
+                <select id="tiku_list"  name="tiku_name" >
+                    <option value="9999" selected>---</option>
+                    <% for(var i in tikuCodeInfo){
+                        var tikuCode = tikuCodeInfo[i].tiku_code;
+                        var tikuName = tikuCodeInfo[i].tiku_name; %>
+                        <option value=<%= tikuCode %>><%= tikuName %></option>
+                    <%}%>
+                </select>
+            </div>
+            <div class="inner_filter_main_item">
+                <label>[世話人]</label></label>          
+                <select id="sewa_list"  name="sewa_name" >
+                      <option value="9999" selected>---</option>
+                      <% for(var i in tikuCodeInfo){
+                        var tikuCode = tikuCodeInfo[i].tiku_code;
+                        var tikuName = tikuCodeInfo[i].tiku_name; %>
+                         <option value=<%= tikuCode %>><%= tikuName %></option>
+                         <%}%>
+                     </select>
+            </div>
+            <div id="inner_filter_main_checkbox" class="inner_filter_main_item">
+                <input type="checkbox" class="isKosyu" checked>戸主
+                <input type="checkbox" class="isKako" checked>過去
+            </div>
+          </div>
+            <div id="inner_filter_main_button">
+                <button id="test" type="submit">フィルタ</button>
+            </div>
+      </div>
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div id="inner_main">
           <div class="table_main_result">
             <table>
               <thead>
                 <tr>
-                  <th id="kosyu" rowspan="2">戸主名</th>
-                  <th id="type" colspan="2">区分</th>
-                  <th id="tel" rowspan="2">電話番号</th>
-                  <th id="tiku" rowspan="2">地区</th>
-                  <th id="sewa" rowspan="2">世話人</th>
-                  <th id="sou" rowspan="2">担当[僧]</th>
+                  <th class="table_name_full_th" rowspan="2">氏名</th>
+                  <th class="table_danka_type_th" colspan="2">区分</th>
+                  <th class="table_tiku_name_th" rowspan="2">地区</th>
+                  <th class="table_sewa_name_th" rowspan="2">世話人</th>
+                  <th class="table_name_full_kosyu_th" rowspan="2">戸主</th>
+                  <th class="table_kako_th" rowspan="2">過</th>
                 </tr>
                 <tr>
-                  <th id="type_so">総</th>
-                  <th id="type_se">世</th>
+                  <th class="table_danka_type_danka_th">檀家</th>
+                  <th class="table_danka_type_shinto_th">信徒</th>
                 </tr>
               </thead>
               <tbody>
-                <tr id="100">
-                  <td id="kosyu">山田　太郎</td>
-                  <td id="type_so">○</td>
-                  <td id="type_se">-</td>
-                  <td id="tel">080-3255-8854</td>
-                  <td id="tiku">座間</td>
-                  <td id="sewa">世話人　太郎</td>
-                  <td id="sou">田中　新太郎</th></td>
+              <% for(var i in resultRows){
+                var memberId = resultRows[i].member_id;
+                var dankaType = resultRows[i].danka_type;
+                var nameSei = resultRows[i].name_sei;
+                var nameNa = resultRows[i].name_na;
+                var nameFull = nameSei + "  " + nameNa;
+                var nameSeiKosyu = resultRows[i].name_sei_kosyu;
+                var nameNaKosyu = resultRows[i].name_na_kosyu;
+                var nameFullKosyu = nameSeiKosyu + "  " + nameNaKosyu;
+                var tikuCode = resultRows[i].tiku_code;
+                var sewaCode = resultRows[i].member_id_sewa;
+                var meinichiY = resultRows[i].meinichi_y;
+                var tikuName = tikuInfoJson[tikuCode];
+                var sewaName = tikuInfoJson[sewaCode];
+                var dankaTypeDanka = "○";
+                var dankaTypeShinto = "-";
+                if (dankaType === 1){
+                    dankaTypeDanka = "-";
+                    dankaTypeShinto = "○";
+                }
+                var kako = "-";
+                if (meinichiY){
+                    kako = "○";
+                }
+              %>
+              <tr id="<%= memberId %>">
+                <td class="table_name_full"><%= nameFull %></td>
+                <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
+                <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
+                <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
+                <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
+                <td class="table_name_full_kosyu"><%= nameFullKosyu %></td>
+                <td class="table_kako"><%= kako %></td>
                 </tr>
-                <tr id="200">
-                  <td id="kosyu">天道　あかね</td>
-                  <td id="type_so">-</td>
-                  <td id="type_se">○</td>
-                  <td id="tel">080-3255-8854</td>
-                  <td id="tiku">座間</td>
-                  <td id="sewa">世話人　太郎</td>
-                  <td id="sou">田中　新太郎</th></td>
-                </tr>
-                <tr id="300">
-                  <td id="kosyu">天道　あかね</td>
-                  <td id="type_so">-</td>
-                  <td id="type_se">○</td>
-                  <td id="tel">080-3255-8854</td>
-                  <td id="tiku">座間</td>
-                  <td id="sewa">世話人　太郎</td>
-                  <td id="sou">田中　新太郎</th></td>
-                </tr>
+              <%}%>
               </tbody>
             </table>
           </div>
