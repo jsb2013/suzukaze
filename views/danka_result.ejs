@@ -10,12 +10,13 @@
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
-   $("tbody tr").click(function(){
-     var id = $(this).attr("id");
-     location.href = "/danka_detail_top?id=" + id;
-   });
+
    $("tbody tr:nth-child(even)").addClass("even");
 
+   $("tbody tr").click(function(){
+     var id = $(this).children(".table_name_full_kosyu").attr("id");
+     location.href = "/danka_detail_top?id=" + id;
+   });
     $("button").click(function(){
         $(".hide").removeClass("hide");
         var trCount = $("tr").size() -2;
@@ -171,10 +172,10 @@
                 <label>[世話人]</label></label>          
                 <select id="sewa_list"  name="sewa_name" >
                       <option value="9999" selected>---</option>
-                      <% for(var i in tikuCodeInfo){
-                        var tikuCode = tikuCodeInfo[i].tiku_code;
-                        var tikuName = tikuCodeInfo[i].tiku_name; %>
-                         <option value=<%= tikuCode %>><%= tikuName %></option>
+                      <% for(var i in sewaCodeInfo){
+                        var sewaCode = sewaCodeInfo[i].sewa_code;
+                        var sewaName = sewaCodeInfo[i].sewa_name; %>
+                         <option value=<%= sewaCode %>><%= sewaName %></option>
                          <%}%>
                      </select>
             </div>
@@ -208,6 +209,7 @@
               <tbody>
               <% for(var i in resultRows){
                 var memberId = resultRows[i].member_id;
+                var memberIdKosyu = resultRows[i].member_id_kosyu;
                 var dankaType = resultRows[i].danka_type;
                 var nameSei = resultRows[i].name_sei;
                 var nameNa = resultRows[i].name_na;
@@ -237,7 +239,7 @@
                 <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
                 <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
                 <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
-                <td class="table_name_full_kosyu"><%= nameFullKosyu %></td>
+                <td id="<%= memberIdKosyu %>" class="table_name_full_kosyu"><%= nameFullKosyu %></td>
                 <td class="table_kako"><%= kako %></td>
                 </tr>
               <%}%>

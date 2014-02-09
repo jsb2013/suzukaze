@@ -76,8 +76,18 @@ app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 //***************************************
 // 結果TOP画面
 app.get('/danka_detail_top', routes.getDankaDetailTop);
-// 結果TOP画面
-app.get('/danka_detail_kihon', routes.getDankaDetailKihon);
+// 結果基本情報画面
+app.post('/danka_detail_kihon', routes.postDankaDetailKihon);
+// 結果基本情報画面→確認画面
+app.post('/danka_detail_kihon_confirm', routes.postDankaDetailKihonConfirm);
+// 結果過去帳画面
+//app.post('/danka_detail_kako', routes.postDankaDetailKako);
+// 結果現在帳画面
+//app.post('/danka_detail_genzai', routes.postDankaDetailGenzai);
+// 結果寄附帳画面
+//app.post('/danka_detail_kihu', routes.postDankaDetailKihu);
+// 結果お参り帳画面
+//app.post('/danka_detail_omairi', routes.postDankaDetailOmairi);
 
 app.get('/haraikomi', routes.haraikomi);
 app.get('/danka_tyohyo', routes.getTyohyoMain);

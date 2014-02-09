@@ -179,23 +179,22 @@ body{
         }
           #menu_sub li{
             margin: 0 5px 0 0;
-            padding: 0;
-            height: 30px;
+            padding: 0 0 5px 0;
+            height: 26px;
             width: 100px;
             display: block;
             float: left;
+            font-size: 15px;
+            cursor: pointer;
             background-color : #804000;
           }
           #menu_sub a{
-            margin: 0;
             padding: 5px 0 0 0;
-            display: block;
-            font-size: 15px;
             color: #ffffff;
+            display: block;
             text-decoration: none;
           }
           #menu_sub a:hover{
-            margin: 0;
             padding: 5px 0 0 0;
             display: block;
             text-decoration: none;

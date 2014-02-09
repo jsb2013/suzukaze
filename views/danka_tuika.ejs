@@ -336,10 +336,10 @@
                   <td id="sewa" class="table_main_tuika_selectable">
                      <select id="sewa_list" name="sewa_name" >
                        <option value="9999" selected>---</option>
-                       <% for(var i in tikuCodeInfo){
-                         var tikuCode = tikuCodeInfo[i].tiku_code;
-                         var tikuName = tikuCodeInfo[i].tiku_name; %>
-                         <option value=<%= tikuCode %>><%= tikuName %></option>
+                       <% for(var i in sewaCodeInfo){
+                         var sewaCode = sewaCodeInfo[i].sewa_code;
+                         var sewaName = sewaCodeInfo[i].sewa_name; %>
+                         <option value=<%= sewaCode %>><%= sewaName %></option>
                          <%}%>
                      </select>
                      <label for="furi_namae">※選択しない場合は、所属する地区の担当となります。</label>

@@ -55,7 +55,7 @@
         margin: 0;
         padding: 0;
       }
-      tbody tr{
+      .kosyu_info tbody tr{
         background: #ffdfbf;
       }
 

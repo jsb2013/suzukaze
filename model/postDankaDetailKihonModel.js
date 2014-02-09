@@ -32,6 +32,7 @@ exports.main = function(callback){
         function (dbcallback) {
             getSewaCodeInfo(sewaCodeInfo, dbcallback);
         },
+        // [TBA] 住所、メールを取得する。
         // メンバーマスタから僧のリストを取得
         function (dbcallback) {
             getSouMemberIdInfo(souMemberIdInfo, dbcallback);
