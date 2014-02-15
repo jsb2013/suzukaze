@@ -381,11 +381,11 @@
                 <tr>
                   <td id="job_type">職業</td>
                   <td id="job" class="table_main_tuika_selectable">
-                     <select id="job_list"  name="job_name" >
+                     <select id="job_list"  name="job_code" >
                       <% for(var i in jobCodeInfo){
-                         var jobCode = jobCodeInfo[i].job_code;
-                         var jobName = jobCodeInfo[i].job_name; %>
-                         <option value=<%= jobCode %>><%= jobName %></option>
+                         var _jobCode = jobCodeInfo[i].job_code;
+                         var _jobName = jobCodeInfo[i].job_name; %>
+                         <option value=<%= _jobCode %>><%= _jobName %></option>
                          <%}%>
                      </select>
                   </td>
@@ -393,11 +393,11 @@
                 <tr>
                   <td id="tiku_type">地区名</td>
                   <td id="tiku" class="table_main_tuika_selectable">
-                     <select id="tiku_list"  name="tiku_name" >
+                     <select id="tiku_list"  name="tiku_code" >
                       <% for(var i in tikuCodeInfo){
-                         var tikuCode = tikuCodeInfo[i].tiku_code;
-                         var tikuName = tikuCodeInfo[i].tiku_name; %>
-                         <option value=<%= tikuCode %>><%= tikuName %></option>
+                         var _tikuCode = tikuCodeInfo[i].tiku_code;
+                         var _tikuName = tikuCodeInfo[i].tiku_name; %>
+                         <option value=<%= _tikuCode %>><%= _tikuName %></option>
                          <%}%>
                      </select>
                   </td>
@@ -405,12 +405,12 @@
                 <tr>
                   <td id="sewa_type">世話人</td>
                   <td id="sewa" class="table_main_tuika_selectable">
-                     <select id="sewa_list" name="sewa_name" >
+                     <select id="sewa_list" name="sewa_code" >
                        <option value="9999" selected>---</option>
                       <% for(var i in sewaCodeInfo){
-                        var sewaCode = sewaCodeInfo[i].sewa_code;
-                        var sewaName = sewaCodeInfo[i].sewa_name; %>
-                         <option value=<%= sewaCode %>><%= sewaName %></option>
+                        var _sewaCode = sewaCodeInfo[i].sewa_code;
+                        var _sewaName = sewaCodeInfo[i].sewa_name; %>
+                         <option value=<%= _sewaCode %>><%= _sewaName %></option>
                          <%}%>
                      </select>
                   </td>
@@ -418,13 +418,13 @@
                 <tr>
                   <td id="sou_type">担当者[僧]</td>
                   <td id="sou" class="table_main_tuika_selectable">
-                     <select id="sou_list" name="sou_name" >
+                     <select id="sou_list" name="sou_member_id" >
                        <% for(var i in souMemberIdInfo){
-                         var souMemberId = souMemberIdInfo[i].member_id;
-                         var souNameSei = souMemberIdInfo[i].name_sei;
-                         var souNameNa = souMemberIdInfo[i].name_na;
-                         var souName = souNameSei + " " + souNameNa; %>
-                         <option value=<%= souMemberId %>><%= souName %></option>
+                         var _souMemberId = souMemberIdInfo[i].member_id;
+                         var _souNameSei = souMemberIdInfo[i].name_sei;
+                         var _souNameNa = souMemberIdInfo[i].name_na;
+                         var _souName = _souNameSei + " " + _souNameNa; %>
+                         <option value=<%= _souMemberId %>><%= _souName %></option>
                          <%}%>
                      </select>
                   </td>
@@ -439,27 +439,26 @@
             </table>
           </div>
           <!-- サマリ画面表示情報 -->
-          <input type="hidden" name="memberId_pre" value=<%= memberId %>>
-          <input type="hidden" name="dankaTypeDanka" value=<%= dankaTypeDanka %>>
-          <input type="hidden" name="dankaTypeShinto" value=<%= dankaTypeShinto %>>
-          <input type="hidden" name="tikuName_pre" value=<%= tikuName %>>
-          <input type="hidden" name="sewaName_pre" value=<%= sewaName %>>
-          <input type="hidden" name="nameSei_pre" value=<%= nameSei %>>
-          <input type="hidden" name="nameNa_pre" value=<%= nameNa %>>
+          <input type="hidden" name="member_id_pre" value=<%= memberId %>>
+          <input type="hidden" name="danka_type_danka" value=<%= dankaTypeDanka %>>
+          <input type="hidden" name="danka_type_shinto" value=<%= dankaTypeShinto %>>
+          <input type="hidden" name="tiku_name_pre" value=<%= tikuName %>>
+          <input type="hidden" name="sewa_name_pre" value=<%= sewaName %>>
+          <input type="hidden" name="name_sei_pre" value=<%= nameSei %>>
+          <input type="hidden" name="name_na_pre" value=<%= nameNa %>>
           <!-- 確認画面遷移時の差分比較情報 -->
-          <input type="hidden" name="furiganaSei_pre" value=<%= furiganaSei %>>
-          <input type="hidden" name="furiganaNa_pre" value=<%= furiganaNa %>>
-          <input type="hidden" name="dankaType_pre" value=<%= dankaType %>>
+          <input type="hidden" name="furigana_sei_pre" value=<%= furiganaSei %>>
+          <input type="hidden" name="furigana_na_pre" value=<%= furiganaNa %>>
+          <input type="hidden" name="danka_type_pre" value=<%= dankaType %>>
           <input type="hidden" name="sex_pre" value=<%= sex %>>
-          <input type="hidden" name="jobCode_pre" value=<%= jobCode %>>
-          <input type="hidden" name="tikuCode_pre" value=<%= tikuCode %>>
-          <input type="hidden" name="sewaCode_pre" value=<%= sewaCode %>>
-          <input type="hidden" name="birthdayY_pre" value=<%= birthdayY %>>
-          <input type="hidden" name="birthdayM_pre" value=<%= birthdayM %>>
-          <input type="hidden" name="birthdayD_pre" value=<%= birthdayD %>>
+          <input type="hidden" name="job_code_pre" value=<%= jobCode %>>
+          <input type="hidden" name="tiku_code_pre" value=<%= tikuCode %>>
+          <input type="hidden" name="sewa_code_pre" value=<%= sewaCode %>>
+          <input type="hidden" name="birthday_y_pre" value=<%= birthdayY %>>
+          <input type="hidden" name="birthday_m_pre" value=<%= birthdayM %>>
+          <input type="hidden" name="birthday_d_pre" value=<%= birthdayD %>>
           <input type="hidden" name="sou_name_pre" value=<%= sou %>>
           <!-- 画面差異が生じた差異の日本語情報 -->
-          <input type="hidden" name="jobName_pre" value=<%= souMemberId %>>
 
           <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
         </form>

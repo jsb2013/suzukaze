@@ -11,3 +11,10 @@ function convertNullToBlank(value){
     }
     return value;
 }
+
+function isUndefine(value){
+    if (value === undefined || value === null || value ===''){
+        return true;
+    }
+    return false;
+}

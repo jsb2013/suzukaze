@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
+<link rel="stylesheet" href="stylesheets/danka/danka_detail_common.css" type="text/css" id="danka_detail_common">
+<link rel="stylesheet" href="stylesheets/danka/danka_detail_kihon.css" type="text/css" id="danka_detail_kihon">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/dankaInfo.js"></script>
+<%
+    var memberId = webItemJson.member_id;
+    var dankaTypeDanka = webItemJson.danka_type_danka;
+    var dankaTypeShinto = webItemJson.danka_type_shinto;
+%>
+<%
+    var nameSei = webItemJson.name_sei;
+    var nameNa = webItemJson.name_na;
+    var nameFull = nameSei + "  " + nameNa; //
+    var dankaType = webItemJson.danka_type;
+    var dankaTypeName = "檀家"; //
+    if (dankaType === '1'){
+        var dankaTypeName = "信徒";
+    }
+    var furiganaSei = webItemJson.furigana_sei;
+    var furiganaNa = webItemJson.furigana_na;
+    var furiganaFull = furiganaSei + "  " + furiganaNa; //
+    var sex = webItemJson.sex;
+    var sexName = "男"; //
+    if (sex === '1'){
+        var sexName = "女";
+    }
+    var zipCodeFull = webItemJson.zip_code_pre + " - " + webItemJson.zip_code_last; //
+    var region = webItemJson.region;
+    var city = webItemJson.city;
+    var address_line1 = webItemJson.address_line1;
+    var address_line2 = webItemJson.address_line2;
+    var birthday = webItemJson.birthday_y + " 年 " + webItemJson.birthday_m + " 月 " + webItemJson.birthday_d + " 日 ";
+    var telno_1 = webItemJson.telno_1_pre + "-" + webItemJson.telno_1_mid + "-" + webItemJson.telno_1_last;
+    var telno_2 = webItemJson.telno_2_pre + "-" + webItemJson.telno_2_mid + "-" + webItemJson.telno_2_last;
+    var telno_3 = webItemJson.telno_3_pre + "-" + webItemJson.telno_3_mid + "-" + webItemJson.telno_3_last;
+    var telno_1_yoto = webItemJson.telno_1_yoto;
+    var telno_2_yoto = webItemJson.telno_2_yoto;
+    var telno_3_yoto = webItemJson.telno_3_yoto;
+    var email_1 = webItemJson.email_1;
+    var email_2 = webItemJson.email_2;
+    var email_3 = webItemJson.email_3;
+    var email_1_yoto = webItemJson.email_1_yoto;
+    var email_2_yoto = webItemJson.email_2_yoto;
+    var email_3_yoto = webItemJson.email_3_yoto;
+    var jobName = webItemJson.job_name;
+    var tikuName = webItemJson.tiku_name;
+    var sewaName = webItemJson.sewa_name;
+    var souMemberId = webItemJson.member_id_sou;
+%>
+<%
+    var nameSeiPre = webItemJson.name_sei_pre;
+    var nameNaPre = webItemJson.name_na_pre;
+    var nameFullPre = nameSeiPre + "  " + nameNaPre; //
+    var dankaTypePre = webItemJson.danka_type_pre;
+    var dankaTypeNamePre = "檀家"; //
+    if (dankaTypePre === '1'){
+        var dankaTypeNamePre = "信徒";
+    }
+    var furiganaSeiPre = webItemJson.furigana_sei_pre;
+    var furiganaNaPre = webItemJson.furigana_na_pre;
+    var furiganaFullPre = furiganaSeiPre + "  " + furiganaNaPre; //
+    var sexPre = webItemJson.sex_pre;
+    var sexNamePre = "男"; //
+    if (sexPre === '1'){
+        var sexNamePre = "女";
+    }
+    var zipCodePre = webItemJson.zip_code_pre + " - " + webItemJson.zip_code_last_pre;
+    var regionPre = webItemJson.region_pre;
+    var cityPre = webItemJson.city_pre;
+    var addressLine1Pre = webItemJson.address_line1_pre;
+    var addressLine2Pre = webItemJson.address_line2_pre;
+    var birthdayPre = webItemJson.birthday_y_pre + " 年 " + webItemJson.birthday_m_pre + " 月 " + webItemJson.birthday_d_pre + " 日 ";
+    var telno1Pre = webItemJson.telno_1_pre_pre + "-" + webItemJson.telno_1_mid_pre + "-" + webItemJson.telno_1_last_pre;
+    var telno2Pre = webItemJson.telno_2_pre_pre + "-" + webItemJson.telno_2_mid_pre + "-" + webItemJson.telno_2_last_pre;
+    var telno3Pre = webItemJson.telno_3_pre_pre + "-" + webItemJson.telno_3_mid_pre + "-" + webItemJson.telno_3_last_pre;
+    var telno1YotoPre = webItemJson.telno_1_yoto;
+    var telno2YotoPre = webItemJson.telno_2_yoto;
+    var telno3YotoPre = webItemJson.telno_3_yoto;
+    var email1Pre = webItemJson.email_1;
+    var email2Pre = webItemJson.email_2;
+    var email3Pre = webItemJson.email_3;
+    var email1yotoPre = webItemJson.email_1_yoto;
+    var email2yotoPre = webItemJson.email_2_yoto;
+    var email3yotoPre = webItemJson.email_3_yoto;
+    var jobNamePre = webItemJson.job_name_pre;
+    var tikuNamePre = webItemJson.tiku_name_pre;
+    var sewaNamePre = webItemJson.sewa_name_pre;
+    var souMemberIdPre = webItemJson.member_id_sou_pre;
+    var tikuCodePre = webItemJson.tiku_code_pre;
+    var sewaCodePre = webItemJson.sewa_code_pre;
+%>
+<script>
+    <%
+    var test1 = dankaTypePre;
+    %>
+    
+    var test2 = 2;
+
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div class="inner_title">
+        <div class="title">
+   	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
+        </div>
+        <div class="kosyu_info">
+   	      <table>
+              <thead>
+                <tr>
+                  <th class="kosyu_info_kosyu_th">戸主名</th>
+                  <th class="kosyu_info_type_danka_th">檀家</th>
+                  <th class="kosyu_info_type_shinto_th">信徒</th>
+                  <th class="kosyu_info_tiku_th">地区</th>
+                  <th class="kosyu_info_sewa_th">世話人</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="<%= memberId %>">
+                  <td class="table_name_full"><%= nameFullPre %></td>
+                  <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
+                  <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
+                  <td id="<%= tikuCodePre %>" class="table_tiku_name"><%= tikuNamePre %></td>
+                  <td id="<%= sewaCodePre %>" class="table_sewa_name"><%= sewaNamePre %></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="menu_sub">
+          <ul>
+            <li class="menu_sub_kihon">基本情報 
+            <li class="menu_sub_kako">過去帳
+            <li class="menu_sub_genzai">現在帳
+            <li class="menu_sub_nenkaiki">年回忌
+            <li class="menu_sub_kihu">寄付帳
+            <li class="menu_sub_omairi">お参り帳
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div class="inner_main">
+        <form action="danka_detail_kihon_confirm" method="post">
+          <div class="table_main_kihon">
+            <table>
+              <thead>
+                <tr class="table_main_kihon_header">
+                  <th class="table_main_kihon_header_komoku">登録項目</td>
+                  <th class="table_main_kihon_header_naiyo">登録内容</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="danka_type">登録区分</td></td>
+                  <script>
+                      createHtml(<%= dankaTypePre %>, test2);
+                  </script>
+                </tr>
+                <tr>
+                  <td id="name_type">戸主名(※必須)</td>
+                  <td id="name" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="furigana_type">ふりがな(※必須)</td>
+                  <td id="furigana" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sex_type">性別(※必須)</td>
+                  <td id="sex" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="zip_code_type">郵便番号</td>
+                  <td id="zip_code" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="region_type">都道府県</td>
+                  <td id="region" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="city_type">市区町村</td>
+                  <td id="city" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_line1_type">番地</td>
+                  <td id="address_line1" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_line2_type">ビル名等</td>
+                  <td id="address_line2" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="birthday_type">生年月日</td>
+                  <td id="birthday_y" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(優先1)</td>
+                  <td id="tel" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(優先2)</td>
+                  <td id="tel" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(優先3)</td>
+                  <td id="tel" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(優先1)</td>
+                  <td id="email" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(優先2)</td>
+                  <td id="email" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(優先3)</td>
+                  <td id="email" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="job_type">職業</td>
+                  <td id="job" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tiku_type">地区名</td>
+                  <td id="tiku" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sewa_type">世話人</td>
+                  <td id="sewa" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sou_type">担当者[僧]</td>
+                  <td id="sou" class="table_main_tuika_selectable">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="comment_type">備考<br>※500文字以内</td>
+                  <td class="comment table_main_tuika_selectable">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
+        </form>
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>
