@@ -7,6 +7,32 @@
 <link rel="stylesheet" href="stylesheets/danka/danka_detail_common.css" type="text/css" id="danka_detail_common">
 <title>檀家管理システム　禅</title>
 <script src="js/jquery-1.10.2.min.js"></script>
+              <%
+                var result = resultRows[0];
+                var memberId = result.member_id;
+                var dankaType = result.danka_type;
+                var nameSei = result.name_sei;
+                var nameNa = result.name_na;
+                var nameFull = nameSei + "　" + nameNa;
+                var tikuCode = result.tiku_code;
+                var sewaCode = result.member_id_sewa;
+                var tikuName = tikuInfoJson[tikuCode];
+                var sewaName = tikuInfoJson[sewaCode];
+                var dankaTypeDanka = "○";
+                var dankaTypeShinto = "-";
+                if (dankaType === 1){
+                    dankaTypeDanka = "-";
+                    dankaTypeShinto = "○";
+                }
+                var sex = result.sex;
+                var jobCode = result.job_code;
+                var birthdayY = result.birthday_y;
+                var birthdayM = result.birthday_m;
+                var birthdayD = result.birthday_d;
+                var memberIdSou = result.member_id_sou;
+                var furiganaSei = result.furigana_sei;
+                var furiganaNa = result.furigana_na;
+              %>    
 <script>
     $(function () {
         $(".menu_sub_kihon").click(function () {
@@ -88,32 +114,6 @@
                 </tr>
               </thead>
               <tbody>
-              <%
-                var result = resultRows[0];
-                var memberId = result.member_id;
-                var dankaType = result.danka_type;
-                var nameSei = result.name_sei;
-                var nameNa = result.name_na;
-                var nameFull = nameSei + "  " + nameNa;
-                var tikuCode = result.tiku_code;
-                var sewaCode = result.member_id_sewa;
-                var tikuName = tikuInfoJson[tikuCode];
-                var sewaName = tikuInfoJson[sewaCode];
-                var dankaTypeDanka = "○";
-                var dankaTypeShinto = "-";
-                if (dankaType === 1){
-                    dankaTypeDanka = "-";
-                    dankaTypeShinto = "○";
-                }
-                var sex = result.sex;
-                var jobCode = result.job_code;
-                var birthdayY = result.birthday_y;
-                var birthdayM = result.birthday_m;
-                var birthdayD = result.birthday_d;
-                var sou = result.member_id_sou;
-                var furiganaSei = result.furigana_sei;
-                var furiganaNa = result.furigana_na;
-              %>
               <tr id="<%= memberId %>">
                 <td class="table_name_full"><%= nameFull %></td>
                 <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
@@ -137,23 +137,24 @@
       </div>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
+        <input type="hidden" name="name_full" value=<%= nameFull %>>
         <input type="hidden" name="danka_type_danka" value=<%= dankaTypeDanka %>>
         <input type="hidden" name="danka_type_shinto" value=<%= dankaTypeShinto %>>
-        <input type="hidden" name="tiku_name_mei" value=<%= tikuName %>>
-        <input type="hidden" name="sewa_name_mei" value=<%= sewaName %>>
+        <input type="hidden" name="tiku_name" value=<%= tikuName %>>
+        <input type="hidden" name="sewa_name" value=<%= sewaName %>>
         <input type="hidden" name="name_sei" value=<%= nameSei %>>
         <input type="hidden" name="name_na" value=<%= nameNa %>>
         <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
         <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
         <input type="hidden" name="danka_type" value=<%= dankaType %>>
         <input type="hidden" name="sex" value=<%= sex %>>
-        <input type="hidden" name="job_name" value=<%= jobCode %>>
-        <input type="hidden" name="tiku_name" value=<%= tikuCode %>>
-        <input type="hidden" name="sewa_name" value=<%= sewaCode %>>
+        <input type="hidden" name="job_code" value=<%= jobCode %>>
+        <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
+        <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
         <input type="hidden" name="birthday_y" value=<%= birthdayY %>>
         <input type="hidden" name="birthday_m" value=<%= birthdayM %>>
         <input type="hidden" name="birthday_d" value=<%= birthdayD %>>
-        <input type="hidden" name="member_id_sou" value=<%= sou %>>
+        <input type="hidden" name="member_id_sou" value=<%= memberIdSou %>>
       </form>
       <form action="/danka_detail_genzai" method="post" id="danka_detail_genzai_form">
         <input type="hidden" name="memberId" value=<%= memberId %>>

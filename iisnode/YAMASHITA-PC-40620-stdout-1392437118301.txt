@@ -1,0 +1,6 @@
+[33m[2014-02-15 13:05:18.470] [WARN] console - [39mconnect.multipart() will be removed in connect 3.0
+[33m[2014-02-15 13:05:18.474] [WARN] console - [39mvisit https://github.com/senchalabs/connect/wiki/Connect-3.0 for alternatives
+[33m[2014-02-15 13:05:18.475] [WARN] console - [39mconnect.limit() will be removed in connect 3.0
+[32m[2014-02-15 13:05:18.484] [INFO] console - [39mExpress server listening on port \\.\pipe\122760b8-19fa-491f-b35b-0577412b0fef
+[31m[2014-02-15 13:05:18.485] [ERROR] console - [39mApplication has thrown an uncaught exception and is terminated:
+Error: ENOENT, open 'C:\work\node_js\danka\suzukaze\logs\node_js.log'

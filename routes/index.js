@@ -213,7 +213,7 @@ exports.postDankaDetailKihon = function (req, res) {
     var postDankaDetailKihonModel = require("../model/postDankaDetailKihonModel");
     var webItemJson = req.body;
 
-    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, souMemberIdInfo) {
+    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, souMemberIdInfo) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -225,12 +225,15 @@ exports.postDankaDetailKihon = function (req, res) {
             jobCodeInfo: jobCodeInfo,
             tikuCodeInfo: tikuCodeInfo,
             sewaCodeInfo: sewaCodeInfo,
+            addressInfo: addressInfo,
+            mailInfo: mailInfo,
+            telnumberInfo: telnumberInfo,
             souMemberIdInfo: souMemberIdInfo
         });
         return;
     }
 
-    postDankaDetailKihonModel.main(authCallback);
+    postDankaDetailKihonModel.main(webItemJson, authCallback);
 };
 
 // 結果基本情報画面

@@ -62,17 +62,6 @@
     );
     };
 
-    function convertIdToMoji(searchId) {
-        var convert50on = require("../conf/convert50on");
-
-        var searchMoji = convert50on[searchId];
-        if (util.isUndefine(searchMoji)) {
-            logger.error('XXXXXX', 'err =>' + searchId);
-            return false;
-        }
-        return searchMoji;
-    }
-
     function convertTikuListToJson(tikuList) {
         var tikuInfoJson = {};
         for (var i in tikuList) {

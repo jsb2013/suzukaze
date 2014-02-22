@@ -14,20 +14,59 @@
     var dankaTypeShinto = webItemJson.danka_type_shinto;
     var nameSei = webItemJson.name_sei;
     var nameNa = webItemJson.name_na;
-    var nameFull = nameSei + "  " + nameNa;
-    var tikuName = webItemJson.tiku_name_mei;
-    var sewaName = webItemJson.sewa_name_mei;
+    var nameFull = webItemJson.name_full;
+    var tikuName = webItemJson.tiku_name;
+    var sewaName = webItemJson.sewa_name;
     var furiganaSei = webItemJson.furigana_sei;
     var furiganaNa = webItemJson.furigana_na;
     var dankaType = webItemJson.danka_type;
     var sex = webItemJson.sex;
-    var jobCode = webItemJson.job_name;
-    var tikuCode = webItemJson.tiku_name;
-    var sewaCode = webItemJson.sewa_name;
+    var jobCode = webItemJson.job_code;
+    var tikuCode = webItemJson.tiku_code;
+    var sewaCode = webItemJson.sewa_code;
     var birthdayY = webItemJson.birthday_y;
     var birthdayM = webItemJson.birthday_m;
     var birthdayD = webItemJson.birthday_d;
-    var sou = webItemJson.member_id_sou;
+    var memberIdSou = webItemJson.member_id_sou;
+    var jobName = webItemJson.job_name;
+    var souNameSei = webItemJson.sou_name_sei;
+    var souNameNa = webItemJson.sou_name_na;
+    var souName = souNameSei + "　" + souNameNa;
+    var comment = webItemJson.comment;
+
+    var addressPri1 = addressInfo[0];
+    var zipCodePre = addressPri1.zip_code_pre;
+    var zipCodeLast = addressPri1.zip_code_last;
+    var region = addressPri1.region;
+    var city = addressPri1.city;
+    var addressLine1 = addressPri1.address_line1;
+    var addressLine2 = addressPri1.address_line2;
+
+    var mailAddressPri1 = mailInfo[0];
+    var mailAddressPri2 = mailInfo[1];
+    var mailAddressPri3 = mailInfo[2];
+    var mailAddress1 = mailAddressPri1.mail_address;
+    var mailYoto1 = mailAddressPri1.yoto;
+    var mailAddress2 = mailAddressPri2.mail_address;
+    var mailYoto2 = mailAddressPri2.yoto;
+    var mailAddress3 = mailAddressPri3.mail_address;
+    var mailYoto3 = mailAddressPri3.yoto;
+
+    var telnumberInfoPri1 = telnumberInfo[0];
+    var telnumberInfoPri2 = telnumberInfo[1];
+    var telnumberInfoPri3 = telnumberInfo[2];
+    var telNumberPre1 = telnumberInfoPri1.tel_number_pre;
+    var telNumberMid1 = telnumberInfoPri1.tel_number_mid;
+    var telNumberLast1 = telnumberInfoPri1.tel_number_last;
+    var telNumberYoto1 = telnumberInfoPri1.yoto;
+    var telNumberPre2 = telnumberInfoPri2.tel_number_pre;
+    var telNumberMid2 = telnumberInfoPri2.tel_number_mid;
+    var telNumberLast2 = telnumberInfoPri2.tel_number_last;
+    var telNumberYoto2 = telnumberInfoPri2.yoto;
+    var telNumberPre3 = telnumberInfoPri3.tel_number_pre;
+    var telNumberMid3 = telnumberInfoPri3.tel_number_mid;
+    var telNumberLast3 = telnumberInfoPri3.tel_number_last;
+    var telNumberYoto3 = telnumberInfoPri3.yoto;
 %>
 <script>
  $(function(){
@@ -56,7 +95,7 @@
     $("#job_list").val(<%= jobCode %>);
     $("#tiku_list").val(<%= tikuCode %>);
     $("#sewa_list").val(<%= sewaCode %>);
-    $("#sou_list").val(<%= sou %>);
+    $("#sou_list").val(<%= memberIdSou %>);
     $("#birthday_y_list").val(<%= birthdayY %>);
     $("#birthday_m_list").val(<%= birthdayM %>);
     $("#birthday_d_list").val(<%= birthdayD %>);
@@ -66,7 +105,8 @@
         // エラーの初期化
         $("p.error").remove();
         $("td").removeClass("error");
-         
+        
+        // エラーチェック
         $("input[type='text'].validate").each(function(){
             // 必須項目チェック
             if($(this).hasClass("require")){
@@ -88,6 +128,74 @@
         if($("p.error").length > 0){
             return false;
         }
+        // テキスト項目の差分チェックを実施
+        var isChange = false;
+        $(".chenge_check").each(function(){
+            var key = $(this).attr("name");
+            var value = $(this).val();
+            $(".chenge_check_bk").each(function(){
+                if($(this).hasClass(key)){
+                    var valueBk = $(this).val();
+                    if(value !== valueBk){
+                        isChange = true;
+                        return false;
+                    }
+                    return true;
+                }
+            });
+            
+            if(isChange){
+                return false;
+            }
+        });
+        
+        // select項目の差分比較
+        var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
+        var jobCodeAfter = $("select[name='job_code'] option:selected").val();
+        var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
+        var souCodeAfter = $("select[name='member_id_sou'] option:selected").val();
+        var birthdayYAfter = $("select[name='birthday_y'] option:selected").val();
+        var birthdayMAfter = $("select[name='birthday_m'] option:selected").val();
+        var birthdayDAfter = $("select[name='birthday_d'] option:selected").val();
+        var tikuCodeBk = $("input[name='tiku_code_bk']").val();
+        var jobCodeBk = $("input[name='job_code_bk']").val();
+        var sewaCodeBk = $("input[name='sewa_code_bk']").val();
+        var souCodeBk = $("input[name='member_id_sou_bk']").val();
+        var birthdayYBk = $("input[name='birthday_y_bk']").val();
+        var birthdayMBk = $("input[name='birthday_m_bk']").val();
+        var birthdayDBk = $("input[name='birthday_d_bk']").val();
+
+        if(tikuCodeAfter !== tikuCodeBk || jobCodeAfter !== jobCodeBk || sewaCodeAfter !== sewaCodeBk || souCodeAfter !== souCodeBk){
+            isChange = true;
+        }
+        if(birthdayYAfter !== birthdayYBk || birthdayMAfter !== birthdayMBk || birthdayDAfter !== birthdayDBk){
+            isChange = true;
+        }
+
+        // radio項目の差分比較
+        var dankaTypeAfter = $("input[name='danka_type']:checked").val();
+        var dankaTypeBk = $("input[name='danka_type_bk']").val();
+        var sexAfter = $("input[name='sex']:checked").val();
+        var sexBk = $("input[name='sex_bk']").val();
+
+        if(dankaTypeAfter !== dankaTypeBk || sexAfter !== sexBk){
+            isChange = true;
+        }
+
+        // 値が何も変更されていない場合は、ポップアップを出力する。
+        if(!isChange){
+            alert("変更されていません。");
+            return false;
+        }
+        // 変更有無チェック
+        var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
+        var jobNameAfter = $("select[name='job_code'] option:selected").text();
+        var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
+        var souNameAfter = $("select[name='member_id_sou'] option:selected").text();
+        $("input[name='tiku_name']").val(tikuNameAfter);
+        $("input[name='job_name']").val(jobNameAfter);
+        $("input[name='sewa_name']").val(sewaNameAfter);
+        $("input[name='sou_name']").val(souNameAfter);
     });
 });
 </script>
@@ -205,15 +313,15 @@
                 <tr>
                   <td id="name_type">戸主名(※必須)</td>
                   <td id="name" class="table_main_tuika_selectable">
-                      <label for="name_seimei">姓: </label><input type="text" name="name_sei" class="validate require duplicate_pre" value="<%= nameSei %>">
-                      <label for="name_seimei">名: </label><input type="text" name="name_na" class="validate require duplicate_end" value="<%= nameNa %>">
+                      <label for="name_seimei">姓: </label><input type="text" name="name_sei" class="chenge_check validate require duplicate_pre" value="<%= nameSei %>">
+                      <label for="name_seimei">名: </label><input type="text" name="name_na" class="chenge_check validate require duplicate_end" value="<%= nameNa %>">
                   </td>
                 </tr>
                 <tr>
                   <td id="furigana_type">ふりがな(※必須)</td>
                   <td id="furigana" class="table_main_tuika_selectable">
-                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="validate require duplicate_pre" value="<%= furiganaSei %>">
-                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="validate require duplicate_end" value="<%= furiganaNa %>">
+                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="chenge_check validate require duplicate_pre" value="<%= furiganaSei %>">
+                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="chenge_check validate require duplicate_end" value="<%= furiganaNa %>">
                   </td>
                 </tr>
                 <tr>
@@ -222,13 +330,13 @@
                       <%
                       if(sex === "1"){
                       %>
-                        <input type="radio" name="sex" class="dummay" value="0" checked><label for="man">男</label>
-                        <input type="radio" name="sex" class="dummay" value="1"><label for="woman">女</label>                
+                        <input type="radio" name="sex" class="dummay" value="1" checked><label for="man">男</label>
+                        <input type="radio" name="sex" class="dummay" value="2"><label for="woman">女</label>                
                       <%
                       }else{
                       %>
-                        <input type="radio" name="sex" class="dummay" value="0"><label for="man">男</label>
-                        <input type="radio" name="sex" class="dummay" value="1" checked><label for="woman">女</label>                 
+                        <input type="radio" name="sex" class="dummay" value="1"><label for="man">男</label>
+                        <input type="radio" name="sex" class="dummay" value="2" checked><label for="woman">女</label>                 
                       <%
                       }
                       %>
@@ -237,31 +345,31 @@
                 <tr>
                   <td id="zip_code_type">郵便番号</td>
                   <td id="zip_code" class="table_main_tuika_selectable">
-                      <input type="text" name="zip_code_pre" class="validate number"> - <input type="text" name="zip_code_last" class="validate number">
+                      <input type="text" name="zip_code_pre" class="chenge_check validate number" value="<%= zipCodePre %>"> - <input type="text" name="zip_code_last" class="chenge_check validate number" value="<%= zipCodeLast %>">
                   </td>
                 </tr>
                 <tr>
                   <td id="region_type">都道府県</td>
                   <td id="region" class="table_main_tuika_selectable">
-                      <input type="text" name="region" class="dummay">
+                      <input type="text" name="region" class="chenge_check dummay" value="<%= region %>">
                   </td>
                 </tr>
                 <tr>
                   <td id="city_type">市区町村</td>
                   <td id="city" class="table_main_tuika_selectable">
-                      <input type="text" name="city" class="dummay">
+                      <input type="text" name="city" class="chenge_check dummay" value="<%= city %>">
                   </td>
                 </tr>
                 <tr>
                   <td id="address_line1_type">番地</td>
                   <td id="address_line1" class="table_main_tuika_selectable">
-                      <input type="text" name="address_line1" class="dummay">
+                      <input type="text" name="address_line1" class="chenge_check dummay" value="<%= addressLine1 %>">
                   </td>
                 </tr>
                 <tr>
                   <td id="address_line2_type">ビル名等</td>
                   <td id="address_line2" class="table_main_tuika_selectable">
-                      <input type="text" name="address_line2" class="dummay">
+                      <input type="text" name="address_line2" class="chenge_check dummay" value="<%= addressLine2 %>">
                   </td>
                 </tr>
                 <tr>
@@ -310,12 +418,12 @@
                   <td id="tel_type">電話番号(優先1)</td>
                   <td id="tel" class="table_main_tuika_selectable">
                       <span class="telno_box_pre">
-                      <input type="text" name="telno_1_pre" class="validate number telno_size">
-                       - <input type="text" name="telno_1_mid" class="validate number telno_size">
-                       - <input type="text" name="telno_1_last" class="validate number telno_size">
+                      <input type="text" name="telno_pre_1" class="chenge_check validate number telno_size" value="<%= telNumberPre1 %>">
+                       - <input type="text" name="telno_mid_1" class="chenge_check validate number telno_size" value="<%= telNumberMid1 %>">
+                       - <input type="text" name="telno_last_1" class="chenge_check validate number telno_size" value="<%= telNumberLast1 %>">
                       </span>
                       <span class="telno_box_last">
-                         <label>用途：</label><input type="text" name="telno_1_yoto" class="telno_yoto">
+                         <label>用途：</label><input type="text" name="telno_yoto_1" class="chenge_check telno_yoto" value="<%= telNumberYoto1 %>">
                       </span>
                   </td>
                 </tr>
@@ -323,12 +431,12 @@
                   <td id="tel_type">電話番号(優先2)</td>
                   <td id="tel" class="table_main_tuika_selectable">
                       <span class="telno_box_pre">
-                      <input type="text" name="telno_2_pre" class="validate number telno_size">
-                       - <input type="text" name="telno_2_mid" class="validate number telno_size">
-                       - <input type="text" name="telno_2_last" class="validate number telno_size">
+                      <input type="text" name="telno_pre_2" class="chenge_check validate number telno_size" value="<%= telNumberPre2 %>">
+                       - <input type="text" name="telno_mid_2" class="chenge_check validate number telno_size" value="<%= telNumberMid2 %>">
+                       - <input type="text" name="telno_last_2" class="chenge_check validate number telno_size" value="<%= telNumberLast2 %>">
                       </span>
                       <span class="telno_box_last">
-                         <label>用途：</label><input type="text" name="telno_2_yoto" class="telno_yoto">
+                         <label>用途：</label><input type="text" name="telno_yoto_2" class="chenge_check telno_yoto" value="<%= telNumberYoto2 %>">
                       </span>
                   </td>
                 </tr>
@@ -336,12 +444,12 @@
                   <td id="tel_type">電話番号(優先3)</td>
                   <td id="tel" class="table_main_tuika_selectable">
                       <span class="telno_box_pre">
-                      <input type="text" name="telno_3_pre" class="validate number telno_size">
-                       - <input type="text" name="telno_3_mid" class="validate number telno_size">
-                       - <input type="text" name="telno_3_last" class="validate number telno_size">
+                      <input type="text" name="telno_pre_3" class="chenge_check validate number telno_size" value="<%= telNumberPre3 %>">
+                       - <input type="text" name="telno_mid_3" class="chenge_check validate number telno_size" value="<%= telNumberMid3 %>">
+                       - <input type="text" name="telno_last_3" class="chenge_check validate number telno_size" value="<%= telNumberLast3 %>">
                       </span>
                       <span class="telno_box_last">
-                         <label>用途：</label><input type="text" name="telno_3_yoto" class="telno_yoto">
+                         <label>用途：</label><input type="text" name="telno_yoto_3" class="chenge_check telno_yoto" value="<%= telNumberYoto3 %>">
                       </span>
                   </td>
                 </tr>
@@ -349,10 +457,10 @@
                   <td id="email_type">Email(優先1)</td>
                   <td id="email" class="table_main_tuika_selectable">
                       <span class="email_box_pre">
-                        <input type="text" name="email_1" class="email_size">
+                        <input type="text" name="mail_address_1" class="chenge_check email_size" value="<%= mailAddress1 %>">
                       </span>
                       <span class="email_box_last">
-                         <label>用途：</label><input type="text" name="email_1_yoto" class="email_yoto">
+                         <label>用途：</label><input type="text" name="mail_yoto_1" class="chenge_check email_yoto" value="<%= mailYoto1 %>">
                       </span>
                   </td>
                 </tr>
@@ -360,10 +468,10 @@
                   <td id="email_type">Email(優先2)</td>
                   <td id="email" class="table_main_tuika_selectable">
                       <span class="email_box_pre">
-                        <input type="text" name="email_2" class="email_size">
+                        <input type="text" name="mail_address_2" class="chenge_check email_size" value="<%= mailAddress2 %>">
                       </span>
                       <span class="email_box_last">
-                         <label>用途：</label><input type="text" name="email_2_yoto" class="email_yoto">
+                         <label>用途：</label><input type="text" name="mail_yoto_2" class="chenge_check email_yoto" value="<%= mailYoto2 %>">
                       </span>
                   </td>
                 </tr>
@@ -371,10 +479,10 @@
                   <td id="email_type">Email(優先3)</td>
                   <td id="email" class="table_main_tuika_selectable">
                       <span class="email_box_pre">
-                        <input type="text" name="email_3" class="email_size">
+                        <input type="text" name="mail_address_3" class="chenge_check email_size" value="<%= mailAddress3 %>">
                       </span>
                       <span class="email_box_last">
-                         <label>用途：</label><input type="text" name="email_3_yoto" class="email_yoto">
+                         <label>用途：</label><input type="text" name="mail_yoto_3" class="chenge_check email_yoto" value="<%= mailYoto3 %>">
                       </span>
                   </td>
                 </tr>
@@ -418,12 +526,12 @@
                 <tr>
                   <td id="sou_type">担当者[僧]</td>
                   <td id="sou" class="table_main_tuika_selectable">
-                     <select id="sou_list" name="sou_member_id" >
+                     <select id="sou_list" name="member_id_sou" >
                        <% for(var i in souMemberIdInfo){
                          var _souMemberId = souMemberIdInfo[i].member_id;
                          var _souNameSei = souMemberIdInfo[i].name_sei;
                          var _souNameNa = souMemberIdInfo[i].name_na;
-                         var _souName = _souNameSei + " " + _souNameNa; %>
+                         var _souName = _souNameSei + "　" + _souNameNa; %>
                          <option value=<%= _souMemberId %>><%= _souName %></option>
                          <%}%>
                      </select>
@@ -432,33 +540,64 @@
                 <tr>
                   <td class="comment_type">備考<br>※500文字以内</td>
                   <td class="comment table_main_tuika_selectable">
-                     <textarea name="comment" class="textarea_size"></textarea></p>
+                     <textarea name="comment" class="textarea_size"><%= comment %></textarea>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <!-- サマリ画面表示情報 -->
-          <input type="hidden" name="member_id_pre" value=<%= memberId %>>
-          <input type="hidden" name="danka_type_danka" value=<%= dankaTypeDanka %>>
-          <input type="hidden" name="danka_type_shinto" value=<%= dankaTypeShinto %>>
-          <input type="hidden" name="tiku_name_pre" value=<%= tikuName %>>
-          <input type="hidden" name="sewa_name_pre" value=<%= sewaName %>>
-          <input type="hidden" name="name_sei_pre" value=<%= nameSei %>>
-          <input type="hidden" name="name_na_pre" value=<%= nameNa %>>
-          <!-- 確認画面遷移時の差分比較情報 -->
-          <input type="hidden" name="furigana_sei_pre" value=<%= furiganaSei %>>
-          <input type="hidden" name="furigana_na_pre" value=<%= furiganaNa %>>
-          <input type="hidden" name="danka_type_pre" value=<%= dankaType %>>
-          <input type="hidden" name="sex_pre" value=<%= sex %>>
-          <input type="hidden" name="job_code_pre" value=<%= jobCode %>>
-          <input type="hidden" name="tiku_code_pre" value=<%= tikuCode %>>
-          <input type="hidden" name="sewa_code_pre" value=<%= sewaCode %>>
-          <input type="hidden" name="birthday_y_pre" value=<%= birthdayY %>>
-          <input type="hidden" name="birthday_m_pre" value=<%= birthdayM %>>
-          <input type="hidden" name="birthday_d_pre" value=<%= birthdayD %>>
-          <input type="hidden" name="sou_name_pre" value=<%= sou %>>
-          <!-- 画面差異が生じた差異の日本語情報 -->
+          <input type="hidden" name="member_id" value=<%= memberId %>>
+          <input type="hidden" name="danka_type_danka_bk" value=<%= dankaTypeDanka %>>
+          <input type="hidden" name="danka_type_shinto_bk" value=<%= dankaTypeShinto %>>
+          <input type="hidden" name="tiku_name_bk" value=<%= tikuName %>>
+          <input type="hidden" name="sewa_name_bk" value=<%= sewaName %>>
+          <input type="hidden" name="tiku_code_bk" value=<%= tikuCode %>>
+          <input type="hidden" name="sewa_code_bk" value=<%= sewaCode %>>
+          <!-- 変更前の情報 -->
+          <input type="hidden" name="danka_type_bk" value=<%= dankaType %>>
+          <input type="hidden" name="name_sei_bk" class="chenge_check_bk name_sei" value=<%= nameSei %>>
+          <input type="hidden" name="name_na_bk" class="chenge_check_bk name_na" value=<%= nameNa %>>
+          <input type="hidden" name="furigana_sei_bk" class="chenge_check_bk furigana_sei" value=<%= furiganaSei %>>
+          <input type="hidden" name="furigana_na_bk" class="chenge_check_bk furigana_na" value=<%= furiganaNa %>>
+          <input type="hidden" name="sex_bk" value=<%= sex %>>
+          <input type="hidden" name="zip_code_pre_bk" class="chenge_check_bk zip_code_pre" value=<%= zipCodePre %>>
+          <input type="hidden" name="zip_code_last_bk" class="chenge_check_bk zip_code_last" value=<%= zipCodeLast %>>
+          <input type="hidden" name="region_bk" class="chenge_check_bk region" value=<%= region %>>
+          <input type="hidden" name="city_bk" class="chenge_check_bk city" value=<%= city %>>
+          <input type="hidden" name="address_line1_bk" class="chenge_check_bk address_line1" value=<%= addressLine1 %>>
+          <input type="hidden" name="address_line2_bk" class="chenge_check_bk address_line2" value=<%= addressLine2 %>>
+          <input type="hidden" name="birthday_y_bk" class="dummy" value=<%= birthdayY %>>
+          <input type="hidden" name="birthday_m_bk" class="dummy" value=<%= birthdayM %>>
+          <input type="hidden" name="birthday_d_bk" class="dummy" value=<%= birthdayD %>>
+          <input type="hidden" name="telno_pre_1_bk" class="chenge_check_bk telno_pre_1" value=<%= telNumberPre1 %>>
+          <input type="hidden" name="telno_mid_1_bk" class="chenge_check_bk telno_mid_1" value=<%= telNumberMid1 %>>
+          <input type="hidden" name="telno_last_1_bk" class="chenge_check_bk telno_last_1" value=<%= telNumberLast1 %>>
+          <input type="hidden" name="telno_yoto_1_bk" class="chenge_check_bk telno_yoto_1" value=<%= telNumberYoto1 %>>
+          <input type="hidden" name="telno_pre_2_bk" class="chenge_check_bk telno_pre_2" value=<%= telNumberPre2 %>>
+          <input type="hidden" name="telno_mid_2_bk" class="chenge_check_bk telno_mid_2" value=<%= telNumberMid2 %>>
+          <input type="hidden" name="telno_last_2_bk" class="chenge_check_bk telno_last_2" value=<%= telNumberLast2 %>>
+          <input type="hidden" name="telno_yoto_2_bk" class="chenge_check_bk telno_yoto_2" value=<%= telNumberYoto2 %>>
+          <input type="hidden" name="telno_pre_3_bk" class="chenge_check_bk telno_pre_3" value=<%= telNumberPre3 %>>
+          <input type="hidden" name="telno_mid_3_bk" class="chenge_check_bk telno_mid_3" value=<%= telNumberMid3 %>>
+          <input type="hidden" name="telno_last_3_bk" class="chenge_check_bk telno_last_3" value=<%= telNumberLast3 %>>
+          <input type="hidden" name="telno_yoto_3_bk" class="chenge_check_bk telno_yoto_3" value=<%= telNumberYoto3 %>>
+          <input type="hidden" name="mail_address_1_bk" class="chenge_check_bk mail_address_1" value=<%= mailAddress1 %>>
+          <input type="hidden" name="mail_yoto_1_bk" class="chenge_check_bk mail_yoto_1" value=<%= mailYoto1 %>>
+          <input type="hidden" name="mail_address_2_bk" class="chenge_check_bk mail_address_2" value=<%= mailAddress2 %>>
+          <input type="hidden" name="mail_yoto_2_bk" class="chenge_check_bk mail_yoto_2" value=<%= mailYoto2 %>>
+          <input type="hidden" name="mail_address_3_bk" class="chenge_check_bk mail_address_3" value=<%= mailAddress3 %>>
+          <input type="hidden" name="mail_yoto_3_bk" class="chenge_check_bk mail_yoto_3" value=<%= mailYoto3 %>>
+          <input type="hidden" name="job_code_bk" value=<%= jobCode %>>
+          <input type="hidden" name="member_id_sou_bk" value=<%= memberIdSou %>>
+          <input type="hidden" name="comment_bk" value=<%= comment %>>
+          <input type="hidden" name="job_name_bk" value=<%= jobName %>>
+          <input type="hidden" name="sou_name_bk" value=<%= souName %>>
+          <!-- 変更後の情報 -->
+          <input type="hidden" name="job_name" value="dummy">
+          <input type="hidden" name="tiku_name" value="dummy">
+          <input type="hidden" name="sewa_name" value="dummy">
+          <input type="hidden" name="sou_name" value="dummy">
 
           <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
         </form>

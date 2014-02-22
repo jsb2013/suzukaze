@@ -5,105 +5,139 @@
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
 <link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
 <link rel="stylesheet" href="stylesheets/danka/danka_detail_common.css" type="text/css" id="danka_detail_common">
-<link rel="stylesheet" href="stylesheets/danka/danka_detail_kihon.css" type="text/css" id="danka_detail_kihon">
+<link rel="stylesheet" href="stylesheets/danka/danka_detail_kihon_confirm.css" type="text/css" id="danka_detail_kihon">
 <title>檀家管理システム　禅</title>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/util.js"></script>
 <script src="js/dankaInfo.js"></script>
 <%
     var memberId = webItemJson.member_id;
-    var dankaTypeDanka = webItemJson.danka_type_danka;
-    var dankaTypeShinto = webItemJson.danka_type_shinto;
-%>
-<%
+    //var nameFullBk = webItemJson.name_full;
+    var dankaTypeDankaBk = webItemJson.danka_type_danka_bk;
+    var dankaTypeShintoBk = webItemJson.danka_type_shinto_bk;
+    var tikuNameBk = webItemJson.tiku_name_bk;
+    var sewaNameBk = webItemJson.sewa_name_bk;
+    var tikuCodeBk = webItemJson.tiku_code_bk;
+    var sewaCodeBk = webItemJson.sewa_code_bk;
+
+    var dankaTypeBk = webItemJson.danka_type_bk;
+    var nameSeiBk = webItemJson.name_sei_bk;
+    var nameNaBk = webItemJson.name_na_bk;
+    var nameFullBk = nameSeiBk + "　" + nameNaBk;
+    var furiganaSeiBk = webItemJson.furigana_sei_bk;
+    var furiganaNaBk = webItemJson.furigana_na_bk;
+    var furiganaFullBk = furiganaSeiBk + "　" + furiganaNaBk;
+    var sexBk = webItemJson.sex_bk;
+    var zipCodePreBk = webItemJson.zip_code_pre_bk;
+    var zipCodeLastBk = webItemJson.zip_code_last_bk;
+    var zipCodeBk = zipCodePreBk + "-" + zipCodeLastBk;
+    var regionBk = webItemJson.region_bk;
+    var cityBk = webItemJson.city_bk;
+    var addressLine1Bk = webItemJson.address_line1_bk;
+    var addressLine2Bk = webItemJson.address_line2_bk;
+    var birthdayYBk = webItemJson.birthday_y_bk;
+    var birthdayMBk = webItemJson.birthday_m_bk;
+    var birthdayDBk = webItemJson.birthday_d_bk;
+    var birthdayBk = birthdayYBk + "年" + birthdayMBk + "月" + birthdayDBk + "日";
+    var telnoPre1Bk = webItemJson.telno_pre_1_bk;
+    var telnoMid1Bk = webItemJson.telno_mid_1_bk;
+    var telnoLast1Bk = webItemJson.telno_last_1_bk;
+    var telnoYoto1Bk = webItemJson.telno_yoto_1_bk;
+    var telno1Bk = telnoPre1Bk + "-" + telnoMid1Bk + "-" + telnoLast1Bk + "　（用途：" + telnoYoto1Bk + "　）";
+    var telnoPre2Bk = webItemJson.telno_pre_2_bk;
+    var telnoMid2Bk = webItemJson.telno_mid_2_bk;
+    var telnoLast2Bk = webItemJson.telno_last_2_bk;
+    var telnoYoto2Bk = webItemJson.telno_yoto_2_bk;
+    var telno2Bk = telnoPre2Bk + "-" + telnoMid2Bk + "-" + telnoLast2Bk + "　（用途：" + telnoYoto2Bk + "　）";
+    var telnoPre3Bk = webItemJson.telno_pre_3_bk;
+    var telnoMid3Bk = webItemJson.telno_mid_3_bk;
+    var telnoLast3Bk = webItemJson.telno_last_3_bk;
+    var telnoYoto3Bk = webItemJson.telno_yoto_3_bk;
+    var telno3Bk = telnoPre3Bk + "-" + telnoMid3Bk + "-" + telnoLast3Bk + "　（用途：" + telnoYoto3Bk + "　）";
+    var mailAddress1Bk = webItemJson.mail_address_1_bk;
+    var mailYoto1Bk = webItemJson.mail_yoto_1_bk;
+    var mail1Bk = mailAddress1Bk + "　（用途：" + mailYoto1Bk + "　）";
+    var mailAddress2Bk = webItemJson.mail_address_2_bk;
+    var mailYoto2Bk = webItemJson.mail_yoto_2_bk;
+    var mail2Bk = mailAddress2Bk + "　（用途：" + mailYoto2Bk + "　）";
+    var mailAddress3Bk = webItemJson.mail_address_3_bk;
+    var mailYoto3Bk = webItemJson.mail_yoto_3_bk;
+    var mail3Bk = mailAddress3Bk + "　（用途：" + mailYoto3Bk + "　）";
+    var jobNameBk = webItemJson.job_name_bk;
+    var souNameBk = webItemJson.sou_name_bk;
+    var commentBk = webItemJson.comment_bk;
+
+    var dankaType = webItemJson.danka_type;
     var nameSei = webItemJson.name_sei;
     var nameNa = webItemJson.name_na;
-    var nameFull = nameSei + "  " + nameNa; //
-    var dankaType = webItemJson.danka_type;
-    var dankaTypeName = "檀家"; //
-    if (dankaType === '1'){
-        var dankaTypeName = "信徒";
-    }
+    var nameFull = nameSei + "　" + nameNa;
     var furiganaSei = webItemJson.furigana_sei;
     var furiganaNa = webItemJson.furigana_na;
-    var furiganaFull = furiganaSei + "  " + furiganaNa; //
+    var furiganaFull = furiganaSei + "　" + furiganaNa;
     var sex = webItemJson.sex;
-    var sexName = "男"; //
-    if (sex === '1'){
-        var sexName = "女";
-    }
-    var zipCodeFull = webItemJson.zip_code_pre + " - " + webItemJson.zip_code_last; //
+    var zipCodePre = webItemJson.zip_code_pre;
+    var zipCodeLast = webItemJson.zip_code_last;
+    var zipCode = zipCodePre + "-" + zipCodeLast;
     var region = webItemJson.region;
     var city = webItemJson.city;
-    var address_line1 = webItemJson.address_line1;
-    var address_line2 = webItemJson.address_line2;
-    var birthday = webItemJson.birthday_y + " 年 " + webItemJson.birthday_m + " 月 " + webItemJson.birthday_d + " 日 ";
-    var telno_1 = webItemJson.telno_1_pre + "-" + webItemJson.telno_1_mid + "-" + webItemJson.telno_1_last;
-    var telno_2 = webItemJson.telno_2_pre + "-" + webItemJson.telno_2_mid + "-" + webItemJson.telno_2_last;
-    var telno_3 = webItemJson.telno_3_pre + "-" + webItemJson.telno_3_mid + "-" + webItemJson.telno_3_last;
-    var telno_1_yoto = webItemJson.telno_1_yoto;
-    var telno_2_yoto = webItemJson.telno_2_yoto;
-    var telno_3_yoto = webItemJson.telno_3_yoto;
-    var email_1 = webItemJson.email_1;
-    var email_2 = webItemJson.email_2;
-    var email_3 = webItemJson.email_3;
-    var email_1_yoto = webItemJson.email_1_yoto;
-    var email_2_yoto = webItemJson.email_2_yoto;
-    var email_3_yoto = webItemJson.email_3_yoto;
+    var addressLine1 = webItemJson.address_line1;
+    var addressLine2 = webItemJson.address_line2;
+    var birthdayY = webItemJson.birthday_y;
+    var birthdayM = webItemJson.birthday_m;
+    var birthdayD = webItemJson.birthday_d;
+    var birthday = birthdayY + "年" + birthdayM + "月" + birthdayD + "日";
+    var telnoPre1 = webItemJson.telno_pre_1;
+    var telnoMid1 = webItemJson.telno_mid_1;
+    var telnoLast1 = webItemJson.telno_last_1;
+    var telnoYoto1 = webItemJson.telno_yoto_1;
+    var telno1 = telnoPre1 + "-" + telnoMid1 + "-" + telnoLast1 + "　（用途：" + telnoYoto1 + "　）";
+    var telnoPre2 = webItemJson.telno_pre_2;
+    var telnoMid2 = webItemJson.telno_mid_2;
+    var telnoLast2 = webItemJson.telno_last_2;
+    var telnoYoto2 = webItemJson.telno_yoto_2;
+    var telno2 = telnoPre2 + "-" + telnoMid2 + "-" + telnoLast2 + "　（用途：" + telnoYoto2 + "　）";
+    var telnoPre3 = webItemJson.telno_pre_3;
+    var telnoMid3 = webItemJson.telno_mid_3;
+    var telnoLast3 = webItemJson.telno_last_3;
+    var telnoYoto3 = webItemJson.telno_yoto_3;
+    var telno3 = telnoPre3 + "-" + telnoMid3 + "-" + telnoLast3 + "　（用途：" + telnoYoto3 + "　）";
+    var mailAddress1 = webItemJson.mail_address_1;
+    var mailYoto1 = webItemJson.mail_yoto_1;
+    var mail1 = mailAddress1 + "　（用途：" + mailYoto1 + "　）";
+    var mailAddress2 = webItemJson.mail_address_2;
+    var mailYoto2 = webItemJson.mail_yoto_2;
+    var mail1 = mailAddress2 + "　（用途：" + mailYoto2 + "　）";
+    var mailAddress3 = webItemJson.mail_address_3;
+    var mailYoto3 = webItemJson.mail_yoto_3;
+    var mail1 = mailAddress3 + "　（用途：" + mailYoto3 + "　）";
     var jobName = webItemJson.job_name;
+    var souName = webItemJson.sou_name;
     var tikuName = webItemJson.tiku_name;
     var sewaName = webItemJson.sewa_name;
-    var souMemberId = webItemJson.member_id_sou;
-%>
-<%
-    var nameSeiPre = webItemJson.name_sei_pre;
-    var nameNaPre = webItemJson.name_na_pre;
-    var nameFullPre = nameSeiPre + "  " + nameNaPre; //
-    var dankaTypePre = webItemJson.danka_type_pre;
-    var dankaTypeNamePre = "檀家"; //
-    if (dankaTypePre === '1'){
-        var dankaTypeNamePre = "信徒";
-    }
-    var furiganaSeiPre = webItemJson.furigana_sei_pre;
-    var furiganaNaPre = webItemJson.furigana_na_pre;
-    var furiganaFullPre = furiganaSeiPre + "  " + furiganaNaPre; //
-    var sexPre = webItemJson.sex_pre;
-    var sexNamePre = "男"; //
-    if (sexPre === '1'){
-        var sexNamePre = "女";
-    }
-    var zipCodePre = webItemJson.zip_code_pre + " - " + webItemJson.zip_code_last_pre;
-    var regionPre = webItemJson.region_pre;
-    var cityPre = webItemJson.city_pre;
-    var addressLine1Pre = webItemJson.address_line1_pre;
-    var addressLine2Pre = webItemJson.address_line2_pre;
-    var birthdayPre = webItemJson.birthday_y_pre + " 年 " + webItemJson.birthday_m_pre + " 月 " + webItemJson.birthday_d_pre + " 日 ";
-    var telno1Pre = webItemJson.telno_1_pre_pre + "-" + webItemJson.telno_1_mid_pre + "-" + webItemJson.telno_1_last_pre;
-    var telno2Pre = webItemJson.telno_2_pre_pre + "-" + webItemJson.telno_2_mid_pre + "-" + webItemJson.telno_2_last_pre;
-    var telno3Pre = webItemJson.telno_3_pre_pre + "-" + webItemJson.telno_3_mid_pre + "-" + webItemJson.telno_3_last_pre;
-    var telno1YotoPre = webItemJson.telno_1_yoto;
-    var telno2YotoPre = webItemJson.telno_2_yoto;
-    var telno3YotoPre = webItemJson.telno_3_yoto;
-    var email1Pre = webItemJson.email_1;
-    var email2Pre = webItemJson.email_2;
-    var email3Pre = webItemJson.email_3;
-    var email1yotoPre = webItemJson.email_1_yoto;
-    var email2yotoPre = webItemJson.email_2_yoto;
-    var email3yotoPre = webItemJson.email_3_yoto;
-    var jobNamePre = webItemJson.job_name_pre;
-    var tikuNamePre = webItemJson.tiku_name_pre;
-    var sewaNamePre = webItemJson.sewa_name_pre;
-    var souMemberIdPre = webItemJson.member_id_sou_pre;
-    var tikuCodePre = webItemJson.tiku_code_pre;
-    var sewaCodePre = webItemJson.sewa_code_pre;
+    var comment = webItemJson.comment;
 %>
 <script>
-    <%
-    var test1 = dankaTypePre;
-    %>
-    
-    var test2 = 2;
-
+    $(function () {
+        // ページ遷移定義
+        $(".menu_sub_kihon").click(function () {
+            $("#danka_detail_kihon_form").submit();
+        });
+        $(".menu_sub_kako").click(function () {
+            $("#danka_detail_kako_form").submit();
+        });
+        $(".menu_sub_genzai").click(function () {
+            $("#danka_detail_genzai_form").submit();
+        });
+        $(".menu_sub_nenkaiki").click(function () {
+            $("#danka_detail_nenkaiki_form").submit();
+        });
+        $(".menu_sub_kihu").click(function () {
+            $("#danka_detail_kihu_form").submit();
+        });
+        $(".menu_sub_omairi").click(function () {
+            $("#danka_detail_omairi_form").submit();
+        });
+    });
 </script>
 </head>
 <body>
@@ -165,11 +199,11 @@
               </thead>
               <tbody>
                 <tr id="<%= memberId %>">
-                  <td class="table_name_full"><%= nameFullPre %></td>
-                  <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
-                  <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
-                  <td id="<%= tikuCodePre %>" class="table_tiku_name"><%= tikuNamePre %></td>
-                  <td id="<%= sewaCodePre %>" class="table_sewa_name"><%= sewaNamePre %></td>
+                  <td class="table_name_full"><%= nameFullBk %></td>
+                  <td class="table_danka_type_danka"><%= dankaTypeDankaBk %></td>
+                  <td class="table_danka_type_shinto"><%= dankaTypeShintoBk %></td>
+                  <td id="<%= tikuCodeBk %>" class="table_tiku_name"><%= tikuNameBk %></td>
+                  <td id="<%= sewaCodeBk %>" class="table_sewa_name"><%= sewaNameBk %></td>
                 </tr>
               </tbody>
             </table>
@@ -188,7 +222,10 @@
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div class="inner_main">
-        <form action="danka_detail_kihon_confirm" method="post">
+        <div class="title_comment">
+   	      <h2><span class="ja">変更内容確認</span><span class="en">※問題が無ければ変更ボタンを押して下さい</span></h2>
+        </div>
+        <form action="danka_detail_kihon_db_update" method="post">
           <div class="table_main_kihon">
             <table>
               <thead>
@@ -199,115 +236,173 @@
               </thead>
               <tbody>
                 <tr>
-                  <td id="danka_type">登録区分</td></td>
+                  <td id="danka_type">登録区分</td>
                   <script>
-                      createHtml(<%= dankaTypePre %>, test2);
-                  </script>
+                      createHtmlByDankaType("<%= dankaTypeBk %>", "<%= dankaType %>");
+                  </script>                    
                 </tr>
                 <tr>
                   <td id="name_type">戸主名(※必須)</td>
-                  <td id="name" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= nameFullBk %>", "<%= nameFull %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="furigana_type">ふりがな(※必須)</td>
-                  <td id="furigana" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= furiganaFullBk %>", "<%= furiganaFull %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="sex_type">性別(※必須)</td>
-                  <td id="sex" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtmlBySex("<%= sexBk %>", "<%= sex %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="zip_code_type">郵便番号</td>
-                  <td id="zip_code" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= zipCodeBk %>", "<%= zipCode %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="region_type">都道府県</td>
-                  <td id="region" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= regionBk %>", "<%= region %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="city_type">市区町村</td>
-                  <td id="city" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= cityBk %>", "<%= city %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="address_line1_type">番地</td>
-                  <td id="address_line1" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= addressLine1Bk %>", "<%= addressLine1 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="address_line2_type">ビル名等</td>
-                  <td id="address_line2" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= addressLine2Bk %>", "<%= addressLine2 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="birthday_type">生年月日</td>
-                  <td id="birthday_y" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= birthdayBk %>", "<%= birthday %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="tel_type">電話番号(優先1)</td>
-                  <td id="tel" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= telno1Bk %>", "<%= telno1 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="tel_type">電話番号(優先2)</td>
-                  <td id="tel" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= telno2Bk %>", "<%= telno2 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="tel_type">電話番号(優先3)</td>
-                  <td id="tel" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= telno3Bk %>", "<%= telno3 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="email_type">Email(優先1)</td>
-                  <td id="email" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= mailAddress1Bk %>", "<%= mailAddress1 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="email_type">Email(優先2)</td>
-                  <td id="email" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= mailAddress2Bk %>", "<%= mailAddress2 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="email_type">Email(優先3)</td>
-                  <td id="email" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= mailAddress3Bk %>", "<%= mailAddress3 %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="job_type">職業</td>
-                  <td id="job" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= jobName %>", "<%= jobName %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="tiku_type">地区名</td>
-                  <td id="tiku" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= tikuNameBk %>", "<%= tikuName %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="sewa_type">世話人</td>
-                  <td id="sewa" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= sewaNameBk %>", "<%= sewaName %>");
+                    </script>
                 </tr>
                 <tr>
                   <td id="sou_type">担当者[僧]</td>
-                  <td id="sou" class="table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= souNameBk %>", "<%= souName %>");
+                    </script>
                 </tr>
                 <tr>
                   <td class="comment_type">備考<br>※500文字以内</td>
-                  <td class="comment table_main_tuika_selectable">
-                  </td>
+                    <script>
+                      createHtml("<%= commentBk %>", "<%= comment %>");
+                    </script>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
+            <input type="hidden" name="danka_type" value=<%= dankaType %>>
+            <input type="hidden" name="name_sei" value=<%= nameSei %>>
+            <input type="hidden" name="name_na" value=<%= nameNa %>>
+            <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
+            <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
+            <input type="hidden" name="sex" value=<%= sex %>>
+            <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
+            <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
+            <input type="hidden" name="region" value=<%= region %>>
+            <input type="hidden" name="city" value=<%= city %>>
+            <input type="hidden" name="address_line1" value=<%= addressLine1 %>>
+            <input type="hidden" name="address_line2" value=<%= addressLine2 %>>
+            <input type="hidden" name="birthday_y" value=<%= birthdayY %>>
+            <input type="hidden" name="birthday_m" value=<%= birthdayM %>>
+            <input type="hidden" name="birthday_d" value=<%= birthdayD %>>
+            <input type="hidden" name="telno_1_pre" value=<%= telnoPre1 %>>
+            <input type="hidden" name="telno_1_mid" value=<%= telnoMid1 %>>
+            <input type="hidden" name="telno_1_last" value=<%= telnoLast1 %>>
+            <input type="hidden" name="telno_1_yoto" value=<%= telnoYoto1 %>>
+            <input type="hidden" name="telno_2_pre" value=<%= telnoPre2 %>>
+            <input type="hidden" name="telno_2_mid" value=<%= telnoMid2 %>>
+            <input type="hidden" name="telno_2_last" value=<%= telnoLast2 %>>
+            <input type="hidden" name="telno_2_yoto" value=<%= telnoYoto2 %>>
+            <input type="hidden" name="telno_3_pre" value=<%= telnoPre3 %>>
+            <input type="hidden" name="telno_3_mid" value=<%= telnoMid3 %>>
+            <input type="hidden" name="telno_3_last" value=<%= telnoLast3 %>>
+            <input type="hidden" name="telno_3_yoto" value=<%= telnoYoto3 %>>
+            <input type="hidden" name="email_1" value=<%= mailAddress1 %>>
+            <input type="hidden" name="email_1_yoto" value=<%=.mailYoto1 %>>
+            <input type="hidden" name="email_2" value=<%= mailAddress2 %>>
+            <input type="hidden" name="email_2_yoto" value=<%= mailYoto2 %>>
+            <input type="hidden" name="email_3" value=<%= mailAddress3 %>>
+            <input type="hidden" name="email_3_yoto" value=<%= mailYoto3 %>>
+            <input type="hidden" name="job_name" value=<%= webItemJson.job_name %>>
+            <input type="hidden" name="tiku_name" value=<%= webItemJson.tiku_name %>>
+            <input type="hidden" name="sewa_name" value=<%= webItemJson.sewa_name %>>
+            <input type="hidden" name="sou_name" value=<%= webItemJson.sou_name %>>
+            <input type="hidden" name="comment" value=<%= webItemJson.comment %>>
+          <div id="new_submit"><input type="submit" value="変更" id="submit"></div>
         </form>
       </div>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
