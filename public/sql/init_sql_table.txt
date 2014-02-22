@@ -1,0 +1,208 @@
+create table m_member
+(
+id serial NOT NULL,
+member_id serial NOT NULL,
+name_sei varchar(50) NOT NULL,
+name_na varchar(50) NOT NULL,
+furigana_sei varchar(50) NOT NULL,
+furigana_na varchar(50) NOT NULL,
+kaimyo varchar(100) ,
+sex integer NOT NULL,
+job_code integer ,
+birthday_y integer ,
+birthday_m integer ,
+birthday_d integer ,
+meinichi_y integer ,
+meinichi_m integer ,
+meinichi_d integer ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_tiku_code
+(
+id serial NOT NULL,
+tiku_code integer NOT NULL,
+tiku_name varchar(50) NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_sewa_code
+(
+id serial NOT NULL,
+sewa_code integer NOT NULL,
+sewa_name varchar(50) NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_sou
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+rank_code varchar(50) NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_job_code
+(
+id serial NOT NULL,
+job_code integer NOT NULL,
+job_name varchar(50) NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_member_tiku
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+tiku_code integer NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table t_danka
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+danka_type integer NOT NULL,
+member_id_kosyu integer NOT NULL,
+member_id_sewa integer ,
+member_id_sou integer ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table t_sewa
+(
+id serial NOT NULL,
+sewa_code integer ,
+yakuwari_code integer NOT NULL,
+member_id integer NOT NULL,
+tanto_from integer NOT NULL,
+tanto_to integer NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_address
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+priority integer NOT NULL,
+zip_code_pre varchar(10) ,
+zip_code_last varchar(10) ,
+region varchar(20) ,
+city varchar(50) ,
+address_line1 varchar(50) ,
+address_line2 varchar(50) ,
+yoto varchar(100) ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_mail
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+priority integer NOT NULL,
+mail_address varchar(100) ,
+yoto varchar(100) ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_telnumber
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+priority integer NOT NULL,
+tel_number_pre varchar(10) ,
+tel_number_mid varchar(10) ,
+tel_number_last varchar(10) ,
+yoto varchar(100) ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table t_comment
+(
+id serial NOT NULL,
+comment_code integer NOT NULL,
+member_id integer ,
+comment varchar(500) ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));

@@ -1,0 +1,40 @@
+create unique index m_member_valid_constraint
+on m_member (member_id,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index m_tiku_code_valid_constraint
+on m_tiku_code (tiku_code,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+
+create unique index m_sewa_code_valid_constraint
+on m_sewa_code (sewa_code,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+
+create unique index m_sou_valid_constraint
+on m_sou (member_id,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+
+create unique index m_job_code_valid_constraint
+on m_job_code (job_code,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+
+create unique index m_member_tiku_valid_constraint
+on m_member_tiku (member_id,tiku_code,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+
+create unique index t_danka_valid_constraint
+on t_danka (member_id,is_deleted) where not is_deleted;
+
+create unique index t_sewa_valid_constraint
+on t_sewa (member_id,yakuwari_code,is_deleted) where not is_deleted;
+
+create unique index m_address_valid_constraint
+on m_address (member_id,priority,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index m_mail_valid_constraint
+on m_mail (member_id,priority,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index m_telnumber_valid_constraint
+on m_telnumber (member_id,priority,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index t_comment_valid_constraint
+on t_comment (comment_code,member_id,is_deleted) where not is_deleted;
