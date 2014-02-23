@@ -78,8 +78,11 @@ app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 app.get('/danka_detail_top', routes.getDankaDetailTop);
 // 結果基本情報画面
 app.post('/danka_detail_kihon', routes.postDankaDetailKihon);
+app.post('/danka/danka_detail_kihon', routes.postDankaDetailKihon);
 // 結果基本情報画面→確認画面
 app.post('/danka_detail_kihon_confirm', routes.postDankaDetailKihonConfirm);
+// 結果基本情報画面→確認画面→DB更新
+app.post('/danka_detail_kihon_db_update', routes.postDankaDetailKihonDbUpdate);
 // 結果過去帳画面
 //app.post('/danka_detail_kako', routes.postDankaDetailKako);
 // 結果現在帳画面
