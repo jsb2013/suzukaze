@@ -84,7 +84,7 @@
 
     function getDankaResultFromDB(memberId, resultRows, dbcallback) {
         // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
-        var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job_code, mm.birthday_y, mm.birthday_m, mm.birthday_d, td.danka_type, mmt.tiku_code, td.member_id_sewa, td.member_id_sou from (m_member as mm inner join m_member_tiku as mmt on mm.member_id = mmt.member_id) inner join t_danka td on mmt.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and mmt.is_disabled=false and mmt.is_deleted=false and td.is_deleted=false and mm.member_id = $1 and td.member_id = $1 and mmt.member_id = $1',
+        var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job_code, mm.birthday_y, mm.birthday_m, mm.birthday_d, td.danka_type, mmt.tiku_code, td.sewa_code, td.member_id_sou from (m_member as mm inner join m_member_tiku as mmt on mm.member_id = mmt.member_id) inner join t_danka td on mmt.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and mmt.is_disabled=false and mmt.is_deleted=false and td.is_deleted=false and mm.member_id = $1 and td.member_id = $1 and mmt.member_id = $1',
                     [memberId]);
 
         query.on('row', function (row) {

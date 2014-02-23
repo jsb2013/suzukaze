@@ -1,0 +1,73 @@
+@charset "Shift_JIS";
+
+/* ‹¤’Ê’è‹` */
+.inner_main{
+    margin: 15px 0 0 0;
+}
+
+.table_main_kako{
+    width: 630px;
+    height: 310px;
+    overflow-y: scroll;
+}
+      
+.table_main_kako_header{
+    color: #ffffff;
+    font-size: 14px;
+    background-color : #804000;
+}
+      
+#table_main_kako_zokumei{
+    width: 150px;
+}
+
+#table_main_kako_kaimyo{
+    width: 200px;
+}
+
+#table_main_kako_sex{
+    width: 50px;
+}
+
+#table_main_kako_meinichi{
+    width: 100px;
+}
+
+#table_main_kako_kyonen{
+    width: 50px;
+}
+
+#table_main_kako_comment{
+    width: 90px;
+}
+
+.table_main_kihon tr{
+    height: 35px;
+}
+
+.table_main_kako td{
+    padding: 2px 0 0 10px;
+    text-align: left;
+    height: 30px;
+    font-size: 12px;
+    border: solid 1px #BA802F;
+    border-collapse: collapse;
+}
+
+tbody tr:hover{
+    background: orange;
+}
+
+.even{
+    background: #ffdfbf;
+}
+
+
+
+
+
+
+
+
+
+

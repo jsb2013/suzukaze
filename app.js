@@ -74,17 +74,24 @@ app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 //***************************************
 // 檀家検索結果画面
 //***************************************
-// 結果TOP画面
+// 檀家詳細TOP画面
 app.get('/danka_detail_top', routes.getDankaDetailTop);
-// 結果基本情報画面
+// 檀家詳細TOP画面→基本情報画面
 app.post('/danka_detail_kihon', routes.postDankaDetailKihon);
-app.post('/danka/danka_detail_kihon', routes.postDankaDetailKihon);
-// 結果基本情報画面→確認画面
+// 檀家詳細TOP画面→基本情報画面→確認画面
 app.post('/danka_detail_kihon_confirm', routes.postDankaDetailKihonConfirm);
-// 結果基本情報画面→確認画面→DB更新
+// 檀家詳細TOP画面→基本情報画面→確認画面→DB更新
 app.post('/danka_detail_kihon_db_update', routes.postDankaDetailKihonDbUpdate);
-// 結果過去帳画面
-//app.post('/danka_detail_kako', routes.postDankaDetailKako);
+
+// 檀家詳細TOP画面→過去帳画面
+app.post('/danka_detail_kako', routes.postDankaDetailKako);
+// 檀家詳細TOP画面→過去帳画面→詳細画面
+app.post('/danka_detail_kako_result', routes.postDankaDetailKakoResult);
+// 檀家詳細TOP画面→過去帳画面→詳細画面→確認画面
+app.post('/danka_detail_kako_confirm', routes.postDankaDetailKakoConfirm);
+// 檀家詳細TOP画面→過去帳画面→詳細画面→確認画面→DB更新
+app.post('/danka_detail_kako_db_update', routes.postDankaDetailKakoDbUpdate);
+
 // 結果現在帳画面
 //app.post('/danka_detail_genzai', routes.postDankaDetailGenzai);
 // 結果寄附帳画面

@@ -98,7 +98,7 @@ function convertSewaListToJson(sewaList) {
 
 function getDankaResultFromDB(searchMoji, resultRows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
-    var query = client.query('select mm1.member_id, mm1.name_sei, mm1.name_na, mm1.meinichi_y, mmt.tiku_code, td.danka_type, td.member_id_sewa as sewa_code, mm2.name_sei as name_sei_kosyu, mm2.name_na as name_na_kosyu, mm2.member_id as member_id_kosyu, td.member_id_sewa from ((m_member as mm1 inner join m_member_tiku as mmt on mm1.member_id = mmt.member_id) inner join t_danka as td on mm1.member_id = td.member_id) inner join m_member as mm2 on td.member_id_kosyu = mm2.member_id where mm1.is_disabled=false and mm1.is_deleted=false and mmt.is_disabled=false and mmt.is_deleted=false and mm2.is_disabled=false and mm2.is_deleted=false and td.is_deleted=false and mm1.furigana_sei like $1 order by mm1.member_id',
+    var query = client.query('select mm1.member_id, mm1.name_sei, mm1.name_na, mm1.meinichi_y, mmt.tiku_code, td.danka_type, td.sewa_code as sewa_code, mm2.name_sei as name_sei_kosyu, mm2.name_na as name_na_kosyu, mm2.member_id as member_id_kosyu, td.sewa_code from ((m_member as mm1 inner join m_member_tiku as mmt on mm1.member_id = mmt.member_id) inner join t_danka as td on mm1.member_id = td.member_id) inner join m_member as mm2 on td.member_id_kosyu = mm2.member_id where mm1.is_disabled=false and mm1.is_deleted=false and mmt.is_disabled=false and mmt.is_deleted=false and mm2.is_disabled=false and mm2.is_deleted=false and td.is_deleted=false and mm1.furigana_sei like $1 order by mm1.member_id',
                     [searchMoji + '%']);
 
     query.on('row', function(row) {

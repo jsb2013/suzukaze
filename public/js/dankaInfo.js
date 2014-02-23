@@ -49,7 +49,7 @@ function createHtmlByDankaType(value1, value2){
     }
     createHtml(dankaValue1, dankaValue2);
     return;
-}
+};
 
 function createHtmlBySex(value1, value2){
     var sexValue1 = "男";
@@ -63,4 +63,50 @@ function createHtmlBySex(value1, value2){
     }
     createHtml(sexValue1, sexValue2);
     return;
-}
+};
+
+function convertSexValueToMoji(sex){
+    var sex_mei = '男性';
+    if(sex === 2){
+        sex_mei = '女性';
+    }
+    document.write('<label>' + sex_mei + '</label>'); 
+};
+function calculateAge(birthdayY, birthdayM, birthdayD, kyonenY, kyonenM, kyonenD){
+
+    if(isUndefine(birthdayY) || isUndefine(birthdayM) || isUndefine(birthdayD) || isUndefine(kyonenY) || isUndefine(kyonenM) || isUndefine(kyonenD)){
+        document.write('<label>-</label>');
+        return;
+    }
+
+    var birthYear = parseInt(birthdayY);
+    var birthMonth = parseInt(birthdayM);
+    var birthDay = parseInt(birthdayD);
+    
+    var kyonenYear = parseInt(kyonenY);
+    var kyonenMonth = parseInt(kyonenM);
+    var kyonenDay = parseInt(kyonenD);
+    
+    if ((kyonenMonth * 100 + kyonenDay) > (birthMonth * 100 + birthDay)){
+        var year = kyonenYear - birthYear;
+        document.write('<label>' + year + '歳</label>');
+        return;
+    }
+    var year = kyonenYear - birthYear - 1;
+    document.write('<label>' + year + '歳</label>');
+    return;
+};
+
+function cutComment(comment, length){
+    if(isUndefine(comment)){
+        document.write('<label>-</label>');
+        return;
+    }
+    if(comment.length<length){
+        document.write('<label>' + comment + '</label>');
+        return;
+    }
+    document.write('<label>' + comment.substring(0, length) + '</label>');
+    return;
+};
+

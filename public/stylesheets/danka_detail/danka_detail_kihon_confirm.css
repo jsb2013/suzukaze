@@ -1,0 +1,95 @@
+@charset "Shift_JIS";
+
+/* ‹¤’Ê’è‹` */
+.inner_main{
+    margin: 5px 0 0 0;
+    text-align: left;
+}
+
+.title_comment{
+    margin: 8px 0 0 0;
+    height: 30px;
+    width: 630px;
+    background: red;
+}
+
+.title_comment h2{
+    margin: 0;
+}
+
+.title_comment h2 span.ja{
+    padding: 3px 30px 5px 20px;
+    display: block;
+    text-align: left;
+    float: left;
+    color: white;
+    font-size: 17px;
+}
+.title_comment h2 span.en{
+    padding: 5px 0 5px 0;
+    display: block;
+    text-align: left;
+    color: white;
+    font-size: 14px;
+}
+
+.table_main_kihon{
+    margin: 8px 0 0 0;
+    width: 630px;
+    height: 310px;
+    overflow-y: scroll;
+}
+      
+.table_main_kihon_header{
+    color: #ffffff;
+    font-size: 14px;
+    background-color : #804000;
+}
+      
+.table_main_kihon_header_komoku{
+    width: 130px;
+}
+
+.table_main_kihon_header_naiyo{
+    width: 500px;
+}
+      
+.table_main_kihon tr{
+    height: 35px;
+}
+
+.table_main_kihon td{
+    border: solid 1px #BA802F;
+    border-collapse: collapse;
+}
+.is_change{
+    background: orange;
+}
+
+#new_submit{
+    margin: 10px 0 0 0;
+    text-align: center;
+}
+
+#new_submit input{
+    text-align: center;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.error{
+    color: #f00;
+    background-color: orange;
+}
+
+
+
+
+
+
+
+
+
+
+
+

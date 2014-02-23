@@ -179,7 +179,7 @@ exports.postDankaTuikaDBUpdate = function(req, res) {
 //***************************************
 // 檀家検索結果画面
 //***************************************
-// 結果TOP画面
+// 檀家詳細TOP画面
 exports.getDankaDetailTop = function(req, res) {
     
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
@@ -206,7 +206,7 @@ exports.getDankaDetailTop = function(req, res) {
     getDankaDetailTopModel.main(memberId, authCallback);
 };
 
-// 結果基本情報画面
+// 檀家詳細TOP画面→基本情報画面
 exports.postDankaDetailKihon = function (req, res) {
 
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
@@ -236,7 +236,7 @@ exports.postDankaDetailKihon = function (req, res) {
     postDankaDetailKihonModel.main(webItemJson, authCallback);
 };
 
-// 結果基本情報画面
+// 檀家詳細TOP画面→基本情報画面→確認画面
 exports.postDankaDetailKihonConfirm = function (req, res) {
 
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
@@ -259,7 +259,7 @@ exports.postDankaDetailKihonConfirm = function (req, res) {
     postDankaDetailKihonConfirmModel.main(authCallback);
 };
 
-// 結果基本情報画面
+// 檀家詳細TOP画面→基本情報画面→確認画面→DB更新
 exports.postDankaDetailKihonDbUpdate = function (req, res) {
 
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
@@ -282,13 +282,102 @@ exports.postDankaDetailKihonDbUpdate = function (req, res) {
     postDankaDetailKihonDbUpdateModel.main(webItemJson, authCallback);
 };
 
+// 檀家詳細TOP画面→過去帳画面
+exports.postDankaDetailKako = function (req, res) {
 
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var postDankaDetailKakoModel = require("../model/danka_detail/postDankaDetailKakoModel");
+    var webItemJson = req.body;
+    
+    function authCallback(isError, memberInfo) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_detail/danka_detail_kako', {
+            memberInfo: memberInfo,
+            webItemJson: webItemJson
+        });
+        return;
+    }
 
+    postDankaDetailKakoModel.main(webItemJson, authCallback);
+};
 
+// 檀家詳細TOP画面→過去帳画面→詳細画面
+exports.postDankaDetailKakoResult = function (req, res) {
 
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var postDankaDetailKakoResultModel = require("../model/danka_detail/postDankaDetailKakoResultModel");
+    var webItemJson = req.body;
+    
+    function authCallback(isError, dankaInfo, tikuCodeInfo, sewaCodeInfo, commentInfo) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_detail/danka_detail_kako_result', {
+            dankaInfo: dankaInfo,
+            tikuCodeInfo: tikuCodeInfo,
+            sewaCodeInfo: sewaCodeInfo,
+            commentInfo: commentInfo,
+            webItemJson: webItemJson
+        });
+        return;
+    }
 
+    postDankaDetailKakoResultModel.main(webItemJson, authCallback);
+};
 
+// 檀家詳細TOP画面→過去帳画面→詳細画面→確認画面
+exports.postDankaDetailKakoConfirm = function (req, res) {
 
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var postDankaDetailKakoConfirmModel = require("../model/danka_detail/postDankaDetailKakoConfirmModel");
+    var webItemJson = req.body;
+
+    function authCallback(isError) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_detail/danka_detail_kako_confirm', {
+            webItemJson: webItemJson
+        });
+        return;
+    }
+
+    postDankaDetailKakoConfirmModel.main(authCallback);
+};
+
+// 檀家詳細TOP画面→基本情報画面→確認画面→DB更新
+exports.postDankaDetailKakoDbUpdate = function (req, res) {
+
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var postDankaDetailKakoDbUpdateModel = require("../model/danka_detail/postDankaDetailKakoDbUpdateModel");
+    var webItemJson = req.body;
+
+    function authCallback(isError) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_detail/danka_detail_kako_confirm_result', {
+            webItemJson: webItemJson
+        });
+        return;
+    }
+
+    postDankaDetailKakoDbUpdateModel.main(webItemJson, authCallback);
+};
 
 
 

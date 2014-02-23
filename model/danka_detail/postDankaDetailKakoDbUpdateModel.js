@@ -13,15 +13,9 @@ var logger = log.createLogger();
 exports.main = function(webItemJson, callback){
     // いったんはpostで入ってきたデータは正しい想定で作る
     
-    var memberId = webItemJson.member_id;
+    var memberId = webItemJson.member_id_kako;
     var isUpdateMMember = webItemJson.is_update_m_member;
     var isUpdateMMTiku = webItemJson.is_update_m_member_tiku;
-    var isUpdateMtelnumber1 = webItemJson.is_update_m_telnumber_1;
-    var isUpdateMtelnumber2 = webItemJson.is_update_m_telnumber_2;
-    var isUpdateMtelnumber3 = webItemJson.is_update_m_telnumber_3;
-    var isUpdateMMail1 = webItemJson.is_update_m_mail_1;
-    var isUpdateMMail2= webItemJson.is_update_m_mail_2;
-    var isUpdateMMail3 = webItemJson.is_update_m_mail_3;
     var isUpdateTDanka = webItemJson.is_update_t_danka;
     var isUpdateTComment = webItemJson.is_update_t_comment;
     
@@ -45,118 +39,6 @@ exports.main = function(webItemJson, callback){
         function (dbcallback) {
             if(isUpdateMMember ===  "true"){
                 insertMMember(memberId, webItemJson, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 住所マスタ削除（deleteFlag = true)
-        function (dbcallback) {
-            if(isUpdateMMember ===  "true"){
-                updateMAddressForDeleteFlag(memberId, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 住所マスタ追加
-        function (dbcallback) {
-            if(isUpdateMMember ===  "true"){
-                insertMAddress(memberId, webItemJson, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // Eメールマスタ削除1（deleteFlag = true)
-        function (dbcallback) {
-            if(isUpdateMMail1 ===  "true"){
-                updateMMailForDeleteFlag(memberId, 1, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // Eメールマスタ2追加
-        function (dbcallback) {
-            if(isUpdateMMail1 ===  "true"){
-                insertMMail(memberId, 1, webItemJson, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // Eメールマスタ2削除（deleteFlag = true)
-        function (dbcallback) {
-            if(isUpdateMMail2 ===  "true"){
-                updateMMailForDeleteFlag(memberId, 2, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // Eメールマスタ2追加
-        function (dbcallback) {
-            if(isUpdateMMail2 ===  "true"){
-                insertMMail(memberId, 2, webItemJson, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // Eメールマスタ3削除（deleteFlag = true)
-        function (dbcallback) {
-            if(isUpdateMMail3 ===  "true"){
-                updateMMailForDeleteFlag(memberId, 3, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // Eメールマスタ3追加
-        function (dbcallback) {
-            if(isUpdateMMail3 ===  "true"){
-                insertMMail(memberId, 3, webItemJson, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 電話番号マスタ1削除（deleteFlag = true)
-        function (dbcallback) {
-            if(isUpdateMtelnumber1 ===  "true"){
-                updateMTelnumberForDeleteFlag(memberId, 1, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 電話番号マスタ1追加
-        function (dbcallback) {
-            if(isUpdateMtelnumber1 ===  "true"){
-                insertMTelnumber(memberId, 1, webItemJson, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 電話番号マスタ2削除（deleteFlag = true)
-        function (dbcallback) {
-            if(isUpdateMtelnumber2 ===  "true"){
-                updateMTelnumberForDeleteFlag(memberId, 2, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 電話番号マスタ2追加
-        function (dbcallback) {
-            if(isUpdateMtelnumber2 ===  "true"){
-                insertMTelnumber(memberId, 2, webItemJson, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 電話番号マスタ3削除（deleteFlag = true)
-        function (dbcallback) {
-            if(isUpdateMtelnumber3 ===  "true"){
-                updateMTelnumberForDeleteFlag(memberId, 3, dbcallback);
-            }else{
-                dbcallback(null);
-            }
-        },
-        // 電話番号マスタ3追加
-        function (dbcallback) {
-            if(isUpdateMtelnumber3 ===  "true"){
-                insertMTelnumber(memberId, 3, webItemJson, dbcallback);
             }else{
                 dbcallback(null);
             }
