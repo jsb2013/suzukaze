@@ -23,7 +23,7 @@ exports.dbBegin = function(client, database, callback){
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
-        callback(true);
+        callback(new Error());
         return;
     });
 };
@@ -37,7 +37,7 @@ exports.dbRollback = function(client, database, callback){
             logger.error('xxxx', 'err =>'+ err);
             callback(true);
         }
-        callback(false);
+        callback(true);
         return;
     });
     
@@ -56,15 +56,37 @@ exports.dbCommit = function(client, database, callback){
     query.on('end', function(row,err) {
         if (err){
             logger.error('xxxx', 'err =>'+ err);
-            callback(true);
+            callback(err);
         }
-        callback(false);
+        callback(null);
         return;
     });
     
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        callback(new Error());
+        return;
+    });
+};
+
+/* postgresのトランザクション完了（commit） */
+exports.dbCommitSimple = function (client, database) {
+    var query = client.query('commit');
+
+    query.on('end', function (row, err) {
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            throw new Error();
+            return;
+        }
+        logger.info('xxxx');
+        return;
+    });
+
+    query.on('error', function (error) {
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => ' + errorMsg);
         callback(true);
         return;
     });

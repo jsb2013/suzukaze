@@ -1,7 +1,7 @@
 var sys = require("sys");
 
 exports.isUndefine = function(value){
-    if (value === undefined || value === null || value ===''){
+    if (value === undefined || value === null || value ==='' || value === 'null'){
         return true;
     }
     return false;

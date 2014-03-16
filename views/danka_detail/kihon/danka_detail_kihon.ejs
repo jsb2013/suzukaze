@@ -1,0 +1,648 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
+<link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_common.css" type="text/css" id="danka_detail_common">
+<link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kihon.css" type="text/css" id="danka_detail_kihon">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+<%
+    var memberId = kosyuInfo.member_id;
+    var dankaType = kosyuInfo.danka_type;
+	var dankaTypeDanka = "○";
+	var dankaTypeShinto = "-";
+	if (dankaType === 1){
+	    dankaTypeDanka = "-";
+	    dankaTypeShinto = "○";
+    }
+    var nameSei = kosyuInfo.name_sei;
+    var nameNa = kosyuInfo.name_na;
+    var nameFull = nameSei + "　" + nameNa;
+    var tikuName = kosyuInfo.tiku_name;
+    var sewaName = kosyuInfo.sewa_name;
+    var furiganaSei = kosyuInfo.furigana_sei;
+    var furiganaNa = kosyuInfo.furigana_na;
+    var sex = kosyuInfo.sex;
+    var jobCode = kosyuInfo.job_code;
+    var tikuCode = kosyuInfo.tiku_code;
+    var sewaCode = kosyuInfo.sewa_code;
+    var birthdayY = kosyuInfo.birthday_y;
+    var birthdayM = kosyuInfo.birthday_m;
+    var birthdayD = kosyuInfo.birthday_d;
+    var memberIdSou = kosyuInfo.member_id_sou;
+    var jobName = kosyuInfo.job_name;
+    var souNameSei = kosyuInfo.sou_name_sei;
+    var souNameNa = kosyuInfo.sou_name_na;
+    var souName = souNameSei + "　" + souNameNa;
+    var comment = kosyuInfo.comment;
+
+    var addressPri1 = addressInfo[0];
+    var zipCodePre = addressPri1.zip_code_pre;
+    var zipCodeLast = addressPri1.zip_code_last;
+    var region = addressPri1.region;
+    var city = addressPri1.city;
+    var addressLine1 = addressPri1.address_line1;
+    var addressLine2 = addressPri1.address_line2;
+
+    var mailAddressPri1 = mailInfo[0];
+    var mailAddressPri2 = mailInfo[1];
+    var mailAddressPri3 = mailInfo[2];
+    var mailAddress1 = mailAddressPri1.mail_address;
+    var mailYoto1 = mailAddressPri1.yoto;
+    var mailAddress2 = mailAddressPri2.mail_address;
+    var mailYoto2 = mailAddressPri2.yoto;
+    var mailAddress3 = mailAddressPri3.mail_address;
+    var mailYoto3 = mailAddressPri3.yoto;
+
+    var telnumberInfoPri1 = telnumberInfo[0];
+    var telnumberInfoPri2 = telnumberInfo[1];
+    var telnumberInfoPri3 = telnumberInfo[2];
+    var telNumberPre1 = telnumberInfoPri1.tel_number_pre;
+    var telNumberMid1 = telnumberInfoPri1.tel_number_mid;
+    var telNumberLast1 = telnumberInfoPri1.tel_number_last;
+    var telNumberYoto1 = telnumberInfoPri1.yoto;
+    var telNumberPre2 = telnumberInfoPri2.tel_number_pre;
+    var telNumberMid2 = telnumberInfoPri2.tel_number_mid;
+    var telNumberLast2 = telnumberInfoPri2.tel_number_last;
+    var telNumberYoto2 = telnumberInfoPri2.yoto;
+    var telNumberPre3 = telnumberInfoPri3.tel_number_pre;
+    var telNumberMid3 = telnumberInfoPri3.tel_number_mid;
+    var telNumberLast3 = telnumberInfoPri3.tel_number_last;
+    var telNumberYoto3 = telnumberInfoPri3.yoto;
+%>
+<script>
+ $(function(){
+
+    // ページ遷移定義
+    $(".menu_sub_kihon").click(function () {
+        $("#danka_detail_kihon_form").submit();
+    });
+    $(".menu_sub_kako").click(function () {
+        $("#danka_detail_kako_form").submit();
+    });
+    $(".menu_sub_genzai").click(function () {
+        $("#danka_detail_genzai_form").submit();
+    });
+    $(".menu_sub_nenkaiki").click(function () {
+        $("#danka_detail_nenkaiki_form").submit();
+    });
+    $(".menu_sub_kihu").click(function () {
+        $("#danka_detail_kihu_form").submit();
+    });
+    $(".menu_sub_omairi").click(function () {
+        $("#danka_detail_omairi_form").submit();
+    });
+
+    // 基本情報の初期化
+    $("#job_list").val(<%= jobCode %>);
+    $("#tiku_list").val(<%= tikuCode %>);
+    $("#sewa_list").val(<%= sewaCode %>);
+    $("#sou_list").val(<%= memberIdSou %>);
+    $("#birthday_y_list").val(<%= birthdayY %>);
+    $("#birthday_m_list").val(<%= birthdayM %>);
+    $("#birthday_d_list").val(<%= birthdayD %>);
+
+    // 更新時のバリデーションチェック
+    $("#main_form").submit(function(){
+        // エラーの初期化
+        $("p.error").remove();
+        $("td").removeClass("error");
+        
+        // エラーチェック
+        $("input[type='text'].validate").each(function(){
+            // 必須項目チェック
+            if($(this).hasClass("require")){
+                if($(this).val() == ""){
+                    $(this).parent().append("<p class='error'>値が設定されていません。</p>");
+                    $(this).parent().addClass("error");
+                }
+            } 
+            // 数字項目チェック
+            if($(this).hasClass("number")){
+                if(isNaN($(this).val())){
+                    $(this).parent().append("<p>数値が設定されていません。</p>");
+                    $(this).parent().addClass("error");
+                }
+            }            
+        });
+
+        // エラーチェック
+        if($("p.error").length > 0){
+            return false;
+        }
+
+        // テキスト項目の差分チェックを実施
+        var isChange = false;
+        $(".chenge_check").each(function(){
+            var key = $(this).attr("name");
+            var value = $(this).val();
+            $(".chenge_check_bk").each(function(){
+                if($(this).hasClass(key)){
+                    var valueBk = $(this).val();
+                    if(value !== valueBk){
+                        isChange = true;
+                        return false;
+                    }
+                    return true;
+                }
+            });
+            
+            if(isChange){
+                return true;
+            }
+        });
+        
+        // select項目の差分比較
+        var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
+        var jobCodeAfter = $("select[name='job_code'] option:selected").val();
+        var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
+        var souCodeAfter = $("select[name='member_id_sou'] option:selected").val();
+        var birthdayYAfter = $("select[name='birthday_y'] option:selected").val();
+        var birthdayMAfter = $("select[name='birthday_m'] option:selected").val();
+        var birthdayDAfter = $("select[name='birthday_d'] option:selected").val();
+        var tikuCodeBk = $("input[name='tiku_code_bk']").val();
+        var jobCodeBk = $("input[name='job_code_bk']").val();
+        var sewaCodeBk = $("input[name='sewa_code_bk']").val();
+        var souCodeBk = $("input[name='member_id_sou_bk']").val();
+        var birthdayYBk = $("input[name='birthday_y_bk']").val();
+        var birthdayMBk = $("input[name='birthday_m_bk']").val();
+        var birthdayDBk = $("input[name='birthday_d_bk']").val();
+
+        if(tikuCodeAfter !== tikuCodeBk || jobCodeAfter !== jobCodeBk || sewaCodeAfter !== sewaCodeBk || souCodeAfter !== souCodeBk){
+            isChange = true;
+        }
+        if(birthdayYAfter !== birthdayYBk || birthdayMAfter !== birthdayMBk || birthdayDAfter !== birthdayDBk){
+            isChange = true;
+        }
+
+        // radio項目の差分比較
+        var dankaTypeAfter = $("input[name='danka_type']:checked").val();
+        var dankaTypeBk = $("input[name='danka_type_bk']").val();
+        var sexAfter = $("input[name='sex']:checked").val();
+        var sexBk = $("input[name='sex_bk']").val();
+
+        if(dankaTypeAfter !== dankaTypeBk || sexAfter !== sexBk){
+            isChange = true;
+        }
+        
+        // テキストエリアの差分比較
+        var commentAfter = $("textarea[name='comment']").val();
+        var commentBk = $("input[name='comment_bk']").val();
+
+        if(commentAfter !== commentBk){
+            isChange = true;
+        }
+        // 値が何も変更されていない場合は、ポップアップを出力する。
+        if(!isChange){
+            alert("変更されていません。");
+            return false;
+        }
+        // 変更有無チェック
+        var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
+        var jobNameAfter = $("select[name='job_code'] option:selected").text();
+        var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
+        var souNameAfter = $("select[name='member_id_sou'] option:selected").text();
+        $("input[name='tiku_name']").val(tikuNameAfter);
+        $("input[name='job_name']").val(jobNameAfter);
+        $("input[name='sewa_name']").val(sewaNameAfter);
+        $("input[name='sou_name']").val(souNameAfter);
+    });
+});
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div class="inner_title">
+        <div class="title">
+   	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
+        </div>
+        <div class="kosyu_info">
+   	      <table>
+              <thead>
+                <tr>
+                  <th class="kosyu_info_kosyu_th">戸主名</th>
+                  <th class="kosyu_info_type_danka_th">檀家</th>
+                  <th class="kosyu_info_type_shinto_th">信徒</th>
+                  <th class="kosyu_info_tiku_th">地区</th>
+                  <th class="kosyu_info_sewa_th">世話人</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="<%= memberId %>">
+                  <td class="table_name_full"><%= nameFull %></td>
+                  <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
+                  <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
+                  <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
+                  <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="menu_sub">
+          <ul>
+            <li class="menu_sub_kihon">基本情報 
+            <li class="menu_sub_kako">過去帳
+            <li class="menu_sub_nenkaiki">年回忌
+            <li class="menu_sub_kihu">寄付帳
+            <li class="menu_sub_omairi">お参り帳
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div class="inner_main">
+        <form action="danka_detail_kihon_confirm" id="main_form" method="post">
+          <div class="table_main_kihon">
+            <table>
+              <thead>
+                <tr class="table_main_kihon_header">
+                  <th class="table_main_kihon_header_komoku">登録項目</td>
+                  <th class="table_main_kihon_header_naiyo">登録内容</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="danka_type">登録区分</td></td>
+                  <td id="danka" class="table_main_tuika_selectable">
+                      <%
+                      if(dankaType === 0){
+                      %>
+                        <input type="radio" name="danka_type" class="dummay" value="0" checked><label for="danka">檀家</label>
+                        <input type="radio" name="danka_type" class="dummay" value="1"><label for="shinto">信徒</label>                     
+                      <%
+                      }else{
+                      %>
+                        <input type="radio" name="danka_type" class="dummay" value="0"><label for="danka">檀家</label>
+                        <input type="radio" name="danka_type" class="dummay" value="1" checked><label for="shinto">信徒</label>                     
+                      <%
+                      }
+                      %>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="name_type">戸主名(※必須)</td>
+                  <td id="name" class="table_main_tuika_selectable">
+                      <label for="name_seimei">姓: </label><input type="text" name="name_sei" class="chenge_check validate require duplicate_pre" value="<%= nameSei %>">
+                      <label for="name_seimei">名: </label><input type="text" name="name_na" class="chenge_check validate require duplicate_end" value="<%= nameNa %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="furigana_type">ふりがな(※必須)</td>
+                  <td id="furigana" class="table_main_tuika_selectable">
+                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="chenge_check validate require duplicate_pre" value="<%= furiganaSei %>">
+                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="chenge_check validate require duplicate_end" value="<%= furiganaNa %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sex_type">性別(※必須)</td>
+                  <td id="sex" class="table_main_tuika_selectable">
+                      <%
+                      if(sex === 1){
+                      %>
+                        <input type="radio" name="sex" class="dummay" value="1" checked><label for="man">男</label>
+                        <input type="radio" name="sex" class="dummay" value="2"><label for="woman">女</label>                
+                      <%
+                      }else{
+                      %>
+                        <input type="radio" name="sex" class="dummay" value="1"><label for="man">男</label>
+                        <input type="radio" name="sex" class="dummay" value="2" checked><label for="woman">女</label>                 
+                      <%
+                      }
+                      %>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="zip_code_type">郵便番号</td>
+                  <td id="zip_code" class="table_main_tuika_selectable">
+                      <input type="text" name="zip_code_pre" class="chenge_check validate number" value="<%= zipCodePre %>"> - <input type="text" name="zip_code_last" class="chenge_check validate number" value="<%= zipCodeLast %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="region_type">都道府県</td>
+                  <td id="region" class="table_main_tuika_selectable">
+                      <input type="text" name="region" class="chenge_check dummay" value="<%= region %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="city_type">市区町村</td>
+                  <td id="city" class="table_main_tuika_selectable">
+                      <input type="text" name="city" class="chenge_check dummay" value="<%= city %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_line1_type">番地</td>
+                  <td id="address_line1" class="table_main_tuika_selectable">
+                      <input type="text" name="address_line1" class="chenge_check dummay" value="<%= addressLine1 %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="address_line2_type">ビル名等</td>
+                  <td id="address_line2" class="table_main_tuika_selectable">
+                      <input type="text" name="address_line2" class="chenge_check dummay" value="<%= addressLine2 %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="birthday_type">生年月日</td>
+                  <td id="birthday_y" class="table_main_tuika_selectable">
+                     <select id="birthday_y_list"  name="birthday_y" >
+                       <option value="1981">1981</option>
+                       <option value="1982">1982</option>
+                       <option value="1983">1983</option>
+                       <option value="1984">1984</option>
+                     </select>
+                     年
+                     <select id="birthday_m_list"  name="birthday_m" >
+                       <option value="1">1</option>
+                       <option value="2">2</option>
+                       <option value="3">3</option>
+                       <option value="4">4</option>
+                       <option value="5">5</option>
+                       <option value="6">6</option>
+                       <option value="7">7</option>
+                       <option value="8">8</option>
+                       <option value="9">9</option>
+                       <option value="10">10</option>
+                       <option value="11">11</option>
+                       <option value="12">12</option>
+                     </select>
+                     月
+                     <select id="birthday_d_list"  name="birthday_d" >
+                       <option value="1">1</option>
+                       <option value="2">2</option>
+                       <option value="3">3</option>
+                       <option value="4">4</option>
+                       <option value="5">5</option>
+                       <option value="6">6</option>
+                       <option value="7">7</option>
+                       <option value="8">8</option>
+                       <option value="9">9</option>
+                       <option value="10">10</option>
+                       <option value="11">11</option>
+                       <option value="12">12</option>
+                     </select>
+                     日
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(優先1)</td>
+                  <td id="tel" class="table_main_tuika_selectable">
+                      <span class="telno_box_pre">
+                      <input type="text" name="telno_pre_1" class="chenge_check validate number telno_size" value="<%= telNumberPre1 %>">
+                       - <input type="text" name="telno_mid_1" class="chenge_check validate number telno_size" value="<%= telNumberMid1 %>">
+                       - <input type="text" name="telno_last_1" class="chenge_check validate number telno_size" value="<%= telNumberLast1 %>">
+                      </span>
+                      <span class="telno_box_last">
+                         <label>用途：</label><input type="text" name="telno_yoto_1" class="chenge_check telno_yoto" value="<%= telNumberYoto1 %>">
+                      </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(優先2)</td>
+                  <td id="tel" class="table_main_tuika_selectable">
+                      <span class="telno_box_pre">
+                      <input type="text" name="telno_pre_2" class="chenge_check validate number telno_size" value="<%= telNumberPre2 %>">
+                       - <input type="text" name="telno_mid_2" class="chenge_check validate number telno_size" value="<%= telNumberMid2 %>">
+                       - <input type="text" name="telno_last_2" class="chenge_check validate number telno_size" value="<%= telNumberLast2 %>">
+                      </span>
+                      <span class="telno_box_last">
+                         <label>用途：</label><input type="text" name="telno_yoto_2" class="chenge_check telno_yoto" value="<%= telNumberYoto2 %>">
+                      </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tel_type">電話番号(優先3)</td>
+                  <td id="tel" class="table_main_tuika_selectable">
+                      <span class="telno_box_pre">
+                      <input type="text" name="telno_pre_3" class="chenge_check validate number telno_size" value="<%= telNumberPre3 %>">
+                       - <input type="text" name="telno_mid_3" class="chenge_check validate number telno_size" value="<%= telNumberMid3 %>">
+                       - <input type="text" name="telno_last_3" class="chenge_check validate number telno_size" value="<%= telNumberLast3 %>">
+                      </span>
+                      <span class="telno_box_last">
+                         <label>用途：</label><input type="text" name="telno_yoto_3" class="chenge_check telno_yoto" value="<%= telNumberYoto3 %>">
+                      </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(優先1)</td>
+                  <td id="email" class="table_main_tuika_selectable">
+                      <span class="email_box_pre">
+                        <input type="text" name="mail_address_1" class="chenge_check email_size" value="<%= mailAddress1 %>">
+                      </span>
+                      <span class="email_box_last">
+                         <label>用途：</label><input type="text" name="mail_yoto_1" class="chenge_check email_yoto" value="<%= mailYoto1 %>">
+                      </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(優先2)</td>
+                  <td id="email" class="table_main_tuika_selectable">
+                      <span class="email_box_pre">
+                        <input type="text" name="mail_address_2" class="chenge_check email_size" value="<%= mailAddress2 %>">
+                      </span>
+                      <span class="email_box_last">
+                         <label>用途：</label><input type="text" name="mail_yoto_2" class="chenge_check email_yoto" value="<%= mailYoto2 %>">
+                      </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="email_type">Email(優先3)</td>
+                  <td id="email" class="table_main_tuika_selectable">
+                      <span class="email_box_pre">
+                        <input type="text" name="mail_address_3" class="chenge_check email_size" value="<%= mailAddress3 %>">
+                      </span>
+                      <span class="email_box_last">
+                         <label>用途：</label><input type="text" name="mail_yoto_3" class="chenge_check email_yoto" value="<%= mailYoto3 %>">
+                      </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="job_type">職業</td>
+                  <td id="job" class="table_main_tuika_selectable">
+                     <select id="job_list"  name="job_code" >
+                      <% for(var i in jobCodeInfo){
+                         var _jobCode = jobCodeInfo[i].job_code;
+                         var _jobName = jobCodeInfo[i].job_name; %>
+                         <option value=<%= _jobCode %>><%= _jobName %></option>
+                         <%}%>
+                     </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tiku_type">地区名</td>
+                  <td id="tiku" class="table_main_tuika_selectable">
+                     <select id="tiku_list"  name="tiku_code" >
+                      <% for(var i in tikuCodeInfo){
+                         var _tikuCode = tikuCodeInfo[i].tiku_code;
+                         var _tikuName = tikuCodeInfo[i].tiku_name; %>
+                         <option value=<%= _tikuCode %>><%= _tikuName %></option>
+                         <%}%>
+                     </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sewa_type">世話人</td>
+                  <td id="sewa" class="table_main_tuika_selectable">
+                     <select id="sewa_list" name="sewa_code" >
+                       <option value="9999" selected>---</option>
+                      <% for(var i in sewaCodeInfo){
+                        var _sewaCode = sewaCodeInfo[i].sewa_code;
+                        var _sewaName = sewaCodeInfo[i].sewa_name; %>
+                         <option value=<%= _sewaCode %>><%= _sewaName %></option>
+                         <%}%>
+                     </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="sou_type">担当者[僧]</td>
+                  <td id="sou" class="table_main_tuika_selectable">
+                     <select id="sou_list" name="member_id_sou" >
+                       <% for(var i in souMemberIdInfo){
+                         var _souMemberId = souMemberIdInfo[i].member_id;
+                         var _souNameSei = souMemberIdInfo[i].name_sei;
+                         var _souNameNa = souMemberIdInfo[i].name_na;
+                         var _souName = _souNameSei + "　" + _souNameNa; %>
+                         <option value=<%= _souMemberId %>><%= _souName %></option>
+                         <%}%>
+                     </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="comment_type">備考<br>※500文字以内</td>
+                  <td class="comment table_main_tuika_selectable">
+                     <textarea name="comment" class="textarea_size"><%= comment %></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- サマリ画面表示情報 -->
+          <input type="hidden" name="member_id" value=<%= memberId %>>
+          <input type="hidden" name="danka_type_danka_bk" value=<%= dankaTypeDanka %>>
+          <input type="hidden" name="danka_type_shinto_bk" value=<%= dankaTypeShinto %>>
+          <input type="hidden" name="name_full_bk" value=<%= nameFull %>>
+          <input type="hidden" name="tiku_name_bk" value=<%= tikuName %>>
+          <input type="hidden" name="sewa_name_bk" value=<%= sewaName %>>
+          <input type="hidden" name="tiku_code_bk" value=<%= tikuCode %>>
+          <input type="hidden" name="sewa_code_bk" value=<%= sewaCode %>>
+          <!-- 変更前の情報 -->
+          <input type="hidden" name="danka_type_bk" value=<%= dankaType %>>
+          <input type="hidden" name="name_sei_bk" class="chenge_check_bk name_sei" value=<%= nameSei %>>
+          <input type="hidden" name="name_na_bk" class="chenge_check_bk name_na" value=<%= nameNa %>>
+          <input type="hidden" name="furigana_sei_bk" class="chenge_check_bk furigana_sei" value=<%= furiganaSei %>>
+          <input type="hidden" name="furigana_na_bk" class="chenge_check_bk furigana_na" value=<%= furiganaNa %>>
+          <input type="hidden" name="sex_bk" value=<%= sex %>>
+          <input type="hidden" name="zip_code_pre_bk" class="chenge_check_bk zip_code_pre" value=<%= zipCodePre %>>
+          <input type="hidden" name="zip_code_last_bk" class="chenge_check_bk zip_code_last" value=<%= zipCodeLast %>>
+          <input type="hidden" name="region_bk" class="chenge_check_bk region" value=<%= region %>>
+          <input type="hidden" name="city_bk" class="chenge_check_bk city" value=<%= city %>>
+          <input type="hidden" name="address_line1_bk" class="chenge_check_bk address_line1" value=<%= addressLine1 %>>
+          <input type="hidden" name="address_line2_bk" class="chenge_check_bk address_line2" value=<%= addressLine2 %>>
+          <input type="hidden" name="birthday_y_bk" class="dummy" value=<%= birthdayY %>>
+          <input type="hidden" name="birthday_m_bk" class="dummy" value=<%= birthdayM %>>
+          <input type="hidden" name="birthday_d_bk" class="dummy" value=<%= birthdayD %>>
+          <input type="hidden" name="telno_pre_1_bk" class="chenge_check_bk telno_pre_1" value=<%= telNumberPre1 %>>
+          <input type="hidden" name="telno_mid_1_bk" class="chenge_check_bk telno_mid_1" value=<%= telNumberMid1 %>>
+          <input type="hidden" name="telno_last_1_bk" class="chenge_check_bk telno_last_1" value=<%= telNumberLast1 %>>
+          <input type="hidden" name="telno_yoto_1_bk" class="chenge_check_bk telno_yoto_1" value=<%= telNumberYoto1 %>>
+          <input type="hidden" name="telno_pre_2_bk" class="chenge_check_bk telno_pre_2" value=<%= telNumberPre2 %>>
+          <input type="hidden" name="telno_mid_2_bk" class="chenge_check_bk telno_mid_2" value=<%= telNumberMid2 %>>
+          <input type="hidden" name="telno_last_2_bk" class="chenge_check_bk telno_last_2" value=<%= telNumberLast2 %>>
+          <input type="hidden" name="telno_yoto_2_bk" class="chenge_check_bk telno_yoto_2" value=<%= telNumberYoto2 %>>
+          <input type="hidden" name="telno_pre_3_bk" class="chenge_check_bk telno_pre_3" value=<%= telNumberPre3 %>>
+          <input type="hidden" name="telno_mid_3_bk" class="chenge_check_bk telno_mid_3" value=<%= telNumberMid3 %>>
+          <input type="hidden" name="telno_last_3_bk" class="chenge_check_bk telno_last_3" value=<%= telNumberLast3 %>>
+          <input type="hidden" name="telno_yoto_3_bk" class="chenge_check_bk telno_yoto_3" value=<%= telNumberYoto3 %>>
+          <input type="hidden" name="mail_address_1_bk" class="chenge_check_bk mail_address_1" value=<%= mailAddress1 %>>
+          <input type="hidden" name="mail_yoto_1_bk" class="chenge_check_bk mail_yoto_1" value=<%= mailYoto1 %>>
+          <input type="hidden" name="mail_address_2_bk" class="chenge_check_bk mail_address_2" value=<%= mailAddress2 %>>
+          <input type="hidden" name="mail_yoto_2_bk" class="chenge_check_bk mail_yoto_2" value=<%= mailYoto2 %>>
+          <input type="hidden" name="mail_address_3_bk" class="chenge_check_bk mail_address_3" value=<%= mailAddress3 %>>
+          <input type="hidden" name="mail_yoto_3_bk" class="chenge_check_bk mail_yoto_3" value=<%= mailYoto3 %>>
+          <input type="hidden" name="job_code_bk" value=<%= jobCode %>>
+          <input type="hidden" name="member_id_sou_bk" value=<%= memberIdSou %>>
+          <input type="hidden" name="comment_bk" value=<%= comment %>>
+          <input type="hidden" name="job_name_bk" value=<%= jobName %>>
+          <input type="hidden" name="sou_name_bk" value=<%= souName %>>
+          <!-- 変更後の情報 -->
+          <input type="hidden" name="job_name" value="dummy">
+          <input type="hidden" name="tiku_name" value="dummy">
+          <input type="hidden" name="sewa_name" value="dummy">
+          <input type="hidden" name="sou_name" value="dummy">
+
+          <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
+        </form>
+      </div>
+
+      <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_kako" method="post" id="danka_detail_kako_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_nenkaiki" method="post" id="danka_detail_nenkaiki_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_kihu" method="post" id="danka_detail_kihu_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_omairi" method="post" id="danka_detail_omairi_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>

@@ -86,7 +86,7 @@ app.post('/danka_detail_kihon_db_update', routes.postDankaDetailKihonDbUpdate);
 // 檀家詳細TOP画面→過去帳画面
 app.post('/danka_detail_kako', routes.postDankaDetailKako);
 // 檀家詳細TOP画面→過去帳画面→詳細画面
-app.post('/danka_detail_kako_result', routes.postDankaDetailKakoResult);
+app.post('/danka_detail_kako_kihon', routes.postDankaDetailKakoKihon);
 // 檀家詳細TOP画面→過去帳画面→詳細画面→確認画面
 app.post('/danka_detail_kako_confirm', routes.postDankaDetailKakoConfirm);
 // 檀家詳細TOP画面→過去帳画面→詳細画面→確認画面→DB更新

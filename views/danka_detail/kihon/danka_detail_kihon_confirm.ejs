@@ -1,0 +1,506 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
+<link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_common.css" type="text/css" id="danka_detail_common">
+<link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kihon_confirm.css" type="text/css" id="danka_detail_kihon">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/dankaInfo.js"></script>
+<%
+    var memberId = webItemJson.member_id;
+    var dankaTypeDankaBk = webItemJson.danka_type_danka_bk;
+    var dankaTypeShintoBk = webItemJson.danka_type_shinto_bk;
+    var nameFullBk = webItemJson.name_full_bk;
+    var tikuNameBk = webItemJson.tiku_name_bk;
+    var sewaNameBk = webItemJson.sewa_name_bk;
+    var tikuCodeBk = webItemJson.tiku_code_bk;
+    var sewaCodeBk = webItemJson.sewa_code_bk;
+
+    var dankaTypeBk = webItemJson.danka_type_bk;
+    var nameSeiBk = webItemJson.name_sei_bk;
+    var nameNaBk = webItemJson.name_na_bk;
+    var furiganaSeiBk = webItemJson.furigana_sei_bk;
+    var furiganaNaBk = webItemJson.furigana_na_bk;
+    var furiganaFullBk = furiganaSeiBk + "　" + furiganaNaBk;
+    var sexBk = webItemJson.sex_bk;
+    var zipCodePreBk = webItemJson.zip_code_pre_bk;
+    var zipCodeLastBk = webItemJson.zip_code_last_bk;
+    var zipCodeBk = zipCodePreBk + "-" + zipCodeLastBk;
+    var regionBk = webItemJson.region_bk;
+    var cityBk = webItemJson.city_bk;
+    var addressLine1Bk = webItemJson.address_line1_bk;
+    var addressLine2Bk = webItemJson.address_line2_bk;
+    var birthdayYBk = webItemJson.birthday_y_bk;
+    var birthdayMBk = webItemJson.birthday_m_bk;
+    var birthdayDBk = webItemJson.birthday_d_bk;
+    var birthdayBk = birthdayYBk + "年" + birthdayMBk + "月" + birthdayDBk + "日";
+    var telnoPre1Bk = webItemJson.telno_pre_1_bk;
+    var telnoMid1Bk = webItemJson.telno_mid_1_bk;
+    var telnoLast1Bk = webItemJson.telno_last_1_bk;
+    var telnoYoto1Bk = webItemJson.telno_yoto_1_bk;
+    var telno1Bk = telnoPre1Bk + "-" + telnoMid1Bk + "-" + telnoLast1Bk + "　（用途：" + telnoYoto1Bk + "　）";
+    var telnoPre2Bk = webItemJson.telno_pre_2_bk;
+    var telnoMid2Bk = webItemJson.telno_mid_2_bk;
+    var telnoLast2Bk = webItemJson.telno_last_2_bk;
+    var telnoYoto2Bk = webItemJson.telno_yoto_2_bk;
+    var telno2Bk = telnoPre2Bk + "-" + telnoMid2Bk + "-" + telnoLast2Bk + "　（用途：" + telnoYoto2Bk + "　）";
+    var telnoPre3Bk = webItemJson.telno_pre_3_bk;
+    var telnoMid3Bk = webItemJson.telno_mid_3_bk;
+    var telnoLast3Bk = webItemJson.telno_last_3_bk;
+    var telnoYoto3Bk = webItemJson.telno_yoto_3_bk;
+    var telno3Bk = telnoPre3Bk + "-" + telnoMid3Bk + "-" + telnoLast3Bk + "　（用途：" + telnoYoto3Bk + "　）";
+    var mailAddress1Bk = webItemJson.mail_address_1_bk;
+    var mailYoto1Bk = webItemJson.mail_yoto_1_bk;
+    var mail1Bk = mailAddress1Bk + "　（用途：" + mailYoto1Bk + "　）";
+    var mailAddress2Bk = webItemJson.mail_address_2_bk;
+    var mailYoto2Bk = webItemJson.mail_yoto_2_bk;
+    var mail2Bk = mailAddress2Bk + "　（用途：" + mailYoto2Bk + "　）";
+    var mailAddress3Bk = webItemJson.mail_address_3_bk;
+    var mailYoto3Bk = webItemJson.mail_yoto_3_bk;
+    var mail3Bk = mailAddress3Bk + "　（用途：" + mailYoto3Bk + "　）";
+    var jobNameBk = webItemJson.job_name_bk;
+    var souNameBk = webItemJson.sou_name_bk;
+    var commentBk = webItemJson.comment_bk;
+
+    var dankaType = webItemJson.danka_type;
+    var nameSei = webItemJson.name_sei;
+    var nameNa = webItemJson.name_na;
+    var nameFull = nameSei + "　" + nameNa;
+    var furiganaSei = webItemJson.furigana_sei;
+    var furiganaNa = webItemJson.furigana_na;
+    var furiganaFull = furiganaSei + "　" + furiganaNa;
+    var sex = webItemJson.sex;
+    var zipCodePre = webItemJson.zip_code_pre;
+    var zipCodeLast = webItemJson.zip_code_last;
+    var zipCode = zipCodePre + "-" + zipCodeLast;
+    var region = webItemJson.region;
+    var city = webItemJson.city;
+    var addressLine1 = webItemJson.address_line1;
+    var addressLine2 = webItemJson.address_line2;
+    var birthdayY = webItemJson.birthday_y;
+    var birthdayM = webItemJson.birthday_m;
+    var birthdayD = webItemJson.birthday_d;
+    var birthday = birthdayY + "年" + birthdayM + "月" + birthdayD + "日";
+    var telnoPre1 = webItemJson.telno_pre_1;
+    var telnoMid1 = webItemJson.telno_mid_1;
+    var telnoLast1 = webItemJson.telno_last_1;
+    var telnoYoto1 = webItemJson.telno_yoto_1;
+    var telno1 = telnoPre1 + "-" + telnoMid1 + "-" + telnoLast1 + "　（用途：" + telnoYoto1 + "　）";
+    var telnoPre2 = webItemJson.telno_pre_2;
+    var telnoMid2 = webItemJson.telno_mid_2;
+    var telnoLast2 = webItemJson.telno_last_2;
+    var telnoYoto2 = webItemJson.telno_yoto_2;
+    var telno2 = telnoPre2 + "-" + telnoMid2 + "-" + telnoLast2 + "　（用途：" + telnoYoto2 + "　）";
+    var telnoPre3 = webItemJson.telno_pre_3;
+    var telnoMid3 = webItemJson.telno_mid_3;
+    var telnoLast3 = webItemJson.telno_last_3;
+    var telnoYoto3 = webItemJson.telno_yoto_3;
+    var telno3 = telnoPre3 + "-" + telnoMid3 + "-" + telnoLast3 + "　（用途：" + telnoYoto3 + "　）";
+    var mailAddress1 = webItemJson.mail_address_1;
+    var mailYoto1 = webItemJson.mail_yoto_1;
+    var mail1 = mailAddress1 + "　（用途：" + mailYoto1 + "　）";
+    var mailAddress2 = webItemJson.mail_address_2;
+    var mailYoto2 = webItemJson.mail_yoto_2;
+    var mail2 = mailAddress2 + "　（用途：" + mailYoto2 + "　）";
+    var mailAddress3 = webItemJson.mail_address_3;
+    var mailYoto3 = webItemJson.mail_yoto_3;
+    var mail3 = mailAddress3 + "　（用途：" + mailYoto3 + "　）";
+    var jobName = webItemJson.job_name;
+    var souName = webItemJson.sou_name;
+    var tikuName = webItemJson.tiku_name;
+    var sewaName = webItemJson.sewa_name;
+    var comment = webItemJson.comment;
+    var jobCode = webItemJson.job_code;
+    var tikuCode = webItemJson.tiku_code;
+    var sewaCode = webItemJson.sewa_code;
+    var memberIdSou = webItemJson.member_id_sou;
+%>
+<script>
+    $(function(){
+
+    // 更新時のバリデーションチェック
+        $("form").submit(function () {
+            $(".is_change").each(function () {
+                if ($(this).parent().hasClass("m_member")) {
+                    $("input[name='is_update_m_member']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("t_danka")) {
+                    $("input[name='is_update_t_danka']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_member_tiku")) {
+                    $("input[name='is_update_m_member_tiku']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_address")) {
+                    $("input[name='is_update_m_address']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_telnumber_1")) {
+                    $("input[name='is_update_m_telnumber_1']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_telnumber_2")) {
+                    $("input[name='is_update_m_telnumber_2']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_telnumber_3")) {
+                    $("input[name='is_update_m_telnumber_3']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_mail_1")) {
+                    $("input[name='is_update_m_mail_1']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_mail_2")) {
+                    $("input[name='is_update_m_mail_2']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_mail_3")) {
+                    $("input[name='is_update_m_mail_3']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("t_comment")) {
+                    $("input[name='is_update_t_comment']").val(true);
+                    //return false;
+                }
+            });
+        });
+    // ページ遷移定義
+    $(".menu_sub_kihon").click(function () {
+        $("#danka_detail_kihon_form").submit();
+    });
+    $(".menu_sub_kako").click(function () {
+        $("#danka_detail_kako_form").submit();
+    });
+    $(".menu_sub_genzai").click(function () {
+        $("#danka_detail_genzai_form").submit();
+    });
+    $(".menu_sub_nenkaiki").click(function () {
+        $("#danka_detail_nenkaiki_form").submit();
+    });
+    $(".menu_sub_kihu").click(function () {
+        $("#danka_detail_kihu_form").submit();
+    });
+    $(".menu_sub_omairi").click(function () {
+        $("#danka_detail_omairi_form").submit();
+    });
+    })
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div class="inner_title">
+        <div class="title">
+   	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
+        </div>
+        <div class="kosyu_info">
+   	      <table>
+              <thead>
+                <tr>
+                  <th class="kosyu_info_kosyu_th">戸主名</th>
+                  <th class="kosyu_info_type_danka_th">檀家</th>
+                  <th class="kosyu_info_type_shinto_th">信徒</th>
+                  <th class="kosyu_info_tiku_th">地区</th>
+                  <th class="kosyu_info_sewa_th">世話人</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="<%= memberId %>">
+                  <td class="table_name_full"><%= nameFullBk %></td>
+                  <td class="table_danka_type_danka"><%= dankaTypeDankaBk %></td>
+                  <td class="table_danka_type_shinto"><%= dankaTypeShintoBk %></td>
+                  <td id="<%= tikuCodeBk %>" class="table_tiku_name"><%= tikuNameBk %></td>
+                  <td id="<%= sewaCodeBk %>" class="table_sewa_name"><%= sewaNameBk %></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="menu_sub">
+          <ul>
+            <li class="menu_sub_kihon">基本情報 
+            <li class="menu_sub_kako">過去帳
+            <li class="menu_sub_nenkaiki">年回忌
+            <li class="menu_sub_kihu">寄付帳
+            <li class="menu_sub_omairi">お参り帳
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div class="inner_main">
+        <div class="title_comment">
+   	      <h2><span class="ja">変更内容確認</span><span class="en">※問題が無ければ変更ボタンを押して下さい</span></h2>
+        </div>
+        <form action="danka_detail_kihon_db_update" method="post">
+          <div class="table_main_kihon">
+            <table>
+              <thead>
+                <tr class="table_main_kihon_header">
+                  <th class="table_main_kihon_header_komoku">登録項目</td>
+                  <th class="table_main_kihon_header_naiyo">登録内容</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="t_danka">
+                  <td id="danka_type">登録区分</td>
+                  <script>
+                      createHtmlByDankaType("<%= dankaTypeBk %>", "<%= dankaType %>");
+                  </script>                    
+                </tr>
+                <tr class="m_member">
+                  <td id="name_type">戸主名(※必須)</td>
+                    <script>
+                      createHtml("<%= nameFullBk %>", "<%= nameFull %>");
+                    </script>
+                </tr>
+                <tr class="m_member">
+                  <td id="furigana_type">ふりがな(※必須)</td>
+                    <script>
+                      createHtml("<%= furiganaFullBk %>", "<%= furiganaFull %>");
+                    </script>
+                </tr>
+                <tr class="m_member">
+                  <td id="sex_type">性別(※必須)</td>
+                    <script>
+                      createHtmlBySex("<%= sexBk %>", "<%= sex %>");
+                    </script>
+                </tr>
+                <tr class="m_address">
+                  <td id="zip_code_type">郵便番号</td>
+                    <script>
+                      createHtml("<%= zipCodeBk %>", "<%= zipCode %>");
+                    </script>
+                </tr>
+                <tr class="m_address">
+                  <td id="region_type">都道府県</td>
+                    <script>
+                      createHtml("<%= regionBk %>", "<%= region %>");
+                    </script>
+                </tr>
+                <tr class="m_address">
+                  <td id="city_type">市区町村</td>
+                    <script>
+                      createHtml("<%= cityBk %>", "<%= city %>");
+                    </script>
+                </tr>
+                <tr class="m_address">
+                  <td id="address_line1_type">番地</td>
+                    <script>
+                      createHtml("<%= addressLine1Bk %>", "<%= addressLine1 %>");
+                    </script>
+                </tr>
+                <tr class="m_address">
+                  <td id="address_line2_type">ビル名等</td>
+                    <script>
+                      createHtml("<%= addressLine2Bk %>", "<%= addressLine2 %>");
+                    </script>
+                </tr>
+                <tr class="m_member">
+                  <td id="birthday_type">生年月日</td>
+                    <script>
+                      createHtml("<%= birthdayBk %>", "<%= birthday %>");
+                    </script>
+                </tr>
+                <tr class="m_telnumber_1">
+                  <td id="tel_type">電話番号(優先1)</td>
+                    <script>
+                      createHtml("<%= telno1Bk %>", "<%= telno1 %>");
+                    </script>
+                </tr>
+                <tr class="m_telnumber_2">
+                  <td id="tel_type">電話番号(優先2)</td>
+                    <script>
+                      createHtml("<%= telno2Bk %>", "<%= telno2 %>");
+                    </script>
+                </tr>
+                <tr class="m_telnumber_3">
+                  <td id="tel_type">電話番号(優先3)</td>
+                    <script>
+                      createHtml("<%= telno3Bk %>", "<%= telno3 %>");
+                    </script>
+                </tr>
+                <tr class="m_mail_1">
+                  <td id="email_type">Email(優先1)</td>
+                    <script>
+                      createHtml("<%= mail1Bk %>", "<%= mail1 %>");
+                    </script>
+                </tr>
+                <tr class="m_mail_2">
+                  <td id="email_type">Email(優先2)</td>
+                    <script>
+                      createHtml("<%= mail2Bk %>", "<%= mail2 %>");
+                    </script>
+                </tr class="m_mail">
+                <tr class="m_mail_3">
+                  <td id="email_type">Email(優先3)</td>
+                    <script>
+                      createHtml("<%= mail3Bk %>", "<%= mail3 %>");
+                    </script>
+                </tr>
+                <tr class="m_member">
+                  <td id="job_type">職業</td>
+                    <script>
+                      createHtml("<%= jobNameBk %>", "<%= jobName %>");
+                    </script>
+                </tr>
+                <tr class="m_member_tiku">
+                  <td id="tiku_type">地区名</td>
+                    <script>
+                      createHtml("<%= tikuNameBk %>", "<%= tikuName %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
+                  <td id="sewa_type">世話人</td>
+                    <script>
+                      createHtml("<%= sewaNameBk %>", "<%= sewaName %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
+                  <td id="sou_type">担当者[僧]</td>
+                    <script>
+                      createHtml("<%= souNameBk %>", "<%= souName %>");
+                    </script>
+                </tr>
+                <tr class="t_comment">
+                  <td class="comment_type">備考<br>※500文字以内</td>
+                    <script>
+                      createHtml("<%= commentBk %>", "<%= comment %>");
+                    </script>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <input type="hidden" name="member_id" value=<%= memberId %>>
+            <input type="hidden" name="danka_type" value=<%= dankaType %>>
+            <input type="hidden" name="name_sei" value=<%= nameSei %>>
+            <input type="hidden" name="name_na" value=<%= nameNa %>>
+            <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
+            <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
+            <input type="hidden" name="sex" value=<%= sex %>>
+            <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
+            <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
+            <input type="hidden" name="region" value=<%= region %>>
+            <input type="hidden" name="city" value=<%= city %>>
+            <input type="hidden" name="address_line1" value=<%= addressLine1 %>>
+            <input type="hidden" name="address_line2" value=<%= addressLine2 %>>
+            <input type="hidden" name="birthday_y" value=<%= birthdayY %>>
+            <input type="hidden" name="birthday_m" value=<%= birthdayM %>>
+            <input type="hidden" name="birthday_d" value=<%= birthdayD %>>
+            <input type="hidden" name="telno_pre_1" value=<%= telnoPre1 %>>
+            <input type="hidden" name="telno_mid_1" value=<%= telnoMid1 %>>
+            <input type="hidden" name="telno_last_1" value=<%= telnoLast1 %>>
+            <input type="hidden" name="telno_yoto_1" value=<%= telnoYoto1 %>>
+            <input type="hidden" name="telno_pre_2" value=<%= telnoPre2 %>>
+            <input type="hidden" name="telno_mid_2" value=<%= telnoMid2 %>>
+            <input type="hidden" name="telno_last_2" value=<%= telnoLast2 %>>
+            <input type="hidden" name="telno_yoto_2" value=<%= telnoYoto2 %>>
+            <input type="hidden" name="telno_pre_3" value=<%= telnoPre3 %>>
+            <input type="hidden" name="telno_mid_3" value=<%= telnoMid3 %>>
+            <input type="hidden" name="telno_last_3" value=<%= telnoLast3 %>>
+            <input type="hidden" name="telno_yoto_3" value=<%= telnoYoto3 %>>
+            <input type="hidden" name="mail_address_1" value=<%= mailAddress1 %>>
+            <input type="hidden" name="mail_yoto_1" value=<%= mailYoto1 %>>
+            <input type="hidden" name="mail_address_2" value=<%= mailAddress2 %>>
+            <input type="hidden" name="mail_yoto_2" value=<%= mailYoto2 %>>
+            <input type="hidden" name="mail_address_3" value=<%= mailAddress3 %>>
+            <input type="hidden" name="mail_yoto_3" value=<%= mailYoto3 %>>
+            <input type="hidden" name="tiku_name" value=<%= webItemJson.tiku_name %>>
+            <input type="hidden" name="sewa_name" value=<%= webItemJson.sewa_name %>>
+            <input type="hidden" name="job_code" value=<%= jobCode %>>
+            <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
+            <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
+            <input type="hidden" name="member_id_sou" value=<%= memberIdSou %>>
+            <input type="hidden" name="comment" value=<%= webItemJson.comment %>>
+            <input type="hidden" name="tiku_code_bk" value=<%= tikuCodeBk %>>
+            <input type="hidden" name="is_update_m_member" value=false>
+            <input type="hidden" name="is_update_m_address" value=false>
+            <input type="hidden" name="is_update_m_member_tiku" value=false>
+            <input type="hidden" name="is_update_m_telnumber_1" value=false>
+            <input type="hidden" name="is_update_m_telnumber_2" value=false>
+            <input type="hidden" name="is_update_m_telnumber_3" value=false>
+            <input type="hidden" name="is_update_m_mail_1" value=false>
+            <input type="hidden" name="is_update_m_mail_2" value=false>
+            <input type="hidden" name="is_update_m_mail_3" value=false>
+            <input type="hidden" name="is_update_t_danka" value=false>
+            <input type="hidden" name="is_update_t_comment" value=false>
+          <div id="new_submit"><input type="submit" value="変更" id="submit"></div>
+        </form>
+      </div>
+
+      <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_kako" method="post" id="danka_detail_kako_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_nenkaiki" method="post" id="danka_detail_nenkaiki_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_kihu" method="post" id="danka_detail_kihu_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <form action="/danka_detail_omairi" method="post" id="danka_detail_omairi_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>

@@ -5,47 +5,99 @@
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
 <link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_common.css" type="text/css" id="danka_detail_common">
+<link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kihon_confirm.css" type="text/css" id="danka_detail_kihon">
 <title>檀家管理システム　禅</title>
 <script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/dankaInfo.js"></script>
 <%
-    var result = resultRows[0];
-    var memberId = result.member_id;
-    var dankaType = result.danka_type;
-    var nameSei = result.name_sei;
-    var nameNa = result.name_na;
+    var memberId = webItemJson.member_id;
+    var dankaType = webItemJson.danka_type;
+    var dankaTypeDanka = "○";
+    var dankaTypeShinto = "-";
+    if (dankaType === 1){
+        dankaTypeDanka = "-";
+        dankaTypeShinto = "○";
+    }
+    var nameSei = webItemJson.name_sei;
+    var nameNa = webItemJson.name_na;
     var nameFull = nameSei + "　" + nameNa;
-    var tikuCode = result.tiku_code;
-    var sewaCode = result.sewa_code;
-    var tikuName = result.tiku_name;
-	var sewaName = result.sewa_name;
-	var dankaTypeDanka = "○";
-	var dankaTypeShinto = "-";
-	if (dankaType === 1){
-	    dankaTypeDanka = "-";
-	    dankaTypeShinto = "○";
-	}
-%>    
+    var tikuName = webItemJson.tiku_name;
+    var sewaName = webItemJson.sewa_name;
+    var tikuCode = webItemJson.tiku_code;
+    var sewaCode = webItemJson.sewa_code;
+%>
 <script>
-    $(function () {
-        $(".menu_sub_kihon").click(function () {
-            $("#danka_detail_kihon_form").submit();
+    $(function(){
+    // 更新時のバリデーションチェック
+        $("form").submit(function () {
+            $(".is_change").each(function () {
+                if ($(this).parent().hasClass("m_member")) {
+                    $("input[name='is_update_m_member']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("t_danka")) {
+                    $("input[name='is_update_t_danka']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_member_tiku")) {
+                    $("input[name='is_update_m_member_tiku']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_address")) {
+                    $("input[name='is_update_m_address']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_telnumber_1")) {
+                    $("input[name='is_update_m_telnumber_1']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_telnumber_2")) {
+                    $("input[name='is_update_m_telnumber_2']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_telnumber_3")) {
+                    $("input[name='is_update_m_telnumber_3']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_mail_1")) {
+                    $("input[name='is_update_m_mail_1']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_mail_2")) {
+                    $("input[name='is_update_m_mail_2']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("m_mail_3")) {
+                    $("input[name='is_update_m_mail_3']").val(true);
+                    //return false;
+                }
+                if ($(this).parent().hasClass("t_comment")) {
+                    $("input[name='is_update_t_comment']").val(true);
+                    //return false;
+                }
+            });
         });
-        $(".menu_sub_kako").click(function () {
-            $("#danka_detail_kako_form").submit();
-        });
-        $(".menu_sub_genzai").click(function () {
-            $("#danka_detail_genzai_form").submit();
-        });
-        $(".menu_sub_nenkaiki").click(function () {
-            $("#danka_detail_nenkaiki_form").submit();
-        });
-        $(".menu_sub_kihu").click(function () {
-            $("#danka_detail_kihu_form").submit();
-        });
-        $(".menu_sub_omairi").click(function () {
-            $("#danka_detail_omairi_form").submit();
-        });
+    // ページ遷移定義
+    $(".menu_sub_kihon").click(function () {
+        $("#danka_detail_kihon_form").submit();
     });
+    $(".menu_sub_kako").click(function () {
+        $("#danka_detail_kako_form").submit();
+    });
+    $(".menu_sub_genzai").click(function () {
+        $("#danka_detail_genzai_form").submit();
+    });
+    $(".menu_sub_nenkaiki").click(function () {
+        $("#danka_detail_nenkaiki_form").submit();
+    });
+    $(".menu_sub_kihu").click(function () {
+        $("#danka_detail_kihu_form").submit();
+    });
+    $(".menu_sub_omairi").click(function () {
+        $("#danka_detail_omairi_form").submit();
+    });
+    })
 </script>
 </head>
 <body>
@@ -90,8 +142,8 @@
     <!-- wrapper -->
     <div id="wrapper">
       <!-- inner_title -->
-      <div id="inner_title">
-        <div id="title">
+      <div class="inner_title">
+        <div class="title">
    	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
         </div>
         <div class="kosyu_info">
@@ -106,12 +158,12 @@
                 </tr>
               </thead>
               <tbody>
-              <tr id="<%= memberId %>">
-                <td class="table_name_full"><%= nameFull %></td>
-                <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
-                <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
-                <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
-                <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
+                <tr id="<%= memberId %>">
+                  <td class="table_name_full"><%= nameFull %></td>
+                  <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
+                  <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
+                  <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
+                  <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
                 </tr>
               </tbody>
             </table>
@@ -126,6 +178,15 @@
           </ul>
         </div>
       </div>
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div class="inner_main">
+        <div class="title_comment">
+   	      <h2>更新完了しました。</h2>
+        </div>
+          <div class="table_main_kihon"></div>
+      </div>
+
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>
@@ -141,10 +202,6 @@
       <form action="/danka_detail_omairi" method="post" id="danka_detail_omairi_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>
-      <!-- title end-->
-      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
-      <div id="inner_main">
-      </div>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
     </div>
     <!-- wrapper end -->
