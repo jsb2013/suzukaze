@@ -7,12 +7,12 @@ var logger = log.createLogger();
 var util = require("../util/util");
 
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getMAddress = function(client, database, memberId, rows, dbcallback){
+exports.getMAddress = function (client, database, memberId, rows, dbcallback) {
     var isDbError = false;
     var query = client.query('select * from m_address where member_id = $1 and is_disabled = false and is_deleted = false',
             [memberId]);
 
-    query.on('row', function(row) {
+    query.on('row', function (row) {
         rows.push(row);
     });
 
@@ -20,12 +20,14 @@ exports.getMAddress = function(client, database, memberId, rows, dbcallback){
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -35,6 +37,7 @@ exports.getMAddress = function(client, database, memberId, rows, dbcallback){
         // 存在しない場合
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(new Error());
             return;
         }
@@ -43,6 +46,7 @@ exports.getMAddress = function(client, database, memberId, rows, dbcallback){
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         callback(new Error());
         isDbError = true;
@@ -58,12 +62,14 @@ exports.updateMAddressForDeleteFlag = function(client, database, priority, membe
     query.on('end', function(row,err) {
         if (err){
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -71,6 +77,7 @@ exports.updateMAddressForDeleteFlag = function(client, database, priority, membe
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -94,12 +101,14 @@ exports.insertMAddress = function (client, database, priority, memberId, baseInf
     query.on('end', function (row, err) {
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -107,6 +116,7 @@ exports.insertMAddress = function (client, database, priority, memberId, baseInf
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -127,12 +137,14 @@ exports.getAddressInfoByMemberId = function (client, database, memberId, rows, c
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             callback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             callback(null);
             return;
         }
@@ -144,6 +156,7 @@ exports.getAddressInfoByMemberId = function (client, database, memberId, rows, c
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
             createInitialInfo(rows);
+            client.end();
             callback(null);
             return;
         }
@@ -152,6 +165,7 @@ exports.getAddressInfoByMemberId = function (client, database, memberId, rows, c
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         callback(new Error());
         isDbError = true;

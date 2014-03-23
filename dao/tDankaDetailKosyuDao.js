@@ -17,6 +17,7 @@ exports.getTDankaDetailKosyuInfo = function(client, database, member_id, rows, d
     });
 
     query.on('end', function (row, err) {
+        client.end();
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
@@ -43,6 +44,7 @@ exports.getTDankaDetailKosyuInfo = function(client, database, member_id, rows, d
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -56,6 +58,7 @@ exports.updateTDankaDetailKosyuForDeleteFlag = function(client, database, member
                     ['yamashita0284', memberId]);
     
     query.on('end', function(row,err) {
+        client.end();
         if (err){
             logger.error('xxxx', 'err =>'+ err);
             dbcallback(err);
@@ -71,6 +74,7 @@ exports.updateTDankaDetailKosyuForDeleteFlag = function(client, database, member
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -103,6 +107,7 @@ exports.insertTDankaDetailKosyuInfo = function(client, database, memberId, baseI
                     [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, sex, jobCode, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, 'yamashita0284', 'yamashita0284']);
     
     query.on('end', function(row,err) {
+        client.end();
         if (err){
             logger.error('xxxx', 'err =>'+ err);
             dbcallback(err);
@@ -116,6 +121,7 @@ exports.insertTDankaDetailKosyuInfo = function(client, database, memberId, baseI
     });
     
     query.on('error', function(error) {
+        client.end();
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
         // これでよいのかな？

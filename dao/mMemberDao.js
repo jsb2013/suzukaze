@@ -20,12 +20,14 @@ exports.getMMember = function (client, database, memberId, rows, dbcallback) {
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合（必ず1レコードのはず。）
         if (rows.length == 1) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -34,6 +36,7 @@ exports.getMMember = function (client, database, memberId, rows, dbcallback) {
         }
         // 存在しない、若しくは複数レコードが存在する場合（どちらも有り得ないので発生したらエラーにする。）
         logger.error('xxxx', 'err =>' + err);
+        client.end();
         dbcallback(new Error());
         return;
     });
@@ -41,6 +44,7 @@ exports.getMMember = function (client, database, memberId, rows, dbcallback) {
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -56,12 +60,14 @@ exports.updateMMemberForDeleteFlag = function(client, database, memberId, dbcall
     query.on('end', function(row,err) {
         if (err){
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -69,6 +75,7 @@ exports.updateMMemberForDeleteFlag = function(client, database, memberId, dbcall
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -101,12 +108,14 @@ exports.insertMMember = function (client, database, memberId, baseInfo, dbcallba
     query.on('end', function (row, err) {
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -114,6 +123,7 @@ exports.insertMMember = function (client, database, memberId, baseInfo, dbcallba
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -134,12 +144,14 @@ exports.getSouMemberIdInfo = function(client, database, rows, dbcallback){
         // エラーが発生した場合
         if (err){
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -149,6 +161,7 @@ exports.getSouMemberIdInfo = function(client, database, rows, dbcallback){
         // 存在しない場合
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(new Error());
             return;
         }
@@ -157,6 +170,7 @@ exports.getSouMemberIdInfo = function(client, database, rows, dbcallback){
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;

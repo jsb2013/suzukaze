@@ -7,11 +7,11 @@ var logger = log.createLogger();
 var util = require("../util/util");
 
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getMSewaCode = function(client, database, rows, dbcallback){
+exports.getMSewaCode = function (client, database, rows, dbcallback) {
     var isDbError = false;
     var query = client.query('select sewa_code, sewa_name from m_sewa_code where is_disabled=false and is_deleted=false');
 
-    query.on('row', function(row) {
+    query.on('row', function (row) {
         rows.push(row);
     });
 
@@ -19,11 +19,13 @@ exports.getMSewaCode = function(client, database, rows, dbcallback){
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
+            client.end();
             dbcallback(null);
             return;
         }
@@ -33,6 +35,7 @@ exports.getMSewaCode = function(client, database, rows, dbcallback){
         // 存在しない場合
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(new Error());
             return;
         }
@@ -41,6 +44,7 @@ exports.getMSewaCode = function(client, database, rows, dbcallback){
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -62,11 +66,13 @@ exports.getMSewaCodeForSewaNameBySewaCode = function(client, database, rows, sew
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
+            client.end();
             dbcallback(null);
             return;
         }
@@ -76,6 +82,7 @@ exports.getMSewaCodeForSewaNameBySewaCode = function(client, database, rows, sew
         // 存在しない場合　→ DB登録不正（登録している地区コードが地区コードマスタに無い）
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(new Error());
             return;
         }
@@ -84,6 +91,7 @@ exports.getMSewaCodeForSewaNameBySewaCode = function(client, database, rows, sew
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;

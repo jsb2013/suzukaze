@@ -20,12 +20,14 @@ exports.getMTelnumber = function(client, database, memberId, rows, dbcallback){
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -35,6 +37,7 @@ exports.getMTelnumber = function(client, database, memberId, rows, dbcallback){
         // 存在しない場合
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(new Error());
             return;
         }
@@ -43,6 +46,7 @@ exports.getMTelnumber = function(client, database, memberId, rows, dbcallback){
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -58,12 +62,14 @@ exports.updateMTelnumberForDeleteFlag = function(client, database, priority, mem
     query.on('end', function(row,err) {
         if (err){
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -71,6 +77,7 @@ exports.updateMTelnumberForDeleteFlag = function(client, database, priority, mem
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -115,12 +122,14 @@ exports.insertMTelnumber = function (client, database, priority, memberId, baseI
     query.on('end', function (row, err) {
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -128,6 +137,7 @@ exports.insertMTelnumber = function (client, database, priority, memberId, baseI
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -150,12 +160,14 @@ exports.getTelnumberInfoByMemberId = function (client, database, memberId, rows,
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -167,6 +179,7 @@ exports.getTelnumberInfoByMemberId = function (client, database, memberId, rows,
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
             createInitialInfo(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -175,6 +188,7 @@ exports.getTelnumberInfoByMemberId = function (client, database, memberId, rows,
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;

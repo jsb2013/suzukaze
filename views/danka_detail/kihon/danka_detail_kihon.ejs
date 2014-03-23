@@ -114,8 +114,16 @@
             // 必須項目チェック
             if($(this).hasClass("require")){
                 if($(this).val() == ""){
-                    $(this).parent().append("<p class='error'>値が設定されていません。</p>");
-                    $(this).parent().addClass("error");
+                    if($(this).hasClass("duplicate_pre")){
+                        isDuplicate = "1";
+                        $(this).parent().append("<p class='error'>値が設定されていません。</p>");
+                        $(this).parent().addClass("error");
+                    } else if($(this).hasClass("duplicate_end") && isDuplicate == "1"){
+                        isDuplicate = "0";
+                    } else {
+                        $(this).parent().append("<p class='error'>値が設定されていません。</p>");
+                        $(this).parent().addClass("error");
+                    }
                 }
             } 
             // 数字項目チェック
@@ -340,10 +348,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="furigana_type">ふりがな</td>
+                  <td id="furigana_type">ふりがな(※必須)</td>
                   <td id="furigana" class="table_main_tuika_selectable">
-                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="chenge_check" value="<%= furiganaSei %>">
-                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="chenge_check" value="<%= furiganaNa %>">
+                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="chenge_check validate require duplicate_pre" value="<%= furiganaSei %>">
+                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="chenge_check validate require duplicate_end" value="<%= furiganaNa %>">
                   </td>
                 </tr>
                 <tr>

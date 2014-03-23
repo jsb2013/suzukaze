@@ -20,12 +20,14 @@ exports.getMMail = function(client, database, memberId, rows, dbcallback){
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -35,6 +37,7 @@ exports.getMMail = function(client, database, memberId, rows, dbcallback){
         // 存在しない場合
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(new Error());
             return;
         }
@@ -43,6 +46,7 @@ exports.getMMail = function(client, database, memberId, rows, dbcallback){
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -58,12 +62,14 @@ exports.updateMMailForDeleteFlag = function(client, database, priority, memberId
     query.on('end', function(row,err) {
         if (err){
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -71,6 +77,7 @@ exports.updateMMailForDeleteFlag = function(client, database, priority, memberId
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -107,12 +114,14 @@ exports.insertMMail = function (client, database, priority, memberId, baseInfo, 
     query.on('end', function (row, err) {
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -120,6 +129,7 @@ exports.insertMMail = function (client, database, priority, memberId, baseInfo, 
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -142,12 +152,14 @@ exports.getMailInfoByMemberId = function (client, database, memberId, rows, dbca
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -159,6 +171,7 @@ exports.getMailInfoByMemberId = function (client, database, memberId, rows, dbca
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
             createInitialInfo(rows);
+            client.end();
             dbcallback(null);
             return;
         }
@@ -167,6 +180,7 @@ exports.getMailInfoByMemberId = function (client, database, memberId, rows, dbca
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;

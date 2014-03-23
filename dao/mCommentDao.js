@@ -14,12 +14,14 @@ exports.updateTCommentForDeleteFlag = function(client, database, memberId, dbcal
     query.on('end', function(row,err) {
         if (err){
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -27,6 +29,7 @@ exports.updateTCommentForDeleteFlag = function(client, database, memberId, dbcal
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
@@ -48,12 +51,14 @@ exports.getTCommentByMemberId = function (client, database, memberId, rows, call
         // エラーが発生した場合
         if (err) {
             logger.error('xxxx', 'err =>' + err);
+            client.end();
             callback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
             util.convertJsonNullToBlankForAllItem(rows);
+            client.end();
             callback(null);
             return;
         }
@@ -65,6 +70,7 @@ exports.getTCommentByMemberId = function (client, database, memberId, rows, call
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
             createInitialInfo(rows);
+            client.end();
             callback(null);
             return;
         }
@@ -73,6 +79,7 @@ exports.getTCommentByMemberId = function (client, database, memberId, rows, call
     query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
+        client.end();
         // これでよいのかな？
         callback(new Error());
         isDbError = true;
@@ -91,12 +98,14 @@ exports.insertTComment = function(client, database, memberId, baseInfo, dbcallba
     query.on('end', function(row,err) {
         if (err){
             logger.error('xxxx', 'err =>'+ err);
+            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
+        client.end();
         dbcallback(null);
         return;
     });
@@ -104,6 +113,7 @@ exports.insertTComment = function(client, database, memberId, baseInfo, dbcallba
     query.on('error', function(error) {
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
+        client.end();
         // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;

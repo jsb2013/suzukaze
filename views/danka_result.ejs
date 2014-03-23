@@ -161,9 +161,9 @@
                 <label>[地区]</label></label>          
                 <select id="tiku_list"  name="tiku_name" >
                     <% for(var i in tikuCodeInfo){
-                        var tikuCode = tikuCodeInfo[i].tiku_code;
-                        var tikuName = tikuCodeInfo[i].tiku_name; %>
-                        <option value=<%= tikuCode %>><%= tikuName %></option>
+                        var _tikuCode = tikuCodeInfo[i].tiku_code;
+                        var _tikuName = tikuCodeInfo[i].tiku_name; %>
+                        <option value=<%= _tikuCode %>><%= _tikuName %></option>
                     <%}%>
                 </select>
             </div>
@@ -171,9 +171,9 @@
                 <label>[世話人]</label></label>          
                 <select id="sewa_list"  name="sewa_name" >
                       <% for(var i in sewaCodeInfo){
-                        var sewaCode = sewaCodeInfo[i].sewa_code;
-                        var sewaName = sewaCodeInfo[i].sewa_name; %>
-                         <option value=<%= sewaCode %>><%= sewaName %></option>
+                        var _sewaCode = sewaCodeInfo[i].sewa_code;
+                        var _sewaName = sewaCodeInfo[i].sewa_name; %>
+                         <option value=<%= _sewaCode %>><%= _sewaName %></option>
                          <%}%>
                      </select>
             </div>
