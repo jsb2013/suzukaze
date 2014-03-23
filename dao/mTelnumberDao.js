@@ -149,6 +149,7 @@ exports.insertMTelnumber = function (client, database, priority, memberId, baseI
 exports.getTelnumberInfoByMemberId = function (client, database, memberId, rows, dbcallback) {
 
     var isDbError = false;
+
     var query = client.query('select priority, tel_number_pre, tel_number_mid, tel_number_last, yoto from m_telnumber where member_id = $1 and is_disabled = false and is_deleted = false',
                     [memberId]);
 

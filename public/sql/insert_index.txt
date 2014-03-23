@@ -40,3 +40,15 @@ on m_tags (tags,is_disabled,is_deleted) where not is_deleted and not is_disabled
 create unique index t_danka_detail_kosyu_info_valid_constraint
 on t_danka_detail_kosyu_info (member_id,is_deleted) where not is_deleted;
 
+
+create unique index m_report_valid_constraint
+on m_report (report_no,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index m_report_type_valid_constraint
+on m_report_type (report_type_no,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index m_tags_valid_constraint
+on m_tags (tags,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index t_report_if_valid_constraint
+on t_report_if (member_id, create_user, update_user) 

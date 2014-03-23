@@ -7,6 +7,7 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+var config = require("./conf/common_config");
 var app = express();
 
 // ログの設定
@@ -16,7 +17,7 @@ var logger = log4js.getLogger();
 
 // all environments
 app.configure(function(){
-   app.set('port', process.env.PORT || 3000);
+   app.set('port', process.env.PORT || config.connectionPort);
    app.set('views', path.join(__dirname, 'views'));
    app.set('view engine', 'ejs');
    app.use(express.cookieParser("hogehoge"));
@@ -99,12 +100,34 @@ app.post('/danka_detail_kako_db_update', routes.postDankaDetailKakoDbUpdate);
 // 結果お参り帳画面
 //app.post('/danka_detail_omairi', routes.postDankaDetailOmairi);
 
-app.get('/haraikomi', routes.haraikomi);
-app.get('/danka_tyohyo', routes.getTyohyoMain);
+
+
+
+// 3.帳票印刷画面
+app.get('/report_top', routes.getReportTop);
+// 檀家詳細TOP画面→基本情報画面→確認画面→DB更新
+app.post('/report_view', routes.postReportView);
+
+
+//app.get('/haraikomi', routes.haraikomi);
+//app.get('/danka_tyohyo', routes.getTyohyoMain);
+
 
 //***************************************
+//********* ルート情報 ******************
 //***************************************
 
-http.createServer(app).listen(app.get('port'), function(){
+// Expressのappsオブジェクトを引数にhttp.Serverクラスのインスタンスを作成
+var server = http.createServer(app);
+
+// node.jsサーバーの起動
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+var socketApp = require("./socket/socketApp");
+// socket.IOサーバーの起動
+socketApp.receiveMassages(server,function(){
+  console.log('Socket.IO server listening on port ' + app.get('port'));
+});
+

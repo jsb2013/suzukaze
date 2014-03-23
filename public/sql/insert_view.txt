@@ -1,0 +1,118 @@
+create view v_report_target as 								
+select								
+m_member.member_id,								
+m_member.name_sei || ' ' || m_member.name_na as name,								
+m_member.furigana_sei || ' ' || m_member.furigana_na as furigana,								
+m_address.zip_code_pre || '-' || m_address.zip_code_last as zip_code,								
+m_address.region || m_address.city || m_address.address_line1 as address_main,								
+m_address.address_line2 as address_sub,								
+m_address.region || m_address.city || m_address.address_line1 || m_address.address_line2 as address,								
+m_member.tags,								
+m_address.priority,								
+m_address.zip_code_pre,								
+m_address.zip_code_last,								
+m_address.region,			
+m_address.city,			
+m_address.address_line1,			
+m_address.address_line2,			
+m_address.yoto,			
+t_report_if.report_if_id,			
+m_telnumber.tel_number_pre || '-' || tel_number_mid || '-' || tel_number_last as tel			
+			
+from m_telnumber INNER JOIN			
+		(m_address INNER JOIN 	
+			(m_member left join t_report_if 
+			on m_member.member_id = t_report_if.member_id ) 
+		on m_address.member_id = m_member.member_id)	
+	on m_telnumber.member_id = m_member.member_id		
+			
+where m_member.is_disabled = False 			
+	and  m_member.is_deleted = false 
+	and m_address.is_disabled = False 
+	and  m_address.is_deleted = False
+	and m_telnumber.priority = 1
+order by furigana;	
+
+
+create view v_report_target_preview as 	
+select	
+m_member.member_id,	
+m_member.name_sei || ' ' || m_member.name_na as name,	
+m_member.furigana_sei || ' ' || m_member.furigana_na as furigana,	
+m_address.zip_code_pre || '-' || m_address.zip_code_last as zip_code,	
+m_address.region || m_address.city || m_address.address_line1 as address_main,	
+m_address.address_line2 as address_sub,	
+m_address.region || m_address.city || m_address.address_line1 || m_address.address_line2 as address,	
+m_member.tags,			
+m_address.priority,			
+m_address.zip_code_pre,			
+m_address.zip_code_last,			
+m_address.region,			
+m_address.city,			
+m_address.address_line1,			
+m_address.address_line2,			
+m_address.yoto,			
+t_report_if.report_if_id,			
+m_telnumber.tel_number_pre || '-' || tel_number_mid || '-' || tel_number_last as tel			
+			
+from m_telnumber INNER JOIN			
+		(m_address INNER JOIN 	
+			(m_member left join t_report_if 
+			on m_member.member_id = t_report_if.member_id ) 
+		on m_address.member_id = m_member.member_id)
+	on m_telnumber.member_id = m_member.member_id	
+where m_member.member_id = 1;
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+create view v_typeahead  as 
+select name_sei || ' ' || name_na as id ,name_sei || ' ' || name_na as text from m_member
+where m_member.is_deleted = false and m_member.is_disabled = False
+union 
+select tags as id, '[検索tag] ' || tags as text from m_tags
+where m_tags.is_deleted = false and m_tags.is_disabled = False
+order by text;
+
+
+
+
+
+
+
+
+
+
+
+create view v_report_type  as 
+select *
+from m_report_type
+where m_report_type.is_deleted = false and m_report_type.is_disabled = False;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create view v_report  as 
+select *
+from m_report
+where m_report.is_deleted = false and m_report.is_disabled = False
+order by report_id;

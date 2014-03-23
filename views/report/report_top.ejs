@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
+  <title>檀家管理システム　禅</title>
+  
+  <!-- jQuery JS -->
+  <script src="/js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+  <!-- Select2 JS & CSS -->
+  <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2.css' />
+  <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2-bootstrap.css' />
+  <script src="/js/select2-3.4.5/select2.js"></script>
+
+  <!-- Default CSS -->
+  <!-- <link rel='stylesheet' href='/css/style.css' /> -->
+  <link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" />
+  <link rel="stylesheet" href="stylesheets/report/style.css" type="text/css"  />
+
+  <!-- icons from font Awesome -->
+  <link rel="stylesheet" href="stylesheets/font-awesome/font-awesome.css">
+
+  <!-- socket.IO -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- <script type="text/javascript" src="/js/report/report.js"></script> -->
+
+  <script type="text/javascript">
+
+    // ソケット通信の開始
+    var socket = io.connect("http://<%= page.url %>");
+
+    // SelectReportTypeメッセージを受けたとき
+    socket.on('SelectReportType', function(data) {
+      // 選択肢から一度全て取り除く
+      $('#select_template > option').remove();
+      // テンプレートを選択肢に追加
+      $('#select_template').append($('<option>').html("内容を選択").val(9999));
+      for(var i=0 ; i < data.length ; i++){
+        $('#select_template').append($('<option>').html(data[i].report_name).val(data[i].report_no));
+      }
+    });
+
+    // SelectReportメッセージを受けたとき
+    socket.on('SelectReport', function(data) {
+
+      // 帳票名を設定
+      $("#input_report_name").val(data[0].report_name);
+      // 送付状を設定
+      $("#input_souhujo").val(data[0].text_1);
+      // 口座番号1を設定
+      $("#input_kouzaNo1").val(data[0].text_2);
+      // 口座番号2を設定
+      $("#input_kouzaNo2").val(data[0].text_3);
+      // 口座番号3を設定
+      $("#input_kouzaNo3").val(data[0].text_4);
+      // 金額を設定
+      $("#input_kingaku").val(data[0].text_5);
+      // 料金を設定
+      $("#input_ryoukin").val(data[0].text_6);
+      // 特殊取扱を設定
+      $("#input_tokyusyu").val(data[0].text_7);
+      // 加入者名を設定
+      $("#input_kanyusyaMei").val(data[0].text_8);
+      // 通信を設定
+      $("#input_tushin").val(data[0].text_9);
+      // 件名を設定
+      $("#input_report_title").val(data[0].text_10);
+    });
+
+    // ReportSaveメッセージを受けたとき
+    socket.on('ReportSave', function() {
+      alert('保存されました。');
+    });
+
+    // ReportSaveAsメッセージを受けたとき
+    socket.on('ReportSaveAs', function() {
+      alert('別名で保存されました。\n検索ページへ戻ります。');
+      location.reload();
+    });
+
+    // ReportDeleteメッセージを受けたとき
+    socket.on('ReportDelete', function() {
+      alert('削除しました。\n検索ページへ戻ります。');
+      location.reload();
+    });
+
+    // GetTargetListメッセージを受けたとき
+    socket.on('GetTargetList', function(data) {
+      //alert("add:"+ data.length)
+      // まずは一度全て取り除く
+      $('#target_list > tr').remove();
+
+      for(var i=0;i<data.length;i++){
+      	var html = "";
+          html += "<tr>";
+          html +=   "<td>";
+        if(data[i].report_if_id == null){
+          html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + "></input>";
+        }else{
+          html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + " checked></input>";
+        }
+          html +=   "</td>";
+          html +=   "<td>";
+          html +=     "<p>" + data[i].name +"</p>";
+          html +=   "</td>";        	          
+          html +=   "<td>";
+          html +=     "<p>" + data[i].address +"</p>";
+          html +=   "</td>";
+          html +=   "<td>";
+          html +=     "<p>" + data[i].tags + "</p>";
+          html +=   "</td>";
+          html +=  "</tr>";
+
+        $('#target_list').append(html);
+        var val = data[i].name_na;
+        $('#selected_' + i ).on('click', function(){
+          if($(this).prop('checked') == true){
+            var data = $(this).attr('value');
+            // InsertReportIfメッセージを送る
+            socket.emit('InsertReportIf', { value: data });
+          }
+          else{
+            var data = $(this).attr('value');
+            // DeleteReportIfメッセージを送る
+            socket.emit('DeleteReportIf', { value: data });
+          }
+        });
+      }
+    });
+
+    // disconnectionメッセージを送る
+    function DisConnect() {
+      var msg = socket.socket.transport.sessid + "は切断しました。";
+      socket.emit('disconnection', { value: msg });
+      socket.disconnect();
+    }
+
+    // SelectReportTypeメッセージを送る
+    function SendSelectReportType() {
+      // report_type_noを送る
+      var data = $("select[id='select_type']").val();
+      socket.emit('SelectReportType', { value: data });
+    }
+
+    // SelectReportメッセージを送る
+    function SendSelectReport() {
+      // report_type_noを送る
+      var data = $("select[id='select_template']").val();
+      socket.emit('SelectReport', { value: data });
+    }
+
+    // GetTargetListメッセージを送る
+    function GetTargetList() {
+      // 検索ボックスに入力されたtagsを送る
+      var data = $('#serch_tag').val();
+      socket.emit('GetTargetList', { value: data });
+    }
+
+    // ChangeAllメッセージを送る
+    function all_change(){
+      var target_member_id =[];
+      var elem = document.getElementsByName("target");
+
+      if(document.getElementById("all_change").checked){
+        for(var i = 0; i < elem.length; i++){
+    　     elem[i].checked = "checked";
+          target_member_id[i] = elem[i].value;
+        }
+        
+      socket.emit('AllInsertReportIf', { value: target_member_id, flag:true });
+      }
+      else{
+        for(var i = 0; i < elem.length; i++){
+          elem[i].checked = "";
+          target_member_id[i] = elem[i].value;
+        }
+      socket.emit('AllDeleteReportIf', { value: target_member_id, flag:false });
+      }
+    }
+    
+    // ReportSaveメッセージを送る
+    function ReportSave() {
+      // 帳票テンプレートNoを送る
+      var report_no = $('#select_template').val();
+      // 帳票名を設定
+      var report_name = $("#input_report_name").val();
+      // 挨拶文を設定
+      var text_1 = $("#input_souhujo").val();
+      // 口座番号1を設定
+      var text_2 = $("#input_kouzaNo1").val();
+      // 口座番号2を設定
+      var text_3 = $("#input_kouzaNo2").val();
+      // 口座番号3を設定
+      var text_4 = $("#input_kouzaNo3").val();
+      // 金額を設定
+      var text_5 = $("#input_kingaku").val();
+      // 料金を設定
+      var text_6 = $("#input_ryoukin").val();
+      // 特殊取扱を設定
+      var text_7 = $("#input_tokyusyu").val();
+      // 加入者名を設定
+      var text_8 = $("#input_kanyusyaMei").val();
+      // 通信を設定
+      var text_9 = $("#input_tushin").val();
+      // 件名を設定
+      var text_10 = $("#input_report_title").val();
+
+      socket.emit('ReportSave', { 
+              report_no: report_no ,report_name: report_name ,
+              text_1: text_1 ,text_2: text_2 ,text_3: text_3 ,text_4: text_4 ,text_5: text_5 ,
+              text_6: text_6 ,text_7: text_7 ,text_8: text_8 ,text_9: text_9 ,text_10: text_10});
+    }
+
+    // ReportSaveAsメッセージを送る
+    function ReportSaveAs() {
+      // 帳票種別Noを送る
+      var report_type_no = $('#select_type').val();
+      // 帳票名を設定
+      var report_name = $("#input_report_name").val();
+      // 挨拶文を設定
+      var text_1 = $("#input_souhujo").val();
+      // 口座番号1を設定
+      var text_2 = $("#input_kouzaNo1").val();
+      // 口座番号2を設定
+      var text_3 = $("#input_kouzaNo2").val();
+      // 口座番号3を設定
+      var text_4 = $("#input_kouzaNo3").val();
+      // 金額を設定
+      var text_5 = $("#input_kingaku").val();
+      // 料金を設定
+      var text_6 = $("#input_ryoukin").val();
+      // 特殊取扱を設定
+      var text_7 = $("#input_tokyusyu").val();
+      // 加入者名を設定
+      var text_8 = $("#input_kanyusyaMei").val();
+      // 通信を設定
+      var text_9 = $("#input_tushin").val();
+      // 件名を設定
+      var text_10 = $("#input_report_title").val();
+
+      socket.emit('ReportSaveAs', { 
+              report_type_no: report_type_no,report_name: report_name ,
+              text_1: text_1 ,text_2: text_2 ,text_3: text_3 ,text_4: text_4 ,text_5: text_5 ,
+              text_6: text_6 ,text_7: text_7 ,text_8: text_8 ,text_9: text_9 ,text_10: text_10});
+    }
+
+    // ReportDeleteメッセージを送る
+    function ReportDelete() {
+      
+     var myRet = confirm("表示している帳票データを削除します。よろしいですか？");
+     if ( myRet == true ){
+      // 帳票テンプレートNoを送る
+      var report_no = $('#select_template').val();
+
+      socket.emit('ReportDelete', {report_no: report_no});
+     }
+    }
+  </script>
+
+  <script>
+    // 印刷画面の表示
+    function submit(){
+      if($('#select_type').val() == 9999 || $('#select_template').val() == 9999){
+        alert("帳票とテンプレートを正しく選択してください。");
+      }else{
+        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
+
+      $('#preview_flag').val(0);
+      document.print_report_type.submit();
+      }
+    }
+  </script>
+
+  <script>
+    // 印刷プレビュー画面の表示
+    function submit_preview(){
+      if($('#select_type').val() == 9999 || $('#select_template').val() == 9999){
+        alert("帳票とテンプレートを正しく選択してください。");
+      }else{
+        alert("印刷プレビューページを開きます。");
+      $('#preview_flag').val(1);
+      document.print_report_type.submit();
+      }
+    }
+  </script>
+  
+  <!-- タブスクリプト -->
+  <script>
+      $('#myTab a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show');
+      })    
+  </script>
+  
+  <!-- select2による検索ボックスのサジェストスクリプト -->
+  <script>
+    var msg = "サジェスト候補を取得";
+    socket.emit('GetTypeahead', { value: msg });
+    socket.on('GetTypeahead', function(data) {
+      $(function(){
+        $('#serch_tag').select2({
+            createSearchChoice:function(term, data) {
+                if ($(data).filter(function() {
+                    return this.text.localeCompare(term)===0; }).length===0) {
+                    return { id:term, text:term };
+                }
+            },
+            placeholder: '検索キーワードを入力して下さい。',
+            multiple: true,
+            maximumSelectionSize: 10,
+            data: data
+        });
+      });
+    });
+  </script>
+  
+</head>
+<body onload="OnLoad()">
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+          </ul>
+          <ul>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
+            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
+            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
+            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    
+    <!-- wrapper -->
+    <div id="wrapper">
+      <div id="inner_title">  
+      
+        <!-- 題名 -->
+        <div class="row">
+          <div class="col col-sm-12">
+              <div id="title">
+         	        <h2><span class="ja">帳票印刷</span><span class="en">report</span></h2>
+              </div>
+          </div>
+        </div>
+        
+        <!-- 帳票選択 -->
+        <div class="row top-margin-sm">
+          <div class="col col-sm-12 left">
+          
+            <!-- 印刷画面送信フォーム -->
+            <form name="print_report_type" action="/report_view" method="post" target="_blank" class="form-inline">
+              <div class="btn-group">
+                <select id="select_type" name="select_type" class="form-control input-sm" onChange="SendSelectReportType()">
+                  <option value=9999 >種類を選択</option>
+                  <% for(var i=0; i<page.data.length; i++) {%>
+                    <option value=<%= page.data[i].report_type_no %>><%= page.data[i].report_type_name %></option>
+                  <%}%>
+                </select>
+              </div>
+              <div class="btn-group">
+                <select id="select_template" name="select_template" class="form-control input-sm" onChange="SendSelectReport()">
+                  <option value=9999>内容を選択</option>
+                </select>
+              </div>
+              <!-- 1の時はプレビュー -->
+              <input type="hidden" id="preview_flag" name="preview_flag"></input>
+            </form>
+          </div>
+        </div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs top-margin-sm">
+          <li class="active"><a href="#target" data-toggle="tab">印刷対象</a></li>
+          <li><a href="#template" data-toggle="tab">印刷内容を編集する</a></li>
+        </ul>
+
+        <!-- タブ -->
+        <div class="tab-content">
+        
+          <!-- 印刷対象検索タブ -->
+          <div class="tab-pane active" id="target">
+            <div class="row top-margin-sm">
+                <div class="col col-sm-10">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                      <input type="text" id="serch_tag" class="form-control input-sm">
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-sm left" onClick="GetTargetList()">検索</button>
+                      </span>
+                    </div>
+                </div>
+                <div class="col col-sm-2 right">
+                  <button type="button" class="btn btn-success btn-sm" onclick="submit()">印刷</button>
+                </div>
+            </div>  
+
+            <div class="row top-margin-sm left">
+              <div class="col col-sm-12">
+                <input type="checkbox" id="all_change" name="all_change" onclick="all_change()">全て選択</input>
+              </div>
+              
+            </div>
+
+            <div class="row top-margin-sm">        
+              <div class="col col-sm-12">
+                  <!--<div id="target_list"></div>-->
+                  <table class="table table-striped left">
+                    <thead>
+                      <tr>
+                        <th width="5%">#</th>
+                        <th width="15%">姓名</th>
+                        <th width="50%">住所</th>
+                        <th width="30%">tags</th>
+                      </tr>
+                    </thead>
+                    <tbody id="target_list" >
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 印刷対象検索タブ -->
+          <div class="tab-pane" id="template">
+            <form>
+              <fieldset>
+                <div class="form-group top-margin-sm left">
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-8">
+                      <label for="exampleInput">帳票名</label>
+                      <input type="text" class="form-control input-sm" id="input_report_name" placeholder="クリックして入力">
+                      <span class="help-block">帳票の名前です。管理用にご利用下さい(印刷されません)。</span>
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-8">
+                      <label for="exampleInput">件名</label>
+                      <input type="text" class="form-control input-sm" id="input_report_title" placeholder="クリックして入力">
+                      <span class="help-block">挨拶文の上に少し大きめの字で印刷されます。スペースを入力し、位置を調整可能です。</span>
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-11">
+                      <label for="exampleInput">送付状</label>
+								        <textarea class="form-control input-sm" id="input_souhujo" rows="12" placeholder="クリックして入力"></textarea>
+                      <span class="help-block">10行まで印刷します。スペースを入力し、位置を調整可能です。</span>
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-4">
+                      <label for="exampleInput">金額</label>
+                      <input type="text" class="form-control input-sm" id="input_kingaku" placeholder="クリックして入力">
+                      <span class="help-block">前後に￥および也が追加されます。</span>
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">   
+                    <div class="col col-sm-2">
+                      <label for="exampleInput">口座番号</label>
+                      <input type="text" class="form-control input-sm" id="input_kouzaNo1" placeholder="XXXXX">
+                    </div>
+                    <div class="col col-sm-2">
+                      <label for="exampleInput">　</label>
+                      <input type="text" class="form-control input-sm" id="input_kouzaNo2" placeholder="X">
+                    </div>
+                    <div class="col col-sm-3">
+                      <label for="exampleInput">　</label>
+                      <input type="text" class="form-control input-sm" id="input_kouzaNo3" placeholder="XXXXXXX">
+                    </div>
+                    <div class="col col-sm-5">
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-3">
+                      <label for="exampleInput">口座名義(加入者名)</label>
+                      <input type="text" class="form-control input-sm" id="input_kanyusyaMei" placeholder="クリックして入力">
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-3">
+                      <label for="exampleInput">料金</label>
+                      <input type="text" class="form-control input-sm" id="input_ryoukin" placeholder="クリックして入力">
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-3">
+                      <label for="exampleInput">特殊取扱</label>
+                      <input type="text" class="form-control input-sm" id="input_tokyusyu" placeholder="クリックして入力">
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-11">
+                      <label for="exampleInput">通信欄</label>
+								        <textarea class="form-control input-sm" id="input_tushin" rows="4" placeholder="クリックして入力"></textarea>
+                      <span class="help-block">4行まで印刷されます。スペースを入力し、位置を調整可能です。</span>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="row top-margin-sm under-margin-sm">        
+                  <div class="col col-sm-5 left">
+                    <button type="button" class="btn btn-success btn-sm" onClick="ReportSave()">保存</button>
+                    <button type="button" class="btn btn-primary btn-sm" onClick="ReportSaveAs()">別名で保存</button>
+                    <button type="button" class="btn btn-info btn-sm" onClick="submit_preview()">プレビュー</button>
+                  </div>
+
+                  <div class="col col-sm-7 right">
+                    <button type="button" class="btn btn-danger btn-sm" onClick="ReportDelete()">削除</button>
+                  </div>
+                </div>
+                  
+              </fieldset>
+            </form>
+          </div>
+        </div>
+
+      </div>  
+      <!-- title end-->
+    </div>
+    <!-- wrapper end -->
+
+  </div>
+  
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+
+
+</html>

@@ -1,0 +1,6 @@
+[33m[2014-03-23 17:31:47.160] [WARN] console - [39mconnect.multipart() will be removed in connect 3.0
+[33m[2014-03-23 17:31:47.166] [WARN] console - [39mvisit https://github.com/senchalabs/connect/wiki/Connect-3.0 for alternatives
+[33m[2014-03-23 17:31:47.167] [WARN] console - [39mconnect.limit() will be removed in connect 3.0
+[32m[2014-03-23 17:31:47.265] [INFO] console - [39minfo: socket.io started
+[32m[2014-03-23 17:31:47.266] [INFO] console - [39mSocket.IO server listening on port \\.\pipe\a75a76fc-6263-4524-855f-eba45beb912f
+[32m[2014-03-23 17:31:47.267] [INFO] console - [39mExpress server listening on port \\.\pipe\a75a76fc-6263-4524-855f-eba45beb912f

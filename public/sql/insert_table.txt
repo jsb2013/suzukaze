@@ -203,20 +203,6 @@ update_date timestamp NOT NULL,
 is_deleted boolean NOT NULL,
 primary key (id));
 
-create table m_tags
-(
-tags_id serial NOT NULL,
-tags varchar(50) ,
-yobi_1 varchar(10) ,
-yobi_2 varchar(10) ,
-create_user varchar(50) NOT NULL,
-create_date timestamp NOT NULL,
-update_user varchar(50) NOT NULL,
-update_date timestamp NOT NULL,
-is_disabled boolean NOT NULL,
-is_deleted boolean NOT NULL,
-primary key (tags_id));
-
 create table t_danka_detail_kosyu_info
 (
 id serial NOT NULL,
@@ -246,3 +232,71 @@ update_date timestamp NOT NULL,
 is_deleted boolean NOT NULL,
 primary key (id));
 
+create table m_report
+(
+report_id serial NOT NULL,
+report_no serial NOT NULL,
+report_type_no integer NOT NULL,
+report_name varchar(200) ,
+text_1 varchar(800) ,
+text_2 varchar(800) ,
+text_3 varchar(800) ,
+text_4 varchar(800) ,
+text_5 varchar(800) ,
+text_6 varchar(800) ,
+text_7 varchar(800) ,
+text_8 varchar(800) ,
+text_9 varchar(800) ,
+text_10 varchar(800) ,
+text_memo varchar(400) ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (report_id));
+
+create table m_report_type
+(
+report_type_id serial NOT NULL,
+report_type_no integer ,
+report_type_name varchar(200) ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (report_type_id));
+
+create table m_tags
+(
+tags_id serial NOT NULL,
+tags varchar(50) ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (tags_id));
+
+
+create table t_report_if
+(
+report_if_id serial NOT NULL,
+member_id integer NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+primary key (report_if_id));
