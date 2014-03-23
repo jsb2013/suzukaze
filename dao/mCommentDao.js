@@ -4,6 +4,7 @@
  */
 var log = require("../util/logger");
 var logger = log.createLogger();
+var util = require("../util/util");
 
 exports.updateTCommentForDeleteFlag = function(client, database, memberId, dbcallback){
     var isDbError = false;
@@ -34,12 +35,12 @@ exports.updateTCommentForDeleteFlag = function(client, database, memberId, dbcal
 }
 
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getTCommentByMemberId = function(client, database, memberId, rows, callback){
+exports.getTCommentByMemberId = function (client, database, memberId, rows, callback) {
     var isDbError = false;
     var query = client.query('select comment from t_comment where member_id = $1 and comment_code = 1 and is_deleted = false;',
                     [memberId]);
 
-    query.on('row', function(row) {
+    query.on('row', function (row) {
         rows.push(row);
     });
 
@@ -52,6 +53,7 @@ exports.getTCommentByMemberId = function(client, database, memberId, rows, callb
         }
         // 存在する場合
         if (rows.length > 0) {
+            util.convertJsonNullToBlankForAllItem(rows);
             callback(null);
             return;
         }
@@ -59,9 +61,11 @@ exports.getTCommentByMemberId = function(client, database, memberId, rows, callb
             return;
         }
         // 存在しない場合
+        // ※DB登録ミスや想定外の事象が考えられる。エラーを出して一旦空レコードを返す。
         if (rows.length === 0) {
             logger.error('xxxx', 'err =>' + err);
-            callback(new Error());
+            createInitialInfo(rows);
+            callback(null);
             return;
         }
     });
@@ -105,4 +109,11 @@ exports.insertTComment = function(client, database, memberId, baseInfo, dbcallba
         isDbError = true;
         return;
     });
+}
+
+// 空レコードを登録する。
+function createInitialInfo(baseInfo){
+    var base = {};
+    base.comment = "";
+    baseInfo[0] = base;
 }

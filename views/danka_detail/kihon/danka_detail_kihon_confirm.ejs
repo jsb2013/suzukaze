@@ -65,6 +65,7 @@
     var jobNameBk = webItemJson.job_name_bk;
     var souNameBk = webItemJson.sou_name_bk;
     var commentBk = webItemJson.comment_bk;
+    var tagsBk = webItemJson.tags_bk;
 
     var dankaType = webItemJson.danka_type;
     var nameSei = webItemJson.name_sei;
@@ -118,6 +119,7 @@
     var tikuCode = webItemJson.tiku_code;
     var sewaCode = webItemJson.sewa_code;
     var memberIdSou = webItemJson.member_id_sou;
+    var tags = webItemJson.tags_after;
 %>
 <script>
     $(function(){
@@ -131,10 +133,6 @@
                 }
                 if ($(this).parent().hasClass("t_danka")) {
                     $("input[name='is_update_t_danka']").val(true);
-                    //return false;
-                }
-                if ($(this).parent().hasClass("m_member_tiku")) {
-                    $("input[name='is_update_m_member_tiku']").val(true);
                     //return false;
                 }
                 if ($(this).parent().hasClass("m_address")) {
@@ -389,7 +387,7 @@
                       createHtml("<%= jobNameBk %>", "<%= jobName %>");
                     </script>
                 </tr>
-                <tr class="m_member_tiku">
+                <tr class="t_danka">
                   <td id="tiku_type">地区名</td>
                     <script>
                       createHtml("<%= tikuNameBk %>", "<%= tikuName %>");
@@ -405,6 +403,12 @@
                   <td id="sou_type">担当者[僧]</td>
                     <script>
                       createHtml("<%= souNameBk %>", "<%= souName %>");
+                    </script>
+                </tr>
+                <tr class="m_member">
+                  <td id="tags">タグ</td>
+                    <script>
+                      createHtml("<%= tagsBk %>", "<%= tags %>");
                     </script>
                 </tr>
                 <tr class="t_comment">
@@ -457,10 +461,10 @@
             <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
             <input type="hidden" name="member_id_sou" value=<%= memberIdSou %>>
             <input type="hidden" name="comment" value=<%= webItemJson.comment %>>
+            <input type="hidden" name="tags" value=<%= tags %>>
             <input type="hidden" name="tiku_code_bk" value=<%= tikuCodeBk %>>
             <input type="hidden" name="is_update_m_member" value=false>
             <input type="hidden" name="is_update_m_address" value=false>
-            <input type="hidden" name="is_update_m_member_tiku" value=false>
             <input type="hidden" name="is_update_m_telnumber_1" value=false>
             <input type="hidden" name="is_update_m_telnumber_2" value=false>
             <input type="hidden" name="is_update_m_telnumber_3" value=false>

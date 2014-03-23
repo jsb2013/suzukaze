@@ -11,12 +11,14 @@ var util = require("../../../util/util");
 var async = require('async');
 var tDankaDetailKosyuDao = require("../../../dao/tDankaDetailKosyuDao");
 var mCommentDao = require("../../../dao/mCommentDao");
+var mMemberDao = require("../../../dao/mMemberDao");
 var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mJobCodeDao = require("../../../dao/mJobCodeDao");
 var mAddressDao = require("../../../dao/mAddressDao");
 var mMailDao = require("../../../dao/mMailDao");
 var mTelnumberDao = require("../../../dao/mTelnumberDao");
+var mTagsDao = require("../../../dao/mTagsDao");
 
 /* 檀家追加画面メイン（post処理） */
 exports.main = function (webItemJson, callback) {
@@ -31,6 +33,7 @@ exports.main = function (webItemJson, callback) {
     var telnumberInfo = [];
     var souMemberIdInfo = [];
     var kosyuInfo = [];
+    var tagsInfo = [];
 
     async.series([
 
@@ -69,7 +72,11 @@ exports.main = function (webItemJson, callback) {
     // [TBA] 住所、メールを取得する。
     // メンバーマスタから僧のリストを取得
         function (dbcallback) {
-            getSouMemberIdInfo(souMemberIdInfo, dbcallback);
+            mMemberDao.getSouMemberIdInfo(client, database, souMemberIdInfo, dbcallback);
+        },
+    // タグ情報を取得（戸主情報）
+        function (dbcallback) {
+            mTagsDao.getMTags(client, database, tagsInfo, dbcallback);
         } ],
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {
@@ -77,6 +84,7 @@ exports.main = function (webItemJson, callback) {
                 callback(true);
                 return;
             }
+
             // 住所情報をpriority順に並び替える。
             convertInfoByPriority(addressInfo);
 
@@ -87,9 +95,13 @@ exports.main = function (webItemJson, callback) {
             convertInfoByPriority(telnumberInfo);
 
             // 仕事名称と担当[僧]とコメントをwebitemJsonに登録
+            // ※本内容は「danka_detail_kihon」内では使用しないが、その後「danka_detail_kihon_confirm」で使用する為、
+            // ※事前に取得しておく。（jobcode,memberIdSouを変更した場合の、変更前名称。必要な時に取得するとDBアクセスが発生する為）
             registerNama(kosyuInfo, jobCodeInfo, souMemberIdInfo, commentInfo);
 
-            callback(false, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, souMemberIdInfo);
+            var tagNameListInMM = util.splitStringByDelimiter(kosyuInfo[0].tags, ",");
+
+            callback(false, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, souMemberIdInfo, tagsInfo, tagNameListInMM);
             return;
         }
     );
@@ -153,46 +165,4 @@ function convertInfoByPriority(infoJson){
     infoJson[0] = priorityInfo1;
     infoJson[1] = priorityInfo2;
     infoJson[2] = priorityInfo3;
-}
-
-/* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-function getSouMemberIdInfo(rows, callback){
-    var isDbError = false;
-    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na from m_member as mm inner join m_sou as ms on mm.member_id = ms.member_id where mm.is_disabled = false and mm.is_deleted = false and ms.is_disabled = false and ms.is_deleted = false');
-
-    query.on('row', function(row) {
-        rows.push(row);
-    });
-    
-    query.on('end', function(row,err) {
-        // エラーが発生した場合
-        if (err){
-            logger.error('xxxx', 'err =>'+ err);
-            callback(err);
-            return;
-        }
-        // 存在する場合
-        if (rows.length > 0) {
-            callback(null);
-            return;
-        }
-        if (isDbError) {
-            return;
-        }
-        // 存在しない場合
-        if (rows.length === 0) {
-            logger.error('xxxx', 'err =>'+ err);
-            callback(new Error());
-            return;
-        }
-    });
-    
-    query.on('error', function(error) {
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => '+errorMsg);
-        // これでよいのかな？
-        callback(new Error());
-        isDbError = true;
-        return;
-    });
 }

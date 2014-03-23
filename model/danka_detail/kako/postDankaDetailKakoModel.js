@@ -15,13 +15,13 @@ var tDankaDetailKosyuDao = require("../../../dao/tDankaDetailKosyuDao");
 exports.main = function (webItemJson, callback) {
     // いったんはpostで入ってきたデータは正しい想定で作る
     var memberId = webItemJson.member_id;
-    var memberInfo = [];
+    var kakoMemberInfo = [];
     var kosyuInfo = [];
     async.series([
 
     // 仕事コードマスタを取得
         function (dbcallback) {
-            getMemberList(memberId, memberInfo, dbcallback);
+            getKakoMemberInfo(memberId, kakoMemberInfo, dbcallback);
         },
     // T_xxxマスタを取得
         function (dbcallback) {
@@ -33,16 +33,16 @@ exports.main = function (webItemJson, callback) {
                 callback(true);
                 return;
             }
-            callback(false, memberInfo, kosyuInfo);
+            callback(false, kakoMemberInfo, kosyuInfo);
             return;
         }
     );
 };
 
-/* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-function getMemberList(memberId, rows, callback){
-    
-    var query = client.query('select a.member_id, a.name_sei, a.name_na, a.furigana_sei, a.furigana_na, a.sex, b.kaimyo, b.kaimyo_furigana, b.relation, a.birthday_y, a.birthday_m, a.birthday_d, a.meinichi_y, a.meinichi_m, a.meinichi_d from m_member as a inner join t_danka as b on a.member_id = b.member_id where a.is_deleted = false and a.is_disabled = false and b.is_deleted = false and b.member_id_kosyu = $1 and a.is_arive = 0',
+/* 過去帳に該当するリストを取得 */
+function getKakoMemberInfo(memberId, rows, dbcallback){
+    var isDbError = false;
+    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.sex, td.kaimyo, mm.birthday_y, mm.birthday_m, mm.birthday_d, mm.meinichi_y, mm.meinichi_m, mm.meinichi_d from m_member as mm inner join t_danka as td on mm.member_id = td.member_id where mm.is_deleted = false and mm.is_disabled = false and td.is_deleted = false and td.member_id_kosyu = $1 and mm.is_arive = 0',
                     [memberId]);
 
     query.on('row', function(row) {
@@ -53,10 +53,14 @@ function getMemberList(memberId, rows, callback){
         // エラーが発生した場合
         if (err){
             logger.error('xxxx', 'err =>'+ err);
-            callback(err);
+            dbcallback(err);
             return;
         }
-        callback(null);
+        if (isDbError) {
+            return;
+        }
+        util.convertJsonNullToBlankForAllItem(rows);
+        dbcallback(null);
         return;
     });
     
@@ -64,7 +68,8 @@ function getMemberList(memberId, rows, callback){
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
         // これでよいのかな？
-        callback(new Error());
+        dbcallback(new Error());
+        isDbError = true;
         return;
     });
 }

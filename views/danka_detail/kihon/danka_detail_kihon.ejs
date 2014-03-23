@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kihon.css" type="text/css" id="danka_detail_kihon">
 <title>檀家管理システム　禅</title>
 <script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/util.js"></script>
 <%
     var memberId = kosyuInfo.member_id;
     var dankaType = kosyuInfo.danka_type;
@@ -37,6 +38,7 @@
     var souNameNa = kosyuInfo.sou_name_na;
     var souName = souNameSei + "　" + souNameNa;
     var comment = kosyuInfo.comment;
+    var tags = kosyuInfo.tags;
 
     var addressPri1 = addressInfo[0];
     var zipCodePre = addressPri1.zip_code_pre;
@@ -100,9 +102,6 @@
     $("#tiku_list").val(<%= tikuCode %>);
     $("#sewa_list").val(<%= sewaCode %>);
     $("#sou_list").val(<%= memberIdSou %>);
-    $("#birthday_y_list").val(<%= birthdayY %>);
-    $("#birthday_m_list").val(<%= birthdayM %>);
-    $("#birthday_d_list").val(<%= birthdayD %>);
 
     // 更新時のバリデーションチェック
     $("#main_form").submit(function(){
@@ -159,21 +158,12 @@
         var jobCodeAfter = $("select[name='job_code'] option:selected").val();
         var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
         var souCodeAfter = $("select[name='member_id_sou'] option:selected").val();
-        var birthdayYAfter = $("select[name='birthday_y'] option:selected").val();
-        var birthdayMAfter = $("select[name='birthday_m'] option:selected").val();
-        var birthdayDAfter = $("select[name='birthday_d'] option:selected").val();
         var tikuCodeBk = $("input[name='tiku_code_bk']").val();
         var jobCodeBk = $("input[name='job_code_bk']").val();
         var sewaCodeBk = $("input[name='sewa_code_bk']").val();
         var souCodeBk = $("input[name='member_id_sou_bk']").val();
-        var birthdayYBk = $("input[name='birthday_y_bk']").val();
-        var birthdayMBk = $("input[name='birthday_m_bk']").val();
-        var birthdayDBk = $("input[name='birthday_d_bk']").val();
 
         if(tikuCodeAfter !== tikuCodeBk || jobCodeAfter !== jobCodeBk || sewaCodeAfter !== sewaCodeBk || souCodeAfter !== souCodeBk){
-            isChange = true;
-        }
-        if(birthdayYAfter !== birthdayYBk || birthdayMAfter !== birthdayMBk || birthdayDAfter !== birthdayDBk){
             isChange = true;
         }
 
@@ -194,6 +184,27 @@
         if(commentAfter !== commentBk){
             isChange = true;
         }
+
+        // チェックボックスの差分比較
+        var checkTags = "";
+        $("input[name='tags']:checked").each(function () {
+            var _tagId = $(this).val();
+            var _tagName = $(this)[0].nextSibling.nodeValue;
+            var _tagNameTrim = jQuery.trim(_tagName);
+            if (isUndefine(checkTags)) {
+                checkTags = _tagNameTrim;
+                return true;
+            }
+            checkTags = checkTags + "," + _tagNameTrim;
+            return true;
+        });
+
+        var tagsBk = $("input[name='tags_bk']").val();
+        if (checkTags !== tagsBk) {
+            isChange = true;
+        }
+        $("input[name='tags_after']").val(checkTags);
+
         // 値が何も変更されていない場合は、ポップアップを出力する。
         if(!isChange){
             alert("変更されていません。");
@@ -329,10 +340,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="furigana_type">ふりがな(※必須)</td>
+                  <td id="furigana_type">ふりがな</td>
                   <td id="furigana" class="table_main_tuika_selectable">
-                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="chenge_check validate require duplicate_pre" value="<%= furiganaSei %>">
-                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="chenge_check validate require duplicate_end" value="<%= furiganaNa %>">
+                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="chenge_check" value="<%= furiganaSei %>">
+                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="chenge_check" value="<%= furiganaNa %>">
                   </td>
                 </tr>
                 <tr>
@@ -386,42 +397,11 @@
                 <tr>
                   <td id="birthday_type">生年月日</td>
                   <td id="birthday_y" class="table_main_tuika_selectable">
-                     <select id="birthday_y_list"  name="birthday_y" >
-                       <option value="1981">1981</option>
-                       <option value="1982">1982</option>
-                       <option value="1983">1983</option>
-                       <option value="1984">1984</option>
-                     </select>
+                     <input type="text" name="birthday_y" class="chenge_check validate number telno_size" value="<%= birthdayY %>">
                      年
-                     <select id="birthday_m_list"  name="birthday_m" >
-                       <option value="1">1</option>
-                       <option value="2">2</option>
-                       <option value="3">3</option>
-                       <option value="4">4</option>
-                       <option value="5">5</option>
-                       <option value="6">6</option>
-                       <option value="7">7</option>
-                       <option value="8">8</option>
-                       <option value="9">9</option>
-                       <option value="10">10</option>
-                       <option value="11">11</option>
-                       <option value="12">12</option>
-                     </select>
+                     <input type="text" name="birthday_m" class="chenge_check validate number telno_size" value="<%= birthdayM %>">
                      月
-                     <select id="birthday_d_list"  name="birthday_d" >
-                       <option value="1">1</option>
-                       <option value="2">2</option>
-                       <option value="3">3</option>
-                       <option value="4">4</option>
-                       <option value="5">5</option>
-                       <option value="6">6</option>
-                       <option value="7">7</option>
-                       <option value="8">8</option>
-                       <option value="9">9</option>
-                       <option value="10">10</option>
-                       <option value="11">11</option>
-                       <option value="12">12</option>
-                     </select>
+                     <input type="text" name="birthday_d" class="chenge_check validate number telno_size" value="<%= birthdayD %>">
                      日
                   </td>
                 </tr>
@@ -525,7 +505,6 @@
                   <td id="sewa_type">世話人</td>
                   <td id="sewa" class="table_main_tuika_selectable">
                      <select id="sewa_list" name="sewa_code" >
-                       <option value="9999" selected>---</option>
                       <% for(var i in sewaCodeInfo){
                         var _sewaCode = sewaCodeInfo[i].sewa_code;
                         var _sewaName = sewaCodeInfo[i].sewa_name; %>
@@ -538,6 +517,7 @@
                   <td id="sou_type">担当者[僧]</td>
                   <td id="sou" class="table_main_tuika_selectable">
                      <select id="sou_list" name="member_id_sou" >
+                       <option value="0" selected>---</option>
                        <% for(var i in souMemberIdInfo){
                          var _souMemberId = souMemberIdInfo[i].member_id;
                          var _souNameSei = souMemberIdInfo[i].name_sei;
@@ -546,6 +526,40 @@
                          <option value=<%= _souMemberId %>><%= _souName %></option>
                          <%}%>
                      </select>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td id="tags">タグ</td>
+                  <td id="tag" class="table_main_tuika_selectable">
+                      <% 
+                         var count = 1;
+                         for(var i in tagsInfo){
+                            isTagsInMM = false;
+                            count++;
+                            var _tagId = tagsInfo[i].tags_id;
+                            var _tagName = tagsInfo[i].tags; 
+                         
+                            for(var key in tagNameListInMM){
+                                var _tagNameInMM = tagNameListInMM[key];
+                                if(_tagName == _tagNameInMM){
+                                    isTagsInMM = true;
+                                    break;
+                                }
+                            }
+                            if(isTagsInMM){%>
+                                <input type="checkbox" name="tags" value="<%= _tagId %>" checked="checked"><%= _tagName %>
+                            <%}else{%>
+                                <input type="checkbox" name="tags" value="<%= _tagId %>"><%= _tagName %>
+                            <%}%>
+
+                            <%
+                            if(count>5){
+                                count=1;
+                            %>      
+                            <br>
+                            <%}%>                      
+                      <%}%>
                   </td>
                 </tr>
                 <tr>
@@ -579,9 +593,9 @@
           <input type="hidden" name="city_bk" class="chenge_check_bk city" value=<%= city %>>
           <input type="hidden" name="address_line1_bk" class="chenge_check_bk address_line1" value=<%= addressLine1 %>>
           <input type="hidden" name="address_line2_bk" class="chenge_check_bk address_line2" value=<%= addressLine2 %>>
-          <input type="hidden" name="birthday_y_bk" class="dummy" value=<%= birthdayY %>>
-          <input type="hidden" name="birthday_m_bk" class="dummy" value=<%= birthdayM %>>
-          <input type="hidden" name="birthday_d_bk" class="dummy" value=<%= birthdayD %>>
+          <input type="hidden" name="birthday_y_bk" class="chenge_check_bk birthday_y" value=<%= birthdayY %>>
+          <input type="hidden" name="birthday_m_bk" class="chenge_check_bk birthday_m" value=<%= birthdayM %>>
+          <input type="hidden" name="birthday_d_bk" class="chenge_check_bk birthday_d" value=<%= birthdayD %>>
           <input type="hidden" name="telno_pre_1_bk" class="chenge_check_bk telno_pre_1" value=<%= telNumberPre1 %>>
           <input type="hidden" name="telno_mid_1_bk" class="chenge_check_bk telno_mid_1" value=<%= telNumberMid1 %>>
           <input type="hidden" name="telno_last_1_bk" class="chenge_check_bk telno_last_1" value=<%= telNumberLast1 %>>
@@ -605,11 +619,13 @@
           <input type="hidden" name="comment_bk" value=<%= comment %>>
           <input type="hidden" name="job_name_bk" value=<%= jobName %>>
           <input type="hidden" name="sou_name_bk" value=<%= souName %>>
+          <input type="hidden" name="tags_bk" value=<%= tags %>>
           <!-- 変更後の情報 -->
           <input type="hidden" name="job_name" value="dummy">
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
           <input type="hidden" name="sou_name" value="dummy">
+          <input type="hidden" name="tags_after" value="dummy">
 
           <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
         </form>

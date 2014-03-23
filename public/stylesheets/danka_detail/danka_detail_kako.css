@@ -54,7 +54,7 @@
     border-collapse: collapse;
 }
 
-tbody tr:hover{
+.table_main_kako tbody tr:hover{
     background: orange;
 }
 

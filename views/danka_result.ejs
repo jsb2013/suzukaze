@@ -24,7 +24,7 @@
         var filterSelectedSewa = $("select[name='sewa_name']").val();
 
         // [地区]フィルタの実装
-        if(filterSelectedTiku !== '9999'){
+        if(filterSelectedTiku !== '0'){
             $(".table_tiku_name").each(function(){
                 var itemValue = $(this).attr("id");
                 if(itemValue !== filterSelectedTiku){
@@ -34,7 +34,7 @@
             });
         }
         // [世話人]フィルタの実装
-        if(filterSelectedSewa !== '9999'){
+        if(filterSelectedSewa !== '0'){
             $(".table_sewa_name").each(function(){
                 if($(this).parent().hasClass("hide")){
                     return true;
@@ -160,7 +160,6 @@
             <div class="inner_filter_main_item">
                 <label>[地区]</label></label>          
                 <select id="tiku_list"  name="tiku_name" >
-                    <option value="9999" selected>---</option>
                     <% for(var i in tikuCodeInfo){
                         var tikuCode = tikuCodeInfo[i].tiku_code;
                         var tikuName = tikuCodeInfo[i].tiku_name; %>
@@ -171,7 +170,6 @@
             <div class="inner_filter_main_item">
                 <label>[世話人]</label></label>          
                 <select id="sewa_list"  name="sewa_name" >
-                      <option value="9999" selected>---</option>
                       <% for(var i in sewaCodeInfo){
                         var sewaCode = sewaCodeInfo[i].sewa_code;
                         var sewaName = sewaCodeInfo[i].sewa_name; %>
@@ -181,7 +179,7 @@
             </div>
             <div id="inner_filter_main_checkbox" class="inner_filter_main_item">
                 <input type="checkbox" class="isKosyu" checked>戸主
-                <input type="checkbox" class="isKako" checked>過去
+                <input type="checkbox" class="isKako" checked>故人
             </div>
           </div>
             <div id="inner_filter_main_button">

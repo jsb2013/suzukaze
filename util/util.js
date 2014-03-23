@@ -28,7 +28,44 @@ exports.convertJsonNullToBlank = function(json){
     return jsonHosei;
 };
 
+exports.convertJsonNullToBlankForAllItem = function (json) {
+    var jsonHosei = {};
+    for (var key in json) {
+        var itemList = json[key];
+        for (var item in itemList) {
+            var value = itemList[item];
+            if (isUndefine(value)) {
+                itemList[item] = "";
+                continue;
+            }
+        }
+    }
+};
+
 // データベースエラーメッセージの変換
 exports.getErrorMsg = function(error){
     return sys.inspect(error);
 };
+
+function isUndefine(value){
+    if (value === undefined || value === null || value ==='' || value === 'null'){
+        return true;
+    }
+    return false;
+};
+
+exports.splitStringByDelimiter = function(string, delimiter){
+    var splitList = [];
+
+    if(!isUndefine(string)){
+        splitList = string.split(delimiter);
+    }
+    return splitList;
+}
+
+exports.convertBlankToNull = function(value){
+    if(isUndefine(value)){
+        return null;
+    }
+    return value;
+}

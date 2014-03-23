@@ -209,7 +209,7 @@ exports.postDankaDetailKihon = function (req, res) {
     var postDankaDetailKihonModel = require("../model/danka_detail/kihon/postDankaDetailKihonModel");
     var webItemJson = req.body;
 
-    function authCallback(isError, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, souMemberIdInfo) {
+    function authCallback(isError, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, souMemberIdInfo, tagsInfo, tagNameListInMM) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -224,7 +224,9 @@ exports.postDankaDetailKihon = function (req, res) {
             addressInfo: addressInfo,
             mailInfo: mailInfo,
             telnumberInfo: telnumberInfo,
-            souMemberIdInfo: souMemberIdInfo
+            souMemberIdInfo: souMemberIdInfo,
+            tagsInfo: tagsInfo,
+            tagNameListInMM: tagNameListInMM
         });
         return;
     }
@@ -309,7 +311,7 @@ exports.postDankaDetailKakoKihon = function (req, res) {
     var postDankaDetailKakoKihonModel = require("../model/danka_detail/kako/postDankaDetailKakoKihonModel");
     var webItemJson = req.body;
     
-    function authCallback(isError, kosyuInfo, dankaInfo) {
+    function authCallback(isError, kosyuInfo, dankaInfo, tagsInfo, tagNameListInMM) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -319,6 +321,8 @@ exports.postDankaDetailKakoKihon = function (req, res) {
         res.render('danka_detail/kako/danka_detail_kako_kihon', {
             kosyuInfo: kosyuInfo[0],
             dankaInfo: dankaInfo[0],
+            tagsInfo: tagsInfo,
+            tagNameListInMM: tagNameListInMM
         });
         return;
     }

@@ -46,7 +46,11 @@
     var meinichiDKakoBk = webItemJson.meinichi_d_kako_bk;
     var meinichiKakoBk = meinichiYKakoBk + "年" + meinichiMKakoBk + "月" + meinichiDKakoBk + "日";
     var relationKakoBk = webItemJson.relation_kako_bk;
+    var sesyuSeiKakoBk = webItemJson.sesyu_sei_kako_bk;
+    var sesyuNaKakoBk = webItemJson.sesyu_na_kako_bk;
+    var sesyuNameFullKakoBk = sesyuSeiKakoBk + "　" + sesyuNaKakoBk;
     var commentKakoBk = webItemJson.comment_kako_bk;
+    var tagsKakoBk = webItemJson.tags_kako_bk;
 %>
 <%
     var memberIdKako = webItemJson.member_id_kako;
@@ -68,10 +72,14 @@
     var meinichiDKako = webItemJson.meinichi_d_kako;
     var meinichiKako = meinichiYKako + "年" + meinichiMKako + "月" + meinichiDKako + "日";
     var relationKako = webItemJson.relation_kako;
+    var sesyuSeiKako = webItemJson.sesyu_sei_kako;
+    var sesyuNaKako = webItemJson.sesyu_na_kako;
+    var sesyuNameFullKako = sesyuSeiKako + "　" + sesyuNaKako;
     var commentKako = webItemJson.comment_kako;
+    var tagsKako = webItemJson.tags;
 %>
 <%
-    var tagKakoBk = webItemJson.tag_kako_bk;
+    
 %>
 <script>
     $(function(){
@@ -217,7 +225,7 @@
                     </script>
                 </tr>
                 <tr class="m_member">
-                  <td id="furigana_type">ふりがな(※必須)</td>
+                  <td id="furigana_type">ふりがな</td>
                     <script>
                       createHtml("<%= furiganaFullKakoBk %>", "<%= furiganaFullKako %>");
                     </script>
@@ -257,9 +265,21 @@
                     <td><%= nameFull %></td>
                 </tr>
                 <tr class="t_danka">
-                  <td id="relation">続柄</td>
+                  <td id="sesyu_name">施主</td>
+                    <script>
+                      createHtml("<%= sesyuNameFullKakoBk %>", "<%= sesyuNameFullKako %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
+                  <td id="relation">施主から見た続柄</td>
                     <script>
                       createHtml("<%= relationKakoBk %>", "<%= relationKako %>");
+                    </script>
+                </tr>
+                <tr class="m_member">
+                  <td id="relation">タグ</td>
+                    <script>
+                      createHtml("<%= tagsKakoBk %>", "<%= tagsKako %>");
                     </script>
                 </tr>
                 <tr class="t_comment">
@@ -287,8 +307,10 @@
             <input type="hidden" name="meinichi_m" value=<%= meinichiMKako %>>
             <input type="hidden" name="meinichi_d" value=<%= meinichiDKako %>>
             <input type="hidden" name="relation" value=<%= relationKako %>>
+            <input type="hidden" name="sesyu_sei" value=<%= sesyuSeiKako %>>
+            <input type="hidden" name="sesyu_na" value=<%= sesyuNaKako %>>
             <input type="hidden" name="comment" value=<%= commentKako %>>
-            <input type="hidden" name="tag" value=<%= tagKakoBk %>>
+            <input type="hidden" name="tags" value=<%= tagsKako %>>
             <input type="hidden" name="is_update_m_member" value=false>
             <input type="hidden" name="is_update_t_danka" value=false>
             <input type="hidden" name="is_update_t_comment" value=false>

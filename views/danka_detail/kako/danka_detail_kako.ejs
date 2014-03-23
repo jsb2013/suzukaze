@@ -30,7 +30,7 @@
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
-    $("tr").click(function(){
+    $("tr.kako_record").click(function(){
         var id = $(this).attr("id");
         $("input[name=selected_member_id]").val(id);
         $("#danka_detail_kako_kihon_form").submit();
@@ -170,7 +170,7 @@
                     var _meinichi = _meinichi_y + "/" + _meinichi_m + "/" + _meinichi_d;
                     var _comment = memberInfo[i].comment;
                  %>
-                <tr id="<%= _member_id %>">
+                <tr id="<%= _member_id %>" class="kako_record">
                   <td><%= _name_full %></td>
                   <td>
                       <script>

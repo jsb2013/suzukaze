@@ -43,106 +43,138 @@
     var meinichiYKako = dankaInfo.meinichi_y;
     var meinichiMKako = dankaInfo.meinichi_m;
     var meinichiDKako = dankaInfo.meinichi_d;
+    var sesyuSeiKako = dankaInfo.sesyu_sei;
+    var sesyuNaKako = dankaInfo.sesyu_na;
     var commentKako = dankaInfo.comment;
 %>
 <%
-    var tagKako = dankaInfo.tag;
+    var tagsKako = dankaInfo.tags;
 %>
 <script>
- $(function(){
+    $(function () {
 
-    // ページ遷移定義
-    $(".menu_sub_kihon").click(function () {
-        $("#danka_detail_kihon_form").submit();
-    });
-    $(".menu_sub_kako").click(function () {
-        $("#danka_detail_kako_form").submit();
-    });
-    $(".menu_sub_genzai").click(function () {
-        $("#danka_detail_genzai_form").submit();
-    });
-    $(".menu_sub_nenkaiki").click(function () {
-        $("#danka_detail_nenkaiki_form").submit();
-    });
-    $(".menu_sub_kihu").click(function () {
-        $("#danka_detail_kihu_form").submit();
-    });
-    $(".menu_sub_omairi").click(function () {
-        $("#danka_detail_omairi_form").submit();
-    });
-
-    // 更新時のバリデーションチェック
-    $("#main_form").submit(function(){
-        // エラーの初期化
-        $("p.error").remove();
-        $("td").removeClass("error");
-        
-        // エラーチェック
-        $("input[type='text'].validate").each(function(){
-            // 必須項目チェック
-            if($(this).hasClass("require")){
-                if($(this).val() == ""){
-                    $(this).parent().append("<p class='error'>値が設定されていません。</p>");
-                    $(this).parent().addClass("error");
-                }
-            } 
-            // 数字項目チェック
-            if($(this).hasClass("number")){
-                if(isNaN($(this).val())){
-                    $(this).parent().append("<p>数値が設定されていません。</p>");
-                    $(this).parent().addClass("error");
-                }
-            }            
+        // ページ遷移定義
+        $(".menu_sub_kihon").click(function () {
+            $("#danka_detail_kihon_form").submit();
+        });
+        $(".menu_sub_kako").click(function () {
+            $("#danka_detail_kako_form").submit();
+        });
+        $(".menu_sub_genzai").click(function () {
+            $("#danka_detail_genzai_form").submit();
+        });
+        $(".menu_sub_nenkaiki").click(function () {
+            $("#danka_detail_nenkaiki_form").submit();
+        });
+        $(".menu_sub_kihu").click(function () {
+            $("#danka_detail_kihu_form").submit();
+        });
+        $(".menu_sub_omairi").click(function () {
+            $("#danka_detail_omairi_form").submit();
         });
 
-        // エラーチェック
-        if($("p.error").length > 0){
-            return false;
-        }
+        // 更新時のバリデーションチェック
+        $("#main_form").submit(function () {
+            // エラーの初期化
+            $("p.error").remove();
+            $("td").removeClass("error");
 
-        // テキスト項目の差分チェックを実施
-        var isChange = false;
-        $(".chenge_check").each(function(){
-            var key = $(this).attr("name");
-            var value = $(this).val();
-            $(".chenge_check_bk").each(function(){
-                if($(this).hasClass(key)){
-                    var valueBk = $(this).val();
-                    if(value !== valueBk){
-                        isChange = true;
-                        return false;
+            var isDuplicate = "0";
+            // エラーチェック
+            $("input[type='text'].validate").each(function () {
+                // 必須項目チェック
+                if ($(this).hasClass("require")) {
+                    if($(this).val() == ""){
+                        if($(this).hasClass("duplicate_pre")){
+                            isDuplicate = "1";
+                            $(this).parent().append("<p class='error'>値が設定されていません。</p>");
+                            $(this).parent().addClass("error");
+                        } else if($(this).hasClass("duplicate_end") && isDuplicate == "1"){
+                            isDuplicate = "0";
+                        } else {
+                            $(this).parent().append("<p class='error'>値が設定されていません。</p>");
+                            $(this).parent().addClass("error");
+                        }
                     }
-                    return false;
+                }
+                // 数字項目チェック
+                if ($(this).hasClass("number")) {
+                    if (isNaN($(this).val())) {
+                        $(this).parent().append("<p>数値が設定されていません。</p>");
+                        $(this).parent().addClass("error");
+                    }
                 }
             });
-            
-            if(isChange){
+
+            // エラーチェック
+            if ($("p.error").length > 0) {
+                return false;
+            }
+
+            // テキスト項目の差分チェックを実施
+            var isChange = false;
+            $(".chenge_check").each(function () {
+                var key = $(this).attr("name");
+                var value = $(this).val();
+                $(".chenge_check_bk").each(function () {
+                    if ($(this).hasClass(key)) {
+                        var valueBk = $(this).val();
+                        if (value !== valueBk) {
+                            isChange = true;
+                            return false;
+                        }
+                        return false;
+                    }
+                });
+
+                if (isChange) {
+                    return true;
+                }
+            });
+
+            // radio項目の差分比較
+            var sexAfter = $("input[name='sex_kako']:checked").val();
+            var sexBk = $("input[name='sex_kako_bk']").val();
+
+            if (sexAfter !== sexBk) {
+                isChange = true;
+            }
+
+            // テキストエリアの差分比較
+            var commentAfter = $("textarea[name='comment_kako']").val();
+            var commentBk = $("input[name='comment_kako_bk']").val();
+
+            if (commentAfter !== commentBk) {
+                isChange = true;
+            }
+
+            // チェックボックスの差分比較
+            var checkTags = "";
+            $("input[name='tags_kako']:checked").each(function () {
+                var _tagId = $(this).val();
+                var _tagName = $(this)[0].nextSibling.nodeValue;
+                var _tagNameTrim = jQuery.trim(_tagName);
+                if (isUndefine(checkTags)) {
+                    checkTags = _tagNameTrim;
+                    return true;
+                }
+                checkTags = checkTags + "," + _tagNameTrim;
                 return true;
+            });
+
+            var tagsBk = $("input[name='tags_kako_bk']").val();
+            if (checkTags !== tagsBk) {
+                isChange = true;
+            }
+            $("input[name='tags']").val(checkTags);
+
+            // 値が何も変更されていない場合は、ポップアップを出力する。
+            if (!isChange) {
+                alert("変更されていません。");
+                return false;
             }
         });
-       
-        // radio項目の差分比較
-        var sexAfter = $("input[name='sex_kako']:checked").val();
-        var sexBk = $("input[name='sex_kako_bk']").val();
-
-        if(sexAfter !== sexBk){
-            isChange = true;
-        }
-        
-        // テキストエリアの差分比較
-        var commentAfter = $("textarea[name='comment_kako']").val();
-        var commentBk = $("input[name='comment_kako_bk']").val();
-
-        if(commentAfter !== commentBk){
-            isChange = true;
-        }
-        // 値が何も変更されていない場合は、ポップアップを出力する。
-        if(!isChange){
-            alert("変更されていません。");
-            return false;
-        }
     });
-});
 </script>
 </head>
 <body>
@@ -244,10 +276,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="furigana_type">俗名（ふりがな）※必須</td>
+                  <td id="furigana_type">俗名（ふりがな）</td>
                   <td id="furigana" class="table_main_tuika_selectable">
-                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei_kako" class="chenge_check validate require duplicate_pre" value="<%= furiganaSeiKako %>">
-                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na_kako" class="chenge_check validate require duplicate_end" value="<%= furiganaNaKako %>">
+                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei_kako" class="chenge_check validate duplicate_pre" value="<%= furiganaSeiKako %>">
+                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na_kako" class="chenge_check validate duplicate_end" value="<%= furiganaNaKako %>">
                   </td>
                 </tr>
                 <tr>
@@ -314,9 +346,50 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="kosyu_name">続柄</td>
+                  <td id="sesyu_name">施主</td>
+                  <td id="name" class="table_main_tuika_selectable">
+                      <label for="name_seimei">姓: </label><input type="text" name="sesyu_sei_kako" class="chenge_check" value="<%= sesyuSeiKako %>">
+                      <label for="name_seimei">名: </label><input type="text" name="sesyu_na_kako" class="chenge_check" value="<%= sesyuNaKako %>">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="kosyu_name">施主から見た続柄</td>
                   <td id="relation" class="table_main_tuika_selectable">
-                      <input type="text" name="relation_kako" class="chenge_check validate" value="<%= relationKako %>">
+                      <input type="text" name="relation_kako" class="chenge_check" value="<%= relationKako %>">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td id="tags">タグ</td>
+                  <td id="tag" class="table_main_tuika_selectable">
+                      <% 
+                         var count = 1;
+                         for(var i in tagsInfo){
+                            isTagsInMM = false;
+                            count++;
+                            var _tagId = tagsInfo[i].tags_id;
+                            var _tagName = tagsInfo[i].tags; 
+                         
+                            for(var key in tagNameListInMM){
+                                var _tagNameInMM = tagNameListInMM[key];
+                                if(_tagName == _tagNameInMM){
+                                    isTagsInMM = true;
+                                    break;
+                                }
+                            }
+                            if(isTagsInMM){%>
+                                <input type="checkbox" name="tags_kako" value="<%= _tagId %>" checked="checked"><%= _tagName %>
+                            <%}else{%>
+                                <input type="checkbox" name="tags_kako" value="<%= _tagId %>"><%= _tagName %>
+                            <%}%>
+
+                            <%
+                            if(count>5){
+                                count=1;
+                            %>      
+                            <br>
+                            <%}%>                      
+                      <%}%>
                   </td>
                 </tr>
                 <tr>
@@ -344,9 +417,12 @@
           <input type="hidden" name="meinichi_y_kako_bk" class="chenge_check_bk meinichi_y_kako" value="<%= meinichiYKako %>">
           <input type="hidden" name="meinichi_m_kako_bk" class="chenge_check_bk meinichi_m_kako" value="<%= meinichiMKako %>">
           <input type="hidden" name="meinichi_d_kako_bk" class="chenge_check_bk meinichi_d_kako" value="<%= meinichiDKako %>">
-          <input type="hidden" name="tag_kako_bk" class="chenge_check_bk meinichi_d_kako" value="<%= tagKako %>">
+          <input type="hidden" name="sesyu_sei_kako_bk" class="chenge_check_bk sesyu_sei_kako" value="<%= sesyuSeiKako %>">
+          <input type="hidden" name="sesyu_na_kako_bk" class="chenge_check_bk sesyu_na_kako" value="<%= sesyuNaKako %>">
+          <input type="hidden" name="tags_kako_bk" class="chenge_check_bk tags_kako" value="<%= tagsKako %>">
           <input type="hidden" name="comment_kako_bk" value="<%= commentKako %>">
           <input type="hidden" name="member_id_kosyu" value=<%= memberId %>>
+          <input type="hidden" name="tags" value=dummy>
           <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
         </form>
       </div>

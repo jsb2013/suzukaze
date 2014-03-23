@@ -15,8 +15,8 @@ var mCommentDao = require("../../../dao/mCommentDao");
 var mAddressDao = require("../../../dao/mAddressDao");
 var mMailDao = require("../../../dao/mMailDao");
 var mTelnumberDao = require("../../../dao/mTelnumberDao");
-var mMemberTikuDao = require("../../../dao/mMemberTikuDao");
 var tDankaDetailKosyuDao = require("../../../dao/tDankaDetailKosyuDao");
+var util = require("../../../util/util");
 
 /* 檀家追加画面メイン（post処理） */
 exports.main = function (webItemJson, callback) {
@@ -24,7 +24,7 @@ exports.main = function (webItemJson, callback) {
 
     var memberId = webItemJson.member_id;
     var isUpdateMMember = webItemJson.is_update_m_member;
-    var isUpdateMMTiku = webItemJson.is_update_m_member_tiku;
+    var isUpdateMAddress = webItemJson.is_update_m_address;
     var isUpdateMtelnumber1 = webItemJson.is_update_m_telnumber_1;
     var isUpdateMtelnumber2 = webItemJson.is_update_m_telnumber_2;
     var isUpdateMtelnumber3 = webItemJson.is_update_m_telnumber_3;
@@ -63,14 +63,14 @@ exports.main = function (webItemJson, callback) {
             if (isUpdateMMember === "true") {
                 // 必要な項目をratestMMemberInfo→webItemJsonにmergeする。
                 mergeMMemberInfo(ratestMMemberInfo, webItemJson);
-                mMemberDao.insertMMember(client, database, memberId, webItemJson, dbcallback);
+                mMemberDao.insertMMember(client, database, memberId, ratestMMemberInfo[0], dbcallback);
             } else {
                 dbcallback(null);
             }
         },
     // 住所マスタ削除（deleteFlag = true)
         function (dbcallback) {
-            if (isUpdateMMember === "true") {
+            if (isUpdateMAddress === "true") {
                 mAddressDao.updateMAddressForDeleteFlag(client, database, 1, memberId, dbcallback);
             } else {
                 dbcallback(null);
@@ -78,7 +78,7 @@ exports.main = function (webItemJson, callback) {
         },
     // 住所マスタ追加
         function (dbcallback) {
-            if (isUpdateMMember === "true") {
+            if (isUpdateMAddress === "true") {
                 mAddressDao.insertMAddress(client, database, 1, memberId, webItemJson, dbcallback);
             } else {
                 dbcallback(null);
@@ -92,7 +92,7 @@ exports.main = function (webItemJson, callback) {
                 dbcallback(null);
             }
         },
-    // Eメールマスタ2追加
+    // Eメールマスタ1追加
         function (dbcallback) {
             if (isUpdateMMail1 === "true") {
                 mMailDao.insertMMail(client, database, 1, memberId, webItemJson, dbcallback);
@@ -180,22 +180,6 @@ exports.main = function (webItemJson, callback) {
                 dbcallback(null);
             }
         },
-    // メンバー地区関係管理マスタ削除（deleteFlag = true)
-        function (dbcallback) {
-            if (isUpdateMMTiku === "true") {
-                mMemberTikuDao.updateMMemberTikuForDeleteFlag(client, database, memberId, webItemJson, dbcallback);
-            } else {
-                dbcallback(null);
-            }
-        },
-    // メンバー地区関係管理マスタ追加
-        function (dbcallback) {
-            if (isUpdateMMTiku === "true") {
-                mMemberTikuDao.insertMMemberTiku(client, database, memberId, webItemJson, dbcallback);
-            } else {
-                dbcallback(null);
-            }
-        },
     // 檀家マスタ最新レコード取得（deleteFlag = true)
         function (dbcallback) {
             if (isUpdateTDanka === "true") {
@@ -216,7 +200,7 @@ exports.main = function (webItemJson, callback) {
         function (dbcallback) {
             if (isUpdateTDanka === "true") {
                 mergeTDankaInfo(ratestTDankaInfo, webItemJson);
-                tDankaDao.insertTDanka(client, database, memberId, webItemJson, dbcallback);
+                tDankaDao.insertTDanka(client, database, memberId, ratestTDankaInfo[0], dbcallback);
             } else {
                 dbcallback(null);
             }
@@ -239,10 +223,6 @@ exports.main = function (webItemJson, callback) {
         },
     // メンバーマスタ追加
         function (dbcallback) {
-            tDankaDetailKosyuDao.getTDankaDetailKosyuInfo(client, database, memberId, ratestTDankaDetailKosyuInfo, dbcallback);
-        },
-    // メンバーマスタ追加
-        function (dbcallback) {
             tDankaDetailKosyuDao.updateTDankaDetailKosyuForDeleteFlag(client, database, memberId, dbcallback);
         },
     // メンバーマスタ追加
@@ -262,29 +242,47 @@ exports.main = function (webItemJson, callback) {
 };
 
 function mergeMMemberInfo(ratestMMemberInfo, webItemJson){
+    // 最新のレコード情報
     var ratestMMember = ratestMMemberInfo[0];
-    var meinichiY = ratestMMember.meinichi_y;
-    var meinichiM = ratestMMember.meinichi_m;
-    var meinichiD = ratestMMember.meinichi_d;
-    var tag = ratestMMember.tag;
-    var isArive = ratestMMember.is_arive;
 
-    webItemJson.meinichi_y = meinichiY;
-    webItemJson.meinichi_m = meinichiM;
-    webItemJson.meinichi_d = meinichiD;
-    webItemJson.tag = tag;
-    webItemJson.is_arive = isArive;
+    // 画面から更新した可能性のある項目
+    var nameSei = webItemJson.name_sei;
+    var nameNa = webItemJson.name_na;
+    var furiganaSei = webItemJson.furigana_sei;
+    var furiganaNa = webItemJson.furigana_na;
+    var sex = webItemJson.sex;
+    var birthdayY = webItemJson.birthday_y;
+    var birthdayM = webItemJson.birthday_m;
+    var birthdayD = webItemJson.birthday_d;
+    var jobCode = webItemJson.job_code;
+    var tags = webItemJson.tags;
+
+    // 最新のレコードに更新した可能性のある項目をマージ
+    ratestMMember.name_sei = nameSei;
+    ratestMMember.name_na = nameNa;
+    ratestMMember.furigana_sei = furiganaSei;
+    ratestMMember.furigana_na = furiganaNa;
+    ratestMMember.sex = sex;
+    ratestMMember.birthday_y = birthdayY;
+    ratestMMember.birthday_m = birthdayM;
+    ratestMMember.birthday_d = birthdayD;
+    ratestMMember.job_code = jobCode;
+    ratestMMember.tags = tags;
 }
 
 function mergeTDankaInfo(ratestTDankaInfo, webItemJson){
+    // 最新のレコード情報
     var ratestTdanka = ratestTDankaInfo[0];
-    var kaimyo = ratestTdanka.kaimyo;
-    var kaimyoFurigana = ratestTdanka.kaimyo_furigana;
-    var memberIdKosyu = ratestTdanka.member_id_kosyu;
-    var relation = ratestTdanka.relation;
 
-    webItemJson.kaimyo = kaimyo;
-    webItemJson.kaimyo_furigana = kaimyoFurigana;
-    webItemJson.relation = relation;
-    webItemJson.member_id_kosyu = memberIdKosyu;
+    // 画面から更新した可能性のある項目
+    var dankaType = webItemJson.danka_type;
+    var sewaCode = webItemJson.sewa_code;
+    var tikuCode = webItemJson.tiku_code;
+    var memberIdSou = webItemJson.member_id_sou;
+
+    // 最新のレコードに更新した可能性のある項目をマージ
+    ratestTdanka.danka_type = dankaType;
+    ratestTdanka.sewa_code = sewaCode;
+    ratestTdanka.tiku_code = tikuCode;
+    ratestTdanka.member_id_sou = memberIdSou;
 }

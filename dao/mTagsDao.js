@@ -7,9 +7,9 @@ var logger = log.createLogger();
 var util = require("../util/util");
 
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getMJobCode = function(client, database, rows, dbcallback){
+exports.getMTags = function(client, database, rows, dbcallback){
     var isDbError = false;
-    var query = client.query('select job_code, job_name from m_job_code where is_disabled=false and is_deleted=false');
+    var query = client.query('select tags_id, tags from m_tags where is_disabled=false and is_deleted=false');
 
     query.on('row', function(row) {
         rows.push(row);

@@ -67,7 +67,7 @@ function createHtmlBySex(value1, value2){
 
 function convertSexValueToMoji(sex){
     var sex_mei = '男性';
-    if(sex === 2){
+    if(sex === "2"){
         sex_mei = '女性';
     }
     document.write('<label>' + sex_mei + '</label>'); 

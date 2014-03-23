@@ -4,6 +4,7 @@
  */
 var log = require("../util/logger");
 var logger = log.createLogger();
+var util = require("../util/util");
 
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
 exports.getMMail = function(client, database, memberId, rows, dbcallback){
@@ -24,6 +25,7 @@ exports.getMMail = function(client, database, memberId, rows, dbcallback){
         }
         // 存在する場合
         if (rows.length > 0) {
+            util.convertJsonNullToBlankForAllItem(rows);
             dbcallback(null);
             return;
         }
@@ -42,7 +44,7 @@ exports.getMMail = function(client, database, memberId, rows, dbcallback){
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
         // これでよいのかな？
-        callback(new Error());
+        dbcallback(new Error());
         isDbError = true;
         return;
     });
@@ -126,45 +128,67 @@ exports.insertMMail = function (client, database, priority, memberId, baseInfo, 
 }
 
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getMailInfoByMemberId = function(client, database, memberId, rows, callback){
+exports.getMailInfoByMemberId = function (client, database, memberId, rows, dbcallback) {
 
     var isDbError = false;
     var query = client.query('select priority, mail_address, yoto from m_mail where member_id = $1 and is_disabled = false and is_deleted = false',
                     [memberId]);
 
-    query.on('row', function(row) {
+    query.on('row', function (row) {
         rows.push(row);
     });
-    
-    query.on('end', function(row,err) {
+
+    query.on('end', function (row, err) {
         // エラーが発生した場合
-        if (err){
-            logger.error('xxxx', 'err =>'+ err);
-            callback(err);
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            dbcallback(err);
             return;
         }
         // 存在する場合
         if (rows.length > 0) {
-            callback(null);
+            util.convertJsonNullToBlankForAllItem(rows);
+            dbcallback(null);
             return;
         }
         if (isDbError) {
             return;
         }
         // 存在しない場合
+        // ※DB登録ミスや想定外の事象が考えられる。エラーを出して一旦空レコードを返す。
         if (rows.length === 0) {
-            logger.error('xxxx', 'err =>'+ err);
-            callback(new Error());
+            logger.error('xxxx', 'err =>' + err);
+            createInitialInfo(rows);
+            dbcallback(null);
             return;
         }
     });
-    
-    query.on('error', function(error) {
+
+    query.on('error', function (error) {
         var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => '+errorMsg);
+        logger.error('xxxx', 'error => ' + errorMsg);
         // これでよいのかな？
-        callback(new Error());
+        dbcallback(new Error());
         isDbError = true;
         return;
     });
+}
+
+// 空レコードを登録する。
+function createInitialInfo(baseInfo){
+    var base1 = {};
+    var base2 = {};
+    var base3 = {};
+    base1.priority = 1;
+    base1.mail_address = "";
+    base1.yoto = "";
+    base2.priority = 2;
+    base2.mail_address = "";
+    base2.yoto = "";
+    base3.priority = 3;
+    base3.mail_address = "";
+    base3.yoto = "";
+    baseInfo[0] = base1;
+    baseInfo[1] = base2;
+    baseInfo[2] = base3;
 }
