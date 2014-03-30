@@ -94,42 +94,60 @@
       //alert("add:"+ data.length)
       // まずは一度全て取り除く
       $('#target_list > tr').remove();
-
-      for(var i=0;i<data.length;i++){
-      	var html = "";
-          html += "<tr>";
-          html +=   "<td>";
-        if(data[i].report_if_id == null){
-          html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + "></input>";
-        }else{
-          html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + " checked></input>";
-        }
-          html +=   "</td>";
-          html +=   "<td>";
-          html +=     "<p>" + data[i].name +"</p>";
-          html +=   "</td>";        	          
-          html +=   "<td>";
-          html +=     "<p>" + data[i].address +"</p>";
-          html +=   "</td>";
-          html +=   "<td>";
-          html +=     "<p>" + data[i].tags + "</p>";
-          html +=   "</td>";
-          html +=  "</tr>";
-
+      
+      // 検索結果がゼロの場合
+      if(data.length ===0 ){
+        html +=  "<tr>";
+        html +=   "<td colspan = 10>";
+        html +=   "</td>";
+        html +=  "</tr>";
+        html +=  "<tr>";
+        html +=   "<td colspan = 10>";
+        html +=     "<br>該当する結果が0件です。<br>";
+        html +=     "<br>※1:キーワードが間違っていないか確認して下さい。";
+        html +=     "<br>※2:複数のキーワードがある場合、and検索(全てのキーワードが含まれる)します。キーワードを減らしてみてください。";
+        html +=   "</td>";
+        html +=  "</tr>";
         $('#target_list').append(html);
-        var val = data[i].name_na;
-        $('#selected_' + i ).on('click', function(){
-          if($(this).prop('checked') == true){
-            var data = $(this).attr('value');
-            // InsertReportIfメッセージを送る
-            socket.emit('InsertReportIf', { value: data });
+      }
+      // 検索結果が有る場合
+      else{
+        for(var i=0;i<data.length;i++){
+        	var html = "";
+            html += "<tr>";
+            html +=   "<td>";
+          if(data[i].report_if_id == null){
+            html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + "></input>";
+          }else{
+            html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + " checked></input>";
           }
-          else{
-            var data = $(this).attr('value');
-            // DeleteReportIfメッセージを送る
-            socket.emit('DeleteReportIf', { value: data });
-          }
-        });
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     "<p>" + data[i].name +"</p>";
+            html +=   "</td>";        	          
+            html +=   "<td>";
+            html +=     "<p>" + data[i].address +"</p>";
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     "<p>" + data[i].tags + "</p>";
+            html +=   "</td>";
+            html +=  "</tr>";
+  
+          $('#target_list').append(html);
+          var val = data[i].name_na;
+          $('#selected_' + i ).on('click', function(){
+            if($(this).prop('checked') == true){
+              var data = $(this).attr('value');
+              // InsertReportIfメッセージを送る
+              socket.emit('InsertReportIf', { value: data });
+            }
+            else{
+              var data = $(this).attr('value');
+              // DeleteReportIfメッセージを送る
+              socket.emit('DeleteReportIf', { value: data });
+            }
+          });
+        }
       }
     });
 
@@ -321,6 +339,7 @@
   
 </head>
 <body onload="OnLoad()">
+
 <!-- container -->
 <div id="container">
   <!-- header -->
