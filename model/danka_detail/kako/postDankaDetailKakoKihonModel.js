@@ -34,7 +34,7 @@ exports.main = function (webItemJson, callback) {
         },
     // T_xxxマスタを取得（戸主情報）
         function (dbcallback) {
-            tDankaDetailKosyuDao.getTDankaDetailKosyuInfo(client, database, memberIdKosyu, kosyuInfo, dbcallback);
+            tDankaDetailKosyuDao.getTDankaDetailKosyuInfoByMemberId(client, database, memberIdKosyu, kosyuInfo, dbcallback);
         },
     // タグ情報を取得（戸主情報）
         function (dbcallback) {

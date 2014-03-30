@@ -2,9 +2,9 @@
 
 /* 共通定義 */
 #inner_filter{
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     padding: 0;
-    height: 77px;
+    height: 71px;
     font-size: 14px;
     font-family: 'メイリオ' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;
     color: #666666; /* 標準文字色 */
@@ -21,7 +21,7 @@
     font-size: 14px;
 }
 #inner_fiter_main{
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     padding: 0;
     text-align: left;
     float: left;
@@ -57,14 +57,17 @@
     color: #666666; /* 標準文字色 */
 }
 
-
-
 /* 50音別個別定義 */
     #table_main{
-      margin: 20px 0 0 0;
+      margin: 10px 0 0 0;
       padding: 0;
       width: 630px;
       height: 400px;
+    }
+    #table_main table{
+        border-width: 1px;
+        border-style: solid;
+        border-color: #D1CCC4;
     }
       #table_main th{
         margin: 0;
@@ -103,155 +106,43 @@
         cursor: pointer;
       }
       
-/* 地区別表示の個別定義 */
-    .table_main_tiku{
-      margin: 20px 0 0 0;
-      padding: 0;
-      width: 630px;
-      height: 400px;
-      overflow-y: scroll;
-    }
-      .table_main_tiku th{
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        color: #ffffff;
-        border: solid 0.5px #BA802F;
-        border-collapse: collapse;
-        background-color : #804000;
-      }
-      .table_main_tiku #tiku{
-        margin: 0;
-        padding: 0;
-        width: 150px;
-      }
-      .table_main_tiku #count{
-        margin: 0;
-        padding: 0;
-        width: 80px;
-      }
-      .table_main_tiku #other{
-        margin: 0;
-        padding: 0;
-        width: 400px;
-      }
-      .table_main_tiku tr{
-        margin: 0;
-        padding: 0;
-      }
-      .table_main_tiku td{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        cursor: pointer;
-      }
-      .even{
-        background: #ffdfbf;
-      }
-
-/* 世話人別表示の個別定義 */
-    .table_main_sewa{
-      margin: 20px 0 0 0;
-      padding: 0;
-      width: 630px;
-      height: 400px;
-      overflow-y: scroll;
-    }
-      .table_main_sewa th{
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        color: #ffffff;
-        border: solid 0.5px #BA802F;
-        border-collapse: collapse;
-        background-color : #804000;
-      }
-      .table_main_sewa #sewa{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .table_main_sewa #count{
-        margin: 0;
-        padding: 0;
-        width: 80px;
-      }
-      .table_main_sewa #sou{
-        margin: 0;
-        padding: 0;
-        width: 50px;
-      }
-      .table_main_sewa #se{
-        margin: 0;
-        padding: 0;
-        width: 50px;
-      }
-      .table_main_sewa #other{
-        margin: 0;
-        padding: 0;
-        width: 330px;
-      }
-      .table_main_sewa tr{
-        margin: 0;
-        padding: 0;
-      }
-      .table_main_sewa td{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        cursor: pointer;
-      }
-      .even{
-        background: #ffdfbf;
-      }
-
 /* 詳細検索表示の個別定義 */
-    .table_main_syosai{
-      margin: 20px 0 0 0;
-      padding: 0;
-      width: 630px;
-      height: 370px;
+    .title_comment_syosai{
+        margin: 0;
+        padding: 0;
+        height: 23px;
+        width: 630px;
+        text-align: left;
+        color: black;
+        font-size: 15px;
+        background-color : rgb(231, 206, 140);
     }
-      .table_main_syosai #pre{
-        margin: 0;
-        padding: 0;
-        height: 40px;
-        font-size: 20px;
-        color: #ffffff;
-        background-color : #804000;
-      }
+     .table_main_syosai{
+      margin: 5px 0 0 0;
+      width: 630px;
+      height: 334px;
+      overflow-y: scroll;
+    }
+    .table_main_syosai table{
+        border-width: 1px;
+        border-style: solid;
+        border-color: #D1CCC4;
+    }
       .table_main_syosai #header{
-        margin: 0;
-        padding: 0;
         height: 30px;
         color: #ffffff;
         background-color : #804000;
       }
-      .table_main_syosai #serchtype{
-        margin: 0;
-        padding: 0;
+      .table_main_syosai #newtype{
         width: 130px;
       }
-      .table_main_syosai #serchnaiyo{
-        margin: 0;
-        padding: 0;
+      .table_main_syosai #newnaiyo{
         width: 500px;
       }
       .table_main_syosai tr{
-        margin: 0;
-        padding: 0;
         height: 40px;
       }
       .table_main_syosai td{
-        margin: 0;
         padding: 2px 0 0 10px;
         height: 30px;
         text-align: left;
@@ -259,37 +150,55 @@
         border: solid 1px #BA802F;
         border-collapse: collapse;
       }
-      .table_main_syosai label{
-        margin: 0;
-        padding: 0 5px 0 5px;
+      .text_size{
+        margin: 0 15px 0 0;
+        width: 150px;
       }
-      .table_main_syosai td:hover{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
+      #sex label{
+        margin: 0 10px 0 0;
+      }
+      #tag label{
+        margin: 0 10px 0 0;
+      }
+
+      .table_main_syosai_selectable:hover{
         background: orange;
       }
-      #serch_submit{
+
+      #syosai_submit{
         margin: 10px 0 0 0;
         padding: 0;
         height: 30px;
         text-align: center;
       }
-      #serch_submit input{
-        text-align: center;
-        font-size: 25px;
+      #syosai_submit input{
+        color: black;
+        font-size: 20px;
+        -webkit-border-radius: 10px;
+        width: 100px;
+        text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+        -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+        background: rgb(231, 206, 140);
+        cursor: pointer;
       }
+      .error{
+        color: #f00;
+        background-color: orange;
+      }
+
 /* 追加画面表示の個別定義 */
      .table_main_tuika{
-      margin: 20px 0 0 0;
+      margin: 10px 0 0 0;
       padding: 0;
       width: 630px;
-      height: 370px;
+      height: 414px;
       overflow-y: scroll;
+    }
+
+    .table_main_tuika table{
+        border-width: 1px;
+        border-style: solid;
+        border-color: #D1CCC4;
     }
       .table_main_tuika #header{
         margin: 0;
@@ -365,6 +274,16 @@
         text-align: center;
         font-size: 25px;
       }
+      #new_submit input{
+        color: black;
+        font-size: 20px;
+        -webkit-border-radius: 10px;
+        width: 100px;
+        text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+        -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+        background: rgb(231, 206, 140);
+        cursor: pointer;
+      }
       .error{
         color: #f00;
         background-color: orange;
@@ -372,38 +291,24 @@
 
 /* 追加確認画面表示の個別定義 */
     
-    #title_comment{
-      margin: 5px auto;
-      height: 30px;
-    }
-     #title_comment{
-      margin: 0;
-      padding: 0;
+    .confirm_title_comment{
+      color: red;
+      height: 20px;
       width: 600px;
-      background: red;
+      text-align: left;
     }
-      #title_comment h2 span.ja{
-              margin: 0;
-              padding: 3px 30px 5px 20px;
-              display: block;
-              text-align: left;
-              float: left;
-              color: white;
-              font-size: 17px;
-      }
-      #title_comment h2 span.en{
-              margin: 0;
-              padding: 5px 0 5px 0;
-              display: block;
-              text-align: left;
-              color: white;
-              font-size: 14px;
-      }
+    .confirm_title_comment_main{
+      margin: 0 10px 0 0;
+      font-size: 15px;
+    }
+    .confirm_title_comment_sub{
+      font-size: 13px;
+    }
      .table_main_tuika_confirm{
       margin: 10px 0 0 0;
       padding: 0;
       width: 630px;
-      height: 350px;
+      height: 385px;
       overflow-y: scroll;
     }
       .table_main_tuika_confirm #header{
@@ -461,12 +366,34 @@
         border-collapse: collapse;
         background: orange;
       }
-      #new_submit{
-        margin: 10px 0 0 0;
-        padding: 0;
-        height: 30px;
-        text-align: center;
-      }
+.confirm_submit{
+    margin: 10px 0 0 0;
+    text-align: left;
+}
+
+.confirm_submit #register{
+    margin: 0 0 0 140px;
+    color: black;
+    font-size: 20px;
+    -webkit-border-radius: 10px;
+    width: 160px;
+    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+    background: rgb(231, 206, 140);
+    cursor: pointer;
+}
+
+.confirm_submit #return{
+    margin: 0 30px 0 0;
+    color: black;
+    font-size: 14px;
+    -webkit-border-radius: 10px;
+    width: 80px;
+    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+    background: rgb(231, 206, 140);
+    cursor: pointer;
+}
       .error{
         color: #f00;
         background-color: orange;
@@ -476,6 +403,14 @@
         background-color: orange;
       }
 
+/* 追加登録成功画面表示の個別定義 */
+    
+    .succcess_comment{
+      color: black;
+      height: 20px;
+      width: 600px;
+      text-align: center;
+    }
 
  /* 檀家検索結果表示の個別定義 */
     .table_main_result{
@@ -485,12 +420,17 @@
       height: 350px;
       overflow-y: scroll;
     }
+    .table_main_result table{
+        border-width: 1px;
+        border-style: solid;
+        border-color: #D1CCC4;
+    }
       .table_main_result th{
         margin: 0;
         padding: 0;
         height: 30px;
         color: #ffffff;
-        border: solid 0.5px #BA802F;
+        border: solid 1px #BA802F;
         border-collapse: collapse;
         background-color : #804000;
       }
@@ -500,7 +440,7 @@
         height: 30px;
         text-align: left;
         font-size: 12px;
-        border: solid 0.5px #BA802F;
+        border: solid 1px #BA802F;
         border-collapse: collapse;
         cursor: pointer;
       }
@@ -536,5 +476,8 @@
         background: orange;
       }
       .hide{
+        display: none;
+      }
+      .hide_fix{
         display: none;
       }

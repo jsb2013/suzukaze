@@ -170,6 +170,9 @@
             });
         });
     // ページ遷移定義
+    $("#return").click(function () {
+        $("#danka_detail_kihon_form").submit();
+    });
     $(".menu_sub_kihon").click(function () {
         $("#danka_detail_kihon_form").submit();
     });
@@ -264,18 +267,15 @@
             <li class="menu_sub_kihon">基本情報 
             <li class="menu_sub_kako">過去帳
             <li class="menu_sub_nenkaiki">年回忌
-            <li class="menu_sub_kihu">寄付帳
-            <li class="menu_sub_omairi">お参り帳
           </ul>
         </div>
       </div>
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div class="inner_main">
-        <div class="title_comment">
-   	      <h2><span class="ja">変更内容確認</span><span class="en">※問題が無ければ変更ボタンを押して下さい</span></h2>
-        </div>
-        <form action="danka_detail_kihon_db_update" method="post">
+          <div class="confirm_title_comment">
+              <span class="confirm_title_comment_main">登録内容確認</span><span class="confirm_title_comment_sub">※よろしければ登録ボタンを押して下さい</span>
+          </div>
           <div class="table_main_kihon">
             <table>
               <thead>
@@ -420,6 +420,7 @@
               </tbody>
             </table>
           </div>
+          <form action="danka_detail_kihon_db_update" method="post">
             <input type="hidden" name="member_id" value=<%= memberId %>>
             <input type="hidden" name="danka_type" value=<%= dankaType %>>
             <input type="hidden" name="name_sei" value=<%= nameSei %>>
@@ -473,10 +474,12 @@
             <input type="hidden" name="is_update_m_mail_3" value=false>
             <input type="hidden" name="is_update_t_danka" value=false>
             <input type="hidden" name="is_update_t_comment" value=false>
-          <div id="new_submit"><input type="submit" value="変更" id="submit"></div>
+            <div class="confirm_submit">
+              <button type="button" id="return" class="button">基本情報に戻る</button>
+              <input type="submit" value="登録" id="register" class="button">
+            </div>
         </form>
       </div>
-
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>

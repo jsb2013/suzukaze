@@ -1,0 +1,36 @@
+@charset "Shift_JIS";
+
+/* ‹¤’Ê’è‹` */
+.inner_main{
+    margin: 15px 0 0 0;
+}
+
+.danka_detail_top_button{
+    margin: 10px 0 0 0;
+    text-align: left;
+}
+
+.danka_detail_top_button #return{
+    margin: 0 30px 0 0;
+    color: black;
+    font-size: 14px;
+    -webkit-border-radius: 10px;
+    width: 130px;
+    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+    background: rgb(231, 206, 140);
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

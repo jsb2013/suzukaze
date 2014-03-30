@@ -25,7 +25,7 @@ exports.main = function (webItemJson, callback) {
         },
     // T_xxxマスタを取得
         function (dbcallback) {
-            tDankaDetailKosyuDao.getTDankaDetailKosyuInfo(client, database, memberId, kosyuInfo, dbcallback);
+            tDankaDetailKosyuDao.getTDankaDetailKosyuInfoByMemberId(client, database, memberId, kosyuInfo, dbcallback);
         }],
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {
@@ -42,7 +42,7 @@ exports.main = function (webItemJson, callback) {
 /* 過去帳に該当するリストを取得 */
 function getKakoMemberInfo(memberId, rows, dbcallback){
     var isDbError = false;
-    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.sex, td.kaimyo, mm.birthday_y, mm.birthday_m, mm.birthday_d, mm.meinichi_y, mm.meinichi_m, mm.meinichi_d from m_member as mm inner join t_danka as td on mm.member_id = td.member_id where mm.is_deleted = false and mm.is_disabled = false and td.is_deleted = false and td.member_id_kosyu = $1 and mm.is_arive = 0',
+    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.sex, td.kaimyo, mm.birthday_y, mm.birthday_m, mm.birthday_d, mm.meinichi_y, mm.meinichi_m, mm.meinichi_d, td.relation from m_member as mm inner join t_danka as td on mm.member_id = td.member_id where mm.is_deleted = false and mm.is_disabled = false and td.is_deleted = false and td.member_id_kosyu = $1 and mm.is_arive = 0',
                     [memberId]);
 
     query.on('row', function(row) {

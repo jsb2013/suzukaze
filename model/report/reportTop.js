@@ -158,7 +158,7 @@ exports.selectReport = function(report_type_no,callback){
 };
 
 /* 帳票テンプレートデータの取得 */
-/* **今は使えていないが、いずれはasyncをつかった方式を実装したい** */
+/* 今は使えていないが、いずれはasyncをつかった方式を実装したい */
 exports.selectReportData = function(report_no,callback){
   
   var query = client.query('select * from v_report where report_no = $1;',[report_no]);

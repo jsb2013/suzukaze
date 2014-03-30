@@ -99,18 +99,6 @@ from m_report_type
 where m_report_type.is_deleted = false and m_report_type.is_disabled = False;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 create view v_report  as 
 select *
 from m_report

@@ -20,7 +20,7 @@ exports.main = function (webItemJson, callback) {
     async.series([
     // T_xxxマスタを取得（戸主情報）
         function (dbcallback) {
-            tDankaDetailKosyuDao.getTDankaDetailKosyuInfo(client, database, memberId, kosyuInfo, dbcallback);
+            tDankaDetailKosyuDao.getTDankaDetailKosyuInfoByMemberId(client, database, memberId, kosyuInfo, dbcallback);
         }],
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {

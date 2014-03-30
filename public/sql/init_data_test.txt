@@ -22,9 +22,6 @@ INSERT INTO m_sewa_code(sewa_code, sewa_name, yobi_1, yobi_2, create_user, creat
 INSERT INTO m_sewa_code(sewa_code, sewa_name, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES (4,'ëÂà‰í¨',null,null,'test','2002-11-03 03:00','test','2002-11-03 03:00',FALSE,FALSE);
 INSERT INTO m_sewa_code(sewa_code, sewa_name, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES (5,'âìï˚',null,null,'test','2002-11-03 03:00','test','2002-11-03 03:00',FALSE,FALSE);
 
-INSERT INTO m_job_code(job_code, job_name, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES (0,'é©âcã∆',null,null,'test','2002-11-03 03:00','test','2002-11-03 03:00',FALSE,FALSE);
-INSERT INTO m_job_code(job_code, job_name, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES (1,'âÔé–àı',null,null,'test','2002-11-03 03:00','test','2002-11-03 03:00',FALSE,FALSE);
-
 INSERT INTO t_danka(member_id, danka_type, sewa_code, tiku_code, member_id_kosyu, member_id_sou, kaimyo, kaimyo_furigana, relation, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES (1,0,1,1,1,6,'','','',2, null, null,'yamashita0284',now(),'yamashita0284',now(),FALSE);
 INSERT INTO t_danka(member_id, danka_type, sewa_code, tiku_code, member_id_kosyu, member_id_sou, kaimyo, kaimyo_furigana, relation, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES (2,0,2,2,2,7,'','','',2, null, null,'yamashita0284',now(),'yamashita0284',now(),FALSE);
 INSERT INTO t_danka(member_id, danka_type, sewa_code, tiku_code, member_id_kosyu, member_id_sou, kaimyo, kaimyo_furigana, relation, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES (3,0,3,3,3,7,'','','',2, null, null,'yamashita0284',now(),'yamashita0284',now(),FALSE);
@@ -50,6 +47,7 @@ INSERT INTO t_comment(comment_code, member_id, comment, yobi_1, yobi_2, create_u
 INSERT INTO t_comment(comment_code, member_id, comment, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES (1,6,'', null, null,'yamashita0284',now(),'yamashita0284',now(),FALSE);
 INSERT INTO t_comment(comment_code, member_id, comment, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES (1,7,'', null, null,'yamashita0284',now(),'yamashita0284',now(),FALSE);
 
+INSERT INTO m_tags(tags, yobi_1, yobi_2,create_user,create_date,update_user,update_date,is_disabled,is_deleted) VALUES ('---',NULL,NULL,'m.kanamori',now(),'m.kanamori',now(),FALSE,FALSE);
 INSERT INTO m_tags(tags, yobi_1, yobi_2,create_user,create_date,update_user,update_date,is_disabled,is_deleted) VALUES ('íhì™',NULL,NULL,'m.kanamori',now(),'m.kanamori',now(),FALSE,FALSE);
 INSERT INTO m_tags(tags, yobi_1, yobi_2,create_user,create_date,update_user,update_date,is_disabled,is_deleted) VALUES ('ëçë„',NULL,NULL,'m.kanamori',now(),'m.kanamori',now(),FALSE,FALSE);
 INSERT INTO m_tags(tags, yobi_1, yobi_2,create_user,create_date,update_user,update_date,is_disabled,is_deleted) VALUES ('îíâÕésìåãÊì‡',NULL,NULL,'m.kanamori',now(),'m.kanamori',now(),FALSE,FALSE);

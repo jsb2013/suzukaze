@@ -2,7 +2,7 @@
 
 /* 共通定義 */
 .inner_title{
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
 }
 
 .title{
@@ -34,7 +34,7 @@
 
 /* サマリ戸主表示箇所 */
 .kosyu_info{
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     width: 510px;
     height: 70px;
     text-align: center;
@@ -42,11 +42,15 @@
     color: #666666; /* 標準文字色 */
 }
 
+.kosyu_info table{
+    border-width: 1px;
+    border-style: solid;
+    border-color: #D1CCC4;
+}
+
 .kosyu_info th{
     height: 30px;
     color: #ffffff;
-    border: solid 0.5px #BA802F;
-    border-collapse: collapse;
     background-color : #804000;
 }
 
@@ -55,8 +59,6 @@
     height: 30px;
     text-align: left;
     font-size: 12px;
-    border: solid 0.5px #BA802F;
-    border-collapse: collapse;
 }
 
 .kosyu_info_kosyu_th{
@@ -86,15 +88,15 @@
 /* ------------------------------ */
 
 .menu_sub{
-    margin: 10px 0 0 0;
+    margin: 7px 0 0 0;
     height: 30px;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: #BA802F;
+    border-bottom-color: #D5AC72;
 }
         
 .menu_sub ul{
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     padding: 0;
     list-style-type: none;
 }

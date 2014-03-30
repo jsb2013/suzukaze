@@ -55,7 +55,7 @@ app.get('/danka_syosai', routes.getDankaSyosai);
 app.get('/danka_tiku', routes.getDankaTiku);
 
 //***************************************
-// 檀家追加画面
+// 50音検索画面
 //***************************************
 // 50音別検索画面
 app.get('/danka_50', routes.getDanka50);
@@ -73,6 +73,13 @@ app.post('/danka_tuika_conform', routes.postDankaTuikaConform);
 app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 
 //***************************************
+// 詳細検索画面
+//***************************************
+// 檀家詳細検索画面
+app.get('/danka_syosai', routes.getDankaSyosai);
+app.post('/danka_syosai_search', routes.getDankaSyosaiSearch);
+
+//***************************************
 // 檀家検索結果画面
 //***************************************
 // 檀家詳細TOP画面
@@ -83,6 +90,11 @@ app.post('/danka_detail_kihon', routes.postDankaDetailKihon);
 app.post('/danka_detail_kihon_confirm', routes.postDankaDetailKihonConfirm);
 // 檀家詳細TOP画面→基本情報画面→確認画面→DB更新
 app.post('/danka_detail_kihon_db_update', routes.postDankaDetailKihonDbUpdate);
+// 檀家検索結果画面への戻り
+app.post('/return_danka_search', routes.postReturnDankaSearchResult);
+// 檀家詳細TOP画面への戻り
+app.post('/return_danka_detail_top', routes.postReturnDankaDetailTop);
+
 
 // 檀家詳細TOP画面→過去帳画面
 app.post('/danka_detail_kako', routes.postDankaDetailKako);

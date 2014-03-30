@@ -76,8 +76,12 @@
 %>
 <script>
  $(function(){
+    
 
     // ページ遷移定義
+    $("#return").click(function () {
+        $("#return_danka_detail_top_form").submit();
+    });
     $(".menu_sub_kihon").click(function () {
         $("#danka_detail_kihon_form").submit();
     });
@@ -304,8 +308,6 @@
             <li class="menu_sub_kihon">基本情報 
             <li class="menu_sub_kako">過去帳
             <li class="menu_sub_nenkaiki">年回忌
-            <li class="menu_sub_kihu">寄付帳
-            <li class="menu_sub_omairi">お参り帳
           </ul>
         </div>
       </div>
@@ -634,11 +636,16 @@
           <input type="hidden" name="sewa_name" value="dummy">
           <input type="hidden" name="sou_name" value="dummy">
           <input type="hidden" name="tags_after" value="dummy">
-
-          <div id="new_submit"><input type="submit" value="内容変更確認" id="submit"></div>
+          <div class="kihon_submit">
+            <button type="button" id="return" class="button">TOPに戻る</button>
+            <input type="submit" value="変更内容確認" id="register" class="button">
+          </div>
         </form>
       </div>
 
+      <form action="/return_danka_detail_top" method="post" id="return_danka_detail_top_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>

@@ -2,12 +2,18 @@
 
 /* ‹¤’Ê’è‹` */
 .inner_main{
-    margin: 15px 0 0 0;
+    margin: 10px 0 0 0;
+}
+
+.inner_main table{
+    border-width: 1px;
+    border-style: solid;
+    border-color: #D1CCC4;
 }
 
 .table_main_kako{
     width: 630px;
-    height: 310px;
+    height: 352px;
     overflow-y: scroll;
 }
       
@@ -22,7 +28,7 @@
 }
 
 #table_main_kako_kaimyo{
-    width: 200px;
+    width: 177px;
 }
 
 #table_main_kako_sex{
@@ -30,15 +36,15 @@
 }
 
 #table_main_kako_meinichi{
-    width: 100px;
+    width: 115px;
 }
 
 #table_main_kako_kyonen{
     width: 50px;
 }
 
-#table_main_kako_comment{
-    width: 90px;
+#table_main_kako_relation{
+    width: 50px;
 }
 
 .table_main_kihon tr{
@@ -52,6 +58,35 @@
     font-size: 12px;
     border: solid 1px #BA802F;
     border-collapse: collapse;
+}
+
+.danka_detail_kako_button{
+    margin: 10px 0 0 0;
+    text-align: left;
+}
+
+.danka_detail_kako_button #register{
+    margin: 0;
+    color: black;
+    font-size: 14px;
+    -webkit-border-radius: 10px;
+    width: 130px;
+    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+    background: rgb(231, 206, 140);
+    cursor: pointer;
+}
+
+.danka_detail_kako_button #return{
+    margin: 0 30px 0 0;
+    color: black;
+    font-size: 14px;
+    -webkit-border-radius: 10px;
+    width: 130px;
+    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+    background: rgb(231, 206, 140);
+    cursor: pointer;
 }
 
 .table_main_kako tbody tr:hover{

@@ -2,41 +2,37 @@
 
 /* ‹¤’Ê’è‹` */
 .inner_main{
-    margin: 5px 0 0 0;
+    margin: 10px 0 0 0;
     text-align: left;
 }
 
-.title_comment{
-    margin: 8px 0 0 0;
-    height: 30px;
-    width: 630px;
-    background: red;
+.inner_main table{
+    border-width: 1px;
+    border-style: solid;
+    border-color: #D1CCC4;
 }
 
-.title_comment h2{
-    margin: 0;
+.confirm_title_comment{
+    color: red;
+    height: 20px;
+    width: 600px;
+    text-align: left;
+}
+    
+.confirm_title_comment_main{
+    color: red;
+    margin: 0 10px 0 0;
+    font-size: 15px;
 }
 
-.title_comment h2 span.ja{
-    padding: 3px 30px 5px 20px;
-    display: block;
-    text-align: left;
-    float: left;
-    color: white;
-    font-size: 17px;
-}
-.title_comment h2 span.en{
-    padding: 5px 0 5px 0;
-    display: block;
-    text-align: left;
-    color: white;
-    font-size: 14px;
+.confirm_title_comment_sub{
+    font-size: 13px;
 }
 
 .table_main_kihon{
-    margin: 8px 0 0 0;
+    margin: 5px 0 0 0;
     width: 630px;
-    height: 310px;
+    height: 320px;
     overflow-y: scroll;
 }
       
@@ -66,14 +62,32 @@
     background: orange;
 }
 
-#new_submit{
+.confirm_submit{
     margin: 10px 0 0 0;
-    text-align: center;
+    text-align: left;
 }
 
-#new_submit input{
-    text-align: center;
-    font-size: 23px;
+.confirm_submit #register{
+    margin: 0 0 0 90px;
+    color: black;
+    font-size: 20px;
+    -webkit-border-radius: 10px;
+    width: 160px;
+    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+    background: rgb(231, 206, 140);
+    cursor: pointer;
+}
+
+.confirm_submit #return{
+    margin: 0 30px 0 0;
+    color: black;
+    font-size: 14px;
+    -webkit-border-radius: 10px;
+    width: 130px;
+    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
+    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
+    background: rgb(231, 206, 140);
     cursor: pointer;
 }
 

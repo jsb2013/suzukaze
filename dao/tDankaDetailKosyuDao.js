@@ -7,7 +7,7 @@ var logger = log.createLogger();
 var util = require("../util/util");
 
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getTDankaDetailKosyuInfo = function(client, database, member_id, rows, dbcallback){
+exports.getTDankaDetailKosyuInfoByMemberId = function(client, database, member_id, rows, dbcallback){
     var isDbError = false;
     var query = client.query('select * from t_danka_detail_kosyu_info where is_deleted = false and member_id = $1',
             [member_id] );
@@ -17,35 +17,38 @@ exports.getTDankaDetailKosyuInfo = function(client, database, member_id, rows, d
     });
 
     query.on('end', function (row, err) {
+        // session out
         client.end();
-        // エラーが発生した場合
+
+        // database error
         if (err) {
             logger.error('xxxx', 'err =>' + err);
             dbcallback(err);
             return;
         }
-        // 存在する場合
-        if (rows.length > 0) {
+        // callback(normal end)
+        if (rows.length === 1) {
             util.convertJsonNullToBlankForAllItem(rows);
             dbcallback(null);
             return;
         }
+        // database error(structure)
         if (isDbError) {
             return;
         }
-        // 存在しない場合
-        if (rows.length === 0) {
-            logger.error('xxxx', 'err =>' + err);
-            dbcallback(new Error());
-            return;
-        }
+        // unexpected error
+        logger.error('xxxx', 'err =>' + err);
+        dbcallback(new Error());
+        return;
     });
 
-    query.on('error', function (error) {
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => ' + errorMsg);
+    query.on('error', function(error) {
+        // session out
         client.end();
-        // これでよいのかな？
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
         dbcallback(new Error());
         isDbError = true;
         return;
@@ -58,7 +61,9 @@ exports.updateTDankaDetailKosyuForDeleteFlag = function(client, database, member
                     ['yamashita0284', memberId]);
     
     query.on('end', function(row,err) {
+        // session out
         client.end();
+
         if (err){
             logger.error('xxxx', 'err =>'+ err);
             dbcallback(err);
@@ -72,10 +77,12 @@ exports.updateTDankaDetailKosyuForDeleteFlag = function(client, database, member
     });
     
     query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
-        client.end();
-        // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
         return;
@@ -107,7 +114,9 @@ exports.insertTDankaDetailKosyuInfo = function(client, database, memberId, baseI
                     [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, sex, jobCode, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, 'yamashita0284', 'yamashita0284']);
     
     query.on('end', function(row,err) {
+        // session out
         client.end();
+
         if (err){
             logger.error('xxxx', 'err =>'+ err);
             dbcallback(err);
@@ -121,10 +130,12 @@ exports.insertTDankaDetailKosyuInfo = function(client, database, memberId, baseI
     });
     
     query.on('error', function(error) {
+        // session out
         client.end();
+
+        // database error
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
-        // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
         return;

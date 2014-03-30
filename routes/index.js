@@ -32,7 +32,7 @@ exports.getScheduleDay = function(req, res){
  */
 // 2-1.檀家検索TOP画面（get:/danka_top）
 exports.getDankaTop = function(req, res){
-    res.render('danka_top', {
+    res.render('danka/common/danka_top', {
         loginFailed: false
     });
 };
@@ -46,7 +46,7 @@ exports.getDankaSewa = function(req, res){
 
 // 2-4.檀家検索-詳細指定画面（get:/danka_syosai）
 exports.getDankaSyosai = function(req, res){
-    res.render('danka_syosai', {
+    res.render('danka/syosai/danka_syosai', {
         loginFailed: false
     });
 };
@@ -71,7 +71,7 @@ exports.getTyohyoMain = function(req, res){
 //***************************************
 // 50音別検索画面
 exports.getDanka50 = function(req, res){
-    res.render('danka_50', {
+    res.render('danka/50on/danka_50', {
         loginFailed: false
     });
 };
@@ -80,28 +80,30 @@ exports.getDanka50 = function(req, res){
 exports.getDanka50Result = function (req, res) {
 
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var getDanka50Result = require("../model/getDanka50ResultModel");
+    var getDanka50ResultModel = require("../model/danka/common/getDanka50ResultModel");
     var serchId = req.query.id;
 
-    function authCallback(isError, resultRows, tikuInfoJson, tikuCodeInfo, sewaInfoJson, sewaCodeInfo, searchMoji) {
+    function authCallback(isError, resultRows, tikuInfoJson, tikuCodeInfo, sewaInfoJson, sewaCodeInfo, tagInfoJson, tagCodeInfo, seachTitle) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
             return;
         }
         // ログイン成功画面へ推移
-        res.render('danka_result', {
+        res.render('danka/common/danka_result', {
             resultRows: resultRows,
             tikuInfoJson: tikuInfoJson,
             tikuCodeInfo: tikuCodeInfo,
             sewaInfoJson: sewaInfoJson,
             sewaCodeInfo: sewaCodeInfo,
-            searchMoji: searchMoji
+            tagInfoJson: tagInfoJson,
+            tagCodeInfo: tagCodeInfo,
+            seachTitle: seachTitle
         });
         return;
     }
 
-    getDanka50Result.main(serchId, authCallback);
+    getDanka50ResultModel.main(serchId, authCallback);
 };
 
 //***************************************
@@ -110,20 +112,21 @@ exports.getDanka50Result = function (req, res) {
 // 檀家追加画面（get:/danka_tuika）
 exports.getDankaTuika = function(req, res){
 
-    var getDankaTuikaModel = require("../model/getDankaTuikaModel");
+    var getDankaTuikaModel = require("../model/danka/tuika/getDankaTuikaModel");
   
-    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, souMemberIdInfo){
+    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, souMemberIdInfo, tagsInfo){
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
             return;
         }
         // ログイン成功画面へ推移
-        res.render('danka_tuika', {
+        res.render('danka/tuika/danka_tuika', {
             jobCodeInfo : jobCodeInfo,
             tikuCodeInfo : tikuCodeInfo,
             sewaCodeInfo : sewaCodeInfo,
-            souMemberIdInfo : souMemberIdInfo
+            souMemberIdInfo : souMemberIdInfo,
+            tagsInfo: tagsInfo
         });
         return;
     }
@@ -135,19 +138,20 @@ exports.getDankaTuika = function(req, res){
 exports.postDankaTuikaConform = function(req, res) {
     
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var postDankaTuikaConformModel = require("../model/postDankaTuikaConformModel");
+    var postDankaTuikaConformModel = require("../model/danka/tuika/postDankaTuikaConformModel");
     var webItemJson = req.body;
     
-    function authCallback(isError, isDuplicate){
+    function authCallback(isError, isDuplicate, tags){
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
             return;
         }
         // ログイン成功画面へ推移
-        res.render('danka_tuika_conform', {
+        res.render('danka/tuika/danka_tuika_conform', {
             webItemJson : webItemJson,
-            isDuplicate: isDuplicate
+            isDuplicate: isDuplicate,
+            tags: tags
         });
         return;
     }
@@ -159,7 +163,7 @@ exports.postDankaTuikaConform = function(req, res) {
 exports.postDankaTuikaDBUpdate = function(req, res) {
     
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var postDankaTuikaDBUpdateModel = require("../model/postDankaTuikaDBUpdateModel");
+    var postDankaTuikaDBUpdateModel = require("../model/danka/tuika/postDankaTuikaDBUpdateModel");
     var webItemJson = req.body;
     
     function authCallback(isError){
@@ -169,11 +173,68 @@ exports.postDankaTuikaDBUpdate = function(req, res) {
             return;
         }
         // ログイン成功画面へ推移
-        res.render('danka_tuika_success', {});
+        res.render('danka/tuika/danka_tuika_success', {});
         return;
     }
 
     postDankaTuikaDBUpdateModel.main(webItemJson, authCallback);
+};
+
+//***************************************
+// 檀家詳細検索画面
+//***************************************
+// 檀家詳細検索画面（get:/danka_syosai）
+exports.getDankaSyosai = function(req, res){
+
+    var postDankaSyosaiModel = require("../model/danka/syosai/postDankaSyosaiModel");
+  
+    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, souMemberIdInfo, tagsInfo){
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka/syosai/danka_syosai', {
+            jobCodeInfo : jobCodeInfo,
+            tikuCodeInfo : tikuCodeInfo,
+            sewaCodeInfo : sewaCodeInfo,
+            souMemberIdInfo : souMemberIdInfo,
+            tagsInfo: tagsInfo
+        });
+        return;
+    }
+
+    postDankaSyosaiModel.main(authCallback);
+};
+
+// 檀家詳細検索画面（get:/danka_syosai）
+exports.getDankaSyosaiSearch = function(req, res){
+
+    var postDankaSyosaiSearchModel = require("../model/danka/syosai/postDankaSyosaiSearchModel");
+    var webItemJson = req.body;
+  
+    function authCallback(isError, resultRows, tikuInfoJson, tikuCodeInfo, sewaInfoJson, sewaCodeInfo, tagInfoJson, tagCodeInfo, seachTitle){
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka/common/danka_result', {
+            resultRows: resultRows,
+            tikuInfoJson: tikuInfoJson,
+            tikuCodeInfo: tikuCodeInfo,
+            sewaInfoJson: sewaInfoJson,
+            sewaCodeInfo: sewaCodeInfo,
+            tagInfoJson: tagInfoJson,
+            tagCodeInfo: tagCodeInfo,
+            seachTitle: seachTitle
+        });
+        return;
+    }
+
+    postDankaSyosaiSearchModel.main(webItemJson, authCallback);
 };
 
 //***************************************
@@ -183,7 +244,7 @@ exports.postDankaTuikaDBUpdate = function(req, res) {
 exports.getDankaDetailTop = function(req, res) {
     
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var getDankaDetailTopModel = require("../model/danka_detail/getDankaDetailTopModel");
+    var getDankaDetailTopModel = require("../model/danka_detail/common/getDankaDetailTopModel");
     var memberId = req.query.id;
     
     function authCallback(isError, resultRows) {
@@ -193,7 +254,7 @@ exports.getDankaDetailTop = function(req, res) {
             return;
         }
         // ログイン成功画面へ推移
-        res.render('danka_detail/danka_detail_top', {
+        res.render('danka_detail/common/danka_detail_top', {
             resultRows: resultRows
         });
         return;
@@ -271,7 +332,7 @@ exports.postDankaDetailKihonDbUpdate = function (req, res) {
             return;
         }
         // ログイン成功画面へ推移
-        res.render('danka_detail/kihon/danka_detail_kihon_confirm_result', {
+        res.render('danka_detail/kihon/danka_detail_kihon_confirm_success', {
             webItemJson: webItemJson
         });
         return;
@@ -279,6 +340,58 @@ exports.postDankaDetailKihonDbUpdate = function (req, res) {
 
     postDankaDetailKihonDbUpdateModel.main(webItemJson, authCallback);
 };
+
+// 檀家詳細検索画面（get:/danka_syosai）
+exports.postReturnDankaSearchResult = function(req, res){
+
+    var postReturnDankaSearchResultModel = require("../model/danka_detail/common/postReturnDankaSearchResultModel");
+    var webItemJson = req.body;
+  
+    function authCallback(isError, resultRows, tikuInfoJson, tikuCodeInfo, sewaInfoJson, sewaCodeInfo, tagInfoJson, tagCodeInfo, seachTitle){
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka/common/danka_result', {
+            resultRows: resultRows,
+            tikuInfoJson: tikuInfoJson,
+            tikuCodeInfo: tikuCodeInfo,
+            sewaInfoJson: sewaInfoJson,
+            sewaCodeInfo: sewaCodeInfo,
+            tagInfoJson: tagInfoJson,
+            tagCodeInfo: tagCodeInfo,
+            seachTitle: seachTitle
+        });
+        return;
+    }
+
+    postReturnDankaSearchResultModel.main(webItemJson, authCallback);
+};
+
+// 檀家詳細検索画面（get:/danka_syosai）
+exports.postReturnDankaDetailTop = function(req, res){
+
+    var postReturnDankaDetailTopModel = require("../model/danka_detail/common/postReturnDankaDetailTopModel");
+    var webItemJson = req.body;
+    
+    function authCallback(isError, resultRows) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_detail/common/danka_detail_top', {
+            resultRows: resultRows
+        });
+        return;
+    }
+
+    postReturnDankaDetailTopModel.main(webItemJson, authCallback);
+};
+
 
 // 檀家詳細TOP画面→過去帳画面
 exports.postDankaDetailKako = function (req, res) {
@@ -368,7 +481,7 @@ exports.postDankaDetailKakoDbUpdate = function (req, res) {
             return;
         }
         // ログイン成功画面へ推移
-        res.render('danka_detail/kako/danka_detail_kako_confirm_result', {
+        res.render('danka_detail/kako/danka_detail_kako_confirm_success', {
             kosyuInfo: kosyuInfo[0]
         });
         return;

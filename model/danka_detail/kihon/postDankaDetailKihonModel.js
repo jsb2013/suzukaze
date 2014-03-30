@@ -51,7 +51,7 @@ exports.main = function (webItemJson, callback) {
         },
     // 住所マスタを取得
         function (dbcallback) {
-            mAddressDao.getAddressInfoByMemberId(client, database, memberId, addressInfo, dbcallback);
+            mAddressDao.getAddressInfoByMemberIdAndPriority(client, database, memberId, 1, addressInfo, dbcallback);
         },
     // メールマスタを取得
         function (dbcallback) {
@@ -63,7 +63,7 @@ exports.main = function (webItemJson, callback) {
         },
     // T_xxxマスタを取得
         function (dbcallback) {
-            tDankaDetailKosyuDao.getTDankaDetailKosyuInfo(client, database, memberId, kosyuInfo, dbcallback);
+            tDankaDetailKosyuDao.getTDankaDetailKosyuInfoByMemberId(client, database, memberId, kosyuInfo, dbcallback);
         },
     // コメントマスタを取得
         function (dbcallback) {

@@ -45,7 +45,7 @@ exports.main = function (webItemJson, callback) {
     // マスタ最新レコード取得（deleteFlag = true)
         function (dbcallback) {
             if (isUpdateMMember === "true") {
-                mMemberDao.getMMember(client, database, memberId, ratestMMemberInfo, dbcallback);
+                mMemberDao.getMMemberByMemberId(client, database, memberId, ratestMMemberInfo, dbcallback);
             } else {
                 dbcallback(null);
             }
@@ -183,7 +183,7 @@ exports.main = function (webItemJson, callback) {
     // 檀家マスタ最新レコード取得（deleteFlag = true)
         function (dbcallback) {
             if (isUpdateTDanka === "true") {
-                tDankaDao.getTDanka(client, database, memberId, ratestTDankaInfo, dbcallback);
+                tDankaDao.getTDankaByMemberId(client, database, memberId, ratestTDankaInfo, dbcallback);
             } else {
                 dbcallback(null);
             }

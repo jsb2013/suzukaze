@@ -16,36 +16,38 @@ exports.getMJobCode = function (client, database, rows, dbcallback) {
     });
 
     query.on('end', function (row, err) {
-        // エラーが発生した場合
+        // session out
+        client.end();
+
+        // database error
         if (err) {
             logger.error('xxxx', 'err =>' + err);
-            client.end();
             dbcallback(err);
             return;
         }
-        // 存在する場合
+        // callback(normal end)
         if (rows.length > 0) {
-            client.end();
+            util.convertJsonNullToBlankForAllItem(rows);
             dbcallback(null);
             return;
         }
+        // database error(structure)
         if (isDbError) {
             return;
         }
-        // 存在しない場合
-        if (rows.length === 0) {
-            logger.error('xxxx', 'err =>' + err);
-            client.end();
-            dbcallback(new Error());
-            return;
-        }
+        // unexpected error
+        logger.error('xxxx', 'err =>' + err);
+        dbcallback(new Error());
+        return;
     });
 
-    query.on('error', function (error) {
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => ' + errorMsg);
+    query.on('error', function(error) {
+        // session out
         client.end();
-        // これでよいのかな？
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
         dbcallback(new Error());
         isDbError = true;
         return;

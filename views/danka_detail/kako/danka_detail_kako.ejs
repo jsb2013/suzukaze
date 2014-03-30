@@ -39,6 +39,9 @@
     $("tr:nth-child(even)").addClass("even");
    
     // ページ遷移定義
+    $("#return").click(function () {
+        $("#return_danka_detail_top_form").submit();
+    });
     $(".menu_sub_kihon").click(function () {
         $("#danka_detail_kihon_form").submit();
     });
@@ -133,8 +136,6 @@
             <li class="menu_sub_kihon">基本情報 
             <li class="menu_sub_kako">過去帳
             <li class="menu_sub_nenkaiki">年回忌
-            <li class="menu_sub_kihu">寄付帳
-            <li class="menu_sub_omairi">お参り帳
           </ul>
         </div>
       </div>
@@ -150,7 +151,7 @@
                   <th id="table_main_kako_kaimyo" class="table_main_kako_header">戒名</th>
                   <th id="table_main_kako_meinichi" class="table_main_kako_header">命日</th>
                   <th id="table_main_kako_kyonen" class="table_main_kako_header">享年</th>
-                  <th id="table_main_kako_comment" class="table_main_kako_header">備考</th>
+                  <th id="table_main_kako_relation" class="table_main_kako_header">続柄</th>
                 </tr>
               </thead>
               <tbody>                 
@@ -167,7 +168,8 @@
                     var _birthday_y = memberInfo[i].birthday_y;
                     var _birthday_m = memberInfo[i].birthday_m;
                     var _birthday_d = memberInfo[i].birthday_d;
-                    var _meinichi = _meinichi_y + "/" + _meinichi_m + "/" + _meinichi_d;
+                    var _relation = memberInfo[i].relation;
+                    var _meinichi = _meinichi_y + "年" + _meinichi_m + "月" + _meinichi_d + "日";
                     var _comment = memberInfo[i].comment;
                  %>
                 <tr id="<%= _member_id %>" class="kako_record">
@@ -188,21 +190,24 @@
                           calculateAge("<%= _birthday_y %>", "<%= _birthday_m %>", "<%= _birthday_d %>", "<%= _meinichi_y %>", "<%= _meinichi_m %>", "<%= _meinichi_d %>");
                       </script>
                   </td>
-                  <td>
-                      <script>
-                          cutComment("<%= _comment %>", 5);
-                      </script>
-                  </td>
+                  <td><%= _relation %></td>
                 </tr>
               <%}%>
               </tbody>
             </table>
           </div>
+        <div class="danka_detail_kako_button">
+            <button type="button" id="return" class="button">TOPに戻る</button>
+            <button type="button" id="register" class="button">新規登録</button>
+        </div>
       <form action="/danka_detail_kako_kihon" method="post" id="danka_detail_kako_kihon_form">
         <input type="hidden" name="selected_member_id" value="dummy">
         <input type="hidden" name="member_id_kosyu" value="<%= memberId %>">
       </form>
 
+      <form action="/return_danka_detail_top" method="post" id="return_danka_detail_top_form">
+        <input type="hidden" name="member_id" value=<%= memberId %>>
+      </form>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>

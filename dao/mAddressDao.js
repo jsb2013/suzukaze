@@ -6,53 +6,6 @@ var log = require("../util/logger");
 var logger = log.createLogger();
 var util = require("../util/util");
 
-/* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getMAddress = function (client, database, memberId, rows, dbcallback) {
-    var isDbError = false;
-    var query = client.query('select * from m_address where member_id = $1 and is_disabled = false and is_deleted = false',
-            [memberId]);
-
-    query.on('row', function (row) {
-        rows.push(row);
-    });
-
-    query.on('end', function (row, err) {
-        // エラーが発生した場合
-        if (err) {
-            logger.error('xxxx', 'err =>' + err);
-            client.end();
-            dbcallback(err);
-            return;
-        }
-        // 存在する場合
-        if (rows.length > 0) {
-            util.convertJsonNullToBlankForAllItem(rows);
-            client.end();
-            dbcallback(null);
-            return;
-        }
-        if (isDbError) {
-            return;
-        }
-        // 存在しない場合
-        if (rows.length === 0) {
-            logger.error('xxxx', 'err =>' + err);
-            client.end();
-            dbcallback(new Error());
-            return;
-        }
-    });
-
-    query.on('error', function (error) {
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => ' + errorMsg);
-        client.end();
-        // これでよいのかな？
-        callback(new Error());
-        isDbError = true;
-        return;
-    });
-}
 
 exports.updateMAddressForDeleteFlag = function(client, database, priority, memberId, dbcallback){
     var isDbError = false;
@@ -60,25 +13,28 @@ exports.updateMAddressForDeleteFlag = function(client, database, priority, membe
                     ['yamashita0284', memberId, priority]);
     
     query.on('end', function(row,err) {
+        // session out
+        client.end();
+
         if (err){
             logger.error('xxxx', 'err =>'+ err);
-            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
-        client.end();
         dbcallback(null);
         return;
     });
     
     query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
-        client.end();
-        // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
         return;
@@ -99,75 +55,83 @@ exports.insertMAddress = function (client, database, priority, memberId, baseInf
                     [memberId, priority, zipCodePre, zipCodeLast, region, city, addressLine1, addressLine2, 'yamashita0284', 'yamashita0284']);
 
     query.on('end', function (row, err) {
+        // session out
+        client.end();
+
         if (err) {
             logger.error('xxxx', 'err =>' + err);
-            client.end();
             dbcallback(err);
             return;
         }
         if (isDbError) {
             return;
         }
-        client.end();
         dbcallback(null);
         return;
     });
 
-    query.on('error', function (error) {
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => ' + errorMsg);
+    query.on('error', function(error) {
+        // session out
         client.end();
-        // これでよいのかな？
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
         dbcallback(new Error());
         isDbError = true;
         return;
     });
 }
 
-exports.getAddressInfoByMemberId = function (client, database, memberId, rows, callback) {
+exports.getAddressInfoByMemberIdAndPriority = function (client, database, memberId, priority, rows, dbcallback) {
     var isDbError = false;
-    var query = client.query('select priority, zip_code_pre, zip_code_last, region, city, address_line1, address_line2, yoto from m_address where member_id = $1 and is_disabled = false and is_deleted = false',
-                    [memberId]);
+    var query = client.query('select * from m_address where member_id = $1 and priority = $2 and is_disabled = false and is_deleted = false',
+                    [memberId, priority]);
 
     query.on('row', function (row) {
         rows.push(row);
     });
 
     query.on('end', function (row, err) {
-        // エラーが発生した場合
+        // session out
+        client.end();
+
+        // database error
         if (err) {
             logger.error('xxxx', 'err =>' + err);
-            client.end();
-            callback(err);
+            dbcallback(err);
             return;
         }
-        // 存在する場合
-        if (rows.length > 0) {
+        // callback(normal end)
+        if (rows.length === 1) {
             util.convertJsonNullToBlankForAllItem(rows);
-            client.end();
-            callback(null);
+            dbcallback(null);
             return;
         }
+        // database error(structure)
         if (isDbError) {
             return;
         }
-        // 存在しない場合
-        // ※DB登録ミスや想定外の事象が考えられる。エラーを出して一旦空レコードを返す。
+        // not register address info
         if (rows.length === 0) {
-            logger.error('xxxx', 'err =>' + err);
             createInitialInfo(rows);
-            client.end();
-            callback(null);
+            dbcallback(null);
             return;
         }
+        // unexpected error
+        logger.error('xxxx', 'err =>' + err);
+        dbcallback(new Error());
+        return;
     });
 
     query.on('error', function (error) {
+        // session out
+        client.end();
+
+        // database error(structure)
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
-        client.end();
-        // これでよいのかな？
-        callback(new Error());
+        dbcallback(new Error());
         isDbError = true;
         return;
     });

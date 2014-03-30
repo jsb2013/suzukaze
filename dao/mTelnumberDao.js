@@ -6,53 +6,6 @@ var log = require("../util/logger");
 var logger = log.createLogger();
 var util = require("../util/util");
 
-/* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getMTelnumber = function(client, database, memberId, rows, dbcallback){
-    var isDbError = false;
-    var query = client.query('select * from m_mail where member_id = $1 and is_disabled = false and is_deleted = false',
-            [memberId]);
-
-    query.on('row', function(row) {
-        rows.push(row);
-    });
-
-    query.on('end', function (row, err) {
-        // エラーが発生した場合
-        if (err) {
-            logger.error('xxxx', 'err =>' + err);
-            client.end();
-            dbcallback(err);
-            return;
-        }
-        // 存在する場合
-        if (rows.length > 0) {
-            util.convertJsonNullToBlankForAllItem(rows);
-            client.end();
-            dbcallback(null);
-            return;
-        }
-        if (isDbError) {
-            return;
-        }
-        // 存在しない場合
-        if (rows.length === 0) {
-            logger.error('xxxx', 'err =>' + err);
-            client.end();
-            dbcallback(new Error());
-            return;
-        }
-    });
-
-    query.on('error', function (error) {
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => ' + errorMsg);
-        client.end();
-        // これでよいのかな？
-        dbcallback(new Error());
-        isDbError = true;
-        return;
-    });
-}
 
 exports.updateMTelnumberForDeleteFlag = function(client, database, priority, memberId, dbcallback){
     var isDbError = false;
@@ -60,25 +13,31 @@ exports.updateMTelnumberForDeleteFlag = function(client, database, priority, mem
                     ['yamashita0284', memberId, priority]);
     
     query.on('end', function(row,err) {
-        if (err){
-            logger.error('xxxx', 'err =>'+ err);
-            client.end();
+        // session out
+        client.end();
+
+        // database error
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
             dbcallback(err);
             return;
         }
+        // database error(structure)
         if (isDbError) {
             return;
         }
-        client.end();
+        // callback
         dbcallback(null);
         return;
     });
     
     query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error(structure)
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => '+errorMsg);
-        client.end();
-        // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
         return;
@@ -120,25 +79,31 @@ exports.insertMTelnumber = function (client, database, priority, memberId, baseI
                     [memberId, telPriority, telNumberPre, telNumberMid, telNumberLast, telYoto, 'yamashita0284', 'yamashita0284']);
     
     query.on('end', function (row, err) {
+        // session out
+        client.end();
+
+        // database error
         if (err) {
             logger.error('xxxx', 'err =>' + err);
-            client.end();
             dbcallback(err);
             return;
         }
+        // database error(structure)
         if (isDbError) {
             return;
         }
-        client.end();
+        // callback
         dbcallback(null);
         return;
     });
 
-    query.on('error', function (error) {
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => ' + errorMsg);
+    query.on('error', function(error) {
+        // session out
         client.end();
-        // これでよいのかな？
+
+        // database error(structure)
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
         dbcallback(new Error());
         isDbError = true;
         return;
@@ -149,7 +114,6 @@ exports.insertMTelnumber = function (client, database, priority, memberId, baseI
 exports.getTelnumberInfoByMemberId = function (client, database, memberId, rows, dbcallback) {
 
     var isDbError = false;
-
     var query = client.query('select priority, tel_number_pre, tel_number_mid, tel_number_last, yoto from m_telnumber where member_id = $1 and is_disabled = false and is_deleted = false',
                     [memberId]);
 
@@ -158,67 +122,56 @@ exports.getTelnumberInfoByMemberId = function (client, database, memberId, rows,
     });
 
     query.on('end', function (row, err) {
-        // エラーが発生した場合
+        // session out
+        client.end();
+
+        // database error
         if (err) {
             logger.error('xxxx', 'err =>' + err);
-            client.end();
             dbcallback(err);
             return;
         }
-        // 存在する場合
-        if (rows.length > 0) {
-            util.convertJsonNullToBlankForAllItem(rows);
-            client.end();
-            dbcallback(null);
-            return;
-        }
+        // database error(structure)
         if (isDbError) {
             return;
         }
-        // 存在しない場合
-        // ※DB登録ミスや想定外の事象が考えられる。エラーを出して一旦空レコードを返す。
-        if (rows.length === 0) {
-            logger.error('xxxx', 'err =>' + err);
-            createInitialInfo(rows);
-            client.end();
-            dbcallback(null);
-            return;
-        }
+        // check record
+        checkAndAddRecord(rows);
+        util.convertJsonNullToBlankForAllItem(rows);
+
+        // callback
+        dbcallback(null);
+        return;
     });
 
     query.on('error', function (error) {
+        // session out
+        client.end();
+
+        // database error(structure)
         var errorMsg = database.getErrorMsg(error);
         logger.error('xxxx', 'error => ' + errorMsg);
-        client.end();
-        // これでよいのかな？
         dbcallback(new Error());
         isDbError = true;
         return;
     });
 }
 
-// 空レコードを登録する。
-function createInitialInfo(baseInfo){
-    var base1 = {};
-    var base2 = {};
-    var base3 = {};
-    base1.priority = 1;
-    base1.tel_number_pre = "";
-    base1.tel_number_mid = "";
-    base1.tel_number_last = "";
-    base1.yoto = "";
-    base2.priority = 2;
-    base2.tel_number_pre = "";
-    base2.tel_number_mid = "";
-    base2.tel_number_last = "";
-    base2.yoto = "";
-    base3.priority = 3;
-    base3.tel_number_pre = "";
-    base3.tel_number_mid = "";
-    base3.tel_number_last = "";
-    base3.yoto = "";
-    baseInfo[0] = base1;
-    baseInfo[1] = base2;
-    baseInfo[2] = base3;
+// add blank record
+function checkAndAddRecord(rows){
+    var maxRecordCount = 3;
+    var recordCountByRows = rows.length;
+    var addRecordCount = maxRecordCount - recordCountByRows;
+
+    for(var i=0; i<addRecordCount; i++){
+        var priority = maxRecordCount - i;
+        var base = {};
+        base.priority = priority;
+        base.tel_number_pre = "";
+        base.tel_number_mid = "";
+        base.tel_number_last = "";
+        base.yoto = "";
+        rows[priority - 1] = base;
+    }
 }
 
