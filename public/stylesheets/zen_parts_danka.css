@@ -372,7 +372,7 @@
 }
 
 .confirm_submit #register{
-    margin: 0 0 0 140px;
+    margin: 0 0 0 70px;
     color: black;
     font-size: 20px;
     -webkit-border-radius: 10px;
@@ -388,7 +388,7 @@
     color: black;
     font-size: 14px;
     -webkit-border-radius: 10px;
-    width: 80px;
+    width: 155px;
     text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
     -webkit-box-shadow: 1px 1px 2px #E7E7E7;
     background: rgb(231, 206, 140);

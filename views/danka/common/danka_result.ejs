@@ -48,7 +48,7 @@
             });
         }
         // [タグ]フィルタの実装
-        if(filterSelectedTag !== '---'){
+        if(filterSelectedTag !== '0'){
             $(".table_tag_name").each(function(){
                 if($(this).parent().hasClass("hide")){
                     return true;
@@ -89,7 +89,7 @@
         $("tbody tr").removeClass("even");
         var evenCount = 1;
         $("tbody tr:not(.hide)").each(function(){
-           if((evenCount)%2 === 0){
+           if((evenCount+1)%2 === 0){
                evenCount++;
                return true;
            }
@@ -187,6 +187,7 @@
             <div class="inner_filter_main_item">
                 <label>[タグ]</label></label>          
                 <select id="tag_list"  name="tag_name" >
+                    <option value="0">---</option>
                       <% for(var i in tagCodeInfo){
                         var _tagCode = tagCodeInfo[i].tags_id;
                         var _tagName = tagCodeInfo[i].tags; %>

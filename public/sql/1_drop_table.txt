@@ -1,3 +1,8 @@
+drop view v_report_target;
+drop view v_report_target_preview;
+drop view v_typeahead;
+drop view v_report_type;
+drop view v_report;
 drop table m_address;
 drop table m_job_code;
 drop table m_mail;

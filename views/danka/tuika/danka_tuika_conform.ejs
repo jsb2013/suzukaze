@@ -68,6 +68,14 @@
     var comment = webItemJson.comment;
 %>
 </script>
+<script>
+    $(function(){
+        // ページ遷移定義
+        $("#return").click(function () {
+            $("#danka_tuika_form").submit();
+        });
+    })
+</script>
 </head>
 <body>
 <!-- container -->
@@ -357,9 +365,11 @@
             <input type="hidden" name="tags" value=<%= tags %>>
             <input type="hidden" name="comment" value=<%= comment %>>
             <div class="confirm_submit">
-              <button id="return" class="button">戻る</button>
+              <button type="button" id="return" class="button">戸主追加画面に戻る</button>
               <input type="submit" value="登録" id="register" class="button">
             </div>
+        </form>
+        <form action="/danka_tuika" method="post" id="danka_tuika_form">
         </form>
       </div>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
