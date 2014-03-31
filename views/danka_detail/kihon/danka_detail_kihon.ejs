@@ -32,14 +32,16 @@
     var birthdayY = kosyuInfo.birthday_y;
     var birthdayM = kosyuInfo.birthday_m;
     var birthdayD = kosyuInfo.birthday_d;
-    var memberIdSou = kosyuInfo.member_id_sou;
     var jobName = kosyuInfo.job_name;
-    var souNameSei = kosyuInfo.sou_name_sei;
-    var souNameNa = kosyuInfo.sou_name_na;
-    var souName = souNameSei + "　" + souNameNa;
     var comment = kosyuInfo.comment;
     var tags = kosyuInfo.tags;
-
+    var jiin = kosyuInfo.jiin;
+    var jiinName = "---";
+    if (jiin == "1"){
+        jiinName = "長伝寺";
+    } else if(jiin == "2"){
+        jiinName = "水月寺";
+    }
     var addressPri1 = addressInfo[0];
     var zipCodePre = addressPri1.zip_code_pre;
     var zipCodeLast = addressPri1.zip_code_last;
@@ -105,7 +107,7 @@
     $("#job_list").val(<%= jobCode %>);
     $("#tiku_list").val(<%= tikuCode %>);
     $("#sewa_list").val(<%= sewaCode %>);
-    $("#sou_list").val(<%= memberIdSou %>);
+    $("#jiin_list").val(<%= jiin %>);
 
     // 更新時のバリデーションチェック
     $("#main_form").submit(function(){
@@ -169,13 +171,13 @@
         var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
         var jobCodeAfter = $("select[name='job_code'] option:selected").val();
         var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
-        var souCodeAfter = $("select[name='member_id_sou'] option:selected").val();
+        var jiinCodeAfter = $("select[name='jiin_code'] option:selected").val();
         var tikuCodeBk = $("input[name='tiku_code_bk']").val();
         var jobCodeBk = $("input[name='job_code_bk']").val();
         var sewaCodeBk = $("input[name='sewa_code_bk']").val();
-        var souCodeBk = $("input[name='member_id_sou_bk']").val();
+        var jiinCodeBk = $("input[name='jiin_code_bk']").val();
 
-        if(tikuCodeAfter !== tikuCodeBk || jobCodeAfter !== jobCodeBk || sewaCodeAfter !== sewaCodeBk || souCodeAfter !== souCodeBk){
+        if(tikuCodeAfter !== tikuCodeBk || jobCodeAfter !== jobCodeBk || sewaCodeAfter !== sewaCodeBk || jiinCodeAfter !== jiinCodeBk){
             isChange = true;
         }
 
@@ -226,11 +228,11 @@
         var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
         var jobNameAfter = $("select[name='job_code'] option:selected").text();
         var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
-        var souNameAfter = $("select[name='member_id_sou'] option:selected").text();
+        var jiinAfter = $("select[name='jiin_code'] option:selected").text();
         $("input[name='tiku_name']").val(tikuNameAfter);
         $("input[name='job_name']").val(jobNameAfter);
         $("input[name='sewa_name']").val(sewaNameAfter);
-        $("input[name='sou_name']").val(souNameAfter);
+        $("input[name='jiin_name']").val(jiinAfter);
     });
 });
 </script>
@@ -257,17 +259,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
             <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
-            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
-            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li><span class="ja">台帳管理</span><span class="en">master</span>
+            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
-            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -307,7 +309,7 @@
           <ul>
             <li class="menu_sub_kihon">基本情報 
             <li class="menu_sub_kako">過去帳
-            <li class="menu_sub_nenkaiki">年回忌
+            <li class="menu_sub_nenkaiki_dummy">年回忌
           </ul>
         </div>
       </div>
@@ -377,7 +379,7 @@
                 <tr>
                   <td id="zip_code_type">郵便番号</td>
                   <td id="zip_code" class="table_main_tuika_selectable">
-                      <input type="text" name="zip_code_pre" class="chenge_check validate number" value="<%= zipCodePre %>"> - <input type="text" name="zip_code_last" class="chenge_check validate number" value="<%= zipCodeLast %>">
+                      <input type="text" name="zip_code_pre" class="chenge_check validate number zip_code_size" value="<%= zipCodePre %>"> - <input type="text" name="zip_code_last" class="chenge_check validate number zip_code_size" value="<%= zipCodeLast %>">
                   </td>
                 </tr>
                 <tr>
@@ -395,13 +397,13 @@
                 <tr>
                   <td id="address_line1_type">番地</td>
                   <td id="address_line1" class="table_main_tuika_selectable">
-                      <input type="text" name="address_line1" class="chenge_check dummay" value="<%= addressLine1 %>">
+                      <input type="text" name="address_line1" class="chenge_check address_line_size" value="<%= addressLine1 %>">
                   </td>
                 </tr>
                 <tr>
                   <td id="address_line2_type">ビル名等</td>
                   <td id="address_line2" class="table_main_tuika_selectable">
-                      <input type="text" name="address_line2" class="chenge_check dummay" value="<%= addressLine2 %>">
+                      <input type="text" name="address_line2" class="chenge_check address_line_size" value="<%= addressLine2 %>">
                   </td>
                 </tr>
                 <tr>
@@ -524,21 +526,15 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="sou_type">担当者[僧]</td>
-                  <td id="sou" class="table_main_tuika_selectable">
-                     <select id="sou_list" name="member_id_sou" >
-                       <option value="0" selected>---</option>
-                       <% for(var i in souMemberIdInfo){
-                         var _souMemberId = souMemberIdInfo[i].member_id;
-                         var _souNameSei = souMemberIdInfo[i].name_sei;
-                         var _souNameNa = souMemberIdInfo[i].name_na;
-                         var _souName = _souNameSei + "　" + _souNameNa; %>
-                         <option value=<%= _souMemberId %>><%= _souName %></option>
-                         <%}%>
+                  <td id="jiin_type">所属寺</td>
+                  <td id="jiin" class="table_main_tuika_selectable">
+                     <select id="jiin_list" name="jiin_code" >
+                         <option value="0">---</option>
+                         <option value="1">長伝寺</option>
+                         <option value="2">水月寺</option>
                      </select>
                   </td>
                 </tr>
-
                 <tr>
                   <td id="tags">タグ</td>
                   <td id="tag" class="table_main_tuika_selectable">
@@ -625,17 +621,17 @@
           <input type="hidden" name="mail_address_3_bk" class="chenge_check_bk mail_address_3" value=<%= mailAddress3 %>>
           <input type="hidden" name="mail_yoto_3_bk" class="chenge_check_bk mail_yoto_3" value=<%= mailYoto3 %>>
           <input type="hidden" name="job_code_bk" value=<%= jobCode %>>
-          <input type="hidden" name="member_id_sou_bk" value=<%= memberIdSou %>>
           <input type="hidden" name="comment_bk" value=<%= comment %>>
           <input type="hidden" name="job_name_bk" value=<%= jobName %>>
-          <input type="hidden" name="sou_name_bk" value=<%= souName %>>
           <input type="hidden" name="tags_bk" value=<%= tags %>>
+          <input type="hidden" name="jiin_code_bk" value=<%= jiin %>>
+          <input type="hidden" name="jiin_name_bk" value=<%= jiinName %>>
           <!-- 変更後の情報 -->
           <input type="hidden" name="job_name" value="dummy">
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
-          <input type="hidden" name="sou_name" value="dummy">
           <input type="hidden" name="tags_after" value="dummy">
+          <input type="hidden" name="jiin_name" value="dummy">
           <div class="kihon_submit">
             <button type="button" id="return" class="button">TOPに戻る</button>
             <input type="submit" value="変更内容確認" id="register" class="button">

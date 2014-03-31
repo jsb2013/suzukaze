@@ -114,7 +114,7 @@ exports.getDankaTuika = function(req, res){
 
     var getDankaTuikaModel = require("../model/danka/tuika/getDankaTuikaModel");
   
-    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, souMemberIdInfo, tagsInfo){
+    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, tagsInfo){
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -125,7 +125,6 @@ exports.getDankaTuika = function(req, res){
             jobCodeInfo : jobCodeInfo,
             tikuCodeInfo : tikuCodeInfo,
             sewaCodeInfo : sewaCodeInfo,
-            souMemberIdInfo : souMemberIdInfo,
             tagsInfo: tagsInfo
         });
         return;
@@ -188,7 +187,7 @@ exports.getDankaSyosai = function(req, res){
 
     var postDankaSyosaiModel = require("../model/danka/syosai/postDankaSyosaiModel");
   
-    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, souMemberIdInfo, tagsInfo){
+    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, tagsInfo){
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -199,7 +198,6 @@ exports.getDankaSyosai = function(req, res){
             jobCodeInfo : jobCodeInfo,
             tikuCodeInfo : tikuCodeInfo,
             sewaCodeInfo : sewaCodeInfo,
-            souMemberIdInfo : souMemberIdInfo,
             tagsInfo: tagsInfo
         });
         return;
@@ -270,7 +268,7 @@ exports.postDankaDetailKihon = function (req, res) {
     var postDankaDetailKihonModel = require("../model/danka_detail/kihon/postDankaDetailKihonModel");
     var webItemJson = req.body;
 
-    function authCallback(isError, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, souMemberIdInfo, tagsInfo, tagNameListInMM) {
+    function authCallback(isError, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -285,7 +283,6 @@ exports.postDankaDetailKihon = function (req, res) {
             addressInfo: addressInfo,
             mailInfo: mailInfo,
             telnumberInfo: telnumberInfo,
-            souMemberIdInfo: souMemberIdInfo,
             tagsInfo: tagsInfo,
             tagNameListInMM: tagNameListInMM
         });

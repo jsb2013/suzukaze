@@ -69,6 +69,8 @@ app.get('/danka_result', routes.getDanka50Result);
 app.get('/danka_tuika', routes.getDankaTuika);
 // 檀家追加画面→確認画面
 app.post('/danka_tuika_conform', routes.postDankaTuikaConform);
+// 檀家追加画面→確認画面→檀家追加画面
+app.post('/danka_tuika', routes.getDankaTuika);
 // 檀家追加画面→確認画面→檀家情報DB追加処理
 app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 

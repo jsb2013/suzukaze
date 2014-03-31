@@ -189,55 +189,6 @@ exports.insertMMemberNotMemberId = function (client, database, baseInfo, dbcallb
     });
 }
 
-/* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
-exports.getSouMemberIdInfo = function(client, database, rows, dbcallback){
-    var isDbError = false;
-    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na from m_member as mm inner join m_sou as ms on mm.member_id = ms.member_id where mm.is_disabled = false and mm.is_deleted = false and ms.is_disabled = false and ms.is_deleted = false');
-
-    query.on('row', function(row) {
-        rows.push(row);
-    });
-    
-    query.on('end', function(row,err) {
-        // session out
-        client.end();
-
-        // エラーが発生した場合
-        if (err){
-            logger.error('xxxx', 'err =>'+ err);
-            dbcallback(err);
-            return;
-        }
-        // 存在する場合
-        if (rows.length > 0) {
-            util.convertJsonNullToBlankForAllItem(rows);
-            dbcallback(null);
-            return;
-        }
-        if (isDbError) {
-            return;
-        }
-        // 存在しない場合
-        if (rows.length === 0) {
-            logger.error('xxxx', 'err =>'+ err);
-            dbcallback(new Error());
-            return;
-        }
-    });
-    
-    query.on('error', function(error) {
-        // session out
-        client.end();
-
-        // database error
-        var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => '+errorMsg);
-        dbcallback(new Error());
-        isDbError = true;
-        return;
-    });
-}
-
 exports.getMmemberAndTDankaByFurigana = function(client, database, searchMoji, rows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
@@ -284,7 +235,7 @@ exports.getMmemberAndTDankaByFurigana = function(client, database, searchMoji, r
 exports.getMmemberAndTDankaByMemberId = function(client, database, memberId, rows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job_code, mm.birthday_y, mm.birthday_m, mm.birthday_d, td.danka_type, td.tiku_code, td.sewa_code, td.member_id_sou, mm.tags from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mm.member_id = $1',
+    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job_code, mm.birthday_y, mm.birthday_m, mm.birthday_d, td.danka_type, td.tiku_code, td.sewa_code, td.member_id_sou, mm.tags, td.jiin from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mm.member_id = $1',
                 [memberId]);
 
     query.on('row', function(row) {
@@ -327,7 +278,7 @@ exports.getMmemberAndTDankaByMemberId = function(client, database, memberId, row
 exports.getMmemberAndTDanka = function (client, database, rows, dbcallback) {
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select mm1.member_id, td.danka_type, mm1.name_sei, mm1.name_na, mm1.furigana_sei, mm1.furigana_na, mm1.sex, mm1.tags, mm1.is_arive, td.tiku_code, td.sewa_code, mm2.name_sei as name_sei_kosyu, mm2.name_na as name_na_kosyu, mm2.member_id as member_id_kosyu from (m_member as mm1 inner join t_danka as td on mm1.member_id = td.member_id) inner join m_member as mm2 on td.member_id_kosyu = mm2.member_id where mm1.is_disabled=false and mm1.is_deleted=false and mm2.is_disabled=false and mm2.is_deleted=false and td.is_deleted=false');
+    var query = client.query('select mm1.member_id, td.danka_type, mm1.name_sei, mm1.name_na, mm1.furigana_sei, mm1.furigana_na, mm1.sex, mm1.tags, mm1.is_arive, td.tiku_code, td.sewa_code, mm2.name_sei as name_sei_kosyu, mm2.name_na as name_na_kosyu, mm2.member_id as member_id_kosyu, td.jiin from (m_member as mm1 inner join t_danka as td on mm1.member_id = td.member_id) inner join m_member as mm2 on td.member_id_kosyu = mm2.member_id where mm1.is_disabled=false and mm1.is_deleted=false and mm2.is_disabled=false and mm2.is_deleted=false and td.is_deleted=false');
 
     query.on('row', function (row) {
         rows.push(row);

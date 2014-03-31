@@ -5,8 +5,6 @@
  
 var database = require("../../../dao/database");
 var client = database.createClient();
-var log = require("../../../util/logger");
-var logger = log.createLogger();
 var dbcommon = require("../../../dao/database_common");
 var mMemberDao = require("../../../dao/mMemberDao");
 var tDankaDao = require("../../../dao/tDankaDao");
@@ -103,5 +101,4 @@ function mergeTDankaInfoDefault(baseInfo, memberId){
     baseInfo.sesyu_sei = "";
     baseInfo.sesyu_na = "";
     baseInfo.relation = "";
-    baseInfo.jiin = 2;
 }

@@ -89,8 +89,8 @@ exports.updateTDankaDetailKosyuForDeleteFlag = function(client, database, member
     });
 }
 
-exports.insertTDankaDetailKosyuInfo = function(client, database, memberId, baseInfo, dbcallback){
-    
+exports.insertTDankaDetailKosyuInfo = function (client, database, memberId, baseInfo, dbcallback) {
+
     // varchar型 or boolean型の値を取得。
     var isDbError = false;
     var dankaType = baseInfo.danka_type;
@@ -104,21 +104,22 @@ exports.insertTDankaDetailKosyuInfo = function(client, database, memberId, baseI
     var tikuName = baseInfo.tiku_name;
     var sewaCode = baseInfo.sewa_code;
     var sewaName = baseInfo.sewa_name;
-    var memberIdSou = baseInfo.member_id_sou;
+    var memberIdSou = 0;
     var tags = baseInfo.tags;
     var birthdayY = baseInfo.birthday_y;
     var birthdayM = baseInfo.birthday_m;
     var birthdayD = baseInfo.birthday_d;
+    var jiin = baseInfo.jiin;
 
-    var query = client.query('INSERT INTO t_danka_detail_kosyu_info(member_id, danka_type, name_sei, name_na, furigana_sei, furigana_na, sex, job_code, birthday_y, birthday_m, birthday_d, tiku_code, tiku_name, sewa_code, sewa_name, member_id_sou, tags, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, null, null, $18, now(), $19, now(), false)',
-                    [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, sex, jobCode, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, 'yamashita0284', 'yamashita0284']);
-    
-    query.on('end', function(row,err) {
+    var query = client.query('INSERT INTO t_danka_detail_kosyu_info(member_id, danka_type, name_sei, name_na, furigana_sei, furigana_na, sex, job_code, birthday_y, birthday_m, birthday_d, tiku_code, tiku_name, sewa_code, sewa_name, member_id_sou, tags, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, null, null, $19, now(), $20, now(), false)',
+                    [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, sex, jobCode, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, jiin, 'yamashita0284', 'yamashita0284']);
+
+    query.on('end', function (row, err) {
         // session out
         client.end();
 
-        if (err){
-            logger.error('xxxx', 'err =>'+ err);
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
             dbcallback(err);
             return;
         }
@@ -128,14 +129,14 @@ exports.insertTDankaDetailKosyuInfo = function(client, database, memberId, baseI
         dbcallback(null);
         return;
     });
-    
-    query.on('error', function(error) {
+
+    query.on('error', function (error) {
         // session out
         client.end();
 
         // database error
         var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => '+errorMsg);
+        logger.error('xxxx', 'error => ' + errorMsg);
         dbcallback(new Error());
         isDbError = true;
         return;

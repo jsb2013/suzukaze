@@ -63,9 +63,9 @@
     var mailYoto3Bk = webItemJson.mail_yoto_3_bk;
     var mail3Bk = mailAddress3Bk + "　（用途：" + mailYoto3Bk + "　）";
     var jobNameBk = webItemJson.job_name_bk;
-    var souNameBk = webItemJson.sou_name_bk;
     var commentBk = webItemJson.comment_bk;
     var tagsBk = webItemJson.tags_bk;
+    var jiinNameBk = webItemJson.jiin_name_bk;
 
     var dankaType = webItemJson.danka_type;
     var nameSei = webItemJson.name_sei;
@@ -111,15 +111,15 @@
     var mailYoto3 = webItemJson.mail_yoto_3;
     var mail3 = mailAddress3 + "　（用途：" + mailYoto3 + "　）";
     var jobName = webItemJson.job_name;
-    var souName = webItemJson.sou_name;
     var tikuName = webItemJson.tiku_name;
     var sewaName = webItemJson.sewa_name;
     var comment = webItemJson.comment;
     var jobCode = webItemJson.job_code;
     var tikuCode = webItemJson.tiku_code;
     var sewaCode = webItemJson.sewa_code;
-    var memberIdSou = webItemJson.member_id_sou;
     var tags = webItemJson.tags_after;
+    var jiinName = webItemJson.jiin_name;
+    var jiinCode = webItemJson.jiin_code;
 %>
 <script>
     $(function(){
@@ -216,17 +216,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
             <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
-            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
-            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li><span class="ja">台帳管理</span><span class="en">master</span>
+            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
-            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -266,7 +266,7 @@
           <ul>
             <li class="menu_sub_kihon">基本情報 
             <li class="menu_sub_kako">過去帳
-            <li class="menu_sub_nenkaiki">年回忌
+            <li class="menu_sub_nenkaiki_dummy">年回忌
           </ul>
         </div>
       </div>
@@ -400,9 +400,9 @@
                     </script>
                 </tr>
                 <tr class="t_danka">
-                  <td id="sou_type">担当者[僧]</td>
+                  <td id="jiin_type">所属寺</td>
                     <script>
-                      createHtml("<%= souNameBk %>", "<%= souName %>");
+                      createHtml("<%= jiinNameBk %>", "<%= jiinName %>");
                     </script>
                 </tr>
                 <tr class="m_member">
@@ -460,9 +460,9 @@
             <input type="hidden" name="job_code" value=<%= jobCode %>>
             <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
             <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
-            <input type="hidden" name="member_id_sou" value=<%= memberIdSou %>>
             <input type="hidden" name="comment" value=<%= webItemJson.comment %>>
             <input type="hidden" name="tags" value=<%= tags %>>
+            <input type="hidden" name="jiin" value=<%= jiinCode %>>
             <input type="hidden" name="tiku_code_bk" value=<%= tikuCodeBk %>>
             <input type="hidden" name="is_update_m_member" value=false>
             <input type="hidden" name="is_update_m_address" value=false>

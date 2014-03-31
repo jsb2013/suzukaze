@@ -223,6 +223,7 @@ sewa_code integer NOT NULL,
 sewa_name varchar(50) NOT NULL,
 member_id_sou integer ,
 tags varchar(400) ,
+jiin integer ,
 yobi_1 varchar(10) ,
 yobi_2 varchar(10) ,
 create_user varchar(50) NOT NULL,
@@ -231,6 +232,7 @@ update_user varchar(50) NOT NULL,
 update_date timestamp NOT NULL,
 is_deleted boolean NOT NULL,
 primary key (id));
+
 
 create table m_report
 (

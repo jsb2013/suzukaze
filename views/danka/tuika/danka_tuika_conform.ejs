@@ -22,7 +22,7 @@
     var furiganaFull = furiganaSei + "　" + furiganaNa;
     var sex = webItemJson.sex;
     var sexName = "男";
-    if (sex === '1'){
+    if (sex === '2'){
         sexName = "女";
     }
     var zipCodePre = webItemJson.zip_code_pre;
@@ -63,8 +63,8 @@
     var tikuName = webItemJson.tiku_name;
     var sewaCode = webItemJson.sewa_code;
     var sewaName = webItemJson.sewa_name;
-    var memberIdSou = webItemJson.member_id_sou;
-    var souName = webItemJson.sou_name;
+    var jiinCode = webItemJson.jiin_code;
+    var jiinName = webItemJson.jiin_name;
     var comment = webItemJson.comment;
 %>
 </script>
@@ -99,17 +99,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
             <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
-            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
-            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li><span class="ja">台帳管理</span><span class="en">master</span>
+            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
-            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -304,12 +304,14 @@
                      <label for="sewa"><%= sewaName %></label>
                   </td>
                 </tr>
+
                 <tr>
-                  <td id="sou_type">担当者[僧]</td>
-                  <td id="sou">
-                     <label for="sou"><%= souName %></label>
+                  <td id="jiin_type">所属寺</td>
+                  <td id="jiin">
+                     <label for="jiin"><%= jiinName %></label>
                   </td>
                 </tr>
+
                 <tr>
                   <td id="tag_type">タグ</td>
                   <td id="tags">
@@ -361,7 +363,7 @@
             <input type="hidden" name="job_code" value=<%= jobCode %>>
             <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
             <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
-            <input type="hidden" name="member_id_sou" value=<%= memberIdSou %>>
+            <input type="hidden" name="jiin" value=<%= jiinCode %>>
             <input type="hidden" name="tags" value=<%= tags %>>
             <input type="hidden" name="comment" value=<%= comment %>>
             <div class="confirm_submit">

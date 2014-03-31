@@ -176,6 +176,22 @@ function getBaseInfoBysearchData(baseInfoInDb, baseInfoInWeb, resultInfo){
             continue;
         }
 
+        // 所属寺で検索
+        var jiinInDb = info.jiin;
+        var jiinInWebInfo = baseInfoInWeb.jiin;
+        var isMatch = false;
+        for(var key in jiinInWebInfo){
+            var _jiinInWeb = jiinInWebInfo[key];
+            if (!checkValueByNumeric(jiinInDb, _jiinInWeb)) {
+                continue;
+            }
+            isMatch = true;
+            break;
+        }
+        if(!util.isUndefineForList(jiinInWebInfo) && !isMatch){
+            continue;
+        }
+
         // タグで検索
         var tagsInDb = info.tags;
         var tagsInWebInfo = baseInfoInWeb.tags;
@@ -187,6 +203,9 @@ function getBaseInfoBysearchData(baseInfoInDb, baseInfoInWeb, resultInfo){
             }
             isMatch = true;
             break;
+        }
+        if(!util.isUndefineForList(tagsInWebInfo) && !isMatch){
+            continue;
         }
 
         // 生死区分で検索

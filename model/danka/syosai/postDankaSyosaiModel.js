@@ -22,7 +22,6 @@ exports.main = function (callback) {
     var tikuCodeInfo = [];
     var jobCodeInfo = [];
     var sewaCodeInfo = [];
-    var souMemberIdInfo = [];
     var tagsInfo = [];
 
     async.series([
@@ -39,10 +38,6 @@ exports.main = function (callback) {
         function (dbcallback) {
             mSewaCodeDao.getMSewaCode(client, database, sewaCodeInfo, dbcallback);
         },
-    // メンバーマスタから僧のリストを取得
-        function (dbcallback) {
-            mMemberDao.getSouMemberIdInfo(client, database, souMemberIdInfo, dbcallback);
-        },
     // タグ情報を取得（戸主情報）
         function (dbcallback) {
             mTagsDao.getMTags(client, database, tagsInfo, dbcallback);
@@ -53,7 +48,7 @@ exports.main = function (callback) {
                 callback(true);
                 return;
             }
-            callback(null, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, souMemberIdInfo, tagsInfo);
+            callback(null, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, tagsInfo);
             return;
         }
     );

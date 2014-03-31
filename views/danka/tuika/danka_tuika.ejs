@@ -46,22 +46,15 @@
              return false;
          }
 
-         // 世話人が"---"の場合、地区コードと同じに変換
-         var sewaCode = $("select[name='sewa_name']").val();
-         if(sewaCode === '9999'){
-            var tikuCode = $("select[name='tiku_name']").val();
-            $("select[name='sewa_name']").val(tikuCode);    
-         }
-
          // hiddenに世話人、地区名、担当[僧]を設定する
          var jobName = $("select[name='job_code'] option:selected").text();
          var sewaName = $("select[name='sewa_code'] option:selected").text();
          var tikuName = $("select[name='tiku_code'] option:selected").text();
-         var souName = $("select[name='member_id_sou'] option:selected").text();
+         var jiinName = $("select[name='jiin_code'] option:selected").text();
          $("input[name='job_name']").val(jobName);
          $("input[name='sewa_name']").val(sewaName);
          $("input[name='tiku_name']").val(tikuName);
-         $("input[name='sou_name']").val(souName);
+         $("input[name='jiin_name']").val(jiinName);
      });
  });
 </script>
@@ -88,17 +81,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><a href="/schedule_top"><span class="ja">スケジュール</span><span class="en">schedule</span></a>
+            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
             <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><a href="/dummy"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span></a>
-            <li><a href="/dummy"><span class="ja">台帳管理</span><span class="en">master</span></a>
-            <li><a href="/tyohyo_main"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li><span class="ja">台帳管理</span><span class="en">master</span>
+            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><a href="/dummy"><span class="ja">備品管理</span><span class="en">stock-manage</span></a> 
-            <li><a href="/index_a"><span class="ja">寺院情報</span><span class="en">user-info</span></a>   
+            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -157,14 +150,14 @@
                 <tr>
                   <td id="sex_type">性別(※必須)</td>
                   <td id="sex" class="table_main_tuika_selectable">
-                      <input type="radio" name="sex" class="dummay" value="0" checked><label for="man">男</label>
-                      <input type="radio" name="sex" class="dummay" value="1"><label for="woman">女</label>
+                      <input type="radio" name="sex" class="dummay" value="1" checked><label for="man">男</label>
+                      <input type="radio" name="sex" class="dummay" value="2"><label for="woman">女</label>
                   </td>
                 </tr>
                 <tr>
                   <td id="zip_code_type">郵便番号</td>
                   <td id="zip_code" class="table_main_tuika_selectable">
-                      <input type="text" name="zip_code_pre" class="validate number"> - <input type="text" name="zip_code_last" class="validate number">
+                      <input type="text" name="zip_code_pre" class="validate number zip_code_size"> - <input type="text" name="zip_code_last" class="validate number zip_code_size">
                   </td>
                 </tr>
                 <tr>
@@ -182,13 +175,13 @@
                 <tr>
                   <td id="address_line1_type">番地</td>
                   <td id="address_line1" class="table_main_tuika_selectable">
-                      <input type="text" name="address_line1" class="dummay">
+                      <input type="text" name="address_line1" class="address_line_size">
                   </td>
                 </tr>
                 <tr>
                   <td id="address_line2_type">ビル名等</td>
                   <td id="address_line2" class="table_main_tuika_selectable">
-                      <input type="text" name="address_line2" class="dummay">
+                      <input type="text" name="address_line2" class="address_line_size">
                   </td>
                 </tr>
                 <tr>
@@ -308,21 +301,15 @@
                          <option value=<%= _sewaCode %>><%= _sewaName %></option>
                          <%}%>
                      </select>
-                     <label for="furi_namae"></label>
                   </td>
                 </tr>
                 <tr>
-                  <td id="sou_type">担当者[僧]</td>
-                  <td id="sou" class="table_main_tuika_selectable">
-                     <select id="sou_list" name="member_id_sou" >
-                         <option value="0" selected>---</option>
-                       <% for(var i in souMemberIdInfo){
-                         var _souMemberId = souMemberIdInfo[i].member_id;
-                         var _souNameSei = souMemberIdInfo[i].name_sei;
-                         var _souNameNa = souMemberIdInfo[i].name_na;
-                         var _souName = _souNameSei + " " + _souNameNa; %>
-                         <option value=<%= _souMemberId %>><%= _souName %></option>
-                         <%}%>
+                  <td id="jiin_type">所属寺</td>
+                  <td id="jiin" class="table_main_tuika_selectable">
+                     <select id="jiin_list" name="jiin_code" >
+                         <option value="0">---</option>
+                         <option value="1">長伝寺</option>
+                         <option value="2">水月寺</option>
                      </select>
                   </td>
                 </tr>
@@ -358,7 +345,7 @@
           <input type="hidden" name="job_name" value="dummy">
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
-          <input type="hidden" name="sou_name" value="dummy">
+          <input type="hidden" name="jiin_name" value="dummy">
           <div id="new_submit"><input type="submit" value="登録" id="submit"></div>
         </form>
       </div>

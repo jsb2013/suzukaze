@@ -31,7 +31,6 @@ exports.main = function (webItemJson, callback) {
     var mailInfo = [];
     var commentInfo = [];
     var telnumberInfo = [];
-    var souMemberIdInfo = [];
     var kosyuInfo = [];
     var tagsInfo = [];
 
@@ -69,11 +68,6 @@ exports.main = function (webItemJson, callback) {
         function (dbcallback) {
             mCommentDao.getTCommentByMemberId(client, database, memberId, commentInfo, dbcallback);
         },
-    // [TBA] 住所、メールを取得する。
-    // メンバーマスタから僧のリストを取得
-        function (dbcallback) {
-            mMemberDao.getSouMemberIdInfo(client, database, souMemberIdInfo, dbcallback);
-        },
     // タグ情報を取得（戸主情報）
         function (dbcallback) {
             mTagsDao.getMTags(client, database, tagsInfo, dbcallback);
@@ -94,22 +88,21 @@ exports.main = function (webItemJson, callback) {
             // 電話番号情報をpriority順に並び替える。
             convertInfoByPriority(telnumberInfo);
 
-            // 仕事名称と担当[僧]とコメントをwebitemJsonに登録
+            // 仕事名称とコメントをwebitemJsonに登録
             // ※本内容は「danka_detail_kihon」内では使用しないが、その後「danka_detail_kihon_confirm」で使用する為、
-            // ※事前に取得しておく。（jobcode,memberIdSouを変更した場合の、変更前名称。必要な時に取得するとDBアクセスが発生する為）
-            registerNama(kosyuInfo, jobCodeInfo, souMemberIdInfo, commentInfo);
+            // ※事前に取得しておく。（jobcodeを変更した場合の、変更前名称。必要な時に取得するとDBアクセスが発生する為）
+            registerNama(kosyuInfo, jobCodeInfo, commentInfo);
 
             var tagNameListInMM = util.splitStringByDelimiter(kosyuInfo[0].tags, ",");
 
-            callback(false, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, souMemberIdInfo, tagsInfo, tagNameListInMM);
+            callback(false, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM);
             return;
         }
     );
 };
 
-function registerNama(kosyuInfo, jobCodeInfo, souMemberIdInfo, commentInfo){
+function registerNama(kosyuInfo, jobCodeInfo, commentInfo){
     var jobCode = kosyuInfo[0].job_code;
-    var memberIdSou = kosyuInfo[0].member_id_sou;
     
     // 仕事名を登録
     for(var key in jobCodeInfo){
@@ -121,18 +114,6 @@ function registerNama(kosyuInfo, jobCodeInfo, souMemberIdInfo, commentInfo){
             break;
         }
     }    
-    // 担当[僧]を登録
-    for(var key in souMemberIdInfo){
-        var _line = souMemberIdInfo[key];
-        var _memberIdSou = _line.member_id;
-        if(memberIdSou == _memberIdSou){
-            var souNameSei = _line.name_sei;
-            var souNameNa = _line.name_na;
-            kosyuInfo[0].sou_name_sei = souNameSei;
-            kosyuInfo[0].sou_name_na = souNameNa;
-            break;
-        }
-    } 
     // コメントを登録
     var comment = "";
     if(!util.isUndefineForList(commentInfo)){

@@ -120,7 +120,7 @@
      .table_main_syosai{
       margin: 5px 0 0 0;
       width: 630px;
-      height: 334px;
+      height: 386px;
       overflow-y: scroll;
     }
     .table_main_syosai table{
@@ -231,16 +231,18 @@
         border: solid 1px #BA802F;
         border-collapse: collapse;
       }
-      .telno_size{ width: 50px;}
-      .telno_yoto{ width: 150px;}
       #telno_box{
         margin: 0 30px 0 0;
       }
-      .email_size{ width: 200px;}
-      .email_yoto{ width: 150px;}
       #email_box{
         margin: 0 30px 0 0;
       }
+      .telno_size{ width: 50px;}
+      .telno_yoto{ width: 150px;}
+      .email_size{ width: 265px;}
+      .email_yoto{ width: 110px;}
+      .zip_code_size{ width: 72px;}
+      .address_line_size{ width: 420px;}
       tbody{
     margin: 0;
     padding: 0;

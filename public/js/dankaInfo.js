@@ -41,10 +41,10 @@ function createHtmlByDankaType(value1, value2){
     var dankaValue1 = "檀家";
     var dankaValue2 = "檀家";
 
-    if(value1 === "1"){
+    if(value1 == "1"){
         dankaValue1 = "信徒";
     }
-    if(value2 === "1"){
+    if(value2 == "1"){
         dankaValue2 = "信徒";
     }
     createHtml(dankaValue1, dankaValue2);
@@ -55,10 +55,10 @@ function createHtmlBySex(value1, value2){
     var sexValue1 = "男";
     var sexValue2 = "男";
 
-    if(value1 === "2"){
+    if(value1 == "2"){
         sexValue1 = "女";
     }
-    if(value2 === "2"){
+    if(value2 == "2"){
         sexValue2 = "女";
     }
     createHtml(sexValue1, sexValue2);
@@ -67,7 +67,7 @@ function createHtmlBySex(value1, value2){
 
 function convertSexValueToMoji(sex){
     var sex_mei = '男性';
-    if(sex === "2"){
+    if(sex == "2"){
         sex_mei = '女性';
     }
     document.write('<label>' + sex_mei + '</label>'); 

@@ -278,11 +278,10 @@ function mergeTDankaInfo(ratestTDankaInfo, webItemJson){
     var dankaType = webItemJson.danka_type;
     var sewaCode = webItemJson.sewa_code;
     var tikuCode = webItemJson.tiku_code;
-    var memberIdSou = webItemJson.member_id_sou;
+    var jiin = webItemJson.jiin;
 
     // 最新のレコードに更新した可能性のある項目をマージ
     ratestTdanka.danka_type = dankaType;
     ratestTdanka.sewa_code = sewaCode;
-    ratestTdanka.tiku_code = tikuCode;
-    ratestTdanka.member_id_sou = memberIdSou;
+    ratestTdanka.jiin = jiin;
 }
