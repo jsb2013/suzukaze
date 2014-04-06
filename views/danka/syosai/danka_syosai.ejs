@@ -11,11 +11,9 @@
  <!-- 表中の偶数行の色を変える -->
  $(function(){
      $("form").submit(function(){
-         // hiddenに世話人、地区名、担当[僧]を設定する
-         var jobName = $("select[name='job_code'] option:selected").text();
+         // hiddenに世話人、地区名を設定する
          var sewaName = $("select[name='sewa_code'] option:selected").text();
          var tikuName = $("select[name='tiku_code'] option:selected").text();
-         $("input[name='job_name']").val(jobName);
          $("input[name='sewa_name']").val(sewaName);
          $("input[name='tiku_name']").val(tikuName);
      });
@@ -104,13 +102,6 @@
                   <td id="furigana" class="table_main_syosai_selectable">
                       <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="text_size">
                       <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="text_size">
-                  </td>
-                </tr>
-                <tr>
-                  <td id="sex_type">性別</td>
-                  <td id="sex" class="table_main_syosai_selectable">
-                      <input type="checkbox" name="sex" value="1"><label for="name_seimei">男 </label>
-                      <input type="checkbox" name="sex" value="2"><label for="name_seimei">女 </label>
                   </td>
                 </tr>
                 <tr>

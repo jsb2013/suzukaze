@@ -98,8 +98,7 @@ exports.insertTDankaDetailKosyuInfo = function (client, database, memberId, base
     var nameNa = baseInfo.name_na;
     var furiganaSei = baseInfo.furigana_sei;
     var furiganaNa = baseInfo.furigana_na;
-    var sex = baseInfo.sex;
-    var jobCode = baseInfo.job_code;
+    var job = baseInfo.job;
     var tikuCode = baseInfo.tiku_code;
     var tikuName = baseInfo.tiku_name;
     var sewaCode = baseInfo.sewa_code;
@@ -111,8 +110,8 @@ exports.insertTDankaDetailKosyuInfo = function (client, database, memberId, base
     var birthdayD = baseInfo.birthday_d;
     var jiin = baseInfo.jiin;
 
-    var query = client.query('INSERT INTO t_danka_detail_kosyu_info(member_id, danka_type, name_sei, name_na, furigana_sei, furigana_na, sex, job_code, birthday_y, birthday_m, birthday_d, tiku_code, tiku_name, sewa_code, sewa_name, member_id_sou, tags, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, null, null, $19, now(), $20, now(), false)',
-                    [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, sex, jobCode, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, jiin, 'yamashita0284', 'yamashita0284']);
+    var query = client.query('INSERT INTO t_danka_detail_kosyu_info(member_id, danka_type, name_sei, name_na, furigana_sei, furigana_na, job, birthday_y, birthday_m, birthday_d, tiku_code, tiku_name, sewa_code, sewa_name, member_id_sou, tags, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, null, null, $18, now(), $19, now(), false)',
+                    [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, job, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, jiin, 'yamashita0284', 'yamashita0284']);
 
     query.on('end', function (row, err) {
         // session out

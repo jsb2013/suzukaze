@@ -7,7 +7,7 @@ name_na varchar(50) NOT NULL,
 furigana_sei varchar(50) ,
 furigana_na varchar(50) ,
 sex integer NOT NULL,
-job_code integer NOT NULL,
+job varchar(100) ,
 birthday_y varchar(4) ,
 birthday_m varchar(2) ,
 birthday_d varchar(2) ,
@@ -25,6 +25,7 @@ update_date timestamp NOT NULL,
 is_disabled boolean NOT NULL,
 is_deleted boolean NOT NULL,
 primary key (id));
+
 
 create table m_tiku_code
 (

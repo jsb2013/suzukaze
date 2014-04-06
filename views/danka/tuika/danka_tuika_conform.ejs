@@ -20,11 +20,6 @@
     var furiganaSei = webItemJson.furigana_sei;
     var furiganaNa = webItemJson.furigana_na;
     var furiganaFull = furiganaSei + "　" + furiganaNa;
-    var sex = webItemJson.sex;
-    var sexName = "男";
-    if (sex === '2'){
-        sexName = "女";
-    }
     var zipCodePre = webItemJson.zip_code_pre;
     var zipCodeLast = webItemJson.zip_code_last;
     var zipCode = zipCodePre + " - " + zipCodeLast;
@@ -57,8 +52,7 @@
     var email1Yoto = webItemJson.email_1_yoto;
     var email2Yoto = webItemJson.email_2_yoto;
     var email3Yoto = webItemJson.email_3_yoto;
-    var jobCode = webItemJson.job_code;
-    var jobName = webItemJson.job_name;
+    var job = webItemJson.job;
     var tikuCode = webItemJson.tiku_code;
     var tikuName = webItemJson.tiku_name;
     var sewaCode = webItemJson.sewa_code;
@@ -179,12 +173,6 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="sex_type">性別(※必須)</td>
-                  <td id="sex">
-                      <label for="sex"><%= sexName %></label>
-                  </td>
-                </tr>
-                <tr>
                   <td id="zip_code_type">郵便番号</td>
                   <td id="zip_code">
                       <label for="zip_code"><%= zipCode %></label>
@@ -289,7 +277,13 @@
                 <tr>
                   <td id="job_type">職業</td>
                   <td id="job">
-                     <label for="job"><%= jobName %></label>
+                     <label for="job"><%= job %></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="jiin_type">所属寺</td>
+                  <td id="jiin">
+                     <label for="jiin"><%= jiinName %></label>
                   </td>
                 </tr>
                 <tr>
@@ -304,14 +298,6 @@
                      <label for="sewa"><%= sewaName %></label>
                   </td>
                 </tr>
-
-                <tr>
-                  <td id="jiin_type">所属寺</td>
-                  <td id="jiin">
-                     <label for="jiin"><%= jiinName %></label>
-                  </td>
-                </tr>
-
                 <tr>
                   <td id="tag_type">タグ</td>
                   <td id="tags">
@@ -332,7 +318,6 @@
             <input type="hidden" name="name_na" value=<%= nameNa %>>
             <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
             <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
-            <input type="hidden" name="sex" value=<%= sex %>>
             <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
             <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
             <input type="hidden" name="region" value=<%= region %>>
@@ -360,7 +345,7 @@
             <input type="hidden" name="mail_yoto_2" value=<%= email2Yoto %>>
             <input type="hidden" name="mail_address_3" value=<%= email3 %>>
             <input type="hidden" name="mail_yoto_3" value=<%= email3Yoto %>>
-            <input type="hidden" name="job_code" value=<%= jobCode %>>
+            <input type="hidden" name="job" value=<%= job %>>
             <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
             <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
             <input type="hidden" name="jiin" value=<%= jiinCode %>>

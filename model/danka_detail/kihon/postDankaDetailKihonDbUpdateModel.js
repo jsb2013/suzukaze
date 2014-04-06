@@ -250,11 +250,10 @@ function mergeMMemberInfo(ratestMMemberInfo, webItemJson){
     var nameNa = webItemJson.name_na;
     var furiganaSei = webItemJson.furigana_sei;
     var furiganaNa = webItemJson.furigana_na;
-    var sex = webItemJson.sex;
     var birthdayY = webItemJson.birthday_y;
     var birthdayM = webItemJson.birthday_m;
     var birthdayD = webItemJson.birthday_d;
-    var jobCode = webItemJson.job_code;
+    var job = webItemJson.job;
     var tags = webItemJson.tags;
 
     // 最新のレコードに更新した可能性のある項目をマージ
@@ -262,11 +261,10 @@ function mergeMMemberInfo(ratestMMemberInfo, webItemJson){
     ratestMMember.name_na = nameNa;
     ratestMMember.furigana_sei = furiganaSei;
     ratestMMember.furigana_na = furiganaNa;
-    ratestMMember.sex = sex;
     ratestMMember.birthday_y = birthdayY;
     ratestMMember.birthday_m = birthdayM;
     ratestMMember.birthday_d = birthdayD;
-    ratestMMember.job_code = jobCode;
+    ratestMMember.job = job;
     ratestMMember.tags = tags;
 }
 

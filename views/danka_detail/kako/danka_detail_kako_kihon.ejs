@@ -35,7 +35,6 @@
     var furiganaNaKako = dankaInfo.furigana_na;
     var kaimyoKako = dankaInfo.kaimyo;
     var kaimyoFuriganaKako = dankaInfo.kaimyo_furigana;
-    var sexKako = dankaInfo.sex;
     var relationKako = dankaInfo.relation;
     var birthdayYKako = dankaInfo.birthday_y;
     var birthdayMKako = dankaInfo.birthday_m;
@@ -43,6 +42,7 @@
     var meinichiYKako = dankaInfo.meinichi_y;
     var meinichiMKako = dankaInfo.meinichi_m;
     var meinichiDKako = dankaInfo.meinichi_d;
+    var kyonenKako = dankaInfo.kyonen;
     var sesyuSeiKako = dankaInfo.sesyu_sei;
     var sesyuNaKako = dankaInfo.sesyu_na;
     var commentKako = dankaInfo.comment;
@@ -134,14 +134,6 @@
                     return true;
                 }
             });
-
-            // radio項目の差分比較
-            var sexAfter = $("input[name='sex_kako']:checked").val();
-            var sexBk = $("input[name='sex_kako_bk']").val();
-
-            if (sexAfter !== sexBk) {
-                isChange = true;
-            }
 
             // テキストエリアの差分比較
             var commentAfter = $("textarea[name='comment_kako']").val();
@@ -277,10 +269,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="furigana_type">俗名（ふりがな）</td>
+                  <td id="furigana_type">俗名（ふりがな）※必須</td>
                   <td id="furigana" class="table_main_tuika_selectable">
-                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei_kako" class="chenge_check validate duplicate_pre" value="<%= furiganaSeiKako %>">
-                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na_kako" class="chenge_check validate duplicate_end" value="<%= furiganaNaKako %>">
+                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei_kako" class="chenge_check validate require duplicate_pre" value="<%= furiganaSeiKako %>">
+                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na_kako" class="chenge_check validate require duplicate_end" value="<%= furiganaNaKako %>">
                   </td>
                 </tr>
                 <tr>
@@ -296,48 +288,27 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="sex_type">性別(※必須)</td>
-                  <td id="sex" class="table_main_tuika_selectable">
-                      <%
-                      if(sexKako == "1"){
-                      %>
-                        <input type="radio" name="sex_kako" class="dummy" value="1" checked><label for="man">男</label>
-                        <input type="radio" name="sex_kako" class="dummy" value="2"><label for="woman">女</label>                
-                      <%
-                      }else{
-                      %>
-                        <input type="radio" name="sex_kako" class="dummy" value="1"><label for="man">男</label>
-                        <input type="radio" name="sex_kako" class="dummy" value="2" checked><label for="woman">女</label>                 
-                      <%
-                      }
-                      %>
-                  </td>
-                </tr>
-                <tr>
                   <td id="birthday_type">生年月日</td>
                   <td id="birthday" class="table_main_tuika_selectable">
-                       <input type="text" name="birthday_y_kako" class="chenge_check validate number telno_size" value="<%= birthdayYKako %>">
-                       年 <input type="text" name="birthday_m_kako" class="chenge_check validate number telno_size" value="<%= birthdayMKako %>">
-                       月 <input type="text" name="birthday_d_kako" class="chenge_check validate number telno_size" value="<%= birthdayDKako %>">
+                       <input type="text" name="birthday_y_kako" class="chenge_check validate number date_size" value="<%= birthdayYKako %>">
+                       年 <input type="text" name="birthday_m_kako" class="chenge_check validate number date_size" value="<%= birthdayMKako %>">
+                       月 <input type="text" name="birthday_d_kako" class="chenge_check validate number date_size" value="<%= birthdayDKako %>">
                        日
                   </td>
                 </tr>
                 <tr>
                   <td id="meinichi_type">命日</td>
                   <td id="meinichi" class="table_main_tuika_selectable">
-                       <input type="text" name="meinichi_y_kako" class="chenge_check validate number telno_size" value="<%= meinichiYKako %>">
-                       年 <input type="text" name="meinichi_m_kako" class="chenge_check validate number telno_size" value="<%= meinichiMKako %>">
-                       月 <input type="text" name="meinichi_d_kako" class="chenge_check validate number telno_size" value="<%= meinichiDKako %>">
+                       <input type="text" name="meinichi_y_kako" class="chenge_check validate number date_size" value="<%= meinichiYKako %>">
+                       年 <input type="text" name="meinichi_m_kako" class="chenge_check validate number date_size" value="<%= meinichiMKako %>">
+                       月 <input type="text" name="meinichi_d_kako" class="chenge_check validate number date_size" value="<%= meinichiDKako %>">
                        日
                   </td>
                 </tr>
                 <tr>
                   <td id="kyonen_type">享年</td>
                   <td id="kyonen" class="chenge_check table_main_tuika_selectable">
-                      <script>
-                          calculateAge("<%= birthdayYKako %>", "<%= birthdayMKako %>", "<%= birthdayDKako %>", "<%= meinichiYKako %>", "<%= meinichiMKako %>", "<%= meinichiDKako %>");
-                      </script>
-                      ※生年月日と命日から自動算出しています。
+                       <input type="text" name="kyonen_kako" class="chenge_check kyonen_size" value="<%= kyonenKako %>"><label for="kyonen">歳</label>
                   </td>
                 </tr>
                 <tr>
@@ -402,7 +373,6 @@
           <input type="hidden" name="name_na_kako_bk" class="chenge_check_bk name_na_kako" value="<%= nameNaKako %>">
           <input type="hidden" name="furigana_sei_kako_bk" class="chenge_check_bk furigana_sei_kako" value="<%= furiganaSeiKako %>">
           <input type="hidden" name="furigana_na_kako_bk" class="chenge_check_bk furigana_na_kako" value="<%= furiganaNaKako %>">
-          <input type="hidden" name="sex_kako_bk" class="sex" value="<%= sexKako %>">
           <input type="hidden" name="kaimyo_kako_bk" class="chenge_check_bk kaimyo_kako" value="<%= kaimyoKako %>">
           <input type="hidden" name="kaimyo_furigana_kako_bk" class="chenge_check_bk kaimyo_furigana_kako" value="<%= kaimyoFuriganaKako %>">
           <input type="hidden" name="relation_kako_bk" class="chenge_check_bk relation_kako" value="<%= relationKako %>">
@@ -412,6 +382,7 @@
           <input type="hidden" name="meinichi_y_kako_bk" class="chenge_check_bk meinichi_y_kako" value="<%= meinichiYKako %>">
           <input type="hidden" name="meinichi_m_kako_bk" class="chenge_check_bk meinichi_m_kako" value="<%= meinichiMKako %>">
           <input type="hidden" name="meinichi_d_kako_bk" class="chenge_check_bk meinichi_d_kako" value="<%= meinichiDKako %>">
+          <input type="hidden" name="kyonen_kako_bk" class="chenge_check_bk kyonen_kako" value="<%= kyonenKako %>">
           <input type="hidden" name="sesyu_sei_kako_bk" class="chenge_check_bk sesyu_sei_kako" value="<%= sesyuSeiKako %>">
           <input type="hidden" name="sesyu_na_kako_bk" class="chenge_check_bk sesyu_na_kako" value="<%= sesyuNaKako %>">
           <input type="hidden" name="tags_kako_bk" class="chenge_check_bk tags_kako" value="<%= tagsKako %>">

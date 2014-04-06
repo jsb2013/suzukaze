@@ -146,22 +146,6 @@ function getBaseInfoBysearchData(baseInfoInDb, baseInfoInWeb, resultInfo){
             continue;
         }
 
-        // 性別(名）で検索
-        var sexInDb = info.sex;
-        var sexInWebInfo = baseInfoInWeb.sex;
-        var isMatch = false;
-        for(var key in sexInWebInfo){
-            var _sexInWeb = sexInWebInfo[key];
-            if (!checkValueByNumeric(sexInDb, _sexInWeb)) {
-                continue;
-            }
-            isMatch = true;
-            break;
-        }
-        if(!util.isUndefineForList(sexInWebInfo) && !isMatch){
-            continue;
-        }
-
         // 地区コードで検索
         var tikuCodeInDb = info.tiku_code;
         var tikuCodeInWeb = baseInfoInWeb.tiku_code;

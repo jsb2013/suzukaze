@@ -98,7 +98,7 @@ exports.insertMMember = function (client, database, memberId, baseInfo, dbcallba
     var furigana_sei = baseInfo.furigana_sei;
     var furigana_na = baseInfo.furigana_na;
     var sex = baseInfo.sex;
-    var jobCode = baseInfo.job_code;
+    var job = baseInfo.job;
     var tags = baseInfo.tags;
     var isArive = baseInfo.is_arive;
     var birthdayY = baseInfo.birthday_y
@@ -108,8 +108,8 @@ exports.insertMMember = function (client, database, memberId, baseInfo, dbcallba
     var meinichiM = baseInfo.meinichi_m;
     var meinichiD = baseInfo.meinichi_d;
 
-    var query = client.query('INSERT INTO m_member(member_id, name_sei, name_na, furigana_sei, furigana_na, sex, job_code, birthday_y, birthday_m, birthday_d, meinichi_y, meinichi_m, meinichi_d, tags, is_arive, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,null,null,$16,now(),$17,now(),FALSE,FALSE)',
-                    [memberId, name_sei, name_na, furigana_sei, furigana_na, sex, jobCode, birthdayY, birthdayM, birthdayD, meinichiY, meinichiM, meinichiD, tags, isArive, 'yamashita0284', 'yamashita0284']);
+    var query = client.query('INSERT INTO m_member(member_id, name_sei, name_na, furigana_sei, furigana_na, sex, job, birthday_y, birthday_m, birthday_d, meinichi_y, meinichi_m, meinichi_d, tags, is_arive, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,null,null,$16,now(),$17,now(),FALSE,FALSE)',
+                    [memberId, name_sei, name_na, furigana_sei, furigana_na, sex, job, birthdayY, birthdayM, birthdayD, meinichiY, meinichiM, meinichiD, tags, isArive, 'yamashita0284', 'yamashita0284']);
 
     query.on('end', function (row, err) {
         // session out
@@ -148,7 +148,7 @@ exports.insertMMemberNotMemberId = function (client, database, baseInfo, dbcallb
     var furigana_sei = baseInfo.furigana_sei;
     var furigana_na = baseInfo.furigana_na;
     var sex = baseInfo.sex;
-    var jobCode = baseInfo.job_code;
+    var job = baseInfo.job;
     var tags = baseInfo.tags;
     var isArive = baseInfo.is_arive;
     var birthdayY = baseInfo.birthday_y
@@ -158,8 +158,8 @@ exports.insertMMemberNotMemberId = function (client, database, baseInfo, dbcallb
     var meinichiM = baseInfo.meinichi_m;
     var meinichiD = baseInfo.meinichi_d;
 
-    var query = client.query('INSERT INTO m_member(name_sei, name_na, furigana_sei, furigana_na, sex, job_code, birthday_y, birthday_m, birthday_d, meinichi_y, meinichi_m, meinichi_d, tags, is_arive, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,null,null,$15,now(),$16,now(),FALSE,FALSE)',
-                    [name_sei, name_na, furigana_sei, furigana_na, sex, jobCode, birthdayY, birthdayM, birthdayD, meinichiY, meinichiM, meinichiD, tags, isArive, 'yamashita0284', 'yamashita0284']);
+    var query = client.query('INSERT INTO m_member(name_sei, name_na, furigana_sei, furigana_na, sex, job, birthday_y, birthday_m, birthday_d, meinichi_y, meinichi_m, meinichi_d, tags, is_arive, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,null,null,$15,now(),$16,now(),FALSE,FALSE)',
+                    [name_sei, name_na, furigana_sei, furigana_na, sex, job, birthdayY, birthdayM, birthdayD, meinichiY, meinichiM, meinichiD, tags, isArive, 'yamashita0284', 'yamashita0284']);
 
     query.on('end', function (row, err) {
         // session out
@@ -235,7 +235,7 @@ exports.getMmemberAndTDankaByFurigana = function(client, database, searchMoji, r
 exports.getMmemberAndTDankaByMemberId = function(client, database, memberId, rows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job_code, mm.birthday_y, mm.birthday_m, mm.birthday_d, td.danka_type, td.tiku_code, td.sewa_code, td.member_id_sou, mm.tags, td.jiin from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mm.member_id = $1',
+    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job, mm.birthday_y, mm.birthday_m, mm.birthday_d, td.danka_type, td.tiku_code, td.sewa_code, td.member_id_sou, mm.tags, td.jiin from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mm.member_id = $1',
                 [memberId]);
 
     query.on('row', function(row) {

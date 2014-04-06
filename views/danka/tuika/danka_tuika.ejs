@@ -47,11 +47,9 @@
          }
 
          // hiddenに世話人、地区名、担当[僧]を設定する
-         var jobName = $("select[name='job_code'] option:selected").text();
          var sewaName = $("select[name='sewa_code'] option:selected").text();
          var tikuName = $("select[name='tiku_code'] option:selected").text();
          var jiinName = $("select[name='jiin_code'] option:selected").text();
-         $("input[name='job_name']").val(jobName);
          $("input[name='sewa_name']").val(sewaName);
          $("input[name='tiku_name']").val(tikuName);
          $("input[name='jiin_name']").val(jiinName);
@@ -145,13 +143,6 @@
                   <td id="furigana" class="table_main_tuika_selectable">
                       <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="validate require duplicate_pre">
                       <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="validate require duplicate_end">
-                  </td>
-                </tr>
-                <tr>
-                  <td id="sex_type">性別(※必須)</td>
-                  <td id="sex" class="table_main_tuika_selectable">
-                      <input type="radio" name="sex" class="dummay" value="1" checked><label for="man">男</label>
-                      <input type="radio" name="sex" class="dummay" value="2"><label for="woman">女</label>
                   </td>
                 </tr>
                 <tr>
@@ -270,12 +261,16 @@
                 <tr>
                   <td id="job_type">職業</td>
                   <td id="job" class="table_main_tuika_selectable">
-                     <select id="job_list"  name="job_code" >
-                      <% for(var i in jobCodeInfo){
-                         var _jobCode = jobCodeInfo[i].job_code;
-                         var _jobName = jobCodeInfo[i].job_name; %>
-                         <option value=<%= _jobCode %>><%= _jobName %></option>
-                         <%}%>
+                    <input type="text" id="job" name="job" class="job_size">
+                  </td>
+                </tr>
+                <tr>
+                  <td id="jiin_type">所属寺</td>
+                  <td id="jiin" class="table_main_tuika_selectable">
+                     <select id="jiin_list" name="jiin_code" >
+                         <option value="0">---</option>
+                         <option value="1">長伝寺</option>
+                         <option value="2">水月寺</option>
                      </select>
                   </td>
                 </tr>
@@ -300,16 +295,6 @@
                          var _sewaName = sewaCodeInfo[i].sewa_name; %>
                          <option value=<%= _sewaCode %>><%= _sewaName %></option>
                          <%}%>
-                     </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td id="jiin_type">所属寺</td>
-                  <td id="jiin" class="table_main_tuika_selectable">
-                     <select id="jiin_list" name="jiin_code" >
-                         <option value="0">---</option>
-                         <option value="1">長伝寺</option>
-                         <option value="2">水月寺</option>
                      </select>
                   </td>
                 </tr>
@@ -342,7 +327,6 @@
               </tbody>
             </table>
           </div>
-          <input type="hidden" name="job_name" value="dummy">
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
           <input type="hidden" name="jiin_name" value="dummy">

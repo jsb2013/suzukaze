@@ -89,7 +89,7 @@ function addCommentToDankaInfo(dankaInfo, commentInfo){
 /* 過去帳に該当するリストを取得 */
 function getKakoMemberInfo(memberId, rows, dbcallback){
     var isDbError = false;
-    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, td.kaimyo, td.kaimyo_furigana, td.relation, mm.tags, mm.birthday_y, mm.birthday_m, mm.birthday_d, mm.meinichi_y, mm.meinichi_m, mm.meinichi_d, td.sesyu_sei, td.sesyu_na from m_member as mm inner join t_danka as td on mm.member_id = td.member_id where mm.member_id = $1 and mm.is_deleted = false and mm.is_disabled = false and td.is_deleted = false',
+    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, td.kaimyo, td.kaimyo_furigana, td.relation, mm.tags, mm.birthday_y, mm.birthday_m, mm.birthday_d, mm.meinichi_y, mm.meinichi_m, mm.meinichi_d, td.kyonen, td.sesyu_sei, td.sesyu_na from m_member as mm inner join t_danka as td on mm.member_id = td.member_id where mm.member_id = $1 and mm.is_deleted = false and mm.is_disabled = false and td.is_deleted = false',
                     [memberId]);
 
     query.on('row', function(row) {

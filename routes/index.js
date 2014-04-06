@@ -114,7 +114,7 @@ exports.getDankaTuika = function(req, res){
 
     var getDankaTuikaModel = require("../model/danka/tuika/getDankaTuikaModel");
   
-    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, tagsInfo){
+    function authCallback(isError, tikuCodeInfo, sewaCodeInfo, tagsInfo){
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -122,7 +122,6 @@ exports.getDankaTuika = function(req, res){
         }
         // ログイン成功画面へ推移
         res.render('danka/tuika/danka_tuika', {
-            jobCodeInfo : jobCodeInfo,
             tikuCodeInfo : tikuCodeInfo,
             sewaCodeInfo : sewaCodeInfo,
             tagsInfo: tagsInfo
@@ -187,7 +186,7 @@ exports.getDankaSyosai = function(req, res){
 
     var postDankaSyosaiModel = require("../model/danka/syosai/postDankaSyosaiModel");
   
-    function authCallback(isError, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, tagsInfo){
+    function authCallback(isError, tikuCodeInfo, sewaCodeInfo, tagsInfo){
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -195,7 +194,6 @@ exports.getDankaSyosai = function(req, res){
         }
         // ログイン成功画面へ推移
         res.render('danka/syosai/danka_syosai', {
-            jobCodeInfo : jobCodeInfo,
             tikuCodeInfo : tikuCodeInfo,
             sewaCodeInfo : sewaCodeInfo,
             tagsInfo: tagsInfo
@@ -268,7 +266,7 @@ exports.postDankaDetailKihon = function (req, res) {
     var postDankaDetailKihonModel = require("../model/danka_detail/kihon/postDankaDetailKihonModel");
     var webItemJson = req.body;
 
-    function authCallback(isError, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
+    function authCallback(isError, kosyuInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -277,7 +275,6 @@ exports.postDankaDetailKihon = function (req, res) {
         // ログイン成功画面へ推移
         res.render('danka_detail/kihon/danka_detail_kihon', {
             kosyuInfo: kosyuInfo[0],
-            jobCodeInfo: jobCodeInfo,
             tikuCodeInfo: tikuCodeInfo,
             sewaCodeInfo: sewaCodeInfo,
             addressInfo: addressInfo,

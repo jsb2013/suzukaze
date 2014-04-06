@@ -87,6 +87,7 @@ exports.main = function (webItemJson, callback) {
 
 function mergeMMemberInfoDefault(baseInfo){
 
+    baseInfo.sex = 0;
     baseInfo.is_arive = 1;
     baseInfo.meinichi_y = "";
     baseInfo.meinichi_m = "";

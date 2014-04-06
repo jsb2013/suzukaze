@@ -26,7 +26,6 @@
     var furiganaSeiBk = webItemJson.furigana_sei_bk;
     var furiganaNaBk = webItemJson.furigana_na_bk;
     var furiganaFullBk = furiganaSeiBk + "　" + furiganaNaBk;
-    var sexBk = webItemJson.sex_bk;
     var zipCodePreBk = webItemJson.zip_code_pre_bk;
     var zipCodeLastBk = webItemJson.zip_code_last_bk;
     var zipCodeBk = zipCodePreBk + "-" + zipCodeLastBk;
@@ -62,7 +61,7 @@
     var mailAddress3Bk = webItemJson.mail_address_3_bk;
     var mailYoto3Bk = webItemJson.mail_yoto_3_bk;
     var mail3Bk = mailAddress3Bk + "　（用途：" + mailYoto3Bk + "　）";
-    var jobNameBk = webItemJson.job_name_bk;
+    var jobBk = webItemJson.job_bk;
     var commentBk = webItemJson.comment_bk;
     var tagsBk = webItemJson.tags_bk;
     var jiinNameBk = webItemJson.jiin_name_bk;
@@ -74,7 +73,6 @@
     var furiganaSei = webItemJson.furigana_sei;
     var furiganaNa = webItemJson.furigana_na;
     var furiganaFull = furiganaSei + "　" + furiganaNa;
-    var sex = webItemJson.sex;
     var zipCodePre = webItemJson.zip_code_pre;
     var zipCodeLast = webItemJson.zip_code_last;
     var zipCode = zipCodePre + "-" + zipCodeLast;
@@ -110,11 +108,10 @@
     var mailAddress3 = webItemJson.mail_address_3;
     var mailYoto3 = webItemJson.mail_yoto_3;
     var mail3 = mailAddress3 + "　（用途：" + mailYoto3 + "　）";
-    var jobName = webItemJson.job_name;
+    var job = webItemJson.job;
     var tikuName = webItemJson.tiku_name;
     var sewaName = webItemJson.sewa_name;
     var comment = webItemJson.comment;
-    var jobCode = webItemJson.job_code;
     var tikuCode = webItemJson.tiku_code;
     var sewaCode = webItemJson.sewa_code;
     var tags = webItemJson.tags_after;
@@ -303,12 +300,6 @@
                       createHtml("<%= furiganaFullBk %>", "<%= furiganaFull %>");
                     </script>
                 </tr>
-                <tr class="m_member">
-                  <td id="sex_type">性別(※必須)</td>
-                    <script>
-                      createHtmlBySex("<%= sexBk %>", "<%= sex %>");
-                    </script>
-                </tr>
                 <tr class="m_address">
                   <td id="zip_code_type">郵便番号</td>
                     <script>
@@ -384,7 +375,7 @@
                 <tr class="m_member">
                   <td id="job_type">職業</td>
                     <script>
-                      createHtml("<%= jobNameBk %>", "<%= jobName %>");
+                      createHtml("<%= jobBk %>", "<%= job %>");
                     </script>
                 </tr>
                 <tr class="t_danka">
@@ -427,7 +418,6 @@
             <input type="hidden" name="name_na" value=<%= nameNa %>>
             <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
             <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
-            <input type="hidden" name="sex" value=<%= sex %>>
             <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
             <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
             <input type="hidden" name="region" value=<%= region %>>
@@ -457,7 +447,7 @@
             <input type="hidden" name="mail_yoto_3" value=<%= mailYoto3 %>>
             <input type="hidden" name="tiku_name" value=<%= webItemJson.tiku_name %>>
             <input type="hidden" name="sewa_name" value=<%= webItemJson.sewa_name %>>
-            <input type="hidden" name="job_code" value=<%= jobCode %>>
+            <input type="hidden" name="job" value=<%= job %>>
             <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
             <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
             <input type="hidden" name="comment" value=<%= webItemJson.comment %>>

@@ -147,10 +147,10 @@
               <thead>
                 <tr>
                   <th id="table_main_kako_zokumei" class="table_main_kako_header">俗名</th>
-                  <th id="table_main_kako_sex" class="table_main_kako_header">性別</th>
                   <th id="table_main_kako_kaimyo" class="table_main_kako_header">戒名</th>
                   <th id="table_main_kako_meinichi" class="table_main_kako_header">命日</th>
                   <th id="table_main_kako_kyonen" class="table_main_kako_header">享年</th>
+                  <th id="table_main_kako_sesyu" class="table_main_kako_header">施主</th>
                   <th id="table_main_kako_relation" class="table_main_kako_header">続柄</th>
                 </tr>
               </thead>
@@ -161,13 +161,16 @@
                     var _name_na = memberInfo[i].name_na;
                     var _name_full = _name_sei + "　" + _name_na;
                     var _kaimyo = memberInfo[i].kaimyo;
-                    var _sex = memberInfo[i].sex;
                     var _meinichi_y = memberInfo[i].meinichi_y;
                     var _meinichi_m = memberInfo[i].meinichi_m;
                     var _meinichi_d = memberInfo[i].meinichi_d;
                     var _birthday_y = memberInfo[i].birthday_y;
                     var _birthday_m = memberInfo[i].birthday_m;
                     var _birthday_d = memberInfo[i].birthday_d;
+                    var _sesyu_sei = memberInfo[i].sesyu_sei;
+                    var _sesyu_na = memberInfo[i].sesyu_na;
+                    var _sesyu_name_full = _sesyu_sei + "　" + _sesyu_na;
+                    var _kyonen = memberInfo[i].kyonen;
                     var _relation = memberInfo[i].relation;
                     var _meinichi = _meinichi_y + "年" + _meinichi_m + "月" + _meinichi_d + "日";
                     var _comment = memberInfo[i].comment;
@@ -176,21 +179,21 @@
                   <td><%= _name_full %></td>
                   <td>
                       <script>
-                          convertSexValueToMoji("<%= _sex %>");
-                      </script>
-                  </td>
-                  <td>
-                      <script>
                           convertNullToMoji("<%= _kaimyo %>", "-");
                       </script>
                   </td>
                   <td><%= _meinichi %></td>
                   <td>
                       <script>
-                          calculateAge("<%= _birthday_y %>", "<%= _birthday_m %>", "<%= _birthday_d %>", "<%= _meinichi_y %>", "<%= _meinichi_m %>", "<%= _meinichi_d %>");
+                          convertNullToMoji("<%= _kyonen %>", "-");
                       </script>
                   </td>
-                  <td><%= _relation %></td>
+                  <td><%= _sesyu_name_full %></td>
+                  <td>
+                      <script>
+                          convertNullToMoji("<%= _relation %>", "-");
+                      </script>
+                  </td>
                 </tr>
               <%}%>
               </tbody>

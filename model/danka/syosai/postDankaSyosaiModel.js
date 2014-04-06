@@ -9,7 +9,6 @@ var log = require("../../../util/logger");
 var logger = log.createLogger();
 var async = require('async');
 var util = require("../../../util/util");
-var mJobCodeDao = require("../../../dao/mJobCodeDao");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mMemberDao = require("../../../dao/mMemberDao");
@@ -20,16 +19,11 @@ exports.main = function (callback) {
     // いったんはpostで入ってきたデータは正しい想定で作る
 
     var tikuCodeInfo = [];
-    var jobCodeInfo = [];
     var sewaCodeInfo = [];
     var tagsInfo = [];
 
     async.series([
 
-    // 仕事コードマスタを取得
-        function (dbcallback) {
-            mJobCodeDao.getMJobCode(client, database, jobCodeInfo, dbcallback);
-        },
     // 地区コードマスタを取得
         function (dbcallback) {
             mTikuCodeDao.getMTikuCode(client, database, tikuCodeInfo, dbcallback);
@@ -48,7 +42,7 @@ exports.main = function (callback) {
                 callback(true);
                 return;
             }
-            callback(null, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, tagsInfo);
+            callback(null, tikuCodeInfo, sewaCodeInfo, tagsInfo);
             return;
         }
     );

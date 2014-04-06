@@ -36,7 +36,6 @@
     var furiganaFullKakoBk = furiganaSeiKakoBk + "　" + furiganaNaKakoBk;
     var kaimyoKakoBk = webItemJson.kaimyo_kako_bk;
     var kaimyoFuriganaKakoBk = webItemJson.kaimyo_furigana_kako_bk;
-    var sexKakoBk = webItemJson.sex_kako_bk;
     var birthdayYKakoBk = webItemJson.birthday_y_kako_bk;
     var birthdayMKakoBk = webItemJson.birthday_m_kako_bk;
     var birthdayDKakoBk = webItemJson.birthday_d_kako_bk;
@@ -46,6 +45,7 @@
     var meinichiDKakoBk = webItemJson.meinichi_d_kako_bk;
     var meinichiKakoBk = meinichiYKakoBk + "年" + meinichiMKakoBk + "月" + meinichiDKakoBk + "日";
     var relationKakoBk = webItemJson.relation_kako_bk;
+    var kyonenKakoBk = webItemJson.kyonen_kako_bk;
     var sesyuSeiKakoBk = webItemJson.sesyu_sei_kako_bk;
     var sesyuNaKakoBk = webItemJson.sesyu_na_kako_bk;
     var sesyuNameFullKakoBk = sesyuSeiKakoBk + "　" + sesyuNaKakoBk;
@@ -62,7 +62,6 @@
     var furiganaFullKako = furiganaSeiKako + "　" + furiganaNaKako;
     var kaimyoKako = webItemJson.kaimyo_kako;
     var kaimyoFuriganaKako = webItemJson.kaimyo_furigana_kako;
-    var sexKako = webItemJson.sex_kako;
     var birthdayYKako = webItemJson.birthday_y_kako;
     var birthdayMKako = webItemJson.birthday_m_kako;
     var birthdayDKako = webItemJson.birthday_d_kako;
@@ -72,6 +71,7 @@
     var meinichiDKako = webItemJson.meinichi_d_kako;
     var meinichiKako = meinichiYKako + "年" + meinichiMKako + "月" + meinichiDKako + "日";
     var relationKako = webItemJson.relation_kako;
+    var kyonenKako = webItemJson.kyonen_kako;
     var sesyuSeiKako = webItemJson.sesyu_sei_kako;
     var sesyuNaKako = webItemJson.sesyu_na_kako;
     var sesyuNameFullKako = sesyuSeiKako + "　" + sesyuNaKako;
@@ -244,12 +244,6 @@
                     </script>
                 </tr>
                 <tr class="m_member">
-                  <td id="sex_type">性別(※必須)</td>
-                    <script>
-                      createHtmlBySex("<%= sexKakoBk %>", "<%= sexKako %>");
-                    </script>
-                </tr>
-                <tr class="m_member">
                   <td id="birthday_type">生年月日</td>
                     <script>
                       createHtml("<%= birthdayKakoBk %>", "<%= birthdayKako %>");
@@ -262,8 +256,10 @@
                     </script>
                 </tr>
                 <tr class="t_danka">
-                  <td id="kosyu_type">戸主</td>
-                    <td><%= nameFull %></td>
+                  <td id="kyonen">享年</td>
+                    <script>
+                      createHtml("<%= kyonenKakoBk %>", "<%= kyonenKako %>");
+                    </script>
                 </tr>
                 <tr class="t_danka">
                   <td id="sesyu_name">施主</td>
@@ -300,7 +296,6 @@
             <input type="hidden" name="furigana_na" value=<%= furiganaNaKako %>>
             <input type="hidden" name="kaimyo" value=<%= kaimyoKako %>>
             <input type="hidden" name="kaimyo_furigana" value=<%= kaimyoFuriganaKako %>>
-            <input type="hidden" name="sex" value=<%= sexKako %>>
             <input type="hidden" name="birthday_y" value=<%= birthdayYKako %>>
             <input type="hidden" name="birthday_m" value=<%= birthdayMKako %>>
             <input type="hidden" name="birthday_d" value=<%= birthdayDKako %>>
@@ -308,6 +303,7 @@
             <input type="hidden" name="meinichi_m" value=<%= meinichiMKako %>>
             <input type="hidden" name="meinichi_d" value=<%= meinichiDKako %>>
             <input type="hidden" name="relation" value=<%= relationKako %>>
+            <input type="hidden" name="kyonen" value=<%= kyonenKako %>>
             <input type="hidden" name="sesyu_sei" value=<%= sesyuSeiKako %>>
             <input type="hidden" name="sesyu_na" value=<%= sesyuNaKako %>>
             <input type="hidden" name="comment" value=<%= commentKako %>>

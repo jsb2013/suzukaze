@@ -14,7 +14,6 @@ var mCommentDao = require("../../../dao/mCommentDao");
 var mMemberDao = require("../../../dao/mMemberDao");
 var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
-var mJobCodeDao = require("../../../dao/mJobCodeDao");
 var mAddressDao = require("../../../dao/mAddressDao");
 var mMailDao = require("../../../dao/mMailDao");
 var mTelnumberDao = require("../../../dao/mTelnumberDao");
@@ -25,7 +24,6 @@ exports.main = function (webItemJson, callback) {
     // いったんはpostで入ってきたデータは正しい想定で作る
     var memberId = webItemJson.member_id;
     var tikuCodeInfo = [];
-    var jobCodeInfo = [];
     var sewaCodeInfo = [];
     var addressInfo = [];
     var mailInfo = [];
@@ -36,10 +34,6 @@ exports.main = function (webItemJson, callback) {
 
     async.series([
 
-    // 仕事コードマスタを取得
-        function (dbcallback) {
-            mJobCodeDao.getMJobCode(client, database, jobCodeInfo, dbcallback);
-        },
     // 地区コードマスタを取得
         function (dbcallback) {
             mTikuCodeDao.getMTikuCode(client, database, tikuCodeInfo, dbcallback);
@@ -90,30 +84,17 @@ exports.main = function (webItemJson, callback) {
 
             // 仕事名称とコメントをwebitemJsonに登録
             // ※本内容は「danka_detail_kihon」内では使用しないが、その後「danka_detail_kihon_confirm」で使用する為、
-            // ※事前に取得しておく。（jobcodeを変更した場合の、変更前名称。必要な時に取得するとDBアクセスが発生する為）
-            registerNama(kosyuInfo, jobCodeInfo, commentInfo);
+            registerNama(kosyuInfo, commentInfo);
 
             var tagNameListInMM = util.splitStringByDelimiter(kosyuInfo[0].tags, ",");
 
-            callback(false, kosyuInfo, jobCodeInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM);
+            callback(false, kosyuInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM);
             return;
         }
     );
 };
 
-function registerNama(kosyuInfo, jobCodeInfo, commentInfo){
-    var jobCode = kosyuInfo[0].job_code;
-    
-    // 仕事名を登録
-    for(var key in jobCodeInfo){
-        var _line = jobCodeInfo[key];
-        var _jobCode = _line.job_code;
-        if(jobCode == _jobCode){
-            var jobName = _line.job_name;
-            kosyuInfo[0].job_name = jobName;
-            break;
-        }
-    }    
+function registerNama(kosyuInfo, commentInfo){
     // コメントを登録
     var comment = "";
     if(!util.isUndefineForList(commentInfo)){
