@@ -51,6 +51,33 @@ exports.getDankaSyosai = function(req, res){
     });
 };
 
+// ★テスト中
+exports.getDankaSyosaiNew = function(req, res){
+
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var getDankaSyosaiNewModel = require("../model/danka/syosai/getDankaSyosaiNewModel");
+
+    function authCallback(isError, tikuInfoJson, tikuCodeInfo, sewaInfoJson, sewaCodeInfo, tagInfoJson, tagCodeInfo) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka/syosai/danka_syosai_new', {
+            tikuInfoJson: tikuInfoJson,
+            tikuCodeInfo: tikuCodeInfo,
+            sewaInfoJson: sewaInfoJson,
+            sewaCodeInfo: sewaCodeInfo,
+            tagInfoJson: tagInfoJson,
+            tagCodeInfo: tagCodeInfo
+        });
+        return;
+    }
+
+    getDankaSyosaiNewModel.main(authCallback);
+};
+
 // 2-5.檀家検索-地区指定画面（get:/danka_tiku）
 exports.getDankaTiku = function(req, res){
     res.render('danka_tiku', {
@@ -544,19 +571,21 @@ exports.postReportView = function (req, res) {
                 kanyusyaMei: report_data[0].text_8,
                 tusinRan: report_data[0].text_9,
                 title: report_data[0].text_10,
+                date: report_data[0].text_11,
                 goiraiYubin:goiraiYubin,
                 goiraiJusyo1:goiraiJusyo1,
                 goiraiJusyo2:goiraiJusyo2,
                 goiraiMei: goiraiMei,
-                goiraiTel: goiraiTel
+                goiraiTel: goiraiTel,
+                previewFlag: preview_flag,
+                tyohyoTypeNo: select_type_no
               }
       });
       return;
     }
 
-
   // ** 払込票 **/
-  if(select_type_no == 1){
+  if(select_type_no == 1 || select_type_no == 2 || select_type_no == 3){
     report.postRerpotPrintView(select_type_no, select_no, preview_flag, haraikomiCallback);
     return;    
   }

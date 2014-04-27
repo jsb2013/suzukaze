@@ -3,10 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka">
-<link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
 <title>檀家管理システム　禅</title>
-<script src="js/jquery-1.10.2.min.js"></script>
+
+  <!-- jQuery JS -->
+  <script src="/js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+  <!-- Select2 JS & CSS -->
+  <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2.css' />
+  <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2-bootstrap.css' />
+  <script src="/js/select2-3.4.5/select2.js"></script>
+
+  <!-- Default CSS -->
+  <!-- <link rel='stylesheet' href='/css/style.css' /> -->
+  <link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" />
+  <link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
+
+  <!-- icons from font Awesome -->
+  <link rel="stylesheet" href="stylesheets/font-awesome/font-awesome.css">
+
+  <!-- socket.IO -->
+  <script src="/socket.io/socket.io.js"></script>
+
+
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
@@ -48,7 +70,7 @@
             });
         }
         // [タグ]フィルタの実装
-        if(filterSelectedTag !== '0'){
+        if(filterSelectedTag !== '---'){
             $(".table_tag_name").each(function(){
                 if($(this).parent().hasClass("hide")){
                     return true;
@@ -89,7 +111,7 @@
         $("tbody tr").removeClass("even");
         var evenCount = 1;
         $("tbody tr:not(.hide)").each(function(){
-           if((evenCount+1)%2 === 0){
+           if((evenCount)%2 === 0){
                evenCount++;
                return true;
            }
@@ -159,46 +181,58 @@
       </div>
       <!-- title end-->
       <!-- inner_title -->
-      <div id="inner_filter">
-          <div id="inner_fiter_sum">
-            <% var searchCount = resultRows.length;%>
-            <label><span id="inner_fiter_sum_method">[検索結果] <%= seachTitle %></span><span id="inner_fiter_sum_count">[検索件数]：<%= searchCount %>件</span></label>          
+      <div class="inner_filter">
+          <div class="row">
+                <div class="col col-sm-10 form-group">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                      <input type="text" id="serch_tag" class="form-control input-sm">
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-sm left">検索</button>
+                      </span>
+                    </div>
+                </div>
           </div>
+          <div class="row">
+            <div class="col col-sm-12 form-group">
+                <form class="form-inline pull-left">
+                    <label class="control-label">[地区]</label>
+                    <select class="form-control input-sm" id="tiku_list"  name="tiku_name" >
+                        <% for(var i in tikuCodeInfo){
+                            var _tikuCode = tikuCodeInfo[i].tiku_code;
+                            var _tikuName = tikuCodeInfo[i].tiku_name; %>
+                            <option value=<%= _tikuCode %>><%= _tikuName %></option>
+                        <%}%>
+                     </select>
+                     <label>[所属寺]</label></label>          
+                     <select class="form-control input-sm" id="sewa_list"  name="sewa_name" >
+                        <option value=0>---</option>
+                        <option value=1>長伝寺</option>
+                        <option value=1>水月寺</option>
+                     </select>
+                     <label class="control-label">[タグ]</label></label>          
+                     <select class="form-control input-sm" id="tag_list"  name="tag_name" >
+                        <option value="0">---</option>
+                        <% for(var i in tagCodeInfo){
+                            var _tagCode = tagCodeInfo[i].tags_id;
+                            var _tagName = tagCodeInfo[i].tags; %>
+                            <option value=<%= _tagName %>><%= _tagName %></option>
+                        <%}%>
+                     </select>
+                     <label class="control-label"><input type="checkbox" class="isKako" checked>故人</label>
+                </form>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
           <div id="inner_fiter_main">
-            <div class="inner_filter_main_item">
-                <label>[地区]</label></label>          
-                <select id="tiku_list"  name="tiku_name" >
-                    <% for(var i in tikuCodeInfo){
-                        var _tikuCode = tikuCodeInfo[i].tiku_code;
-                        var _tikuName = tikuCodeInfo[i].tiku_name; %>
-                        <option value=<%= _tikuCode %>><%= _tikuName %></option>
-                    <%}%>
-                </select>
-            </div>
-            <div class="inner_filter_main_item">
-                <label>[世話人]</label></label>          
-                <select id="sewa_list"  name="sewa_name" >
-                      <% for(var i in sewaCodeInfo){
-                        var _sewaCode = sewaCodeInfo[i].sewa_code;
-                        var _sewaName = sewaCodeInfo[i].sewa_name; %>
-                         <option value=<%= _sewaCode %>><%= _sewaName %></option>
-                         <%}%>
-                     </select>
-            </div>
-            <div class="inner_filter_main_item">
-                <label>[タグ]</label></label>          
-                <select id="tag_list"  name="tag_name" >
-                    <option value="0">---</option>
-                      <% for(var i in tagCodeInfo){
-                        var _tagCode = tagCodeInfo[i].tags_id;
-                        var _tagName = tagCodeInfo[i].tags; %>
-                         <option value=<%= _tagName %>><%= _tagName %></option>
-                         <%}%>
-                     </select>
-            </div>
-            <div id="inner_filter_main_checkbox" class="inner_filter_main_item">
-                <input type="checkbox" class="isKako" checked>故人
-            </div>
+
+
           </div>
             <div id="inner_filter_main_button">
                 <button id="test" type="submit">フィルタ</button>
@@ -223,45 +257,6 @@
                 </tr>
               </thead>
               <tbody>
-              <% for(var i in resultRows){
-                var memberId = resultRows[i].member_id;
-                var memberIdKosyu = resultRows[i].member_id_kosyu;
-                var dankaType = resultRows[i].danka_type;
-                var nameSei = resultRows[i].name_sei;
-                var nameNa = resultRows[i].name_na;
-                var nameFull = nameSei + "  " + nameNa;
-                var nameSeiKosyu = resultRows[i].name_sei_kosyu;
-                var nameNaKosyu = resultRows[i].name_na_kosyu;
-                var nameFullKosyu = nameSeiKosyu + "  " + nameNaKosyu;
-                var tikuCode = resultRows[i].tiku_code;
-                var sewaCode = resultRows[i].sewa_code;
-                var tagCode = resultRows[i].tags;
-                var isArive = resultRows[i].is_arive;
-                var tikuName = tikuInfoJson[tikuCode];
-                var sewaName = sewaInfoJson[sewaCode];
-                var tagName = tagInfoJson[tagCode];
-                var dankaTypeDanka = "○";
-                var dankaTypeShinto = "-";
-                if (dankaType == 1){
-                    dankaTypeDanka = "-";
-                    dankaTypeShinto = "○";
-                }
-                var kako = "-";
-                if (isArive == 0){
-                    kako = "○";
-                }
-              %>
-              <tr id="<%= memberId %>">
-                <td class="table_name_full"><%= nameFull %></td>
-                <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
-                <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
-                <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
-                <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
-                <td id="<%= tagCode %>" class="table_tag_name hide_fix"><%= tagCode %></td>
-                <td id="<%= memberIdKosyu %>" class="table_name_full_kosyu"><%= nameFullKosyu %></td>
-                <td class="table_kako"><%= kako %></td>
-                </tr>
-              <%}%>
               </tbody>
             </table>
           </div>

@@ -26,7 +26,7 @@ body{
   #header{
       margin: 0;
       padding: 0;
-      height: 80px;
+      height: 81px;
       border-bottom-width: 1px;
       border-bottom-style: solid;
       border-bottom-color: #BA802F;
@@ -39,11 +39,12 @@ body{
     }
     #headerMain h1{
       margin:0;
-      padding: 2px 0 0 10px;
+      padding: 5px 0 0 10px;
       font-weight: normal;
       text-align: left;
       font-size: 12px;
       color: #FFFFFF;
+      font-family: 'AR P明朝体L' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;
     }
     #headerLogo{
       margin: 0;
@@ -67,8 +68,8 @@ body{
       #temple_img{
         margin: 10px 0 0 0;
         padding: 0;
-        width: 198px;
-        height: 132px;
+        width: 200px;
+        height: 134px;
         border: solid 1px #393939;
       }   
       #menu{
@@ -133,7 +134,7 @@ body{
       width: 650px;
     }
       #inner_title{
-        margin: 10px 0 0 0;
+        margin: 5px 0 0 0;
         padding: 0;
       }
         #title{
@@ -148,7 +149,9 @@ body{
         }
           #title h2{
             margin: 0;
-            padding: 10px 0 0 15px;
+            padding: 2px 0 0 15px;
+            font-family: 'AR P明朝体L' ,Meiryo, 'ヒラギノ角ゴ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ＭＳ Ｐゴシック' , 'Osaka' ,sans-serif;
+            font-weight: bold;
           }
 
             #title h2 span.ja{
@@ -164,72 +167,10 @@ body{
             color: #F7C05B;
           }
 
-    .kosyu_info{
-      margin: 10px 0 0 0;
-      padding: 0;
-      width: 630px;
-    }
-      .kosyu_info th{
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        color: #ffffff;
-        border-collapse: collapse;
-        background-color : #804000;
-      }
-      .kosyu_info #kosyu{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .kosyu_info #type_so{
-        margin: 0;
-        padding: 0;
-        width: 30px;
-      }
-      .kosyu_info #type_se{
-        margin: 0;
-        padding: 0;
-        width: 30px;
-      }
-      .kosyu_info #tel{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .kosyu_info #tiku{
-        margin: 0;
-        padding: 0;
-        width: 90px;
-      }
-      .kosyu_info #sewa{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .kosyu_info #sou{
-        margin: 0;
-        padding: 0;
-        width: 120px;
-      }
-      .kosyu_info tr{
-        margin: 0;
-        padding: 0;
-      }
-      .kosyu_info td{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 0.5px #BA802F;
-        border-collapse: collapse;
-        cursor: pointer;
-      }
       #menu_sub{
-        margin: 0;
+        margin: 10px 0 0 0;
         padding: 0;
-        height: 30px;
+        height: 31px;
         border-bottom-width: 1px;
         border-bottom-style: solid;
         border-bottom-color: #BA802F;
@@ -241,23 +182,22 @@ body{
         }
           #menu_sub li{
             margin: 0 5px 0 0;
-            padding: 0;
+            padding: 1px 0 5px 0;
             height: 30px;
-            width: 90px;
+            width: 100px;
             display: block;
             float: left;
+            font-size: 15px;
+            cursor: pointer;
             background-color : #804000;
           }
           #menu_sub a{
-            margin: 0;
             padding: 5px 0 0 0;
-            display: block;
-            font-size: 15px;
             color: #ffffff;
+            display: block;
             text-decoration: none;
           }
           #menu_sub a:hover{
-            margin: 0;
             padding: 5px 0 0 0;
             display: block;
             text-decoration: none;

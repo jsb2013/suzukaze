@@ -19,7 +19,7 @@
 
   <!-- Default CSS -->
   <!-- <link rel='stylesheet' href='/css/style.css' /> -->
-  <link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" />
+  <link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" />
   <link rel="stylesheet" href="stylesheets/report/style.css" type="text/css"  />
 
   <!-- icons from font Awesome -->
@@ -70,6 +70,8 @@
       $("#input_tushin").val(data[0].text_9);
       // 件名を設定
       $("#input_report_title").val(data[0].text_10);
+      // 発行日を設定
+      $("#input_date").val(data[0].text_11);
     });
 
     // ReportSaveメッセージを受けたとき
@@ -174,10 +176,21 @@
 
     // GetTargetListメッセージを送る
     function GetTargetList() {
-      // 検索ボックスに入力されたtagsを送る
-      var data = $('#serch_tag').val();
-      socket.emit('GetTargetList', { value: data });
-    }
+        // 検索ボックスに入力されたtagsを送る
+        var data = $('#serch_tag').val();
+        
+        // tagチェックボックスの値を送る
+        for(var j = 1; j < 9; j++){
+            if(document.getElementById("inlineCheckbox" + j).checked){  
+                if(data == ''){
+                    data = document.getElementById("inlineCheckbox" + j).value;
+                }else{
+                    data = data + ',' + document.getElementById("inlineCheckbox" + j).value;
+                }
+            }
+        }
+        socket.emit('GetTargetList', { value: data });
+    } onlo
 
     // ChangeAllメッセージを送る
     function all_change(){
@@ -227,11 +240,13 @@
       var text_9 = $("#input_tushin").val();
       // 件名を設定
       var text_10 = $("#input_report_title").val();
+      // 発行日を設定
+      var text_11 = $("#input_date").val();
 
       socket.emit('ReportSave', { 
               report_no: report_no ,report_name: report_name ,
               text_1: text_1 ,text_2: text_2 ,text_3: text_3 ,text_4: text_4 ,text_5: text_5 ,
-              text_6: text_6 ,text_7: text_7 ,text_8: text_8 ,text_9: text_9 ,text_10: text_10});
+              text_6: text_6 ,text_7: text_7 ,text_8: text_8 ,text_9: text_9 ,text_10: text_10 ,text_11: text_11});
     }
 
     // ReportSaveAsメッセージを送る
@@ -260,11 +275,13 @@
       var text_9 = $("#input_tushin").val();
       // 件名を設定
       var text_10 = $("#input_report_title").val();
+      // 発行日を設定
+      var text_11 = $("#input_date").val();
 
       socket.emit('ReportSaveAs', { 
               report_type_no: report_type_no,report_name: report_name ,
               text_1: text_1 ,text_2: text_2 ,text_3: text_3 ,text_4: text_4 ,text_5: text_5 ,
-              text_6: text_6 ,text_7: text_7 ,text_8: text_8 ,text_9: text_9 ,text_10: text_10});
+              text_6: text_6 ,text_7: text_7 ,text_8: text_8 ,text_9: text_9 ,text_10: text_10 ,text_11: text_11});
     }
 
     // ReportDeleteメッセージを送る
@@ -328,7 +345,7 @@
                     return { id:term, text:term };
                 }
             },
-            placeholder: '検索キーワードを入力して下さい。',
+            placeholder: '名前、苗字、住所等、お好きなキーワードで検索出来ます。',
             multiple: true,
             maximumSelectionSize: 10,
             data: data
@@ -427,27 +444,75 @@
         <div class="tab-content">
         
           <!-- 印刷対象検索タブ -->
+
           <div class="tab-pane active" id="target">
-            <div class="row top-margin-sm">
+
+            <!-- Tag検索 -->
+            <div class="row top-margin-sm left">
+              <div class="col col-sm-12">
+                <div class = "left">
+                <label>Tagで指定</label>
+                </div>
+              </div>
+              <div class="col col-sm-12">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox1" value="檀頭"> 檀頭
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox2" value="総代"> 総代
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox3" value="白河市東区内"> 白河市東区内
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox4" value="施餓鬼東区内扱い"> 施餓鬼東区内扱い
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox5" value="施餓鬼扱い"> 施餓鬼扱い
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox6" value="遠方檀家"> 遠方檀家
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox7" value="遠方信徒"> 遠方信徒
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox8" value="墓地２区画"> 墓地２区画
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox9" value="不定"> 不定
+                    </label>
+              </div>
+            </div>
+
+            <div class="col col-sm-12">
+            </div>
+
+            <!-- 自由検索 -->
+            <div class="row top-margin-medium">
+                <div class="col col-sm-12">
+                    <div class = "left">
+                    <label>自由なキーワードで指定</label>
+                    </div>
+                </div>
                 <div class="col col-sm-10">
-                    <!-- TOP検索tag -->
+                    <!-- インライン版の検索フォーム -->
                     <div class="input-group">
-                      <input type="text" id="serch_tag" class="form-control input-sm">
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-sm left" onClick="GetTargetList()">検索</button>
-                      </span>
+                        <input type="text" id="serch_tag" class="form-control input-sm">
+                    <!--  <span class="input-group-btn"> -->
+                    <!--    <button type="button" class="btn btn-default btn-sm left" onClick="GetTargetList()">検索</button> -->
+                    <!--  </span> -->
                     </div>
                 </div>
                 <div class="col col-sm-2 right">
-                  <button type="button" class="btn btn-success btn-sm" onclick="submit()">印刷</button>
+                <button type="button" class="btn btn-default btn-sm left" onClick="GetTargetList()">検索</button>
                 </div>
-            </div>  
+            </div>
 
-            <div class="row top-margin-sm left">
+            <div class="row top-margin-medium left">
               <div class="col col-sm-12">
-                <input type="checkbox" id="all_change" name="all_change" onclick="all_change()">全て選択</input>
+                <input type="checkbox" id="all_change" name="all_change" onclick="all_change()"> 全て選択</input>
               </div>
-              
             </div>
 
             <div class="row top-margin-sm">        
@@ -467,6 +532,11 @@
                   </table>
               </div>
             </div>
+            <div class="row top-margin-sm under-margin-sm">    
+                <div class="col col-sm-12 right">
+                  <button type="button" class="btn btn-success btn-sm" onclick="submit()">印刷</button>
+                </div>
+            </div>
           </div>
 
           <!-- 印刷対象検索タブ -->
@@ -484,9 +554,17 @@
 
                   <div class="row top-margin-sm">        
                     <div class="col col-sm-8">
+                      <label for="exampleInput">日付(発行日等)</label>
+                      <input type="text" class="form-control input-sm" id="input_date" placeholder="クリックして入力">
+                      <span class="help-block">用紙の右上に印刷されます。</span>
+                    </div>
+                  </div>
+
+                  <div class="row top-margin-sm">        
+                    <div class="col col-sm-6">
                       <label for="exampleInput">件名</label>
                       <input type="text" class="form-control input-sm" id="input_report_title" placeholder="クリックして入力">
-                      <span class="help-block">挨拶文の上に少し大きめの字で印刷されます。スペースを入力し、位置を調整可能です。</span>
+                      <span class="help-block">挨拶文の上に少し大きめの字で印刷されます。スペースを使って位置を調整可能です。</span>
                     </div>
                   </div>
 
@@ -494,7 +572,7 @@
                     <div class="col col-sm-11">
                       <label for="exampleInput">送付状</label>
 								        <textarea class="form-control input-sm" id="input_souhujo" rows="12" placeholder="クリックして入力"></textarea>
-                      <span class="help-block">10行まで印刷します。スペースを入力し、位置を調整可能です。</span>
+                      <span class="help-block">12行まで印刷します。スペースを使って位置を調整可能です。</span>
                     </div>
                   </div>
 

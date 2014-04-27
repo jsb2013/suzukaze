@@ -10,6 +10,10 @@
   src: url("/font/ipaexg.woff") format('woff');
 }
 
+body {
+  font-size: small;
+}
+
 .title{
   font-size:32px;
   color:#000000;

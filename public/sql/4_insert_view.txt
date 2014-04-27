@@ -31,6 +31,7 @@ where m_member.is_disabled = False
 	and m_address.is_disabled = False 
 	and  m_address.is_deleted = False
 	and m_telnumber.priority = 1
+	and m_member.is_arive = 1
 order by furigana;	
 
 
@@ -61,7 +62,7 @@ from m_telnumber INNER JOIN
 			on m_member.member_id = t_report_if.member_id ) 
 		on m_address.member_id = m_member.member_id)
 	on m_telnumber.member_id = m_member.member_id	
-where m_member.member_id = 1;
+where m_member.member_id = 0;
 		
 		
 		
@@ -104,3 +105,32 @@ select *
 from m_report
 where m_report.is_deleted = false and m_report.is_disabled = False
 order by report_id;
+
+create view v_search_target as
+select 
+    mm.member_id, 
+    td.danka_type, 
+    mm.name_sei || ' ' || mm.name_na as name, 
+    mm.furigana_sei || ' ' || mm.furigana_na as furigana, 
+    mm.tags, 
+    case is_arive
+        when '1' then '○'
+        when '0' then '-'
+    end as is_arive,
+    td.tiku_code, 
+    mtc.tiku_name, 
+    td.member_id_kosyu,
+    case jiin
+	    when '1' then '長伝寺'
+	    when '2' then '水月寺'
+	    when '0' then '不定'
+    end as jiin   
+from (m_member as mm inner join t_danka as td on mm.member_id = td.member_id)
+    inner join m_tiku_code as mtc on td.tiku_code = mtc.tiku_code
+where 
+    mm.is_disabled=false 
+    and mm.is_deleted=false 
+    and mtc.is_disabled=false 
+    and mtc.is_deleted=false 
+    and td.is_deleted=false 
+order by mm.member_id;

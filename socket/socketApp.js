@@ -22,7 +22,6 @@ exports.receiveMassages = function(server,callback){
         // *****  ページ毎のソケット通信内容を記述SART  ***** //
         // ************************************************** //
 
-
         // *** 帳票印刷画面 *** //
         // サジェスト候補の取得
         socket.on('GetTypeahead', function(msg) {
@@ -137,12 +136,13 @@ exports.receiveMassages = function(server,callback){
           var text_8 = data.text_8;
           var text_9 = data.text_9;
           var text_10 = data.text_10;
+          var text_11 = data.text_11;
 
           function callback(data){
             io.sockets.emit("ReportSave");
             return;
           }
-          report.updateReport(report_no,report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,callback);
+          report.updateReport(report_no,report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,text_11,callback);
         });
 
         // m_reportに選択対象を追加
@@ -160,12 +160,13 @@ exports.receiveMassages = function(server,callback){
           var text_8 = data.text_8;
           var text_9 = data.text_9;
           var text_10 = data.text_10;
+          var text_11 = data.text_11;
 
           function callback(data){
             io.sockets.emit("ReportSaveAs");
             return;
           }
-          report.insertReport(report_type_no, report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,callback);
+          report.insertReport(report_type_no, report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,text_11,callback);
         });
 
         // m_reportの選択対象を削除(デリフラ)
@@ -179,6 +180,22 @@ exports.receiveMassages = function(server,callback){
           }
           report.deleteReport(report_no, callback);
         });
+
+        // xxxx
+        socket.on('GetSearchTargetList', function (data) {
+            var socketCommon = require("../model/danka/syosai/socketCommon");
+            var data = data;
+
+            function callback(isError, resultRows) {
+                if (isError) {
+                    return; // [TBA]定義要
+                }
+                io.sockets.emit("GetSearchTargetList", resultRows);
+                return;
+            }
+            socketCommon.getSearchTargetList(data, callback);
+        });
+
         // ************************************************* //
         // *****  ページ毎のソケット通信内容を記述END  ***** //
         // ************************************************* //

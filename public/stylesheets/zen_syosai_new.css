@@ -1,0 +1,125 @@
+﻿@charset "Shift_JIS";
+
+/* 共通定義 */
+#inner_filter{
+    margin: 10px 0 0 0;
+    padding: 0;
+    height: 460px;
+    font-size: small;
+}
+#inner_fiter_sum{
+    padding: 0;
+    text-align: left;
+    font-size: small;
+    color: red;
+}
+#inner_fiter_sum_method{
+    margin: 0 10px 0 0;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+}
+
+#inner_filter_main {
+    margin: 0 10px 0 0;
+    padding: 10px;
+    border: solid 1px #BA802F;
+    height: 95px;
+    width: fill-available;
+}
+.padding-right-zero{
+    padding-right: 0px;
+}
+.ccc{
+    display: block;
+    float: left;
+}
+.left{
+    text-align: left;
+}
+.top-margin-sm{
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.isKako{
+    
+}
+
+
+.filter-switch{
+    margin: 6px 0 0 0;
+    text-align: left;
+}
+.label-underline{
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.inner-filter-item-margin{
+    margin: 5px 5px 0 0;
+}
+/* "故人"の周りの枠 */
+.arround-line{
+    margin: 10px;
+    padding: 5px;
+    border: dotted 1px #BA802F;
+    border-collapse: collapse;
+}
+#filter-button{
+    margin: 15px 0 0 15px;
+    padding: 0 5px 5px 0;
+    text-align: left;
+    float: left;
+}
+
+
+
+ /* 檀家検索結果表示の個別定義 */
+    .table_main_result{
+      margin: 10px 10px 0 0;
+      padding: 0;
+      height: 350px;
+      font-size: small;
+    }
+
+      .table_main_result th{
+        padding-left: 10px;
+        color: #ffffff;
+        background-color : #804000;
+      }
+      .table_main_result td{
+        cursor: pointer;
+      }
+      #table_name_full_th{
+        width: 20%;
+      }
+      #table_tiku_name_th{
+        width: 15%;
+      }
+      #table_tag_th{
+        width: 40%;
+      }
+      #table_jiin_th{
+        width: 15%;
+      }
+      #table_kako_th{
+        width: 10%;
+      }
+      .table_main_result tr{
+        margin: 0;
+        padding: 0;
+      }
+      .table_main_result tbody tr:hover{
+        background-color: orange;
+      }
+      .even{
+        background: #ffdfbf;
+      }
+      .hide{
+        display: none;
+      }
+      .hide_fix{
+        display: none;
+      }

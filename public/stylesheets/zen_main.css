@@ -1,13 +1,13 @@
-@charset "Shift_JIS";
+ï»¿@charset "Shift_JIS";
 
-/* ‹¤’Ê’è‹` */
+/* å…±é€šå®šç¾© */
 body{
     margin: 0;
     padding: 0;
     text-align: center;
     font-size: 75%;
-    font-family: 'ƒƒCƒŠƒI' ,Meiryo, 'ƒqƒ‰ƒMƒmŠpƒS Pro W3' , 'Hiragino Kaku Gothic Pro' , '‚l‚r ‚oƒSƒVƒbƒN' , 'Osaka' ,sans-serif;
-    color: #666666; /* •W€•¶šF */
+    font-family: 'ãƒ¡ã‚¤ãƒªã‚ª' ,Meiryo, 'ãƒ’ãƒ©ã‚®ãƒè§’ã‚´ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯' , 'Osaka' ,sans-serif;
+    color: #666666; /* æ¨™æº–æ–‡å­—è‰² */
     background-image : url(../img/bg_3Da_01.png);
     background-position: top center;
     background-repeat: repeat-y;
@@ -32,7 +32,7 @@ body{
       border-bottom-color: #BA802F;
   }
 
-/* ƒwƒbƒ_[“àƒp[ƒc */
+/* ãƒ˜ãƒƒãƒ€ãƒ¼å†…ãƒ‘ãƒ¼ãƒ„ */
     #headerMain{
       margin: 0;
       padding: 0;
@@ -51,7 +51,7 @@ body{
       text-align: left;
       font-size: 19px;
       font-weight: bold;
-      font-family: 'AR P–¾’©‘ÌL' ,Meiryo, 'ƒqƒ‰ƒMƒmŠpƒS Pro W3' , 'Hiragino Kaku Gothic Pro' , '‚l‚r ‚oƒSƒVƒbƒN' , 'Osaka' ,sans-serif;
+      font-family: 'AR Pæ˜æœä½“L' ,Meiryo, 'ãƒ’ãƒ©ã‚®ãƒè§’ã‚´ Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯' , 'Osaka' ,sans-serif;
     }
   #inner{
       margin: 0;

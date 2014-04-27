@@ -81,6 +81,9 @@ app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 app.get('/danka_syosai', routes.getDankaSyosai);
 app.post('/danka_syosai_search', routes.getDankaSyosaiSearch);
 
+
+app.get('/danka_syosai_new', routes.getDankaSyosaiNew);
+
 //***************************************
 // 檀家検索結果画面
 //***************************************

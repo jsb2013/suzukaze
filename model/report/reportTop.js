@@ -6,8 +6,8 @@
 var database = require("../../dao/database");
 var client = database.createClient();
 var async = require('async');
-//var log = require("../util/logger");
-//var logger = log.createLogger();
+var log = require("../../util/logger");
+var logger = log.createLogger();
 
 /* 帳票印刷画面を開くときに送信する情報*/
 exports.postRerpotPrintView = function(select_type_no, select_no, preview_flag, callback){
@@ -225,14 +225,46 @@ exports.getReportTarget = function(tag,callback){
 
 /* report_ifに選択対象を追加 */
 exports.insertReportIf = function(member_id,callback){
-  
+    
+  var isDbError
   var query = client.query('insert into t_report_if (member_id, yobi_1, yobi_2, create_user, create_date, update_user, update_date) values ($1, null, null, $2, now(), $3, now() );',[member_id,"system","system"]);
 
-  query.on('end', function(row,err) {
-           client.end();
-           callback(null);
-           return;
-           });
+//   query.on('end', function(row,err) {
+//           client.end();
+//           callback(null);
+//           return;
+//           });
+
+    query.on('end', function (row, err) {
+        // session out
+        client.end();
+
+        // database error
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            callback(err);
+            return;
+        }
+        // database error(structure)
+        if (isDbError) {
+            return;
+        }
+        callback(null);
+        return;
+    });
+
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        callback(new Error());
+        isDbError = true;
+        return;
+    });
+
 };
 
 /* report_ifから選択対象を削除 */
@@ -296,7 +328,8 @@ exports.updateAllReportIf = function(target_member_id, flag, callback){
 /* report_ifへ全ての選択対象を追加 */
 function insertAllReportIf(target_member_id, callback){
 
-  var sql;
+    var sql;
+    var isDbError = false;
 
   sql = 'insert into t_report_if  (member_id, yobi_1, yobi_2, create_user, create_date, update_user, update_date) select member_id, null, null, \'system\', now(), \'system\', now() from m_member where ';
   for(var i = 0 ; i < target_member_id.length ; i++){
@@ -308,11 +341,41 @@ function insertAllReportIf(target_member_id, callback){
   } 
   var query = client.query(sql);
 
-  query.on('end', function(row,err) {
-           client.end();
-           callback(null);
-           return;
-           });
+//   query.on('end', function(row,err) {
+//           client.end();
+//           callback(null);
+//           return;
+//           });
+    query.on('end', function (row, err) {
+        // session out
+        client.end();
+
+        // database error
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            callback(err);
+            return;
+        }
+        // database error(structure)
+        if (isDbError) {
+            return;
+        }
+        callback(null);
+        return;
+    });
+
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        callback(new Error());
+        isDbError = true;
+        return;
+    });
+    
 };
 
 /* report_ifから全ての選択対象を削除 */
@@ -338,9 +401,9 @@ function deleteAllReportIf(target_member_id,callback){
 };
 
 /* m_reportで選択対象を更新 */
-exports.updateReport = function(report_no,report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,callback){
+exports.updateReport = function(report_no,report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,text_11,callback){
   
-  var query = client.query('update m_report set report_name = $2, text_1 = $3, text_2 = $4, text_3 = $5, text_4 = $6, text_5 = $7, text_6 = $8, text_7 = $9, text_8 = $10, text_9 = $11, text_10 = $12 where report_no = $1',[report_no,report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10]);
+  var query = client.query('update m_report set report_name = $2, text_1 = $3, text_2 = $4, text_3 = $5, text_4 = $6, text_5 = $7, text_6 = $8, text_7 = $9, text_8 = $10, text_9 = $11, text_10 = $12, text_11 = $13 where report_no = $1',[report_no,report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,text_11]);
 
   query.on('end', function(row,err) {
            client.end();
@@ -350,9 +413,9 @@ exports.updateReport = function(report_no,report_name,text_1,text_2,text_3,text_
 };
 
 /* m_reportに選択対象を追加 */
-exports.insertReport = function(report_type_no, report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,callback){
+exports.insertReport = function(report_type_no, report_name,text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,text_11,callback){
   
-  var query = client.query('INSERT INTO m_report (report_type_no, report_name, text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10, text_memo, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, null, null, null, $13, now(), $14, now(), False, False);',[report_type_no, report_name, text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,'m.kanamori','m.kanamori']);
+  var query = client.query('INSERT INTO m_report (report_type_no, report_name, text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10, text_11, text_memo, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_disabled, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, null, null, null, $14, now(), $15, now(), False, False);',[report_type_no, report_name, text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10, text_11,'m.kanamori','m.kanamori']);
 
   query.on('end', function(row,err) {
            client.end();
