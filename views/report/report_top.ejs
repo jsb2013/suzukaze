@@ -19,16 +19,16 @@
 
   <!-- Default CSS -->
   <!-- <link rel='stylesheet' href='/css/style.css' /> -->
-  <link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" />
-  <link rel="stylesheet" href="stylesheets/report/style.css" type="text/css"  />
+  <link rel="stylesheet" href="/stylesheets/zen_main_danka2.css" type="text/css" />
+  <link rel="stylesheet" href="/stylesheets/report/style.css" type="text/css"  />
 
   <!-- icons from font Awesome -->
-  <link rel="stylesheet" href="stylesheets/font-awesome/font-awesome.css">
+  <link rel="stylesheet" href="/stylesheets/font-awesome/font-awesome.css">
 
   <!-- socket.IO -->
   <script src="/socket.io/socket.io.js"></script>
   <!-- <script type="text/javascript" src="/js/report/report.js"></script> -->
-
+<script src="/js/util.js"></script>
   <script type="text/javascript">
 
     // ソケット通信の開始
@@ -94,6 +94,9 @@
     // GetTargetListメッセージを受けたとき
     socket.on('GetTargetList', function(data) {
       //alert("add:"+ data.length)
+      // ソート表記をクリア
+      $('.th-sort span').html('');
+
       // まずは一度全て取り除く
       $('#target_list > tr').remove();
       
@@ -111,6 +114,7 @@
         html +=   "</td>";
         html +=  "</tr>";
         $('#target_list').append(html);
+        
       }
       // 検索結果が有る場合
       else{
@@ -119,14 +123,20 @@
             html += "<tr>";
             html +=   "<td>";
           if(data[i].report_if_id == null){
-            html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + "></input>";
+            html +=     "<input type='checkbox' class='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + "></input>";
           }else{
-            html +=     "<input type='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + " checked></input>";
+            html +=     "<input type='checkbox' class='checkbox' id='selected_" + i + "' name='target' value="+ data[i].member_id + " checked></input>";
           }
             html +=   "</td>";
             html +=   "<td>";
+            html +=     "<p>" + data[i].member_id +"</p>";
+            html +=   "</td>"; 
+            html +=   "<td>";
             html +=     "<p>" + data[i].name +"</p>";
-            html +=   "</td>";        	          
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     "<p>" + data[i].furigana +"</p>";
+            html +=   "</td>";            	          
             html +=   "<td>";
             html +=     "<p>" + data[i].address +"</p>";
             html +=   "</td>";
@@ -135,6 +145,7 @@
             html +=   "</td>";
             html +=  "</tr>";
   
+
           $('#target_list').append(html);
           var val = data[i].name_na;
           $('#selected_' + i ).on('click', function(){
@@ -190,7 +201,7 @@
             }
         }
         socket.emit('GetTargetList', { value: data });
-    } onlo
+    }
 
     // ChangeAllメッセージを送る
     function all_change(){
@@ -296,7 +307,139 @@
      }
     }
   </script>
+  <script>
+      //表のソート機能
+      $(function () {
+          $('.isCheckBox').click(function () {
+              if ($(this).prop('checked') == true) {
+                  var data = $(this).attr('value');
+                  // InsertReportIfメッセージを送る
+                  socket.emit('InsertReportIf', { value: data });
+              } else {
+                  var data = $(this).attr('value');
+                  // DeleteReportIfメッセージを送る
+                  socket.emit('DeleteReportIf', { value: data });
+              }
+          });
 
+          // ソートした表を表示する。（引数に渡した2次元配列から表を作成する。）
+          function draw(tds) {
+              $('#target_list > tr').remove();
+              $.each(tds, function (i, val) {
+                  // val[0]: checkbox
+                  // val[1]: member_id
+                  // val[2]: name
+                  // val[3]: furigana
+                  // val[4]: address
+                  // val[5]: tags
+                  var html = '';
+                  html += "<tr>";
+                  html += "<td>";
+                  if (val[0] == "-") {
+                      html += "<input type='checkbox' class='checkbox' id='selected_" + i + "' name='target' value=" + val[1] + "></input>";
+                  } else {
+                      html += "<input type='checkbox' class='checkbox' id='selected_" + i + "' name='target' value=" + val[1] + " checked></input>";
+                  }
+                  html += "</td>";
+                  html += "<td>";
+                  html += "<p>" + val[1] + "</p>";
+                  html += "</td>";
+                  html += "<td>";
+                  html += "<p>" + val[2] + "</p>";
+                  html += "</td>";
+                  html += '<td class="hidden">';
+                  html += "<p>" + val[3] + "</p>";
+                  html += "</td>";
+                  html += "<td>";
+                  html += "<p>" + val[4] + "</p>";
+                  html += "</td>";
+                  html += "<td>";
+                  html += "<p>" + val[5] + "</p>";
+                  html += "</td>";
+                  html += "</tr>";
+                  $('#target_list').append(html);
+                  $('#selected_' + i).on('click', function () {
+                      if ($(this).prop('checked') == true) {
+                          var data = $(this).attr('value');
+                          // InsertReportIfメッセージを送る
+                          socket.emit('InsertReportIf', { value: data });
+                      }
+                      else {
+                          var data = $(this).attr('value');
+                          // DeleteReportIfメッセージを送る
+                          socket.emit('DeleteReportIf', { value: data });
+                      }
+                  });
+              });
+          }
+          $('.th-sort').click(function () {
+              // 表の2次配列を作成する。
+              var tableData = [];
+              var tr = $(".table-sort tr");
+              for (var i = 0; i < tr.length; i++) {
+                  // headerは処理対象外
+                  if (i == 0) {
+                      continue;
+                  }
+                  var cells = tr.eq(i).children();
+                  var cellsArray = [];
+                  var isCheck = false;
+                  for (var j = 0; j < cells.length; j++) {
+                      // チェックボックスのcheck状況を確認
+                      if (j == 0) {
+                          var val1 = cells.eq(j).children(".checkbox");
+                          isCheck = val1.prop('checked');
+                          if (isCheck) {
+                              cellsArray.push("isChecked");
+                          } else {
+                              cellsArray.push("-");
+                          }
+                          continue;
+                      }
+                      // チェックボックス以外の列の状況を確認
+                      var itemText = cells.eq(j).text();
+                      if (isUndefine(itemText)) {
+                          itemText = "-";
+                      }
+                      cellsArray.push(itemText);
+                  }
+                  tableData.push(cellsArray);
+              }
+              // 検索結果が1行も存在しない場合は処理を中断する
+              // 結果が1行もない場合、注意文を表記する為、1行目が通常の6列存在しないことをチェックする。
+              if(!isUndefineForList(tableData) && tableData[0].length != 6){
+                  return false;    
+              }
+
+              // 表の2次配列を指定の列でソートする。
+              var arrow = $('span', this);
+              var col = $('th').index(this);
+              // （個別）"氏名"でソートする場合は、"ふりがな"でソートする。
+              if (col == 2) {
+                  col = 3;
+              }
+              var isInteger = $(this).hasClass("isInteger");
+
+              if (arrow.html() == '▼') {
+                  arrow.html('▲');
+                  if (isInteger) {
+                      tableData.sort(function (a, b) { return Number(a[col]) < Number(b[col]) ? -1 : 1; });
+                  } else {
+                      tableData.sort(function (a, b) { return a[col] < b[col] ? -1 : 1; });
+                  }
+              } else {
+                  arrow.html('▼');
+                  if (isInteger) {
+                      tableData.sort(function (a, b) { return Number(b[col]) < Number(a[col]) ? -1 : 1; });
+                  } else {
+                      tableData.sort(function (a, b) { return b[col] < a[col] ? -1 : 1; });
+                  }
+              }
+              $(this).siblings().find('span').html('');
+              draw(tableData);
+          });
+      });
+  </script>
   <script>
     // 印刷画面の表示
     function submit(){
@@ -355,7 +498,7 @@
   </script>
   
 </head>
-<body onload="OnLoad()">
+<body>
 
 <!-- container -->
 <div id="container">
@@ -365,7 +508,7 @@
       <h1>長伝寺様向けカスタマイズ</h1>
     </div>
     <div id="headerLogo">
-      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+      <img src="/img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
     </div>
   </div>
   <!-- header end -->
@@ -373,22 +516,22 @@
   <div id="inner">
     <!-- menu_box -->
     <div id="menu_box">
-      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <div id="temple_img"><img src="/img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
       <!-- menu -->
       <div id="menu">
         <nav>
           <ul>
-            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
+            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li><span class="ja">台帳管理</span><span class="en">master</span>
-            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
+            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -509,6 +652,12 @@
                 </div>
             </div>
 
+            <div class="row top-margin-sm top-margin-sm">
+                <div class="col col-sm-12 right">
+                  <button type="button" class="btn btn-success btn-sm" onclick="submit()">印刷</button>
+                </div>
+            </div>
+
             <div class="row top-margin-medium left">
               <div class="col col-sm-12">
                 <input type="checkbox" id="all_change" name="all_change" onclick="all_change()"> 全て選択</input>
@@ -518,24 +667,21 @@
             <div class="row top-margin-sm">        
               <div class="col col-sm-12">
                   <!--<div id="target_list"></div>-->
-                  <table class="table table-striped left">
+                  <table class="table table-sort table-striped left">
                     <thead>
                       <tr>
                         <th width="5%">#</th>
-                        <th width="15%">姓名</th>
-                        <th width="50%">住所</th>
-                        <th width="30%">tags</th>
+                        <th width="8%" class="th-sort header-selectable cursor-pointer isInteger">ID<span></span></th>
+                        <th width="15%" class="th-sort header-selectable cursor-pointer">姓名<span></span></th>
+                        <th width="0%" class="hidden">ふりがな</th>
+                        <th width="47" class="th-sort header-selectable cursor-pointer">住所<span></span></th>
+                        <th width="25%" class="th-sort header-selectable cursor-pointer">tags<span></span></th>
                       </tr>
                     </thead>
                     <tbody id="target_list" >
                     </tbody>
                   </table>
               </div>
-            </div>
-            <div class="row top-margin-sm under-margin-sm">    
-                <div class="col col-sm-12 right">
-                  <button type="button" class="btn btn-success btn-sm" onclick="submit()">印刷</button>
-                </div>
             </div>
           </div>
 
@@ -669,3 +815,5 @@
 
 
 </html>
+
+

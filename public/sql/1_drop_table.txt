@@ -4,6 +4,7 @@ drop view v_typeahead;
 drop view v_report_type;
 drop view v_report;
 drop view v_search_target;
+drop table m_account;
 drop table m_address;
 drop table m_job_code;
 drop table m_mail;

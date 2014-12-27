@@ -18,7 +18,7 @@ exports.postRerpotPrintView = function(select_type_no, select_no, preview_flag, 
     async.series([
     // 仕事コードマスタを取得
         function (dbcallback) {
-            selectPrintReport(select_type_no, select_no, report_data, dbcallback);
+           selectPrintReport(select_type_no, select_no, report_data, dbcallback);
         }
     ,
     // 顧客情報及びtagsの取得
@@ -208,7 +208,8 @@ exports.getReportTarget = function(tag,callback){
     } 
     
   }
-
+  sql += ' ORDER BY furigana USING ~<~';
+  console.log("sql:" + sql);
   var query = client.query(sql);
 
   var rows = [];
@@ -331,7 +332,7 @@ function insertAllReportIf(target_member_id, callback){
     var sql;
     var isDbError = false;
 
-  sql = 'insert into t_report_if  (member_id, yobi_1, yobi_2, create_user, create_date, update_user, update_date) select member_id, null, null, \'system\', now(), \'system\', now() from m_member where ';
+  sql = 'insert into t_report_if  (member_id, yobi_1, yobi_2, create_user, create_date, update_user, update_date) select member_id, null, null, \'system\', now(), \'system\', now() from v_member where ';
   for(var i = 0 ; i < target_member_id.length ; i++){
     if(i===0){
       sql += ' member_id = ' + target_member_id[i];
@@ -339,6 +340,8 @@ function insertAllReportIf(target_member_id, callback){
       sql += ' or member_id = ' + target_member_id[i];
     }
   } 
+//  console.log(sql);
+
   var query = client.query(sql);
 
 //   query.on('end', function(row,err) {

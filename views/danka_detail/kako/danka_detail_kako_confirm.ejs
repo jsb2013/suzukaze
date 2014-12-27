@@ -1,15 +1,24 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
+
+  <!-- jQuery JS -->
+  <script src="js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+<link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" id="zen_main_danka_detail">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_common.css" type="text/css" id="danka_detail_common">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kihon_confirm.css" type="text/css" id="danka_detail_kihon">
-<title>檀家管理システム　禅</title>
-<script src="js/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
 <script src="js/util.js"></script>
 <script src="js/dankaInfo.js"></script>
+
+<title>檀家管理システム　禅</title>
 <%
     var memberId = kosyuInfo.member_id;
     var dankaType = kosyuInfo.danka_type;
@@ -149,17 +158,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
+            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li><span class="ja">台帳管理</span><span class="en">master</span>
-            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
+            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -170,11 +179,11 @@
     <div id="wrapper">
       <!-- inner_title -->
       <div class="inner_title">
-        <div class="title">
+        <div id="title">
    	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
         </div>
         <div class="kosyu_info">
-   	      <table>
+   	      <table class="table table-bordered table-condensed">
               <thead>
                 <tr>
                   <th class="kosyu_info_kosyu_th">戸主名</th>
@@ -186,11 +195,11 @@
               </thead>
               <tbody>
                 <tr id="<%= memberId %>">
-                  <td class="table_name_full"><%= nameFull %></td>
-                  <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
-                  <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
-                  <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
-                  <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
+                <td class="table_name_full"><div class="padding-default"><%= nameFull %></div></td>
+                <td class="table_danka_type_danka"><div class="padding-default text-center"><%= dankaTypeDanka %></div></td>
+                <td class="table_danka_type_shinto"><div class="padding-default text-center"><%= dankaTypeShinto %></div></td>
+                <td id="<%= tikuCode %>" class="table_tiku_name"><div class="padding-default"><%= tikuName %></div></td>
+                <td id="<%= sewaCode %>" class="table_sewa_name"><div class="padding-default"><%= sewaName %></div></td>
                 </tr>
               </tbody>
             </table>
@@ -211,7 +220,7 @@
           </div>
         <form action="danka_detail_kako_db_update" method="post">
           <div class="table_main_kihon">
-            <table>
+            <table class="table table-bordered table-condensed">
               <thead>
                 <tr class="table_main_kihon_header">
                   <th class="table_main_kihon_header_komoku">登録項目</td>
@@ -220,73 +229,81 @@
               </thead>
               <tbody>
                 <tr class="m_member">
-                  <td id="name_type">俗名(※必須)</td>
+                  <td><label class="padding-default">俗名(※必須)</label></td>
                     <script>
                       createHtml("<%= nameFullKakoBk %>", "<%= nameFullKako %>");
                     </script>
                 </tr>
                 <tr class="m_member">
-                  <td id="furigana_type">ふりがな</td>
+                  <td><label class="padding-default">ふりがな</label></td>
                     <script>
                       createHtml("<%= furiganaFullKakoBk %>", "<%= furiganaFullKako %>");
                     </script>
                 </tr>
                 <tr class="t_danka">
-                  <td id="kaimyo">戒名</td>
+                  <td><label class="padding-default">戒名</label></td>
                     <script>
                       createHtml("<%= kaimyoKakoBk %>", "<%= kaimyoKako %>");
                     </script>
                 </tr>
                 <tr class="t_danka">
-                  <td id="kaimyo_furigana">戒名(ふりがな)</td>
+                  <td><label class="padding-default">戒名(ふりがな)</label></td>
                     <script>
                       createHtml("<%= kaimyoFuriganaKakoBk %>", "<%= kaimyoFuriganaKako %>");
                     </script>
                 </tr>
                 <tr class="m_member">
-                  <td id="birthday_type">生年月日</td>
+                  <td><label class="padding-default">生年月日</label></td>
                     <script>
                       createHtml("<%= birthdayKakoBk %>", "<%= birthdayKako %>");
                     </script>
                 </tr>
                 <tr class="m_member">
-                  <td id="meinichi_type">命日</td>
+                  <td><label class="padding-default">命日</label></td>
                     <script>
                       createHtml("<%= meinichiKakoBk %>", "<%= meinichiKako %>");
                     </script>
                 </tr>
                 <tr class="t_danka">
-                  <td id="kyonen">享年</td>
+                  <td><label class="padding-default">享年</label></td>
                     <script>
                       createHtml("<%= kyonenKakoBk %>", "<%= kyonenKako %>");
                     </script>
                 </tr>
                 <tr class="t_danka">
-                  <td id="sesyu_name">施主</td>
+                  <td><label class="padding-default">施主</label></td>
                     <script>
                       createHtml("<%= sesyuNameFullKakoBk %>", "<%= sesyuNameFullKako %>");
                     </script>
                 </tr>
                 <tr class="t_danka">
-                  <td id="relation">施主から見た続柄</td>
+                  <td><label class="padding-default">施主から見た続柄</label></td>
                     <script>
                       createHtml("<%= relationKakoBk %>", "<%= relationKako %>");
                     </script>
                 </tr>
                 <tr class="m_member">
-                  <td id="relation">タグ</td>
+                  <td><label class="padding-default">タグ</label></td>
                     <script>
                       createHtml("<%= tagsKakoBk %>", "<%= tagsKako %>");
                     </script>
                 </tr>
                 <tr class="t_comment">
-                  <td class="comment_type">備考<br>※500文字以内</td>
+                  <td><label class="padding-default">備考<br>※500文字以内</label></td>
                     <script>
                       createHtml("<%= commentKakoBk %>", "<%= commentKako %>");
                     </script>
                 </tr>
               </tbody>
             </table>
+            <div class="row">
+                <div class="col col-sm-3 text-left">
+                    <button type="button" id="return" class="btn btn-primary btn-sm">過去帳に戻る</button>
+                </div>
+                <div class="col col-sm-6">
+                    <button type="submit" id="register" class="btn btn-success btn-lg">　登録　</button>
+                </div>
+             </div>
           </div>
           <!-- DB更新情報 -->
             <input type="hidden" name="member_id" value=<%= memberIdKako %>>
@@ -312,10 +329,6 @@
             <input type="hidden" name="is_update_t_danka" value=false>
             <input type="hidden" name="is_update_t_comment" value=false>
             <input type="hidden" name="member_id_kosyu" value=<%= memberId %>>
-            <div class="confirm_submit">
-              <button type="button" id="return" class="button">過去帳に戻る</button>
-              <input type="submit" value="登録" id="register" class="button">
-            </div>
         </form>
       <form action="/danka_detail_kako_kihon" method="post" id="danka_detail_kako_kihon_form">
         <input type="hidden" name="selected_member_id" value="<%= memberIdKako %>">
@@ -353,3 +366,4 @@
 </div>
 </body>
 </html>
+

@@ -1,3 +1,6 @@
+create unique index m_account_valid_constraint
+on m_account (login_id,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
 create unique index m_member_valid_constraint
 on m_member (member_id,is_disabled,is_deleted) where not is_deleted and not is_disabled;
 

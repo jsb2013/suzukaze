@@ -105,9 +105,10 @@ exports.insertTDanka = function(client, database, memberId, baseInfo, dbcallback
     var sesyuSei = baseInfo.sesyu_sei;
     var sesyuNa = baseInfo.sesyu_na;
     var jiin = baseInfo.jiin;
+    var kyonen = baseInfo.kyonen;
     
-    var query = client.query('INSERT INTO t_danka(member_id, danka_type, sewa_code, tiku_code, member_id_kosyu, member_id_sou, kaimyo, kaimyo_furigana, relation, sesyu_sei, sesyu_na, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, null, null,$13,now(),$14,now(),FALSE)',
-                    [memberId, dankaType, sewaCode, tikuCode, memberIdKosyu, memberIdSou, kaimyo, kaimyoFurigana, relation, sesyuSei, sesyuNa, jiin, 'yamashita0284', 'yamashita0284']);
+    var query = client.query('INSERT INTO t_danka(member_id, danka_type, sewa_code, tiku_code, member_id_kosyu, member_id_sou, kaimyo, kaimyo_furigana, relation, sesyu_sei, sesyu_na, kyonen, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13, null, null,$14,now(),$15,now(),FALSE)',
+                    [memberId, dankaType, sewaCode, tikuCode, memberIdKosyu, memberIdSou, kaimyo, kaimyoFurigana, relation, sesyuSei, sesyuNa, kyonen, jiin, 'yamashita0284', 'yamashita0284']);
     
     query.on('end', function(row,err) {
         // session out
@@ -137,3 +138,40 @@ exports.insertTDanka = function(client, database, memberId, baseInfo, dbcallback
         return;
     });
 }
+
+exports.updateTDankaForTikuNumber = function(client, database, memberId, dbcallback){
+    var isDbError = false;
+    var query = client.query('update t_danka as td set yobi_1 = mtc.yobi_1 from m_tiku_code as mtc where td.tiku_code = mtc.tiku_code and td.member_id = $1 and td.is_deleted = false and mtc.is_disabled = false and mtc.is_deleted = false;',
+                    [memberId]);
+    
+    query.on('end', function(row,err) {
+        // session out
+        client.end();
+
+        if (err){
+            logger.error('xxxx', 'err =>'+ err);
+            client.end();
+            dbcallback(err);
+            return;
+        }
+        if (isDbError) {
+            return;
+        }
+        client.end();
+        dbcallback(null);
+        return;
+    });
+    
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}
+

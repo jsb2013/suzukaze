@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+/* 共通定義(メイン部分) */
+#inner_main_tuika{
+    margin: 10px 0 0 0;
+    width: 630px;
+}
+
+/* 表の上に説明書きをする際のレイアウト */
+.title_comment{
+    height: 23px;
+    width: 630px;
+    text-align: left;
+    color: black;
+    font-size: medium;
+    background-color : rgb(231, 206, 140);
+}
+
+/* 簡易検索個別定義 ------------------------ */
+#inner_filter_eary_search{
+    margin: 5px 0 0 0;
+    height: 122px;
+}
+
+/* 検索結果画面-個別定義 */
+#inner_fiter_sum{
+    padding: 0;
+    text-align: left;
+    font-size: medium;
+    color: red;
+}
+
+#inner_main_easy_search {
+    margin: 10px 10px 0 0;
+}
+
+#inner_filter_main_easy_search {
+    margin: 0 10px 0 0;
+    padding: 10px;
+    border: solid 1px #BA802F;
+    height: 95px;
+    width: fill-available;
+    font-size: small;
+}
+
+#table_name_full_th{
+    width: 20%;
+}
+
+#table_tiku_name_th{
+    width: 14%;
+}
+
+#table_tiku_number_th{
+    width: 12%;
+}
+   
+#table_tag_th{
+    width: 32%;
+}
+      
+#table_jiin_th{
+    width: 14%;
+}
+
+#table_kako_th{
+    width: 8%;
+}
+
+/* 50音別個別定義 ------------------------ */
+#inner_main_50on{
+    margin: 10px 0 0 0;
+    width: 630px;
+}
+
+#table_main_50on{
+    margin: 8px 0 0 0;
+}
+
+#table_main_50on tbody tr td{
+    margin: 0;
+    vertical-align: top;
+    text-align: center;
+    height: 60px;
+}

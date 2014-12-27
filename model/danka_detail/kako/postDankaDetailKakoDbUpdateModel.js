@@ -162,6 +162,7 @@ function mergeTDankaInfo(ratestTDankaInfo, webItemJson){
     var sesyuSei = webItemJson.sesyu_sei;
     var sesyuNa = webItemJson.sesyu_na;
     var relation = webItemJson.relation;
+    var kyonen = webItemJson.kyonen;
 
     // 最新のレコードに更新した可能性のある項目をマージ
     ratestTdanka.kaimyo = kaimyo;
@@ -169,5 +170,7 @@ function mergeTDankaInfo(ratestTDankaInfo, webItemJson){
     ratestTdanka.sesyu_sei = sesyuSei;
     ratestTdanka.sesyu_na = sesyuNa;
     ratestTdanka.relation = relation;
+    ratestTdanka.kyonen = kyonen;
 }
+
 

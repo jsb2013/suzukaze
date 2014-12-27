@@ -41,7 +41,6 @@ exports.main = function (webItemJson, callback) {
     var tagsInfo = [];
 
     async.series([
-
     // 名前でM_Memberを検索
         function (dbcallback) {
             mMemberDao.getMMemberByName(client, database, webItemJson, memberInfo, dbcallback);
@@ -49,7 +48,7 @@ exports.main = function (webItemJson, callback) {
     // タグ情報を取得（戸主情報）
         function (dbcallback) {
             mTagsDao.getMTags(client, database, tagsInfo, dbcallback);
-        } ],
+        }],
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {
             if (err) {
@@ -62,7 +61,7 @@ exports.main = function (webItemJson, callback) {
                 isDupricateMember = true;
             }
             var tags = convertTagsWithDelimiter(webItemJson, tagsInfo, ",")
-            callback(null, isDupricateMember, tags);
+            callback(false, isDupricateMember, tags);
             return;
         }
     );
@@ -78,7 +77,7 @@ function convertTagsWithDelimiter(memberInfo, tagsInfo, delimiter){
         for(var key2 in tagsInfo){
             var _tagsId = tagsInfo[key2].tags_id;
             var _tagsName = tagsInfo[key2].tags;
-            if(_tagIdInBase == _tagsId){
+            if(_tagIdInBase == _tagsName){
                 if (util.isUndefine(checkTags)) {
                     checkTags = _tagsName;
                     break;
@@ -90,3 +89,4 @@ function convertTagsWithDelimiter(memberInfo, tagsInfo, delimiter){
     }
     return checkTags;
 }
+

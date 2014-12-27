@@ -1,487 +1,74 @@
 @charset "Shift_JIS";
 
-/* ã§í íËã` */
+/* ÂÖ±ÈÄöÂÆöÁæ©(„É°„Ç§„É≥ÈÉ®ÂàÜ) */
+#inner_main{
+    margin: 10px 0 0 0;
+    width: 630px;
+}
+
+/* Ê™ÄÂÆ∂Ê§úÁ¥¢ÁµêÊûúË°®Á§∫„ÅÆÂÄãÂà•ÂÆöÁæ© */
 #inner_filter{
     margin: 5px 0 0 0;
-    padding: 0;
-    height: 71px;
-    font-size: 14px;
-    font-family: 'ÉÅÉCÉäÉI' ,Meiryo, 'ÉqÉâÉMÉmäpÉS Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ÇlÇr ÇoÉSÉVÉbÉN' , 'Osaka' ,sans-serif;
-    color: #666666; /* ïWèÄï∂éöêF */
+    height: 77px;
 }
-#inner_fiter_sum{
-    padding: 0;
-    text-align: left;
-    font-size: 14px;
-    color: red;
-}
-#inner_fiter_sum_method{
-    margin: 0 10px 0 0;
-    text-align: left;
-    font-size: 14px;
-}
+
+
+
 #inner_fiter_main{
-    margin: 5px 0 0 0;
-    padding: 0;
-    text-align: left;
-    float: left;
+    margin: 0 20px 0 0;
+    padding: 10px 0 10px 10px;
     border: solid 1px #BA802F;
-    border-collapse: collapse;
-}
-#inner_filter_main_button{
-    float: left;
-    margin: 20px 0 0 15px;
-}
-#inner_fiter_main label{
-    padding: 0;
-    margin: 0;
-}
-#inner_fiter_main .inner_filter_main_item{
-    float: left;
-    padding: 5px;
-    margin: 5px;
-}
-#inner_filter_main_checkbox{
-    border: dotted 1px #BA802F;
-    border-collapse: collapse;
+    width: fill-available;   
 }
 
-/* ã§í íËã` */
-#inner_main{
-    height: 350px;
-    margin: 10px 0 0 0;
-    padding: 0;
-    text-align: center;
-    font-size: 14px;
-    font-family: 'ÉÅÉCÉäÉI' ,Meiryo, 'ÉqÉâÉMÉmäpÉS Pro W3' , 'Hiragino Kaku Gothic Pro' , 'ÇlÇr ÇoÉSÉVÉbÉN' , 'Osaka' ,sans-serif;
-    color: #666666; /* ïWèÄï∂éöêF */
+#style-filter-button{
+    width: 80px;
 }
 
-/* 50âπï å¬ï íËã` */
-    #table_main{
-      margin: 10px 0 0 0;
-      padding: 0;
-      width: 630px;
-      height: 400px;
-    }
-    #table_main table{
-        border-width: 1px;
-        border-style: solid;
-        border-color: #D1CCC4;
-    }
-      #table_main th{
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        width: 63px;
-        color: #ffffff;
-        border-collapse: collapse;
-        background-color : #804000;
-      }
-      #table_main tr{
-        margin: 0;
-        padding: 0;
-      }
-      #table_main td{
-        margin: 0;
-        padding: 2px;
-        vertical-align: top;
-        height: 60px;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-      }
-      .even{
-        background: #ffdfbf;
-      }
-      td.selectable:hover{
-        margin: 0;
-        padding: 2px;
-        vertical-align: top;
-        height: 60px;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        background: orange;
-        cursor: pointer;
-      }
+#table_main_result td{
+    cursor: pointer;
+}
+
+#table_member_id_th{
+    width: 8%;    
+}
+
+#table_name_full_th{
+    width: 20%;
+}
+
+#table_tiku_name_th{
+    width: 14%;
+}
+
+#table_tiku_number_th{
+    width: 12%;
+}
+   
+#table_tag_th{
+    width: 32%;
+}
       
-/* è⁄ç◊åüçıï\é¶ÇÃå¬ï íËã` */
-    .title_comment_syosai{
-        margin: 0;
-        padding: 0;
-        height: 23px;
-        width: 630px;
-        text-align: left;
-        color: black;
-        font-size: 15px;
-        background-color : rgb(231, 206, 140);
-    }
-     .table_main_syosai{
-      margin: 5px 0 0 0;
-      width: 630px;
-      height: 386px;
-      overflow-y: scroll;
-    }
-    .table_main_syosai table{
-        border-width: 1px;
-        border-style: solid;
-        border-color: #D1CCC4;
-    }
-      .table_main_syosai #header{
-        height: 30px;
-        color: #ffffff;
-        background-color : #804000;
-      }
-      .table_main_syosai #newtype{
-        width: 130px;
-      }
-      .table_main_syosai #newnaiyo{
-        width: 500px;
-      }
-      .table_main_syosai tr{
-        height: 40px;
-      }
-      .table_main_syosai td{
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-      }
-      .text_size{
-        margin: 0 15px 0 0;
-        width: 150px;
-      }
-      #sex label{
-        margin: 0 10px 0 0;
-      }
-      #tag label{
-        margin: 0 10px 0 0;
-      }
+#table_jiin_th{
+    width: 14%;
+}
 
-      .table_main_syosai_selectable:hover{
-        background: orange;
-      }
+#table_kako_th{
+    width: 8%;
+}
 
-      #syosai_submit{
-        margin: 10px 0 0 0;
-        padding: 0;
-        height: 30px;
-        text-align: center;
-      }
-      #syosai_submit input{
-        color: black;
-        font-size: 20px;
-        -webkit-border-radius: 10px;
-        width: 100px;
-        text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
-        -webkit-box-shadow: 1px 1px 2px #E7E7E7;
-        background: rgb(231, 206, 140);
-        cursor: pointer;
-      }
-      .error{
-        color: #f00;
-        background-color: orange;
-      }
+/* 50Èü≥Âà•ÂÄãÂà•ÂÆöÁæ© */
+#table_main_50on{
+    margin: 8px 0 0 0;
+}
 
-/* í«â¡âÊñ ï\é¶ÇÃå¬ï íËã` */
-     .table_main_tuika{
-      margin: 10px 0 0 0;
-      padding: 0;
-      width: 630px;
-      height: 414px;
-      overflow-y: scroll;
-    }
-
-    .table_main_tuika table{
-        border-width: 1px;
-        border-style: solid;
-        border-color: #D1CCC4;
-    }
-      .table_main_tuika #header{
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        color: #ffffff;
-        background-color : #804000;
-      }
-      .table_main_tuika #newtype{
-        margin: 0;
-        padding: 0;
-        width: 130px;
-      }
-      .table_main_tuika #newnaiyo{
-        margin: 0;
-        padding: 0;
-        width: 500px;
-      }
-      .table_main_tuika tr{
-        margin: 0;
-        padding: 0;
-        height: 40px;
-      }
-      .table_main_tuika td{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-      }
-      #telno_box{
-        margin: 0 30px 0 0;
-      }
-      #email_box{
-        margin: 0 30px 0 0;
-      }
-      .telno_size{ width: 50px;}
-      .telno_yoto{ width: 150px;}
-      .email_size{ width: 265px;}
-      .email_yoto{ width: 110px;}
-      .zip_code_size{ width: 72px;}
-      .address_line_size{ width: 420px;}
-      tbody{
+#table_main_50on tbody tr td{
     margin: 0;
-    padding: 0;
-}
-      #comment{
-        margin: 0;
-        padding: 10px 0 0 5px;
-}
-      .textarea_size{
-         width: 470px;
-         height: 100px;
-         resize: none;
-         border:inherit;
-}
-      .table_main_tuika label{
-        margin: 0;
-        padding: 0 5px 5px 5px;
-      }
-
-      .table_main_tuika_selectable:hover{
-        background: orange;
-      }
-
-      #new_submit{
-        margin: 10px 0 0 0;
-        padding: 0;
-        height: 30px;
-        text-align: center;
-      }
-      #new_submit input{
-        text-align: center;
-        font-size: 25px;
-      }
-      #new_submit input{
-        color: black;
-        font-size: 20px;
-        -webkit-border-radius: 10px;
-        width: 100px;
-        text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
-        -webkit-box-shadow: 1px 1px 2px #E7E7E7;
-        background: rgb(231, 206, 140);
-        cursor: pointer;
-      }
-      .error{
-        color: #f00;
-        background-color: orange;
-      }
-
-/* í«â¡ämîFâÊñ ï\é¶ÇÃå¬ï íËã` */
-    
-    .confirm_title_comment{
-      color: red;
-      height: 20px;
-      width: 600px;
-      text-align: left;
-    }
-    .confirm_title_comment_main{
-      margin: 0 10px 0 0;
-      font-size: 15px;
-    }
-    .confirm_title_comment_sub{
-      font-size: 13px;
-    }
-     .table_main_tuika_confirm{
-      margin: 10px 0 0 0;
-      padding: 0;
-      width: 630px;
-      height: 385px;
-      overflow-y: scroll;
-    }
-      .table_main_tuika_confirm #header{
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        color: #ffffff;
-        background-color : #804000;
-      }
-      .table_main_tuika_confirm #newtype{
-        margin: 0;
-        padding: 0;
-        width: 130px;
-      }
-      .table_main_tuika_confirm #newnaiyo{
-        margin: 0;
-        padding: 0;
-        width: 500px;
-      }
-      .table_main_tuika_confirm span.main{
-        margin: 0 20px 0 0;
-        padding: 0;
-        
-      }
-      .table_main_tuika_confirm span.sub{
-        margin: 0;
-        padding: 0;
-        font-size: 14px;
-      }
-      .table_main_tuika_confirm tr{
-        margin: 0;
-        padding: 0;
-        height: 40px;
-      }
-      .table_main_tuika_confirm td{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-      }
-      .table_main_tuika_confirm label{
-        margin: 0;
-        padding: 0 5px 0 5px;
-      }
-      .table_main_tuika_confirm td:hover{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        background: orange;
-      }
-.confirm_submit{
-    margin: 10px 0 0 0;
-    text-align: left;
+    vertical-align: top;
+    text-align: center;
+    height: 60px;
 }
 
-.confirm_submit #register{
-    margin: 0 0 0 70px;
-    color: black;
-    font-size: 20px;
-    -webkit-border-radius: 10px;
-    width: 160px;
-    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
-    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
-    background: rgb(231, 206, 140);
-    cursor: pointer;
-}
 
-.confirm_submit #return{
-    margin: 0 30px 0 0;
-    color: black;
-    font-size: 14px;
-    -webkit-border-radius: 10px;
-    width: 155px;
-    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
-    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
-    background: rgb(231, 206, 140);
-    cursor: pointer;
-}
-      .error{
-        color: #f00;
-        background-color: orange;
-      }
-      .warn{
-        color: #f00;
-        background-color: orange;
-      }
 
-/* í«â¡ìoò^ê¨å˜âÊñ ï\é¶ÇÃå¬ï íËã` */
-    
-    .succcess_comment{
-      color: black;
-      height: 20px;
-      width: 600px;
-      text-align: center;
-    }
 
- /* íhâ∆åüçıåãâ ï\é¶ÇÃå¬ï íËã` */
-    .table_main_result{
-      margin: 10px 0 0 0;
-      padding: 0;
-      width: 630px;
-      height: 350px;
-      overflow-y: scroll;
-    }
-    .table_main_result table{
-        border-width: 1px;
-        border-style: solid;
-        border-color: #D1CCC4;
-    }
-      .table_main_result th{
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        color: #ffffff;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        background-color : #804000;
-      }
-      .table_main_result td{
-        margin: 0;
-        padding: 2px 0 0 10px;
-        height: 30px;
-        text-align: left;
-        font-size: 12px;
-        border: solid 1px #BA802F;
-        border-collapse: collapse;
-        cursor: pointer;
-      }
-      .table_name_full_th{
-        width: 135px;
-      }
-      .table_danka_type_danka_th{
-        width: 30px;
-      }
-      .table_danka_type_shinto_th{
-        width: 30px;
-      }
-      .table_tiku_name_th{
-        width: 120px;
-      }
-      .table_sewa_name_th{
-        width: 120px;
-      }
-      .table_name_full_kosyu_th{
-        width: 135px;
-      }
-      .table_kako_th{
-        width: 30px;
-      }
-      .table_main_result tr{
-        margin: 0;
-        padding: 0;
-      }
-      .even{
-        background: #ffdfbf;
-      }
-      .table_main_result tbody tr:hover{
-        background: orange;
-      }
-      .hide{
-        display: none;
-      }
-      .hide_fix{
-        display: none;
-      }
-
-/* í«â¡ìoò^ê¨å˜âÊñ ï\é¶ÇÃå¬ï íËã` */

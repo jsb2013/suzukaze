@@ -19,10 +19,26 @@ function isUndefine(value){
     return false;
 }
 
+function isUndefineOrNotNumeric(value){
+    if (value === undefined || value === null || value ==='' || value === "null" || value === "undefined" || isNaN(value)){
+        return true;
+    }
+    return false;
+}
+
+function isUndefineForList(value){
+    if (value === undefined || value === null || value ==='' || value.length == 0){
+        return true;
+    }
+    return false;
+};
+
 function convertNullToMoji(value, moji){
     if(isUndefine(value)){
-        document.write('<label>' + moji + '</label>');
+        document.write(moji);
         return;
     }
-    return document.write('<label>' + value + '</label>');
+    return document.write(value);
 }
+
+

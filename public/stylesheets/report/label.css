@@ -1,0 +1,69 @@
+/* A4印刷設定 */
+body {
+  margin: 0;
+  padding: 0;
+  width: 210mm;
+  background-color: white;
+  background-image: none;
+}
+head+body {
+  width: 210mm;
+  max-width: 210mm;
+  min-width: 210mm;
+  margin: 0 auto;
+}
+
+body > div {
+  position: relative;
+}
+
+.backImage {
+  position:relative;
+  top: 0;
+  left: 0;
+  text-align:center;
+}
+
+.text {
+  position: absolute;
+}
+
+.page-breaker {
+  page-break-before: always;
+  page-break-inside: avoid;
+  page-break-after: always;
+}
+
+/* 印刷時の余白 */
+@page {
+ margin-top:0;
+ margin-bottom:0;
+ margin-left:0;
+ margin-right:0;
+}
+
+
+/* WOFFフォント設定 */
+@font-face {
+  font-family:'font_ipa_min';
+  src: url("/font/ipaexm.woff") format('woff');
+}
+
+@font-face {
+  font-family:'font_ipa_gos';
+  src: url("/font/ipaexg.woff") format('woff');
+}
+
+
+/* 印刷内容の装飾 */
+atena {
+  font-size: 3.5mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+atena_name {
+  font-size: 5mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+  left: 141mm;
+}

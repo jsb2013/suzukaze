@@ -1,0 +1,183 @@
+@charset "UTF-8";
+
+/* 位置調整 */
+.text-right{
+    text-align: right;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.padding-default{
+    padding: 5px 5px 0 5px;
+}
+
+.padding-left-zero{
+    padding-left: 0;
+}
+
+.padding-right-zero{
+    padding-right: 0;
+}
+
+.padding-side-zero{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.margin-side-zero{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.margin-top-default{
+    margin-top: 8px;
+}
+
+.margin-right-zero{
+    margin-right: 0;
+}
+
+.padding-left-default{
+    padding-left: 5px;
+}
+
+.padding-right-default{
+    padding-left: 5px;
+}
+
+.padding-top-default{
+    padding-top: 5px;
+}
+
+.style-name-in-table{
+    padding: 8px 5px 0 5px;
+}
+
+.style-string-in-table{
+    padding: 12px 0 0 0;
+    width: 10px;
+}
+
+.style-yoto-string{
+    padding: 12px 0 0 10px;
+    width: 40px;
+    text-align: right;
+}
+
+.style-yoto-input-text{
+    width: 133px;
+}
+
+.style-danka-type{
+    padding: 2px 0 0 5px;
+}
+
+.table-header-item-width-default{
+    width: 20%;
+}
+
+.table-header-naiyo-width-default{
+    width: 80%;
+}
+
+/* テーブル定義 */
+table tbody tr td{
+    font-size: small;
+    text-align: left;
+}
+
+table thead tr{
+    height: 30px;
+    color: #ffffff;
+    background-color : #804000;
+}
+
+table thead tr th{
+    text-align: center;
+    font-size: small;
+}
+
+.select-size-default{
+    width: 100px;
+}
+
+.table-selectable:hover{
+    background: orange;
+}
+
+.header-selectable:hover{
+    background: black;
+}
+
+/* バリデーションエラー */
+.error{
+    clear: both;
+    color: #f00;
+    background-color: orange;
+}
+
+.warn{
+    color: #f00;
+    background-color: orange;
+}
+
+.even{
+    background: #ffdfbf;
+}
+
+.hide{
+    display: none;
+}
+
+.hide_fix{
+    display: none;
+}
+
+/* 表の上に説明書きをする際のレイアウト */
+.title_comment{
+    height: 23px;
+    width: 630px;
+    text-align: left;
+    color: black;
+    font-size: medium;
+    background-color : rgb(231, 206, 140);
+}
+
+/* 表の上に説明書きをする際のレイアウト(確認画面) */
+.confirm_title_comment{
+    margin: 0 10px 0 0;
+    color: red;
+    height: 23px;
+    width: 630px;
+    text-align: left;
+}
+
+.confirm_title_comment_main{
+    font-size: medium;
+}
+    
+.confirm_title_comment_sub{
+    font-size: small;
+}
+
+/* その他 */
+.cursor-pointer{
+    cursor: pointer;
+}
+
+/* DB登録完了メッセージ */ 
+.succcess_comment{
+    color: black;
+    height: 20px;
+    width: 630px;
+    text-align: center;
+}
+
+
+

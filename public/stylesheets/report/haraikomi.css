@@ -142,68 +142,103 @@ juryokanyuName {
 }
 
 /* ケタ合わせが必要なフィールド群の位置設定 */
-/* win-ie用位置調整 */
-.win.ie .textKingakuPosition {
+.textKouzaNo1Position {
+  position: absolute;
+  top: 196mm;
+  left: 7mm;
+}
+
+.textKouzaNo2Position {
+  position: absolute;
+  top: 196mm;
+  left: 41mm;
+}
+
+.textKouzaNo3Position {
+  position: absolute;
+  top: 196mm;
+  left: 39mm;
+}
+
+.textKingakuPosition {
   position: absolute;
   top: 196mm;
   left: 85mm;
 }
 
-.win.ie .textGoiraiKingakuPosition {
+.textGoiraiKouzaNo3Position {
+  position: absolute;
+  top: 207mm;
+  left: 141mm;
+}
+
+.textGoiraiKingakuPosition {
   position: absolute;
   top: 228mm;
   left: 141mm;
 }
+
+/* win-ie用位置調整 */
+/*.win.ie .textKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 196mm;*/
+/*  left: 85mm;*/
+/*}*/
+
+/*.win.ie .textGoiraiKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 228mm;*/
+/*  left: 141mm;*/
+/*}*/
 
 /* win-chrome用位置調整 */
-.win.chrome .textKingakuPosition {
-  position: absolute;
-  top: 196mm;
-  left: 85mm;
-}
+/*.win.chrome .textKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 196mm;*/
+/*  left: 85mm;*/
+/*}*/
 
-.win.chrome .textGoiraiKingakuPosition {
-  position: absolute;
-  top: 228mm;
-  left: 141mm;
-}
+/*.win.chrome .textGoiraiKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 228mm;*/
+/*  left: 141mm;*/
+/*}*/
 
 /* mac-chrome用位置調整 */
-.mac.chrome .textKingakuPosition {
-  position: absolute;
-  top: 196mm;
-  left: 85mm;
-}
+/*.mac.chrome .textKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 196mm;*/
+/*  left: 85mm;*/
+/*}*/
 
-.mac.chrome .textGoiraiKingakuPosition {
-  position: absolute;
-  top: 228mm;
-  left: 141mm;
-}
+/*.mac.chrome .textGoiraiKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 228mm;*/
+/*  left: 141mm;*/
+/*}*/
 
 /* chrome用位置調整 */
-.chrome .textKingakuPosition {
-  position: absolute;
-  top: 196mm;
-  left: 85mm;
-}
+/*.chrome .textKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 196mm;*/
+/*  left: 85mm;*/
+/*}*/
 
-.chrome .textGoiraiKingakuPosition {
-  position: absolute;
-  top: 228mm;
-  left: 141mm;
-}
+/*.chrome .textGoiraiKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 228mm;*/
+/*  left: 141mm;*/
+/*}*/
 
 /* firefox用位置調整 */
-.gecko .textKingakuPosition {
-  position: absolute;
-  top: 196mm;
-  left: 85mm;
-}
+/*.gecko .textKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 196mm;*/
+/*  left: 85mm;*/
+/*}*/
 
-.gecko .textGoiraiKingakuPosition {
-  position: absolute;
-  top: 228mm;
-  left: 141mm;
-}
-
+/*.gecko .textGoiraiKingakuPosition {*/
+/*  position: absolute;*/
+/*  top: 228mm;*/
+/*  left: 141mm;*/
+/*}*/

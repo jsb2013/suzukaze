@@ -10,11 +10,9 @@ var log = require("../../../util/logger");
 var logger = log.createLogger();
 var util = require("../../../util/util");
 var async = require("async");
-var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mMemberDao = require("../../../dao/mMemberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
-var convert50on = require("../../../conf/convert50on");
 var fs = require("fs");
 
 /* 檀家追加画面メイン（post処理） */
@@ -29,10 +27,6 @@ exports.main = function (callback) {
         function (dbcallback) {
             mTikuCodeDao.getMTikuCode(client, database, tikuList, dbcallback);
         },
-    // 世話コードマスタを取得する
-        function (dbcallback) {
-            mSewaCodeDao.getMSewaCode(client, database, sewaList, dbcallback);
-        },
     // タグコードマスタを取得する
         function (dbcallback) {
             mTagsDao.getMTags(client, database, tagList, dbcallback);
@@ -43,20 +37,15 @@ exports.main = function (callback) {
                 callback(true);
                 return;
             }
-
             var tikuInfoJson = convertTikuListToJson(tikuList);
             if (!tikuInfoJson) {
-                callback(true);
-            }
-            var sewaInfoJson = convertSewaListToJson(sewaList);
-            if (!sewaInfoJson) {
                 callback(true);
             }
             var tagInfoJson = convertTagListToJson(tagList);
             if (!tagInfoJson) {
                 callback(true);
             }
-            callback(false, tikuInfoJson, tikuList, sewaInfoJson, sewaList, tagInfoJson, tagList);
+            callback(false, tikuInfoJson, tikuList, tagInfoJson, tagList);
             return;
         }
     );
@@ -133,3 +122,4 @@ function convertTagListToJson(tagList) {
     }
     return tagInfoJson;
 }
+
