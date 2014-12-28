@@ -5596,3 +5596,5 @@ update t_danka set yobi_1 = 1 where member_id = 428;
 update t_danka set yobi_1 = NULL where member_id = 535;
 update t_danka set yobi_1 = 48 where member_id = 421;
 update t_danka set yobi_1 = NULL where member_id = 10004;
+
+INSERT INTO t_dbupdate_set(dbcode, updatable, yobi_1, yobi_2, create_user, create_date, update_user, update_date) VALUES (1, 0, null, null, 'yamashita', now(), 'yamashita', now());
