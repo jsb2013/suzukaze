@@ -1,0 +1,223 @@
+@charset "UTF-8";
+
+/* テキスト位置調整 */
+.text-right{
+    text-align: right;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-center{
+    text-align: center;
+}
+
+/* padding定義 */
+.padding-default{
+    padding: 3px 5px 3px 5px;
+}
+
+.padding-left-default{
+    padding-left: 5px;
+}
+
+.padding-right-default{
+    padding-left: 5px;
+}
+
+.padding-top-default{
+    padding-top: 3px;
+}
+
+.padding-top-bottom-default{
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.padding-left-zero{
+    padding-left: 0;
+}
+
+.padding-right-zero{
+    padding-right: 0;
+}
+
+.padding-side-zero{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* margin定義 */
+.margin-top-default{
+    margin-top: 8px;
+}
+
+.margin-side-zero{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.margin-right-zero{
+    margin-right: 0;
+}
+
+.margin-zero{
+    margin: 0;
+}
+
+/* table定義 */
+/* フォーム型の項目列は、"padding-default"、登録内容列は、"table-selectable"を指定する。
+   項目列に"必須"マークを付与する場合は、"style-mark-in-table"を指定。
+   フォーム型のヘッダー部は、"table-header-item-width-default"、"table-header-naiyo-width-default"を指定する。※追加画面例 */
+
+.padding-margin-default-in-table{
+    padding: 5px 5px 0 5px;
+    margin: 0;
+}
+
+table thead tr{
+    height: 30px;
+    color: #ffffff;
+    background-color : #804000;
+}
+
+table thead tr th{
+    text-align: center;
+    font-size: small;
+}
+
+table tbody tr td{
+    font-size: small;
+    text-align: left;
+}
+
+/* table定義-追加画面用だが、他画面の多くで流用できそうなので、共通に入れておく。 */
+.table-header-item-width-default{
+    width: 20%;
+}
+
+.table-header-naiyo-width-default{
+    width: 80%;
+}
+
+.style-name-in-table{
+    padding: 8px 5px 0 5px;
+}
+
+.style-mark-in-table{
+    margin: 5px 5px 0 0;
+    float: right;
+}
+
+.style-string-in-table{
+    padding: 12px 0 0 0;
+    width: 10px;
+}
+
+.style-yoto-string{
+    padding: 12px 0 0 10px;
+    width: 40px;
+    text-align: right;
+}
+
+.style-yoto-input-text{
+    width: 133px;
+}
+
+.style-danka-type{
+    padding: 2px 0 0 5px;
+}
+
+.select-size-default{  /* セレクトリストに指定する */
+    width: 100px;
+}
+
+.table-selectable:hover{   /* 内容列に指定する */
+    background: orange;
+}
+
+.header-selectable:hover{   /* 内容列に指定する(ソート機能搭載した所) */
+    background: black;
+}
+
+/* バリデーションエラー */
+.error{
+    clear: both;
+    color: #f00;
+    background-color: orange;
+}
+
+.warn{
+    color: #f00;
+    background-color: orange;
+}
+
+.even{
+    background: #ffdfbf;
+}
+
+.hide{
+    display: none;
+}
+
+.hide_fix{
+    display: none;
+}
+
+textarea{
+    resize: vertical;
+}
+
+/* 表の上に説明書きをする際のレイアウト(確認画面) */
+.confirm_title_comment{
+    margin: 0 10px 0 0;
+    color: red;
+    height: 23px;
+    width: 630px;
+    text-align: left;
+}
+
+.confirm_title_comment_main{
+    font-size: medium;
+}
+    
+.confirm_title_comment_sub{
+    font-size: small;
+}
+
+/* その他 */
+.cursor-pointer{
+    cursor: pointer;
+}
+
+/* DB登録完了メッセージ */ 
+.succcess_comment{
+    color: black;
+    height: 45px;
+    width: 630px;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0 0 0;
+    padding: 10px 0;
+    background-color: rgba(128, 64, 2, 0.2);
+    border-radius: 5px;
+}
+
+/* DB登録NGメッセージ */ 
+.db_error_comment{
+    color: black;
+    height: 80px;
+    width: 630px;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0 0 0;
+    padding: 10px 0;
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 5px;
+}
+
+/* clear both */ 
+.clear_both{
+    clear: both;
+}

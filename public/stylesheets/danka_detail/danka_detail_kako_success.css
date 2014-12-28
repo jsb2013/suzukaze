@@ -1,9 +1,8 @@
 @charset "Shift_JIS";
 
-/* ‹¤’Ê’è‹` */
+/* å…±é€šå®šç¾© */
 .inner_main{
     margin: 10px 0 0 0;
-    text-align: left;
 }
 
 .title_comment{
@@ -12,25 +11,6 @@
     width: 615px;
     text-align: center;
 }
-
-.return_button{
-    margin: 25px 0 0 0;
-    width: 615px;
-    text-align: center;
-}
-
-.return_button #return{
-    color: black;
-    font-size: 14px;
-    height: 25px;
-    -webkit-border-radius: 10px;
-    width: 130px;
-    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
-    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
-    background: rgb(231, 206, 140);
-    cursor: pointer;
-}
-
 
 
 

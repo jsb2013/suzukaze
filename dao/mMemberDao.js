@@ -192,7 +192,7 @@ exports.insertMMemberNotMemberId = function (client, database, baseInfo, dbcallb
 exports.getMmemberAndTDankaByFurigana = function(client, database, searchMoji, rows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select mm1.member_id, td.danka_type, mm1.name_sei, mm1.name_na, mm1.tags, mm1.is_arive, td.tiku_code, td.sewa_code, mm2.name_sei as name_sei_kosyu, mm2.name_na as name_na_kosyu, mm2.member_id as member_id_kosyu from (m_member as mm1 inner join t_danka as td on mm1.member_id = td.member_id) inner join m_member as mm2 on td.member_id_kosyu = mm2.member_id where mm1.is_disabled=false and mm1.is_deleted=false and mm2.is_disabled=false and mm2.is_deleted=false and td.is_deleted=false and ((mm1.furigana_sei like $1)or(mm1.furigana_na like $1)) order by mm1.member_id',
+    var query = client.query('select mm1.member_id, td.danka_type, mm1.name_sei, mm1.name_na, mm1.tags, mm1.is_arive, td.tiku_code, td.sewa_code, td.member_id_kosyu, td.jiin from m_member as mm1 inner join t_danka as td on mm1.member_id = td.member_id where mm1.is_disabled=false and mm1.is_deleted=false and td.is_deleted=false and ((mm1.furigana_sei like $1)or(mm1.furigana_na like $1)) order by mm1.member_id',
                     [searchMoji + '%']);
 
     query.on('row', function(row) {
@@ -278,7 +278,7 @@ exports.getMmemberAndTDankaByMemberId = function(client, database, memberId, row
 exports.getMmemberAndTDanka = function (client, database, rows, dbcallback) {
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select mm1.member_id, td.danka_type, mm1.name_sei, mm1.name_na, mm1.furigana_sei, mm1.furigana_na, mm1.sex, mm1.tags, mm1.is_arive, td.tiku_code, td.sewa_code, mm2.name_sei as name_sei_kosyu, mm2.name_na as name_na_kosyu, mm2.member_id as member_id_kosyu, td.jiin from (m_member as mm1 inner join t_danka as td on mm1.member_id = td.member_id) inner join m_member as mm2 on td.member_id_kosyu = mm2.member_id where mm1.is_disabled=false and mm1.is_deleted=false and mm2.is_disabled=false and mm2.is_deleted=false and td.is_deleted=false');
+    var query = client.query('select mm1.member_id, td.danka_type, mm1.name_sei, mm1.name_na, mm1.furigana_sei, mm1.furigana_na, mm1.sex, mm1.tags, mm1.is_arive, td.tiku_code, td.sewa_code, td.member_id_kosyu, td.jiin from m_member as mm1 inner join t_danka as td on mm1.member_id = td.member_id where mm1.is_disabled=false and mm1.is_deleted=false and td.is_deleted=false');
 
     query.on('row', function (row) {
         rows.push(row);
@@ -325,9 +325,10 @@ exports.getMMemberByName = function(client, database, baseInfo, rows, dbcallback
     var nameNa = baseInfo.name_na;
     var furiganaSei = baseInfo.furigana_sei;
     var furiganaNa = baseInfo.furigana_na;
+    var furiganaFull = furiganaSei + furiganaNa;
 
-    var query = client.query('select * from m_member where name_sei = $1 and name_na = $2 and furigana_sei = $3 and furigana_na = $4',
-             [nameSei, nameNa, furiganaSei, furiganaNa]);
+    var query = client.query('select * from m_member where name_sei = $1 and name_na = $2 and ((furigana_sei = $3 and furigana_na = $4) or (furigana_sei = $5) or (furigana_na = $5))',
+             [nameSei, nameNa, furiganaSei, furiganaNa, furiganaFull]);
 
     query.on('row', function(row) {
         rows.push(row);
@@ -348,6 +349,7 @@ exports.getMMemberByName = function(client, database, baseInfo, rows, dbcallback
             return;
         }
         // callback(normal end)
+        util.convertJsonNullToBlankForAllItem(rows);
         dbcallback(null);
         return;
     });
@@ -396,6 +398,7 @@ exports.getMMemberForMemberIdByName = function(client, database, baseInfo, rows,
         }
         // callback(normal end)
         if (rows.length === 1) {
+            util.convertJsonNullToBlankForAllItem(rows);
             dbcallback(null);
             return;
         }
@@ -417,3 +420,5 @@ exports.getMMemberForMemberIdByName = function(client, database, baseInfo, rows,
         return;
     });
 }
+
+

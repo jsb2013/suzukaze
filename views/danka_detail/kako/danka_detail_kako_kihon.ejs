@@ -1,15 +1,26 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
+
+  <!-- jQuery JS -->
+  <script src="js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+<link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" id="zen_main_danka_detail">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_common.css" type="text/css" id="danka_detail_common">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kako_kihon.css" type="text/css" id="danka_detail_kihon">
-<title>檀家管理システム　禅</title>
-<script src="js/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
+
 <script src="js/util.js"></script>
 <script src="js/dankaInfo.js"></script>
+
+<title>檀家管理システム　禅</title>
+
 <%
     var memberId = kosyuInfo.member_id;
     var dankaType = kosyuInfo.danka_type;
@@ -90,21 +101,21 @@
                     if($(this).val() == ""){
                         if($(this).hasClass("duplicate_pre")){
                             isDuplicate = "1";
-                            $(this).parent().append("<p class='error'>値が設定されていません。</p>");
-                            $(this).parent().addClass("error");
+                            $(this).parent().parent().append("<p class='error'>値が設定されていません。</p>");
+                            $(this).parent().parent().addClass("error");
                         } else if($(this).hasClass("duplicate_end") && isDuplicate == "1"){
                             isDuplicate = "0";
                         } else {
-                            $(this).parent().append("<p class='error'>値が設定されていません。</p>");
-                            $(this).parent().addClass("error");
+                            $(this).parent().parent().append("<p class='error'>値が設定されていません。</p>");
+                            $(this).parent().parent().addClass("error");
                         }
                     }
                 }
                 // 数字項目チェック
                 if ($(this).hasClass("number")) {
                     if (isNaN($(this).val())) {
-                        $(this).parent().append("<p>数値が設定されていません。</p>");
-                        $(this).parent().addClass("error");
+                        $(this).parent().parent().append("<p>数値が設定されていません。</p>");
+                        $(this).parent().parent().addClass("error");
                     }
                 }
             });
@@ -194,17 +205,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
+            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li><span class="ja">台帳管理</span><span class="en">master</span>
-            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
+            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -215,11 +226,11 @@
     <div id="wrapper">
       <!-- inner_title -->
       <div class="inner_title">
-        <div class="title">
+        <div id="title">
    	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
         </div>
         <div class="kosyu_info">
-   	      <table>
+   	      <table class="table table-bordered table-condensed">
               <thead>
                 <tr>
                   <th class="kosyu_info_kosyu_th">戸主名</th>
@@ -231,11 +242,11 @@
               </thead>
               <tbody>
                 <tr id="<%= memberId %>">
-                  <td class="table_name_full"><%= nameFull %></td>
-                  <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
-                  <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
-                  <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
-                  <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
+                <td class="table_name_full"><div class="padding-default"><%= nameFull %></div></td>
+                <td class="table_danka_type_danka"><div class="padding-default text-center"><%= dankaTypeDanka %></div></td>
+                <td class="table_danka_type_shinto"><div class="padding-default text-center"><%= dankaTypeShinto %></div></td>
+                <td id="<%= tikuCode %>" class="table_tiku_name"><div class="padding-default"><%= tikuName %></div></td>
+                <td id="<%= sewaCode %>" class="table_sewa_name"><div class="padding-default"><%= sewaName %></div></td>
                 </tr>
               </tbody>
             </table>
@@ -253,7 +264,7 @@
       <div class="inner_main">
         <form action="danka_detail_kako_confirm" id="main_form" method="post">
           <div class="table_main_kihon">
-            <table>
+            <table class="table table-bordered table-condensed">
               <thead>
                 <tr class="table_main_kihon_header">
                   <th class="table_main_kihon_header_komoku">登録項目</td>
@@ -262,72 +273,115 @@
               </thead>
               <tbody>
                 <tr>
-                  <td id="name_type">俗名 ※必須</td>
-                  <td id="name" class="table_main_tuika_selectable">
-                      <label for="name_seimei">姓: </label><input type="text" name="name_sei_kako" class="chenge_check validate require duplicate_pre" value="<%= nameSeiKako %>">
-                      <label for="name_seimei">名: </label><input type="text" name="name_na_kako" class="chenge_check validate require duplicate_end" value="<%= nameNaKako %>">
+                  <td><label class="padding-default">俗名 ※必須</label></td>
+                  <td class="table-selectable">
+                      <div class="col col-sm-1 style-name-in-table">姓</div>
+                      <div class="col col-sm-5 padding-left-zero">
+                        <input type="text" name="name_sei_kako" class="form-control input-sm chenge_check validate require duplicate_pre" value="<%= nameSeiKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-name-in-table">名</div>
+                      <div class="col col-sm-5 padding-left-zero">
+                        <input type="text" name="name_na_kako" class="form-control input-sm chenge_check validate require duplicate_end" value="<%= nameNaKako %>">
+                      </div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="furigana_type">俗名（ふりがな）※必須</td>
-                  <td id="furigana" class="table_main_tuika_selectable">
-                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei_kako" class="chenge_check validate require duplicate_pre" value="<%= furiganaSeiKako %>">
-                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na_kako" class="chenge_check validate require duplicate_end" value="<%= furiganaNaKako %>">
+                  <td><label class="padding-default">俗名（ふりがな）※必須</label></td>
+                  <td class="table-selectable">
+                      <div class="col col-sm-1 style-name-in-table">せい</div>
+                      <div class="col col-sm-5 padding-left-zero">
+                        <input type="text" name="furigana_sei_kako" class="form-control input-sm chenge_check validate require duplicate_pre" value="<%= furiganaSeiKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-name-in-table">めい</div>
+                      <div class="col col-sm-5 padding-left-zero">
+                        <input type="text" name="furigana_na_kako" class="form-control input-sm chenge_check validate require duplicate_end" value="<%= furiganaNaKako %>">
+                      </div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="kaimyo_type">戒名</td>
-                  <td id="kaimyo" class="table_main_tuika_selectable">
-                    <input type="text" name="kaimyo_kako" class="chenge_check validate duplicate_end kaimyo_size" value="<%= kaimyoKako %>">
+                  <td><label class="padding-default">戒名</label></td>
+                  <td id="region" class="table_main_tuika_selectable">
+                  <div class="col col-sm-7 padding-default">
+                    <input type="text" name="kaimyo_kako" class="form-control input-sm chenge_check validate duplicate_end" value="<%= kaimyoKako %>">
+                  </div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="kaimyo_type">戒名（ふりがな）</td>
-                  <td id="kaimyo_furigana" class="table_main_tuika_selectable">
-                    <input type="text" name="kaimyo_furigana_kako" class="chenge_check validate duplicate_end kaimyo_size" value="<%= kaimyoFuriganaKako %>">
+                  <td><label class="padding-default">戒名（ふりがな）</label></td>
+                  <td id="region" class="table_main_tuika_selectable">
+                  <div class="col col-sm-7 padding-default">
+                    <input type="text" name="kaimyo_furigana_kako" class="form-control input-sm chenge_check validate duplicate_end" value="<%= kaimyoFuriganaKako %>">
+                  </div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="birthday_type">生年月日</td>
-                  <td id="birthday" class="table_main_tuika_selectable">
-                       <input type="text" name="birthday_y_kako" class="chenge_check validate number date_size" value="<%= birthdayYKako %>">
-                       年 <input type="text" name="birthday_m_kako" class="chenge_check validate number date_size" value="<%= birthdayMKako %>">
-                       月 <input type="text" name="birthday_d_kako" class="chenge_check validate number date_size" value="<%= birthdayDKako %>">
-                       日
+                  <td><label class="padding-default">生年月日</label></td>
+                  <td id="birthday_y" class="table_main_tuika_selectable">
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="birthday_y_kako" class="form-control input-sm chenge_check validate number" value="<%= birthdayYKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">年</div>
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="birthday_m_kako" class="form-control input-sm chenge_check validate number" value="<%= birthdayMKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">月</div>
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="birthday_d_kako" class="form-control input-sm chenge_check validate number" value="<%= birthdayDKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">日</div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="meinichi_type">命日</td>
-                  <td id="meinichi" class="table_main_tuika_selectable">
-                       <input type="text" name="meinichi_y_kako" class="chenge_check validate number date_size" value="<%= meinichiYKako %>">
-                       年 <input type="text" name="meinichi_m_kako" class="chenge_check validate number date_size" value="<%= meinichiMKako %>">
-                       月 <input type="text" name="meinichi_d_kako" class="chenge_check validate number date_size" value="<%= meinichiDKako %>">
-                       日
+                  <td><label class="padding-default">命日</label></td>
+                  <td id="birthday_y" class="table_main_tuika_selectable">
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="meinichi_y_kako" class="form-control input-sm chenge_check validate number" value="<%= meinichiYKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">年</div>
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="meinichi_m_kako" class="form-control input-sm chenge_check validate number" value="<%= meinichiMKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">月</div>
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="meinichi_d_kako" class="form-control input-sm chenge_check validate number" value="<%= meinichiDKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">日</div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="kyonen_type">享年</td>
-                  <td id="kyonen" class="chenge_check table_main_tuika_selectable">
-                       <input type="text" name="kyonen_kako" class="chenge_check kyonen_size" value="<%= kyonenKako %>"><label for="kyonen">歳</label>
+                  <td><label class="padding-default">享年</label></td>
+                  <td id="birthday_y" class="table_main_tuika_selectable">
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="kyonen_kako" class="form-control input-sm chenge_check kyonen_size" value="<%= kyonenKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">年</div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="sesyu_name">施主</td>
-                  <td id="name" class="table_main_tuika_selectable">
-                      <label for="name_seimei">姓: </label><input type="text" name="sesyu_sei_kako" class="chenge_check" value="<%= sesyuSeiKako %>">
-                      <label for="name_seimei">名: </label><input type="text" name="sesyu_na_kako" class="chenge_check" value="<%= sesyuNaKako %>">
+                  <td><label class="padding-default">施主</label></td>
+                  <td class="table-selectable">
+                      <div class="col col-sm-1 style-name-in-table">姓</div>
+                      <div class="col col-sm-5 padding-left-zero">
+                        <input type="text" name="sesyu_sei_kako" class="form-control input-sm chenge_check" value="<%= sesyuSeiKako %>">
+                      </div>
+                      <div class="col col-sm-1 style-name-in-table">名</div>
+                      <div class="col col-sm-5 padding-left-zero">
+                        <input type="text" name="sesyu_na_kako" class="form-control input-sm chenge_check" value="<%= sesyuNaKako %>">
+                      </div>
                   </td>
                 </tr>
                 <tr>
-                  <td id="kosyu_name">施主から見た続柄</td>
-                  <td id="relation" class="table_main_tuika_selectable">
-                      <input type="text" name="relation_kako" class="chenge_check" value="<%= relationKako %>">
+                  <td><label class="padding-default">施主から見た続柄</label></td>
+                  <td id="region" class="table_main_tuika_selectable">
+                  <div class="col col-sm-3 padding-default">
+                    <input type="text" name="relation_kako" class="form-control input-sm chenge_check" value="<%= relationKako %>">
+                  </div>
                   </td>
                 </tr>
-
                 <tr>
-                  <td id="tags">タグ</td>
-                  <td id="tag" class="table_main_tuika_selectable">
+                  <td><label class="padding-default">タグ</label></td>
+                  <td class="table-selectable">
+                    <div class="padding-default">
                       <% 
                          var count = 1;
                          for(var i in tagsInfo){
@@ -356,12 +410,13 @@
                             <br>
                             <%}%>                      
                       <%}%>
+                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td class="comment_type">備考<br>※500文字以内</td>
-                  <td class="comment table_main_tuika_selectable">
-                     <textarea name="comment_kako" class="textarea_size"><%= commentKako %></textarea>
+                  <td><label class="padding-default">備考<br>※500文字以内</label></td>
+                  <td id="comment" class="table_main_tuika_selectable padding-default">
+                     <textarea name="comment_kako" class="form-control input-sm"><%= commentKako %></textarea></p>
                   </td>
                 </tr>
               </tbody>
@@ -389,9 +444,13 @@
           <input type="hidden" name="comment_kako_bk" value="<%= commentKako %>">
           <input type="hidden" name="member_id_kosyu" value=<%= memberId %>>
           <input type="hidden" name="tags" value=dummy>
-          <div class="kihon_submit">
-            <button type="button" id="return" class="button">過去帳に戻る</button>
-            <input type="submit" value="変更内容確認" id="register" class="button">
+          <div class="row">
+            <div class="col col-sm-3 text-left">
+                <button type="button" id="return" class="btn btn-primary btn-sm">過去帳に戻る</button>
+            </div>
+            <div class="col col-sm-6">
+                <button type="submit" id="register" class="btn btn-success btn-lg">　変更内容確認　</button>
+            </div>
           </div>
         </form>
       </div>
@@ -427,3 +486,4 @@
 </div>
 </body>
 </html>
+

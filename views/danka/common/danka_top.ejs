@@ -1,11 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka">
+
+  <!-- jQuery JS -->
+  <script src="js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+<link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" id="zen_main_danka">
+<link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
+
 <title>檀家管理システム　禅</title>
-<script src="js/jquery-1.10.2.min.js"></script>
+
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
@@ -39,17 +49,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
+            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li><span class="ja">台帳管理</span><span class="en">master</span>
-            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
+            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -67,7 +77,6 @@
           <ul>
             <li><a href="/danka_syosai_new">検索(簡易)</a>
             <li><a href="/danka_50">検索(50音)</a> 
-            <li><a href="/danka_syosai">検索(詳細)</a>
             <li><a href="/danka_tuika">戸主追加</a> 
           </ul>
         </div>
@@ -92,3 +101,4 @@
 </div>
 </body>
 </html>
+

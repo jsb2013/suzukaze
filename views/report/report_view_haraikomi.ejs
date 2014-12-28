@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-
-<!--
-tyohyoTypeNoにより内容を変更する
-１の時：裏面を表示しない
-２の時：表面を表示しない
-３の時：両面を表示する
-
-previewFlagにより内容を変更する
-１の時：印刷テスト用の1cmトンボを表示する
-２の時：表示しない
--->
-　
 <html lang="jp">
   <head>
     <meta charset="utf-8">
@@ -90,7 +78,7 @@ previewFlagにより内容を変更する
     
             <!-- 送付状 -->
             <div class="text" style="top: 95mm; left: 10mm; width: 660px;">
-              <textarea rows="12" cols="77" class="souhujo" style="border:none;resize: none; overflow:hidden;" readonly ><%= page.souhujo %></textarea>
+              <textarea rows="12" cols="77" class="souhujo" style="border:none;resize: none; overflow:hidden;" readonly disabled><%= page.souhujo %></textarea>
             </div>
     
             <!-- 送付状の金額 -->
@@ -99,18 +87,30 @@ previewFlagにより内容を変更する
             </div>
     
             <!-- 口座番号1 -->
-            <div class="text" style="top: 197mm; left: 20mm;">
-              <kouzaNo1 class="ketafont"><%= page.kouzaNo1 %></kouzaNo1>
+            <div class="textKouzaNo1Position">
+              <table style="border-style:none" width="150px">
+    	          <tr>
+    		          <td class="ketafont" text-align="right"><%= page.kouzaNo1 %></td>
+    	          </tr>
+              </table>
             </div>
     
             <!-- 口座番号2 -->
-            <div class="text" style="top: 197mm; left: 48mm;">
-              <kouzaNo2 class="ketafont"><%= page.kouzaNo2 %></kouzaNo2>
+            <div class="textKouzaNo2Position">
+              <table style="border-style:none" width="50px">
+    	          <tr>
+    		          <td class="ketafont" text-align="right"><%= page.kouzaNo2 %></td>
+    	          </tr>
+              </table>
             </div>
     
             <!-- 口座番号3 -->
-            <div class="text" style="top: 197mm; left: 55mm;">
-              <kouzaNo3 class="ketafont"><%= page.kouzaNo3 %></kouzaNo3>
+            <div class="textKouzaNo3Position">
+              <table style="border-style:none" width="200px">
+    	          <tr>
+    		          <td class="ketafont" text-align="right"><%= page.kouzaNo3 %></td>
+    	          </tr>
+              </table>
             </div>
     
             <!-- 金額 -->
@@ -139,7 +139,7 @@ previewFlagにより内容を変更する
     
             <!-- 通信欄 -->
             <div class="text" style="top: 216mm; left: 30mm;">
-              <textarea rows="4" cols="50" class="tuusin" style="border:none;resize: none; overflow:hidden;" readonly><%= page.tusinRan %></textarea>
+              <textarea rows="4" cols="50" class="tuusin" style="border:none;resize: none; overflow:hidden;" readonly disabled><%= page.tusinRan %></textarea>
             </div>
     
             <!-- ご依頼人_郵便番号 -->
@@ -178,8 +178,12 @@ previewFlagにより内容を変更する
             </div>
     
             <!-- 受領_口座番号3 -->
-            <div class="text" style="top: 208mm; left: 157mm;">
-              <kouzaNo3 class="ketafont"><%= page.kouzaNo3 %></kouzaNo3>
+            <div class="textGoiraiKouzaNo3Position">
+              <table style="border-style:none" width="200px">
+    	          <tr>
+    		          <td class="ketafont" text-align="right"><%= page.kouzaNo3 %></td>
+    	          </tr>
+              </table>
             </div>
 
             <!-- 受領_加入者名 -->
@@ -197,19 +201,19 @@ previewFlagにより内容を変更する
             </div>
 
             <!-- 受領_ご依頼人_郵便番号 -->
-            <div class="text" style="top: 238mm; left: 153mm;">
-              <iraiJusyo>〒<%= page.goiraiYubin[i] %></iraiJusyo>
-            </div>
+            <!-- <div class="text" style="top: 238mm; left: 153mm;"> -->
+              <!-- <iraiJusyo>〒<%= page.goiraiYubin[i] %></iraiJusyo> -->
+            <!-- </div> -->
     
             <!-- 受領_ご依頼人_住所1 -->
-            <div class="text" style="top: 241mm; left: 153mm;">
-              <iraiJusyo><%= page.goiraiJusyo1[i] %></iraiJusyo>
-            </div>
+            <!-- <div class="text" style="top: 241mm; left: 153mm;"> -->
+              <!-- <iraiJusyo><%= page.goiraiJusyo1[i] %></iraiJusyo> -->
+            <!-- </div> -->
     
             <!-- 受領_ご依頼人_住所2 -->
-            <div class="text" style="top: 245mm; left: 153mm;">
-              <iraiJusyo><%= page.goiraiJusyo2[i] %></iraiJusyo>
-            </div>
+            <!-- <div class="text" style="top: 245mm; left: 153mm;"> -->
+              <!-- <iraiJusyo><%= page.goiraiJusyo2[i] %></iraiJusyo> -->
+            <!-- </div> -->
 
             <!-- 受領_ご依頼人_名 -->
             <div class="text" style="top: 251mm; left: 153mm;">

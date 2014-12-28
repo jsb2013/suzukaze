@@ -1,6 +1,6 @@
 @charset "Shift_JIS";
 
-/* 共通定義 */
+/* 蜈ｱ騾壼ｮ夂ｾｩ */
 .inner_title{
     margin: 5px 0 0 0;
 }
@@ -32,14 +32,14 @@
 
 /* ------------------------------ */
 
-/* サマリ戸主表示箇所 */
+/* 繧ｵ繝槭Μ謌ｸ荳ｻ陦ｨ遉ｺ邂�謇 */
 .kosyu_info{
     margin: 5px 0 0 0;
     width: 510px;
     height: 70px;
     text-align: center;
     font-size: 14px;
-    color: #666666; /* 標準文字色 */
+    color: #666666; /* 讓呎ｺ匁枚蟄苓牡 */
 }
 
 .kosyu_info table{
@@ -82,7 +82,7 @@
 }
       
 .kosyu_info tbody tr{
-    background: #ffdfbf;
+    /* background: #ffdfbf; */
 }
 
 /* ------------------------------ */
@@ -104,7 +104,7 @@
 .menu_sub li{
     margin: 0 5px 0 0;
     padding: 5px 0 0 0;
-    height: 26px;
+    height: 30px;
     width: 100px;
     display: block;
     float: left;
@@ -117,3 +117,4 @@
 .menu_sub li:hover{
     background-color : #3c0000;
 }
+

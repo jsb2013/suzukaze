@@ -1,0 +1,180 @@
+/* A4印刷設定 */
+body {
+  margin: 0;
+  padding: 0;
+  width: 210mm;
+  background-color: white;
+  background-image: none;
+}
+head+body {
+  width: 210mm;
+  max-width: 210mm;
+  min-width: 210mm;
+  margin: 0 auto;
+}
+
+body > div {
+  position: relative;
+}
+
+.backImage {
+  position:relative;
+  top: 0;
+  left: 0;
+  text-align:center;
+}
+
+.text {
+  position: absolute;
+}
+
+.page-breaker {
+  page-break-before: always;
+  page-break-inside: avoid;
+  page-break-after: always;
+}
+
+/* 印刷時の余白 */
+@page {
+ margin-top:0;
+ margin-bottom:0;
+ margin-left:0;
+ margin-right:0;
+}
+
+
+/* WOFFフォント設定 */
+/*
+ @font-face {
+  font-family:'font_ipa_min';
+  src: url("/font/ipaexm.woff") format('woff');
+}
+
+@font-face {
+  font-family:'font_ipa_gos';
+  src: url("/font/ipaexg.woff") format('woff');
+}
+*/
+
+/* 印刷内容の装飾 */
+atena {
+  font-size: 4mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+date {
+  font-size: 4mm;
+  font-family:'IPAMincho',serif;
+}
+
+daimei {
+  font-size: 6mm;
+  font-family:'font_ipa_min', serif;
+}
+
+.souhujo {
+  font-size: 5mm;
+  font-family:'font_ipa_min',serif;
+}
+
+kingaku {
+  font-size: 7mm;
+  font-family:'font_ipa_min', serif;
+}
+
+ryoukin {
+  font-size: 5mm;
+  letter-spacing: 0.38em;
+  font-family:'font_ipa_gos',sans-serif;
+}
+
+tokyusyu {
+  font-size: 5mm;
+  letter-spacing: 0.38em;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+kanyuName {
+  font-size: 6mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+.tuusin {
+  font-size: 4mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+iraiJusyo {
+  font-size: 2mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+iraiName {
+  font-size: 4mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+juryokanyuName {
+  font-size: 4mm;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+/* ケタ合わせが必要なフィールド群のフォント設定 */
+/* win-ie用 */
+.win.ie .ketafont {
+  font-size: 5mm;
+  letter-spacing: 0.40em;
+  font-family:'font_ipa_gos', sans-serif;
+}
+
+/* win-chrome用 */
+.win.chrome .ketafont {
+  font-size: 5mm;
+  letter-spacing: 0.40em;
+  font-family:'font_ipa_gos, sans-serif;
+}
+
+/* デフォルト */
+.ketafont {
+  font-size: 5mm;
+  letter-spacing: 0.40em;
+  font-family:'font_ipa_gos',sans-serif;
+  text-align:right; 
+}
+
+/* ケタ合わせが必要なフィールド群の位置設定 */
+.textKouzaNo1Position {
+  position: absolute;
+  top: 198mm;
+  left: 7mm;
+}
+
+.textKouzaNo2Position {
+  position: absolute;
+  top: 198mm;
+  left: 41mm;
+}
+
+.textKouzaNo3Position {
+  position: absolute;
+  top: 198mm;
+  left: 39mm;
+}
+
+.textKingakuPosition {
+  position: absolute;
+  top: 198mm;
+  left: 85mm;
+}
+
+.textGoiraiKouzaNo3Position {
+  position: absolute;
+  top: 209mm;
+  left: 141mm;
+}
+
+.textGoiraiKingakuPosition {
+  position: absolute;
+  top: 230mm;
+  left: 141mm;
+}

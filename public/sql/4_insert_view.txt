@@ -30,6 +30,8 @@ where m_member.is_disabled = False
 	and  m_member.is_deleted = false 
 	and m_address.is_disabled = False 
 	and  m_address.is_deleted = False
+	and m_telnumber.is_disabled = False 
+	and  m_telnumber.is_deleted = False
 	and m_telnumber.priority = 1
 	and m_member.is_arive = 1
 order by furigana;	
@@ -78,10 +80,7 @@ where m_member.member_id = 0;
 
 create view v_typeahead  as 
 select name_sei || ' ' || name_na as id ,name_sei || ' ' || name_na as text from m_member
-where m_member.is_deleted = false and m_member.is_disabled = False
-union 
-select tags as id, '[検索tag] ' || tags as text from m_tags
-where m_tags.is_deleted = false and m_tags.is_disabled = False
+where m_member.is_deleted = false and m_member.is_disabled = False and m_member.is_arive = 1
 order by text;
 
 
@@ -114,17 +113,18 @@ select
     mm.furigana_sei || ' ' || mm.furigana_na as furigana, 
     mm.tags, 
     case is_arive
-        when '1' then '○'
-        when '0' then '-'
+        when '1' then '-'
+        when '0' then '○'
     end as is_arive,
     td.tiku_code, 
     mtc.tiku_name, 
     td.member_id_kosyu,
     case jiin
-	    when '1' then '長伝寺'
-	    when '2' then '水月寺'
-	    when '0' then '不定'
-    end as jiin   
+            when '1' then '長伝寺'
+            when '2' then '水月寺'
+            when '0' then '不定'
+    end as jiin,
+    td.yobi_1 as tiku_number
 from (m_member as mm inner join t_danka as td on mm.member_id = td.member_id)
     inner join m_tiku_code as mtc on td.tiku_code = mtc.tiku_code
 where 
@@ -134,3 +134,11 @@ where
     and mtc.is_deleted=false 
     and td.is_deleted=false 
 order by mm.member_id;
+
+
+
+CREATE VIEW v_member AS
+    SELECT *
+    FROM m_member
+    WHERE is_disabled = false and is_deleted is false;
+

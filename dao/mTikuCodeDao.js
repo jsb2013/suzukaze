@@ -102,3 +102,40 @@ exports.getMTikuCodeForTikuNameByTikuCode = function(client, database, rows, tik
         return;
     });
 }
+
+exports.updateMTikuCodeForTikuNumber = function(client, database, tikuCode, dbcallback){
+    var isDbError = false;
+    var query = client.query('update m_tiku_code set yobi_1 = cast(yobi_1 as int8)+1, update_date=now(), update_user=$1 where tiku_code=$2',
+                    ['yamashita0284', tikuCode]);
+
+    query.on('end', function(row,err) {
+        // session out
+        client.end();
+
+        // database error
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            dbcallback(err);
+            return;
+        }
+        // database error(structure)
+        if (isDbError) {
+            return;
+        }
+        // callback
+        dbcallback(null);
+        return;
+    });
+    
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error(structure)
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}

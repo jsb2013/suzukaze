@@ -1,6 +1,9 @@
-﻿@charset "Shift_JIS";
+@charset "Shift_JIS";
 
 /* 共通定義 */
+html{
+    height: 100%;
+}
 body{
     margin: 0;
     padding: 0;
@@ -12,12 +15,14 @@ body{
     background-position: top center;
     background-repeat: repeat-y;
     background-color: #E5D6AB;
+    height: 100%
 }
 #container{
     margin: 0 auto;
     padding: 0;
     position: relative;
     width: 900px;
+    min-height:100%;
     background-color: #FFFFFF;
     background-image : url(../img/header_img.png);
     background-position: top center;
@@ -57,7 +62,9 @@ body{
   #inner{
       margin: 0;
       padding: 0;
-      height: 550px;
+      overflow: hidden;
+      min-height: 400px;
+      padding-bottom: 50px;
   }
     #menu_box{
       margin: 0;
@@ -90,16 +97,25 @@ body{
           height: 45px;
           line-height: 45px;
           overflow: hidden;
-          background-image : url(../img/menubar.png);
           background-position: top left;
           background-repeat: no-repeat;	
         }
+
+.menu_disable{
+        background-image : url(../img/menubar_disable.png);
+}
+.menu_enable{
+        background-image : url(../img/menubar.png);
+}
           #menu li a{
             margin: 0;
             padding: 0;
             display: block;
             text-align: center;
             text-decoration: none;
+          }
+          #menu li{
+            overflow: hidden;
           }
             #menu li span.ja{
               margin: 0;
@@ -128,7 +144,7 @@ body{
               background-repeat: repeat-x;
             }
     #wrapper{
-      margin: 0;
+      margin: 0 0 10px 0;
       padding: 0;
       float: right;
       width: 650px;
@@ -171,54 +187,65 @@ body{
         margin: 10px 0 0 0;
         padding: 0;
         height: 31px;
-        border-bottom-width: 1px;
+        border-bottom-width: 5px;
         border-bottom-style: solid;
-        border-bottom-color: #BA802F;
+        border-bottom-color: #a97328;
       }
         #menu_sub ul{
           margin: 10px 0 0 0;
           padding: 0;
           list-style-type: none;
+          overflow: hidden;
         }
           #menu_sub li{
             margin: 0 5px 0 0;
-            padding: 1px 0 5px 0;
+            padding: 1px 0 0 0;
             height: 30px;
             width: 100px;
-            display: block;
             float: left;
             font-size: 15px;
             cursor: pointer;
-            background-color : #804000;
+            background-color :  rgba(169, 115, 40, 0.40);
+            border-radius: 5px;
+          }
+          #menu_sub li.selected{
+            margin: 0 5px 0 0;
+            padding: 1px 0 0 0;
+            height: 30px;
+            width: 100px;
+            float: left;
+            font-size: 15px;
+            cursor: pointer;
+            background-color :#a97328;
           }
           #menu_sub a{
             padding: 5px 0 0 0;
             color: #ffffff;
             display: block;
+            border-radius: 5px;
             text-decoration: none;
           }
           #menu_sub a:hover{
             padding: 5px 0 0 0;
             display: block;
             text-decoration: none;
-            background-color : #3c0000;
+            background-color :#5b411c;
           }
     #inner_main{
       margin: 0;
       padding: 0;
-      height: 300px;
     }
   #footer{
-      margin: 0;
-      padding: 0;
-      clear: both;
-      height : 40px;
+    margin: 0 0 15px 0;
+    padding: 0;
+    height: 20px;
+    width: 100%;
+	position: absolute;       /* 絶対位置指定することを定義 */
+	bottom: 0px;              /* 絶対位置指定(左0px,下0px) */
   }
-    #footer_main{
-      margin: 0;
-      padding: 0;
-      height: 20px;
-      background-image : url(../img/footer_img.png);
-      background-position: top left;
-      background-repeat: repeat-x;
-    }
+  #footer_main{
+    height: 20px;
+    background-color: #a97328;
+    background-image : url(../img/header_img.png);
+  }
+

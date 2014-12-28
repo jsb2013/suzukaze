@@ -10,7 +10,6 @@ var log = require("../../../util/logger");
 var logger = log.createLogger();
 var util = require("../../../util/util");
 var async = require("async");
-var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mMemberDao = require("../../../dao/mMemberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
@@ -22,7 +21,6 @@ exports.main = function (baseInfoInWeb, callback) {
 
     var baseInfoInDb = [];
     var tikuList = [];
-    var sewaList = [];
     var tagList = [];
     var resultInfo = [];
 
@@ -31,10 +29,6 @@ exports.main = function (baseInfoInWeb, callback) {
     // 地区コードマスタを取得する
         function (dbcallback) {
             mTikuCodeDao.getMTikuCode(client, database, tikuList, dbcallback);
-        },
-    // 世話コードマスタを取得する
-        function (dbcallback) {
-            mSewaCodeDao.getMSewaCode(client, database, sewaList, dbcallback);
         },
     // タグコードマスタを取得する
         function (dbcallback) {
@@ -62,16 +56,12 @@ exports.main = function (baseInfoInWeb, callback) {
             if (!tikuInfoJson) {
                 callback(true);
             }
-            var sewaInfoJson = convertSewaListToJson(sewaList);
-            if (!sewaInfoJson) {
-                callback(true);
-            }
             var tagInfoJson = convertTagListToJson(tagList);
             if (!tagInfoJson) {
                 callback(true);
             }
             var seachTitle = "－";
-            callback(false, resultInfo, tikuInfoJson, tikuList, sewaInfoJson, sewaList, tagInfoJson, tagList, seachTitle);
+            callback(false, resultInfo, tikuInfoJson, tikuList, tagInfoJson, tagList, seachTitle);
             return;
         }
     );
@@ -90,10 +80,8 @@ function convertListToDankaInfo(dankaListBystring, resultInfo){
         base.tags = stringList[4];
         base.is_arive = stringList[5];
         base.tiku_code = stringList[6];
-        base.sewa_code = stringList[7];
-        base.name_sei_kosyu = stringList[8];
-        base.name_na_kosyu = stringList[9];
-        base.member_id_kosyu = stringList[10];
+        base.member_id_kosyu = stringList[7];
+        base.jiin = stringList[8];
         resultInfo.push(base);
     }
 }
@@ -150,3 +138,4 @@ function convertTagListToJson(tagList) {
     }
     return tagInfoJson;
 }
+

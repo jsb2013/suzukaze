@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+    <!-- Browser selector -->
+    <script src="/js/css_browser_selector.js" type="text/javascript"></script>
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="./stylesheets/report/label.css" media="screen,print" />
+
+    <title>コクヨ(KPC-E110)ラベル</title>
+
+  </head>
+
+  <body>
+
+    <!-- ご依頼人の人数でループ -->
+    <% for(var i=0; i< page.goiraiMei.length ; i = i + 10) {%>
+    
+      <!-- 印刷コンテンツ -->
+      <div>
+            <!-- 帳票画像(郵送窓＋払込票) -->
+            <div class="backImage">
+                <img src="./img/blank_A4.jpg" width=99%;>
+            </div>
+
+
+            <% for(var j=0; j<5; j ++) {%>
+    
+                <% if(typeof page.goiraiYubin[i+j] !== "undefined") {%>
+                    
+                    <!-- 封筒窓_郵便番号 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5) + 'mm;' %> left: 25mm;">
+                      <atena>〒<%= page.goiraiYubin[i+j] %></atena>
+                    </div>
+            
+                    <!-- 封筒窓_住所1 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5 + 10) + 'mm;' %> left: 25mm;">
+                      <atena><%= page.goiraiJusyo1[i+j] %></atena>
+                    </div>
+            
+                    <!-- 封筒窓_住所2 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5 + 15) + 'mm;' %> left: 25mm;">
+                      <atena><%= page.goiraiJusyo2[i+j] %></atena>
+                    </div>
+            
+                    <!-- 封筒窓_宛名 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5 + 30) + 'mm;' %> left: 25mm;">
+                      <atena_name><%= page.goiraiMei[i+j] %>様</atena_name>
+                    </div>
+    
+                <% } %>
+    
+    
+                <% if(typeof page.goiraiYubin[i+j+5] !== "undefined") {%>
+    
+                    <!-- 封筒窓_郵便番号 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5) + 'mm;' %> left: 113mm;">
+                      <atena>〒<%= page.goiraiYubin[i+j+5] %></atena>
+                    </div>
+            
+                    <!-- 封筒窓_住所1 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5 + 10) + 'mm;' %> left: 113mm;">
+                      <atena><%= page.goiraiJusyo1[i+j+5] %></atena>
+                    </div>
+            
+                    <!-- 封筒窓_住所2 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5 + 15) + 'mm;' %> left: 113mm;">
+                      <atena><%= page.goiraiJusyo2[i+j+5] %></atena>
+                    </div>
+            
+                    <!-- 封筒窓_宛名 -->
+                    <div class="text" style= "<%= 'top:' + (j * 50.8 + 26.5 + 30) + 'mm;' %> left: 113mm;">
+                      <atena_name><%= page.goiraiMei[i+j+5] %>様</atena_name>
+                    </div>
+    
+                <% } %>
+    
+            <% } %>
+
+            <!-- 改行 -->
+            <div class="page-breaker"></div>
+      </div>
+
+    <% } %>
+
+
+  </body>
+</html>
+

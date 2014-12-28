@@ -1,10 +1,10 @@
-﻿@charset "Shift_JIS";
+@charset "Shift_JIS";
 
 /* 共通定義 */
 #inner_filter{
     margin: 10px 0 0 0;
     padding: 0;
-    height: 460px;
+    height: 439px;
     font-size: small;
 }
 #inner_fiter_sum{
@@ -27,6 +27,7 @@
     height: 95px;
     width: fill-available;
 }
+
 .padding-right-zero{
     padding-right: 0px;
 }
@@ -117,9 +118,15 @@
       .even{
         background: #ffdfbf;
       }
+      .margin-bottom-zero{
+        margin-bottom: 0;
+      }
       .hide{
         display: none;
       }
       .hide_fix{
         display: none;
       }
+.disable{
+    background-color: #808080;
+}

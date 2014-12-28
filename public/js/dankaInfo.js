@@ -26,14 +26,14 @@ function createHtml(value1, value2){
 
         if(value1 !== value2){
             document.writeln('<td class="is_change">');
-            document.writeln('<label>修正前：' + value1 + '</label><br>');
-            document.write('<label>修正後：' + value2 + '</label>');
+            document.writeln('<div class="padding-default">修正前：' + value1 + '<br>');
+            document.write('修正後：' + value2 + '</div>');
             document.writeln('</td>');
             return;
         }
-        document.writeln('<td>');
-        document.writeln('<label>' + value1 + '</label>');
-        document.writeln('</td>');
+        document.writeln('<td><div class="padding-default">');
+        document.writeln(value1);
+        document.writeln('</div></td>');
         return;
 };
 
@@ -109,4 +109,5 @@ function cutComment(comment, length){
     document.write('<label>' + comment.substring(0, length) + '</label>');
     return;
 };
+
 

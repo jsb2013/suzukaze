@@ -10,7 +10,6 @@ var log = require("../../../util/logger");
 var logger = log.createLogger();
 var util = require("../../../util/util");
 var async = require("async");
-var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mMemberDao = require("../../../dao/mMemberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
@@ -36,17 +35,12 @@ exports.main = function (searchId, callback) {
 
     var resultRows = [];
     var tikuList = [];
-    var sewaList = [];
     var tagList = [];
     async.series([
 
     // 地区コードマスタを取得する
         function (dbcallback) {
             mTikuCodeDao.getMTikuCode(client, database, tikuList, dbcallback);
-        },
-    // 世話コードマスタを取得する
-        function (dbcallback) {
-            mSewaCodeDao.getMSewaCode(client, database, sewaList, dbcallback);
         },
     // タグコードマスタを取得する
         function (dbcallback) {
@@ -74,16 +68,12 @@ exports.main = function (searchId, callback) {
             if (!tikuInfoJson) {
                 callback(true);
             }
-            var sewaInfoJson = convertSewaListToJson(sewaList);
-            if (!sewaInfoJson) {
-                callback(true);
-            }
             var tagInfoJson = convertTagListToJson(tagList);
             if (!tagInfoJson) {
                 callback(true);
             }
             var seachTitle = "50音別検索：" + searchMoji + "～";
-            callback(false, resultRows, tikuInfoJson, tikuList, sewaInfoJson, sewaList, tagInfoJson, tagList, seachTitle);
+            callback(false, resultRows, tikuInfoJson, tikuList, tagInfoJson, tagList, seachTitle);
             return;
         }
     );
@@ -113,11 +103,9 @@ function createString(resultInfo, stringList){
         var tags = baseInfo.tags;
         var isArive = baseInfo.is_arive;
         var tikuCode = baseInfo.tiku_code;
-        var sewaCode = baseInfo.sewa_code;
-        var nameSeiKosyu = baseInfo.name_sei_kosyu;
-        var nameNaKosyu = baseInfo.name_na_kosyu;
         var memberIdKosyu = baseInfo.member_id_kosyu;
-        var stringLine = memberId + "|" + dankaType + "|" + nameSei + "|" + nameNa + "|" + tags + "|" + isArive + "|" + tikuCode + "|" + sewaCode + "|" + nameSeiKosyu + "|" + nameNaKosyu + "|" + memberIdKosyu + "\n";
+        var jiin = baseInfo.jiin;
+        var stringLine = memberId + "|" + dankaType + "|" + nameSei + "|" + nameNa + "|" + tags + "|" + isArive + "|" + tikuCode + "|" + memberIdKosyu + "|" + jiin + "\n";
         stringList.push(stringLine);
     }
 }
@@ -141,16 +129,6 @@ function convertTikuListToJson(tikuList) {
     return tikuInfoJson;
 }
 
-function convertSewaListToJson(sewaList) {
-    var sewaInfoJson = {};
-    for(var i in sewaList){
-        var sewaCode = sewaList[i].sewa_code;
-        var sewaName = sewaList[i].sewa_name;
-        sewaInfoJson[sewaCode] = sewaName;
-    }
-    return sewaInfoJson;
-}
-
 function convertTagListToJson(tagList) {
     var tagInfoJson = {};
     for(var i in tagList){
@@ -160,3 +138,4 @@ function convertTagListToJson(tagList) {
     }
     return tagInfoJson;
 }
+

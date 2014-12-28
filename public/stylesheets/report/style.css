@@ -69,6 +69,10 @@ list-style: none;
   color: #000000;
 }
 
+/* ポインタ表示 */
+.cursor-pointer{
+    cursor: pointer;
+}
 
 /*** 部品別指定 ***/
 /* 帳票印刷対象文字 */
@@ -158,3 +162,4 @@ border-collapse: collapse;
 border-spacing: 0;
 display: table;
 }
+

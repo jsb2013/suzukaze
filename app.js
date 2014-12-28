@@ -42,6 +42,10 @@ if ('development' == app.get('env')) {
 //********* ルート情報 ******************
 //***************************************
 
+// 0.ログイン画面
+app.get('/login', routes.login);
+app.post('/login', routes.login.post);
+
 // 1.スケジュール画面
 app.get('/schedule_top', routes.getScheduleTop);
 app.get('/schedule_month', routes.getScheduleMonth);
@@ -49,6 +53,9 @@ app.get('/schedule_day', routes.getScheduleDay);
 
 // 2.檀家検索画面
 app.get('/danka_top', routes.getDankaTop);
+app.get('/db_update_success', routes.getDBUpdateSuccess);
+app.get('/db_update_error', routes.getDBUpdateError);
+app.get('/db_unupdatable', routes.getUnUpdatable);
 
 app.get('/danka_sewa', routes.getDankaSewa);
 app.get('/danka_syosai', routes.getDankaSyosai);

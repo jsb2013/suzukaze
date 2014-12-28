@@ -1,15 +1,25 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka_detail">
+
+  <!-- jQuery JS -->
+  <script src="js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+<link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" id="zen_main_danka_detail">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_common.css" type="text/css" id="danka_detail_common">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kihon_success.css" type="text/css" id="danka_detail_kihon">
-<title>檀家管理システム　禅</title>
-<script src="js/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
+
 <script src="js/util.js"></script>
 <script src="js/dankaInfo.js"></script>
+
+<title>檀家管理システム　禅</title>
 <%
     var memberId = webItemJson.member_id;
     var dankaType = webItemJson.danka_type;
@@ -77,17 +87,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
+            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li><span class="ja">台帳管理</span><span class="en">master</span>
-            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
+            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -98,11 +108,11 @@
     <div id="wrapper">
       <!-- inner_title -->
       <div class="inner_title">
-        <div class="title">
+        <div id="title">
    	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
         </div>
         <div class="kosyu_info">
-   	      <table>
+   	      <table class="table table-bordered table-condensed">
               <thead>
                 <tr>
                   <th class="kosyu_info_kosyu_th">戸主名</th>
@@ -114,11 +124,11 @@
               </thead>
               <tbody>
                 <tr id="<%= memberId %>">
-                  <td class="table_name_full"><%= nameFull %></td>
-                  <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
-                  <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
-                  <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
-                  <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
+                <td class="table_name_full"><div class="padding-default"><%= nameFull %></div></td>
+                <td class="table_danka_type_danka"><div class="padding-default text-center"><%= dankaTypeDanka %></div></td>
+                <td class="table_danka_type_shinto"><div class="padding-default text-center"><%= dankaTypeShinto %></div></td>
+                <td id="<%= tikuCode %>" class="table_tiku_name"><div class="padding-default"><%= tikuName %></div></td>
+                <td id="<%= sewaCode %>" class="table_sewa_name"><div class="padding-default"><%= sewaName %></div></td>
                 </tr>
               </tbody>
             </table>
@@ -134,12 +144,14 @@
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div class="inner_main">
-        <div class="title_comment">
-   	      <h2>更新完了しました。</h2>
-        </div>
-        <div class="return_button">
-          <button id="return" class="button">TOPへ戻る</button>
-        </div>
+          <div class="row succcess_comment">
+            <div class="col col-sm-12"><h3>登録しました</h3></div>
+          </div>
+            <div class="row">
+                <div class="col col-sm-12">
+                    <button type="button" id="return" class="btn btn-primary btn-sm">TOPへ戻る</button>
+                </div>
+            </div>
       </div>
 
       <form action="/return_danka_detail_top" method="post" id="return_danka_detail_top_form">
@@ -176,3 +188,4 @@
 </div>
 </body>
 </html>
+

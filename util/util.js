@@ -42,7 +42,7 @@ exports.convertJsonNullToBlankForAllItem = function (json) {
     }
 };
 
-// データベースエラーメッセージの変換
+// ｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿ
 exports.getErrorMsg = function(error){
     return sys.inspect(error);
 };
@@ -70,11 +70,11 @@ exports.convertBlankToNull = function(value){
     return value;
 }
 
-/* 入力データの型チェック                                               */
+/* ｿｿｿｿｿｿｿｿｿｿｿ                                               */
 /*                                                                      */
-/* @baseList:    configに記載されたデータ型のバリデーション情報(json型) */
-/* @webItemList: web画面で入力されたデータ(json型)                      */
-/* @errorList:   エラー箇所を纏めたもの(json型)                         */
+/* @baseList:    configｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿ(jsonｿ) */
+/* @webItemList: webｿｿｿｿｿｿｿｿｿｿｿ(jsonｿ)                      */
+/* @errorList:   ｿｿｿｿｿｿｿｿｿｿｿ(jsonｿ)                         */
 function validateDataType(validTypeJson, webItemJson, errorJson){
     var isError = false;
     for(var itemName in validTypeJson){
@@ -84,55 +84,55 @@ function validateDataType(validTypeJson, webItemJson, errorJson){
             var webItemType = webItemJson[itemName];
             if(type == "require"){
                 if(util.isUndefine(webItemType)){
-                  // Error（必要な値が設定されていない。）
+                  // Errorｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿ
                   isError = true;
                   logger.error('XXXXX', 'info =>'+ itemName + ', ' + webItemJson[itemName]);
                   break;
                 }
                 continue;
             }
-            // NULLかをチェック（NULLでもOK）
+            // NULLｿｿｿｿｿｿｿNULLｿｿOKｿ
             if(util.isUndefine(webItemType)){
                 continue; // OK
             }
-            // STRING型の確認
+            // STRINGｿｿｿｿ
             if(type == "string"){
                 if(!isNaN(webItemType)){
-                  // Error（数値が設定されている。）
+                  // Errorｿｿｿｿｿｿｿｿｿｿｿｿｿ
                   isError = true;
                   logger.error('XXXXX', 'info =>'+ itemName + ', ' + webItemJson[itemName]);
                   break;
                 }
                 continue;
             }
-            // INTEGER型の確認
+            // INTEGERｿｿｿｿ
             if(type == "integer"){
                 if(isNaN(webItemType)){
-                    // Error（文字列が設定されている。）
+                    // Errorｿｿｿｿｿｿｿｿｿｿｿｿｿｿ
                     isError = true;
                     logger.error('XXXXX', 'info =>'+ itemName + ', ' + webItemJson[itemName]);
                     break;
                 }
                 continue;
             }
-            // Error（STRING型/INTEGER型以外が設定ファイルに含まれている。）
+            // ErrorｿSTRINGｿ/INTEGERｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿ
             isError = true;
             logger.error('XXXXX', 'info =>'+ itemName + ', ' + type);
             break;
         }
     }
-    // エラー判別
+    // ｿｿｿｿｿ
     if (isError){
         errorJson[isError] = true;
         return;
     }
 }
 
-/* 入力データのサイズのチェック                                             */
+/* ｿｿｿｿｿｿｿｿｿｿｿｿｿｿ                                             */
 /*                                                                          */
-/* @baseList:    configに記載されたデータサイズのバリデーション情報(json型) */
-/* @webItemList: web画面で入力されたデータ(json型)                          */
-/* @errorList:   エラー箇所を纏めたもの(json型)                             */
+/* @baseList:    configｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿ(jsonｿ) */
+/* @webItemList: webｿｿｿｿｿｿｿｿｿｿｿ(jsonｿ)                          */
+/* @errorList:   ｿｿｿｿｿｿｿｿｿｿｿ(jsonｿ)                             */
 function validateDataSize(validSizeJson, webItemJson, errorJson){
     var isError = false;
     for(var itemName in validSizeJson){
@@ -142,15 +142,16 @@ function validateDataSize(validSizeJson, webItemJson, errorJson){
             continue;
         }
         if(webItemValue.length < itemSize){
-            // Error（実際のサイズが想定サイズ以上になっている。）
+            // Errorｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿ
             isError = true;
             logger.error('XXXXX', 'info =>'+ itemName + ', ' + itemSize);
             continue;
         }
     }
-    // エラー判別
+    // ｿｿｿｿｿ
     if (isError){
         errorJson[isError] = true;
         return;
     }
 }
+

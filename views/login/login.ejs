@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+  <title>檀家管理システム　禅</title>
+
+  <!-- jQuery JS -->
+  <script src="/js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+  <!-- Default CSS -->
+  <!-- <link rel='stylesheet' href='/css/style.css' /> -->
+  <link rel="stylesheet" href="/stylesheets/zen_main_danka2.css" type="text/css" />
+  <link rel="stylesheet" href="/stylesheets/report/style.css" type="text/css"  />
+  
+
+
+  </head>
+
+  <body class="top-margin70">
+      <div class="container login">
+        <div class="row">
+          <div class="span4 offset4">
+            <h2>檀家管理システム　禅</h2>
+            <p>Sunforest企画 檀家管理サービスへようこそ！</p>
+            <div class="dialog login">
+              <div class="contents">
+
+                <form action="/login" method="post" class="">
+                  <label>USERNAME:</label>
+                  <input type="text" name='name'>
+                  <p></p>
+                  <label>PASSWORD:</label>
+                  <input type="password" name="password">
+
+                  <div class="control-group top-margin-sm">
+                    <input type="submit" value="login" class="btn btn-success btn-sm">
+                  </div>
+                </form>
+
+              </div>
+            </div>
+            <!--ログイン失敗メッセージ-->
+            <% if (loginFailed == true) { %>
+               <p style="color:red" class="top-margin-sm">USERNAMEもしくはPASSWORDに間違いがあります。<br></p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+  </body>
+</html>

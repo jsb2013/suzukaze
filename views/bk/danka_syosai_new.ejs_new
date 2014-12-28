@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>檀家管理システム　禅</title>
+
+  <!-- jQuery JS -->
+  <script src="/js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+  <!-- Select2 JS & CSS -->
+  <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2.css' />
+  <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2-bootstrap.css' />
+  <script src="/js/select2-3.4.5/select2.js"></script>
+
+  <!-- Default CSS -->
+  <!-- <link rel='stylesheet' href='/css/style.css' /> -->
+  <link rel="stylesheet" href="/stylesheets/zen_main_danka2.css" type="text/css" />
+<!-- <link rel="stylesheet" href="/stylesheets/zen_syosai_new.css" type="text/css" /> -->
+  <link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
+  <link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
+
+  <!-- icons from font Awesome -->
+  <link rel="stylesheet" href="stylesheets/font-awesome/font-awesome.css">
+
+  <!-- socket.IO -->
+  <script src="/socket.io/socket.io.js"></script>
+
+<script src="/js/util.js"></script>
+<script src="/js/dankaInfo.js"></script>
+
+<script>
+     <!-- 表中の偶数行の色を変える -->
+        // ソケット通信の開始
+    var socket = io.connect("http://<%= page.url %>");
+
+    // GetTargetListメッセージを送る
+    function GetSearchTargetList() {
+      // 検索ボックスに入力されたtagsを送る
+      var searchTag = $('#serch_tag').val();
+      var isKako = $(".is_kako").prop('checked');
+      var filterJiin = $("select[name='jiin']").val();
+      var filterTikuCode = $("select[name='tiku_name']").val();
+      var filterTag = $("select[name='tag']").val();
+      socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag });
+    }
+
+    function goDankaDetail(id){
+        location.href = "/danka_detail_top?id=" + id;
+    }
+    // GetTargetListメッセージを受けたとき
+    socket.on('GetSearchTargetList', function(data) {
+      
+      $('#search_count').text('[検索件数]：' + data.length + '件');
+      
+      // ソート表記をクリア
+      $('.th-sort span').html(' ▼');
+
+      // まずは一度全て取り除く
+      $('#target_list > tr').remove();
+      
+      // 検索結果がゼロの場合
+      if(data.length ===0 ){
+
+        html +=  "<tr>";
+        html +=   "<td colspan = 10>";
+        html +=     "<br>該当する結果が0件です。<br>";
+        html +=     "<br>※1:キーワードが間違っていないか確認して下さい。";
+        html +=     "<br>※2:複数のキーワードがある場合、and検索(全てのキーワードが含まれる)します。キーワードを減らしてみてください。";
+        html +=   "</td>";
+        html +=  "</tr>";
+        $('#target_list').append(html);
+      }
+      // 検索結果が有る場合
+      else{
+        for(var i=0;i<data.length;i++){
+        	var html = "";
+            if(i % 2 == 0){
+                html += '<tr class="table-selectable cursor-pointer" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';    
+            } else{
+                html += '<tr class="even table-selectable cursor-pointer" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+            }
+            
+            html +=   "<td>";
+            html +=     data[i].member_id;
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     data[i].name;
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     data[i].furigana;
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     data[i].tiku_name;
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     data[i].tags;
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     data[i].jiin;
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     data[i].is_arive;
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     data[i].member_id_kosyu;
+            html +=   "</td>";
+            html +=  "</tr>";
+  
+          $('#target_list').append(html);
+        }
+      }
+    });
+
+
+ $(function(){
+    $("#target_list tr").click(function(){
+        var id = $(this).children(".table_name_full_kosyu").attr("id");
+        location.href = "/danka_detail_top?id=" + id;
+    });
+
+    // ソートした表を表示する。（引数に渡した2次元配列から表を作成する。）
+    function draw(tds) {
+        var html = '';
+        var isEven = false;
+        $.each(tds, function(i, val) {
+        // val[0]: member_id
+        // val[1]: name
+        // val[2]: furigana
+        // val[3]: tiku_name
+        // val[4]: tags
+        // val[5]: jiin
+        // val[6]: is_arive
+        // val[7]: member_id_kosyu
+
+            if(isEven){
+                html += '<tr class="even table-selectable cursor-pointer" onClick="goDankaDetail(' + val[7] + ')">';
+                isEven = false; 
+            }else{
+                html += '<tr class="table-selectable cursor-pointer" onClick="goDankaDetail(' + val[7] + ')">'; 
+                isEven = true;
+            }
+            html +=   "<td>";
+            html +=     val[0];
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     val[1];
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     val[2];
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     val[3];
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     val[4];
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     val[5];
+            html +=   "</td>";
+            html +=   "<td>";
+            html +=     val[6];
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     val[7];
+            html +=   "</td>";
+            html +=  "</tr>";
+        });
+        $('#target_list > tr').remove();
+        $('#target_list').append(html);
+    }
+
+    $('.th-sort').click(function() {
+        // 表の2次配列を作成する。
+        var tableData = [];
+        var tr = $(".table-sort tr");
+        for( var i=0;i<tr.length;i++){
+            // headerは処理対象外
+            if(i==0){
+                continue;
+            }
+            var cells = tr.eq(i).children();
+            var testArray = [];
+            for( var j=0;j<cells.length;j++){
+                var itemText = cells.eq(j).text();
+                if(isUndefine(itemText)){
+                    testArray.push("-");
+                    continue;
+                }
+                testArray.push(itemText);
+            }
+            tableData.push(testArray);
+        }
+
+        // 検索結果が1行も存在しない場合は処理を中断する
+        // 結果が1行もない場合、注意文を表記する為、1行目が通常の6列存在しないことをチェックする。
+        if(!isUndefineForList(tableData) && tableData[0].length != 8){
+            return false;    
+        }
+
+        // 表の2次配列を指定の列でソートする。
+        var arrow = $('span', this);
+        var col = $('th').index(this);
+        // （個別）"氏名"でソートする場合は、"ふりがな"でソートする。
+        if(col == 1){
+            col = 2;
+        }
+        var isInteger = $(this).hasClass("isInteger");
+
+        if (arrow.html() == ' ▽') {
+            arrow.html(' △');
+            if (isInteger){
+                tableData.sort(function(a, b) { return Number(a[col]) < Number(b[col]) ? -1 : 1; });
+            }else {
+                tableData.sort(function(a, b) { return a[col] < b[col] ? -1 : 1; });
+            }
+        } else {
+            arrow.html(' ▽');
+            if (isInteger){
+                tableData.sort(function(a, b) { return Number(b[col]) < Number(a[col]) ? -1 : 1; });
+            }else {
+                tableData.sort(function(a, b) { return b[col] < a[col] ? -1 : 1; });
+            }
+        }
+        $(this).siblings().find('span').html(' ▼');
+        draw(tableData);
+    });
+ });
+</script>
+
+<!-- select2による検索ボックスのサジェストスクリプト
+<script>
+    var msg = "サジェスト候補を取得";
+    socket.emit('GetTypeahead', { value: msg });
+    socket.on('GetTypeahead', function(data) {
+        $(function(){
+            $('#serch_tag').select2({
+                createSearchChoice:function(term, data) {
+                    if ($(data).filter(function() {
+                        return this.text.localeCompare(term)===0; }).length===0) {
+                        return { id:term, text:term };
+                    }
+                },
+                placeholder: '検索キーワードを入力して下さい。',
+                multiple: true,
+                maximumSelectionSize: 10,
+                data: data
+            });
+        });
+    });
+</script>
+-->
+</head>
+<body>
+<!-- container -->
+<div id="container">
+  <!-- header -->
+  <div id="header">
+    <div id="headerMain">
+      <h1>長伝寺様向けカスタマイズ</h1>
+    </div>
+    <div id="headerLogo">
+      <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+    </div>
+  </div>
+  <!-- header end -->
+  <!-- inner -->
+  <div id="inner">
+    <!-- menu_box -->
+    <div id="menu_box">
+      <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+      <!-- menu -->
+      <div id="menu">
+        <nav>
+          <ul>
+            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
+          </ul>
+          <ul>
+            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+          </ul>
+          <ul>
+            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
+          </ul>
+        </nav>
+      </div>
+      <!-- menu end -->
+    </div>
+    <!-- menu_box end -->
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- inner_title -->
+      <div id="inner_title">
+        <div id="title">
+   	  <h2><span class="ja">檀家管理</span><span class="en">danka manage</span></h2>
+        </div>
+        <div id="menu_sub">
+          <ul>
+            <li><a href="/danka_syosai_new">検索(簡易)</a>
+            <li><a href="/danka_50">検索(50音)</a> 
+            <li><a href="/danka_syosai">検索(詳細)</a>
+            <li><a href="/danka_tuika">戸主追加</a> 
+          </ul>
+        </div>
+      </div>
+      <!-- title end-->
+      <!-- inner_filter -->
+      <div id="inner_filter_eary_search">
+          <div id="inner_fiter_sum" class="row">
+              <div class="col col-sm-12">
+                <label id="search_count">[検索件数]：件</label>          
+              </div>
+          </div>
+
+          <div id="inner_filter_main_easy_search">
+            <div class="row">
+                <div class="col col-sm-10 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">名前</span>
+                      <input type="text" id="serch_tag" class="form-control input-sm" placeholder="名前の一部を入力して下さい（フリガナ、漢字どちらでも入力できます）" onkeydown="if(event.keyCode == 13){GetSearchTargetList();}" autofocus>
+                    </div>
+                </div>
+                <div class="col col-sm-2 padding-right-zero text-left">
+                    <div class="checkbox margin-bottom-zero">
+                        <input type="checkbox" class="is_kako">故人含む
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-margin-sm left">
+                <div class="col col-sm-3 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">寺院</span>
+                        <select class="form-control input-sm" name="jiin">
+                            <option value=0>---</option>
+                            <option value="長伝寺">長伝寺</option>
+                            <option value="水月寺">水月寺</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-3 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">地区</span>
+                        <select class="form-control input-sm" name="tiku_name">
+                        <% for(var i in tikuCodeInfo){
+                            var _tikuCode = tikuCodeInfo[i].tiku_code;
+                            var _tikuName = tikuCodeInfo[i].tiku_name; %>
+                            <option value=<%= _tikuCode %>><%= _tikuName %></option>
+                        <%}%>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-4 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">タグ</span>
+                        <select class="form-control input-sm" name="tag">
+                        <option value=0>---</option>
+                        <% for(var i in tagCodeInfo){
+                            var _tagCode = tagCodeInfo[i].tags_id;
+                            var _tagName = tagCodeInfo[i].tags; %>
+                            <option value=<%= _tagName %>><%= _tagName %></option>
+                        <%}%>
+                    </select>
+                    </div>
+                </div>
+                <div class="col col-sm-2 padding-right-zero text-left">
+                    <button class="btn btn-success btn-sm" onclick="GetSearchTargetList()">　検索　</button>
+                    <!-- /input-group -->
+                </div>
+             </div>
+          </div>
+      </div>
+      <!-- inner_filter end -->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div id="inner_main_easy_search">
+          <div class="table_main_result">
+            <div class="row">
+              <div class="col col-sm-12 left">
+                <table class="table table-sort table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th id="table_member_id_th" class="th-sort header-selectable cursor-pointer isInteger">ID<span> ▼</span></th>
+                            <th id="table_name_full_th" class="th-sort header-selectable cursor-pointer">氏名<span> ▼</span></th>
+                            <th id="table_name_furigana_th" class="hidden">ふりがな<span></span></th>
+                            <th id="table_tiku_name_th" class="th-sort header-selectable cursor-pointer">地区<span> ▼</span></th>
+                            <th id="table_tag_th" class="th-sort header-selectable cursor-pointer">タグ<span> ▼</span></th>
+                            <th id="table_jiin_th" class="th-sort header-selectable cursor-pointer">寺院<span> ▼</span></th>
+                            <th id="table_kako_th" class="th-sort header-selectable cursor-pointer">故<span> ▼</span></th>
+                            <th id="table_member_id_kosyu_th" class="hidden">ID-戸主<span></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="target_list" >
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</body>
+</html>
+
+
+

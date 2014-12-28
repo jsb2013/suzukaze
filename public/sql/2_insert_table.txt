@@ -1,3 +1,21 @@
+create table m_account
+(
+id serial NOT NULL,
+login_id varchar(50) NOT NULL,
+member_id integer NOT NULL,
+password varchar(100) NOT NULL,
+auth_code integer NOT NULL,
+lock_flag boolean NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
 create table m_member
 (
 id serial NOT NULL,
@@ -214,8 +232,7 @@ name_sei varchar(50) NOT NULL,
 name_na varchar(50) NOT NULL,
 furigana_sei varchar(50) NOT NULL,
 furigana_na varchar(50) NOT NULL,
-sex integer NOT NULL,
-job_code integer ,
+job varchar(100) ,
 birthday_y varchar(4) ,
 birthday_m varchar(2) ,
 birthday_d varchar(2) ,
@@ -234,6 +251,7 @@ update_user varchar(50) NOT NULL,
 update_date timestamp NOT NULL,
 is_deleted boolean NOT NULL,
 primary key (id));
+
 
 
 create table m_report
@@ -306,3 +324,15 @@ create_date timestamp NOT NULL,
 update_user varchar(50) NOT NULL,
 update_date timestamp NOT NULL,
 primary key (report_if_id));
+
+create table t_dbupdate_set
+(
+dbcode integer NOT NULL,
+updatable integer NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+primary key (dbcode));

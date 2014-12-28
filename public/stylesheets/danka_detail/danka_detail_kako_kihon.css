@@ -1,25 +1,17 @@
 @charset "Shift_JIS";
 
-/* ‹¤’Ê’è‹` */
+/* å…±é€šå®šç¾© */
 .inner_main{
     margin: 10px 0 0 0;
 }
 
-.inner_main table{
-    border-width: 1px;
-    border-style: solid;
-    border-color: #D1CCC4;
-}
-
 .table_main_kihon{
     width: 630px;
-    height: 345px;
-    overflow-y: scroll;
 }
       
 .table_main_kihon_header{
     color: #ffffff;
-    font-size: 14px;
+    font-size: small;
     background-color : #804000;
 }
       
@@ -30,79 +22,9 @@
 .table_main_kihon_header_naiyo{
     width: 500px;
 }
-      
-.table_main_kihon tr{
-    height: 35px;
-}
-
-.table_main_kihon td{
-    padding: 2px 0 0 10px;
-    text-align: left;
-    height: 30px;
-    font-size: 12px;
-    border: solid 1px #BA802F;
-    border-collapse: collapse;
-}
-    
-.date_size{
-    width: 50px;
-}
-
-.kaimyo_size{
-    width: 393px;
-}
-
-.kyonen_size{
-    width: 50px;
-}
-
-.comment{
-    padding: 10px 0 0 5px;
-}
-      
-.textarea_size{
-    width: 470px;
-    height: 100px;
-    resize: none;
-    border:inherit;
-}
 
 .table_main_tuika_selectable:hover{
     background: orange;
-}
-
-.kihon_submit{
-    margin: 10px 0 0 0;
-    text-align: left;
-}
-
-.kihon_submit #register{
-    margin: 0 0 0 90px;
-    color: black;
-    font-size: 20px;
-    -webkit-border-radius: 10px;
-    width: 160px;
-    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
-    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
-    background: rgb(231, 206, 140);
-    cursor: pointer;
-}
-
-.kihon_submit #return{
-    margin: 0 30px 0 0;
-    color: black;
-    font-size: 14px;
-    -webkit-border-radius: 10px;
-    width: 130px;
-    text-shadow: 0 -1px 1px #FFF, -1px 0 1px #FFF, 1px 0 1px #aaa;
-    -webkit-box-shadow: 1px 1px 2px #E7E7E7;
-    background: rgb(231, 206, 140);
-    cursor: pointer;
-}
-
-.error{
-    color: #f00;
-    background-color: orange;
 }
 
 
