@@ -139,7 +139,7 @@
         },
 
         // formのバリデーションチェックを行う。
-        validationCheck: function(formInfoJson){
+        validationCheck: function(formInfoJson, nestNo){
             var elements = this;
 
             // エラーの初期化
@@ -151,6 +151,7 @@
             var isDuplicateForRequire = false;
             var isDuplicateForNumber = false;
             var isDuplicateForValueLimit = false;
+            var isDuplicateForSpecial = false;
             $(elements).each(function(){
                 var value = $(this).val();
 
@@ -161,19 +162,93 @@
                         // 重複フラグ考慮要のCELLで、重複フラグFALSEの場合
                         if($(this).hasClass("duplicate") && !isDuplicateForRequire){
                             isDuplicateForRequire = true;
-                            $(this).parent().parent().append("<p class='clear_both'>★値が設定されていません。</p>");
-                            $(this).parent().parent().addClass("error");
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★入力して下さい。（入力必須項目です）</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★入力して下さい。（入力必須項目です）</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
+                            return;
                         // 重複フラグ考慮要のCELLで、重複フラグTRUEの場合
                         } else if($(this).hasClass("duplicate") && isDuplicateForRequire){
-                            // DO NOTHING
+                            return;
                         // 重複フラグ考慮要の最終CELLで、重複フラグがTRUEの場合
                         } else if($(this).hasClass("duplicate_end") && isDuplicateForRequire){
-                            // DO NOTHING
+                            isDuplicateForRequire = false;
+                            return;
                         // 重複フラグなし、若しくは重複フラグ考慮要の最終CELLかつ重複フラグFALSEの場合
                         } else {
-                            $(this).parent().parent().append("<p class='clear_both'>★値が設定されていません。</p>");
-                            $(this).parent().parent().addClass("error");
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★入力して下さい。（入力必須項目です）</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★入力して下さい。（入力必須項目です）</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
+                            isDuplicateForRequire = false;
+                            return;
                         }
+                    }
+                }
+
+                // 特殊文字チェック(住所で使うし、-は外した。これだけで問題が起きることは無いし。)
+                if($(this).hasClass("sp_check")){
+                    if(!isUndefine(value) && value.match(/['"*+.\?\{\}\]\[()^$|=]/)){
+                        isError = true;
+                        // 重複フラグ考慮要のCELLで、重複フラグFALSEの場合
+                        if($(this).hasClass("duplicate") && !isDuplicateForSpecial){
+                            isDuplicateForSpecial = true;
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★特殊文字(半角)は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
+                        // 重複フラグ考慮要のCELLで、重複フラグTRUEの場合
+                        } else if($(this).hasClass("duplicate") && isDuplicateForSpecial){
+                        // 重複フラグ考慮要の最終CELLで、重複フラグがTRUEの場合
+                        } else if($(this).hasClass("duplicate_end") && isDuplicateForSpecial){
+                            isDuplicateForSpecial = false;
+                        // 重複フラグなし、若しくは重複フラグ考慮要の最終CELLかつ重複フラグFALSEの場合
+                        } else {
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
+                            isDuplicateForSpecial = false;
+                        }
+                    }
+                }
+
+                // 【一般的】名前チェック（漢字、ひらがな、カタカナ、数字、ハイフン、スペースのみ許可）※本チェックだと外字が入らない。
+                if($(this).hasClass("name_check")){
+                    if(!isUndefine(value) && !value.match(/^[ぁ-んァ-ヶー一-龠a-zA-Z0-9 　\r\n\t\-]+$/)){
+                        isError = true;
+                        $(this).parent().parent().append("<p class='clear_both'>★[漢字/ひらがな/カタカナ/数字/空白/スペース]の何れかを入力して下さい。</p>");
+                        $(this).parent().parent().addClass("error");
+                    }
+                }
+
+                // 【一般的】フリガナチェック（ひらがな、カタカナ、数字、ハイフン、スペースのみ許可）
+                if($(this).hasClass("furigana_check")){
+                    if(!isUndefine(value) && !value.match(/^[ぁ-んァ-ヶー一a-zA-Z0-9 　\r\n\t\-]+$/)){
+                        isError = true;
+                        $(this).parent().parent().append("<p class='clear_both'>★[ひらがな、かたかな、ー、スペース]を入力して下さい。</p>");
+                        $(this).parent().parent().addClass("error");
+                    }
+                }
+
+                // メールアドレスチェック（アルファベット、数字、@、.、_、-を許可。）
+                if($(this).hasClass("mail")){
+                    if(!isUndefine(value) && !value.match((/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))){
+                        isError = true;
+                        $(this).parent().parent().append("<p class='clear_both'>★[アルファベット、数字、@、.、_、-]を入力して下さい。</p>");
+                        $(this).parent().parent().addClass("error");
                     }
                 }
 
@@ -184,18 +259,28 @@
                         // 重複フラグ考慮要のCELLで、重複フラグFALSEの場合
                         if($(this).hasClass("duplicate") && !isDuplicateForNumber){
                             isDuplicateForNumber = true;
-                            $(this).parent().parent().append("<p class='clear_both'>★数値が設定されていません。</p>");
-                            $(this).parent().parent().addClass("error");
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★数値を入力して下さい。</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★数値を入力して下さい。</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
                         // 重複フラグ考慮要のCELLで、重複フラグTRUEの場合
                         } else if($(this).hasClass("duplicate") && isDuplicateForNumber){
-                            // DO NOTHING
                         // 重複フラグ考慮要の最終CELLで、重複フラグがTRUEの場合
                         } else if($(this).hasClass("duplicate_end") && isDuplicateForNumber){
-                            // DO NOTHING
+                            isDuplicateForNumber = false;
                         // 重複フラグなし、若しくは重複フラグ考慮要の最終CELLかつ重複フラグFALSEの場合
                         } else {
-                            $(this).parent().parent().append("<p class='clear_both'>★数値が設定されていません。</p>");
-                            $(this).parent().parent().addClass("error");
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★数値を入力して下さい。</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★数値を入力して下さい。</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
+                            isDuplicateForNumber = false;
                         }
                     }
                 }
@@ -211,26 +296,32 @@
                         if($(this).hasClass("duplicate") && !isDuplicateForValueLimit){
                             isDuplicateForValueLimit = true;
                             var valueLength = value.length;
-                            $(this).parent().parent().append("<p class='clear_both'>★桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
-                            $(this).parent().parent().addClass("error");
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
                         // 重複フラグ考慮要のCELLで、重複フラグTRUEの場合
                         } else if($(this).hasClass("duplicate") && isDuplicateForValueLimit){
                             // DO NOTHING
                         // 重複フラグ考慮要の最終CELLで、重複フラグがTRUEの場合
                         } else if($(this).hasClass("duplicate_end") && isDuplicateForValueLimit){
-                            // DO NOTHING
+                            isDuplicateForValueLimit = false;
                         // 重複フラグなし、若しくは重複フラグ考慮要の最終CELLかつ重複フラグFALSEの場合
                         } else {
-                            $(this).parent().parent().append("<p class='clear_both'>★桁数が長すぎます（各項目の上限桁数：" + limitNum + "桁）</p>");
-                            $(this).parent().parent().addClass("error");
+                            var valueLength = value.length;
+                            if(nestNo == 1){
+                                $(this).parent().append("<p class='clear_both'>★桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
+                                $(this).parent().addClass("error");
+                            } else{
+                                $(this).parent().parent().append("<p class='clear_both'>★桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
+                                $(this).parent().parent().addClass("error");
+                            }
+                            isDuplicateForValueLimit = false;
                         }
                     }
-                }
-                
-                if($(this).hasClass("duplicate_end")){
-                    isDuplicateForRequire = false;
-                    isDuplicateForNumber = false;
-                    isDuplicateForValueLimit = false;
                 }
             });
          
