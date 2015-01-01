@@ -34,16 +34,42 @@ exports.getSearchTargetList = function (data, callback) {
     if (!util.isUndefine(searchTag)) {
         for (var i = 0; i < tagArray.length; i++) {
             if (i === 0) {
-                sql += ' (';
-                sql += ' name like \'%' + tagArray[i] + '%\'';
-                sql += ' or furigana like \'%' + tagArray[i] + '%\'';
-                sql += ')';
-                isUpdateForSql = true;
+                if (tagArray[i].substr(0, 1) == "～") {
+                    sql += ' (';
+                    sql += ' name like \'%' + tagArray[i].slice(1) + '\'';
+                    sql += ' or furigana like \'%' + tagArray[i].slice(1) + '\'';
+                    sql += ')';
+                    isUpdateForSql = true;
+                } else if (tagArray[i].substr(-1, 1) == "～") {
+                    sql += ' (';
+                    sql += ' name like \'' + tagArray[i].slice(0,-1) + '%\'';
+                    sql += ' or furigana like \'' + tagArray[i].slice(0,-1) + '%\'';
+                    sql += ')';
+                    isUpdateForSql = true;
+                } else {
+                    sql += ' (';
+                    sql += ' name like \'%' + tagArray[i] + '%\'';
+                    sql += ' or furigana like \'%' + tagArray[i] + '%\'';
+                    sql += ')';
+                    isUpdateForSql = true;
+                }
             } else {
-                sql += ' and (';
-                sql += ' name like \'%' + tagArray[i] + '%\'';
-                sql += ' or furigana like \'%' + tagArray[i] + '%\'';
-                sql += ')';
+                if (tagArray[i].substr(0, 1) == "～") {
+                    sql += ' and (';
+                    sql += ' name like \'%' + tagArray[i].slice(1) + '\'';
+                    sql += ' or furigana like \'%' + tagArray[i].slice(1) + '\'';
+                    sql += ')';
+                } else if (tagArray[i].substr(-1, 1) == "～") {
+                    sql += ' and (';
+                    sql += ' name like \'' + tagArray[i].slice(0,-1) + '%\'';
+                    sql += ' or furigana like \'' + tagArray[i].slice(0,-1) + '%\'';
+                    sql += ')';
+                } else {
+                    sql += ' and (';
+                    sql += ' name like \'%' + tagArray[i] + '%\'';
+                    sql += ' or furigana like \'%' + tagArray[i] + '%\'';
+                    sql += ')';
+                }
             }
         }
     }

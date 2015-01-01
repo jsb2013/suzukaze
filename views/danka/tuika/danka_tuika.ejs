@@ -78,7 +78,7 @@
             $.ajaxSetup({async: true});  //同期通信終了
             
             // バリデーションチェックメイン処理
-            var isError = $(".validate").formUtil("validationCheck", formInfoJson);
+            var isError = $(".validate").formUtil("validationCheck", formInfoJson, 2);
             if(isError){
                 return false;
             }

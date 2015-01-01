@@ -15,6 +15,8 @@
   <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2.css' />
   <link rel='stylesheet' href='/stylesheets/select2-3.4.5/select2-bootstrap.css' />
   <script src="/js/select2-3.4.5/select2.js"></script>
+  <script src="/js/util.js"></script>
+  <script src="/js/jquery.formUtil.js"></script>
 
   <!-- Default CSS -->
   <!-- <link rel='stylesheet' href='/css/style.css' /> -->
@@ -38,6 +40,24 @@
 
     // GetTargetListメッセージを送る
     function GetSearchTargetList() {
+      // バリデーションチェック
+      var isError = $("#serch_tag").formUtil("validationCheck");
+      if(isError){
+        // まずは一度全て取り除く
+        $('#target_list > tr').remove();
+
+        // エラーメッセージを表示する
+        var html = "";
+        html +=  "<tr>";
+        html +=   "<td class=\"error\" colspan = 10>";
+        html +=     "<br>名前に特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\|\=\`)";
+        html +=     "<br>特殊文字を全角にするか、他の検索キーワードを入力して下さい。";
+        html +=     "<p>";
+        html +=   "</td>";
+        html +=  "</tr>";
+        $('#target_list').append(html);
+        return false;
+      }
       // 検索ボックスに入力されたtagsを送る
       var searchTag = $('#serch_tag').val();
       var isKako = $(".is_kako").prop('checked');
@@ -339,7 +359,7 @@
                     <!-- TOP検索tag -->
                     <div class="input-group">
                         <span class="input-group-addon">名前</span>
-                      <input type="text" id="serch_tag" class="form-control input-sm" placeholder="名前の一部を入力して下さい（フリガナ、漢字どちらでも入力できます）" onkeydown="if(event.keyCode == 13){GetSearchTargetList();}" autofocus>
+                      <input type="text" id="serch_tag" class="form-control sp_check input-sm" placeholder="名前の一部を入力して下さい（フリガナ、漢字どちらでも入力できます）" onkeydown="if(event.keyCode == 13){GetSearchTargetList();}" autofocus>
                     </div>
                 </div>
                 <div class="col col-sm-2 padding-right-zero text-left">
