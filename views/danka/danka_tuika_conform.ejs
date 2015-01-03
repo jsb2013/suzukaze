@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="GENERATOR" content="SunForest Danka System Zen">
+<title>檀家管理システム　禅</title>
+
+<!---------------------------------------------------------------------------------------------------------
+<!-- SCRIPT呼出定義
+<!-------------------------------------------------------------------------------------------------------->
+<!-- jQuery定義 -->
+<script src="/js/jquery-1.10.2.min.js"></script>
+
+<!-- ブートストラップ定義 -->
+<script src="/js/bs3.0.3/bootstrap.min.js"></script>
+<link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+<!---------------------------------------------------------------------------------------------------------
+<!-- スタイルシート定義
+<!-------------------------------------------------------------------------------------------------------->
+<link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" id="zen_main_danka">
+<link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
+<link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
+
+<!---------------------------------------------------------------------------------------------------------
+<!--SCRIPT定義（個別）
+<!-------------------------------------------------------------------------------------------------------->
+<script>
+<%
+    var dankaType = webItemJson.danka_type;
+    var dankaTypeName = "檀家";
+    if (dankaType === '1'){
+        var dankaTypeName = "信徒";
+    }
+    var nameSei = webItemJson.name_sei;
+    var nameNa = webItemJson.name_na;
+    var nameFull = nameSei + "　" + nameNa;
+    var furiganaSei = webItemJson.furigana_sei;
+    var furiganaNa = webItemJson.furigana_na;
+    var furiganaFull = furiganaSei + "　" + furiganaNa;
+    var zipCodePre = webItemJson.zip_code_pre;
+    var zipCodeLast = webItemJson.zip_code_last;
+    var zipCode = zipCodePre + " - " + zipCodeLast;
+    var region = webItemJson.region;
+    var city = webItemJson.city;
+    var addressLine1 = webItemJson.address_line1;
+    var addressLine2 = webItemJson.address_line2;
+    var birthdayY = webItemJson.birthday_y;
+    var birthdayM = webItemJson.birthday_m;
+    var birthdayD = webItemJson.birthday_d;
+    var birthday = birthdayY + " 年 " + birthdayM + " 月 " + birthdayD + " 日 ";
+    var telno1Pre = webItemJson.telno_pre_1;
+    var telno1Mid = webItemJson.telno_mid_1;
+    var telno1Last = webItemJson.telno_last_1;
+    var telno1 = telno1Pre + "-" + telno1Mid + "-" + telno1Last;
+    var telno2Pre = webItemJson.telno_pre_2;
+    var telno2Mid = webItemJson.telno_mid_2;
+    var telno2Last = webItemJson.telno_last_2;
+    var telno2 = telno2Pre + "-" + telno2Mid + "-" + telno2Last;
+    var telno3Pre = webItemJson.telno_pre_3;
+    var telno3Mid = webItemJson.telno_mid_3;
+    var telno3Last = webItemJson.telno_last_3;
+    var telno3 = telno3Pre + "-" + telno3Mid + "-" + telno3Last;
+    var telno1Yoto = webItemJson.telno_yoto_1;
+    var telno2Yoto = webItemJson.telno_yoto_2;
+    var telno3Yoto = webItemJson.telno_yoto_3;
+    var email1 = webItemJson.mail_address_1;
+    var email2 = webItemJson.mail_address_2;
+    var email3 = webItemJson.mail_address_3;
+    var email1Yoto = webItemJson.mail_yoto_1;
+    var email2Yoto = webItemJson.mail_yoto_2;
+    var email3Yoto = webItemJson.mail_yoto_3;
+    var job = webItemJson.job;
+    var tikuCode = webItemJson.tiku_code;
+    var tikuName = webItemJson.tiku_name;
+    var sewaCode = webItemJson.sewa_code;
+    var sewaName = webItemJson.sewa_name;
+    var jiinCode = webItemJson.jiin_code;
+    var jiinName = webItemJson.jiin_name;
+    var comment = webItemJson.comment;
+%>
+
+    $(function () {
+        // ページ遷移定義
+        $("#return").click(function () {
+            $("#danka_tuika_form").submit();
+        });
+
+
+    });
+</script>
+</head>
+<body>
+<!-- container -->
+<div id="container">
+<!---------------------------------------------------------------------------------------------------------
+<!--（共通部）ヘッダー & メニュー部分
+<!-------------------------------------------------------------------------------------------------------->
+    <div id="header">
+        <div id="headerMain">
+            <h1>長伝寺様向けカスタマイズ</h1>
+        </div>
+        <div id="headerLogo">
+            <img src="img/logo1_dannkasystem.gif" alt="logo1_dannkasystem">
+        </div>
+    </div>
+    <div id="inner">
+        <div id="menu_box">
+            <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
+            <div id="menu">
+                <nav>
+                    <ul>
+                        <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
+                    </ul>
+                    <ul>
+                        <li class="menu_enable"><a href="/danka_base?id=0"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>
+                        <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+                        <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+                        <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+                    </ul>
+                    <ul>
+                        <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+                        <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+<!---------------------------------------------------------------------------------------------------------
+<!-- メイン部
+<!-------------------------------------------------------------------------------------------------------->
+    <div id="wrapper">
+    <!---------------------------------------------------------------------------------------------------------
+    <!--（メイン部）タブのフィルタ部分
+    <!-------------------------------------------------------------------------------------------------------->
+      <div id="inner_title">
+        <div id="title">
+   	        <h2><span class="ja">檀家管理</span><span class="en">danka manage</span></h2>
+        </div>
+        <div id="menu_sub">
+          <ul>
+            <li id="tab_search_easy"><a href="/danka_base?id=0"><label>検索(簡易)</label></a>
+            <li id="tab_search_50on"><a href="/danka_base?id=1"><label>検索(50音)</label></a>
+            <li id="tab_add_kosyu" class="selected"><a href="/danka_base?id=2"><label>戸主追加</label></a>
+          </ul>
+        </div>
+      </div>
+
+      <!-- title end-->
+      <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+      <div id="inner_main">
+       <div class="confirm_title_comment">
+   	      <span class="confirm_title_comment_main">登録内容確認</span><span class="confirm_title_comment_sub">※よろしければ登録ボタンを押して下さい</span>
+        </div>
+        <form action="/danka_tuika_update" method="post">
+          <div class="margin-top-default">
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <tr>
+                  <th class="table-header-item-width-default">登録項目</td>
+                  <th class="table-header-naiyo-width-default">登録内容</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><label class="padding-default">登録区分</label></td>
+                  <td>
+                    <p class="padding-margin-default-in-table"><%= dankaTypeName %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">戸主名 ※必須</label></td>
+                  <% if(isDuplicate){ %>
+                     <td class="warn">
+                          <p class="padding-margin-default-in-table"><span class="main"><%= nameFull %></span><span class="sub">※【注意】同じ名前の方が既に登録されています。</span></p>
+                     </td>
+                  <% } else { %>
+                  <td>
+                       <p class="padding-margin-default-in-table"><%= nameFull %></p>
+                  </td>
+                  <% } %>  
+                </tr>
+                <tr>
+                  <td><label class="padding-default">ふりがな ※必須</label></td>
+                  <% if(isDuplicate){ %>
+                     <td class="warn">
+                          <p class="padding-margin-default-in-table"><span class="main"><%= furiganaFull %></span><span class="sub">※【注意】同じ名前の方が既に登録されています。</span></p>
+                     </td>
+                  <% } else { %>
+                     <td>
+                          <p class="padding-margin-default-in-table"><%= furiganaFull %></p>
+                     </td>
+                  <% } %>   
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">郵便番号</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= zipCode %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">都道府県</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= region %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">市区町村</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= city %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">番地</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= addressLine1 %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">ビル名等</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= addressLine2 %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">生年月日</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= birthday %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">電話番号(1)</label></td>
+                  <td>
+                    <p class="padding-margin-default-in-table"><%= telno1 %></p>
+                    <p class="padding-margin-default-in-table">用途：(<%= telno1Yoto %>)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">電話番号(2)</label></td>
+                  <td>
+                    <p class="padding-margin-default-in-table"><%= telno2 %></p>
+                    <p class="padding-margin-default-in-table">用途：(<%= telno2Yoto %>)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">電話番号(3)</label></td>
+                  <td>
+                    <p class="padding-margin-default-in-table"><%= telno3 %></p>
+                    <p class="padding-margin-default-in-table">用途：(<%= telno3Yoto %>)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">Email(1)</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= email1 %></p>
+                      <p class="padding-margin-default-in-table">用途：(<%= email1Yoto %>)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">Email(2)</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= email2 %></p>
+                      <p class="padding-margin-default-in-table">用途：(<%= email2Yoto %>)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">Email(3)</label></td>
+                  <td>
+                      <p class="padding-margin-default-in-table"><%= email3 %></p>
+                      <p class="padding-margin-default-in-table">用途：(<%= email3Yoto %>)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">職業</label></td>
+                  <td>
+                     <p class="padding-margin-default-in-table"><%= job %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">所属寺</label></td>
+                  <td>
+                     <p class="padding-margin-default-in-table"><%= jiinName %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">地区名</label></td>
+                  <td>
+                     <p class="padding-margin-default-in-table"><%= tikuName %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">世話人</label></td>
+                  <td>
+                     <p class="padding-margin-default-in-table"><%= sewaName %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">タグ</label></td>
+                  <td>
+                     <p class="padding-margin-default-in-table"><%= tags %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="padding-default">備考</label></td>
+                  <td>
+                     <p class="padding-margin-default-in-table"><%= comment %></p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+                <div class="col col-sm-3">
+                    <button type="button" id="return" class="btn btn-primary btn-sm">戸主追加画面に戻る</button>
+                </div>
+                <div class="col col-sm-6">
+                    <button type="submit" id="register" class="btn btn-success btn-lg">　登録　</button>
+                </div>
+             </div>
+          </div>
+            <input type="hidden" name="danka_type" value=<%= dankaType %>>
+            <input type="hidden" name="name_sei" value=<%= nameSei %>>
+            <input type="hidden" name="name_na" value=<%= nameNa %>>
+            <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
+            <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
+            <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
+            <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
+            <input type="hidden" name="region" value=<%= region %>>
+            <input type="hidden" name="city" value=<%= city %>>
+            <input type="hidden" name="address_line1" value=<%= addressLine1 %>>
+            <input type="hidden" name="address_line2" value=<%= addressLine2 %>>
+            <input type="hidden" name="birthday_y" value=<%= birthdayY %>>
+            <input type="hidden" name="birthday_m" value=<%= birthdayM %>>
+            <input type="hidden" name="birthday_d" value=<%= birthdayD %>>
+            <input type="hidden" name="telno_pre_1" value=<%= telno1Pre %>>
+            <input type="hidden" name="telno_mid_1" value=<%= telno1Mid %>>
+            <input type="hidden" name="telno_last_1" value=<%= telno1Last %>>
+            <input type="hidden" name="telno_yoto_1" value=<%= telno1Yoto %>>
+            <input type="hidden" name="telno_pre_2" value=<%= telno2Pre %>>
+            <input type="hidden" name="telno_mid_2" value=<%= telno2Mid %>>
+            <input type="hidden" name="telno_last_2" value=<%= telno2Last %>>
+            <input type="hidden" name="telno_yoto_2" value=<%= telno2Yoto %>>
+            <input type="hidden" name="telno_pre_3" value=<%= telno3Pre %>>
+            <input type="hidden" name="telno_mid_3" value=<%= telno3Mid %>>
+            <input type="hidden" name="telno_last_3" value=<%= telno3Last %>>
+            <input type="hidden" name="telno_yoto_3" value=<%= telno3Yoto %>>
+            <input type="hidden" name="mail_address_1" value=<%= email1 %>>
+            <input type="hidden" name="mail_yoto_1" value=<%= email1Yoto %>>
+            <input type="hidden" name="mail_address_2" value=<%= email2 %>>
+            <input type="hidden" name="mail_yoto_2" value=<%= email2Yoto %>>
+            <input type="hidden" name="mail_address_3" value=<%= email3 %>>
+            <input type="hidden" name="mail_yoto_3" value=<%= email3Yoto %>>
+            <input type="hidden" name="job" value=<%= job %>>
+            <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
+            <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
+            <input type="hidden" name="jiin" value=<%= jiinCode %>>
+            <input type="hidden" name="tags" value=<%= tags %>>
+            <input type="hidden" name="comment" value=<%= comment %>>
+        </form>
+        <form action="/danka_tuika" method="post" id="danka_tuika_form">
+            <input type="hidden" name="danka_type" value=<%= dankaType %>>
+            <input type="hidden" name="name_sei" value=<%= nameSei %>>
+            <input type="hidden" name="name_na" value=<%= nameNa %>>
+            <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
+            <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
+            <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
+            <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
+            <input type="hidden" name="region" value=<%= region %>>
+            <input type="hidden" name="city" value=<%= city %>>
+            <input type="hidden" name="address_line1" value=<%= addressLine1 %>>
+            <input type="hidden" name="address_line2" value=<%= addressLine2 %>>
+            <input type="hidden" name="birthday_y" value=<%= birthdayY %>>
+            <input type="hidden" name="birthday_m" value=<%= birthdayM %>>
+            <input type="hidden" name="birthday_d" value=<%= birthdayD %>>
+            <input type="hidden" name="telno_pre_1" value=<%= telno1Pre %>>
+            <input type="hidden" name="telno_mid_1" value=<%= telno1Mid %>>
+            <input type="hidden" name="telno_last_1" value=<%= telno1Last %>>
+            <input type="hidden" name="telno_yoto_1" value=<%= telno1Yoto %>>
+            <input type="hidden" name="telno_pre_2" value=<%= telno2Pre %>>
+            <input type="hidden" name="telno_mid_2" value=<%= telno2Mid %>>
+            <input type="hidden" name="telno_last_2" value=<%= telno2Last %>>
+            <input type="hidden" name="telno_yoto_2" value=<%= telno2Yoto %>>
+            <input type="hidden" name="telno_pre_3" value=<%= telno3Pre %>>
+            <input type="hidden" name="telno_mid_3" value=<%= telno3Mid %>>
+            <input type="hidden" name="telno_last_3" value=<%= telno3Last %>>
+            <input type="hidden" name="telno_yoto_3" value=<%= telno3Yoto %>>
+            <input type="hidden" name="mail_address_1" value=<%= email1 %>>
+            <input type="hidden" name="mail_yoto_1" value=<%= email1Yoto %>>
+            <input type="hidden" name="mail_address_2" value=<%= email2 %>>
+            <input type="hidden" name="mail_yoto_2" value=<%= email2Yoto %>>
+            <input type="hidden" name="mail_address_3" value=<%= email3 %>>
+            <input type="hidden" name="mail_yoto_3" value=<%= email3Yoto %>>
+            <input type="hidden" name="job" value=<%= job %>>
+            <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
+            <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
+            <input type="hidden" name="jiin" value=<%= jiinCode %>>
+            <input type="hidden" name="tags" value=<%= tags %>>
+            <input type="hidden" name="comment" value=<%= comment %>>
+        </form>
+      </div>
+      <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
+    </div>
+    <!-- wrapper end -->
+  </div>
+  <!-- inner end -->
+  <!-- footer -->
+  <div id="footer">
+    <div id="footer_main">
+      <p>copyright&copy;2014&nbsp;SunForest&nbsp;rights&nbsp;reserved.</p>
+    </div>
+  <!-- footer end -->
+</div>
+<!-- container end -->
+</div>
+</body>
+</html>
+
