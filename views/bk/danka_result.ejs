@@ -1,12 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka">
+
+  <!-- jQuery JS -->
+  <script src="js/jquery-1.10.2.min.js"></script>
+
+  <!-- Bootstrap JS & CSS -->
+  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
+
+<link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" id="zen_main_danka">
 <link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
+<link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
+
 <title>檀家管理システム　禅</title>
-<script src="js/jquery-1.10.2.min.js"></script>
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
@@ -19,14 +28,27 @@
    });
     $("button").click(function(){
         $(".hide").removeClass("hide");
-        var trCount = $("tr").size() -2;
+        var trCount = $("tr").size() -1;
         var filterSelectedTiku = $("select[name='tiku_name']").val();
-        var filterSelectedSewa = $("select[name='sewa_name']").val();
-        var filterSelectedTag = $("select[name='tag_name']").val();
+        var filterSelectedJiin = $("select[name='jiin']").val();
+        var filterSelectedTag = $("select[name='tag']").val();
 
+        // [寺院]フィルタの実装
+        if(filterSelectedJiin !== '0'){
+            $(".table_jiin_name").each(function(){
+                var itemValue = $(this).attr("id");
+                if(itemValue !== filterSelectedJiin){
+                    $(this).parent().addClass("hide");
+                    trCount--;
+                }
+            });
+        }
         // [地区]フィルタの実装
         if(filterSelectedTiku !== '0'){
             $(".table_tiku_name").each(function(){
+                if($(this).parent().hasClass("hide")){
+                    return true;
+                }
                 var itemValue = $(this).attr("id");
                 if(itemValue !== filterSelectedTiku){
                     $(this).parent().addClass("hide");
@@ -34,21 +56,8 @@
                 }
             });
         }
-        // [世話人]フィルタの実装
-        if(filterSelectedSewa !== '0'){
-            $(".table_sewa_name").each(function(){
-                if($(this).parent().hasClass("hide")){
-                    return true;
-                }
-                var itemValue = $(this).attr("id");
-                if(itemValue !== filterSelectedSewa){
-                    $(this).parent().addClass("hide");
-                    trCount--;
-                }
-            });
-        }
         // [タグ]フィルタの実装
-        if(filterSelectedTag !== '---'){
+        if(filterSelectedTag !== '0'){
             $(".table_tag_name").each(function(){
                 if($(this).parent().hasClass("hide")){
                     return true;
@@ -89,7 +98,7 @@
         $("tbody tr").removeClass("even");
         var evenCount = 1;
         $("tbody tr:not(.hide)").each(function(){
-           if((evenCount)%2 === 0){
+           if((evenCount+1)%2 === 0){
                evenCount++;
                return true;
            }
@@ -124,17 +133,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
+            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li><span class="ja">台帳管理</span><span class="en">master</span>
-            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
+            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -150,6 +159,7 @@
         </div>
         <div id="menu_sub">
           <ul>
+            <li><a href="/danka_syosai_new">検索(簡易)</a>
             <li><a href="/danka_50">検索(50音)</a> 
             <li><a href="/danka_syosai">検索(詳細)</a>
             <li><a href="/danka_tuika">戸主追加</a> 
@@ -159,104 +169,99 @@
       <!-- title end-->
       <!-- inner_title -->
       <div id="inner_filter">
-          <div id="inner_fiter_sum">
-            <% var searchCount = resultRows.length;%>
-            <label><span id="inner_fiter_sum_method">[検索結果] 50音別検索：<%= searchMoji %>～</span><span id="inner_fiter_sum_count">[検索件数]：<%= searchCount %>件</span></label>          
+          <div id="inner_fiter_sum" class="row">
+              <div class="col col-sm-7 margin-side-zero">
+                <% var searchCount = resultRows.length;%>
+                <label><span id="inner_fiter_sum_method">[検索結果] <%= seachTitle %></span><span id="inner_fiter_sum_count">[検索件数]：<%= searchCount %>件</span></label>          
+              </div>
           </div>
-          <div id="inner_fiter_main">
-            <div class="inner_filter_main_item">
-                <label>[地区]</label></label>
-                <select id="tiku_list"  name="tiku_name" >
-                    <% for(var i in tikuCodeInfo){
-                        var _tikuCode = tikuCodeInfo[i].tiku_code;
-                        var _tikuName = tikuCodeInfo[i].tiku_name; %>
-                        <option value=<%= _tikuCode %>><%= _tikuName %></option>
-                    <%}%>
-                </select>
-            </div>
-            <div class="inner_filter_main_item">
-                <label>[世話人]</label></label>          
-                <select id="sewa_list"  name="sewa_name" >
-                      <% for(var i in sewaCodeInfo){
-                        var _sewaCode = sewaCodeInfo[i].sewa_code;
-                        var _sewaName = sewaCodeInfo[i].sewa_name; %>
-                         <option value=<%= _sewaCode %>><%= _sewaName %></option>
-                         <%}%>
-                     </select>
-            </div>
-            <div class="inner_filter_main_item">
-                <label>[タグ]</label></label>          
-                <select id="tag_list"  name="tag_name" >
-                      <% for(var i in tagCodeInfo){
-                        var _tagCode = tagCodeInfo[i].tags_id;
-                        var _tagName = tagCodeInfo[i].tags; %>
-                         <option value=<%= _tagName %>><%= _tagName %></option>
-                         <%}%>
-                     </select>
-            </div>
-            <div id="inner_filter_main_checkbox" class="inner_filter_main_item">
-                <input type="checkbox" class="isKako" checked>故人
-            </div>
+          <div id="inner_fiter_main" class="row">
+                <div class="col col-sm-3 padding-left-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">寺院</span>
+                        <select class="form-control input-sm" name="jiin">
+                            <option value=0>---</option>
+                            <option value=1>長伝寺</option>
+                            <option value=2>水月寺</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-3 padding-left-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">地区</span>
+                        <select id="tiku_list" class="form-control input-sm" name="tiku_name">
+                        <% for(var i in tikuCodeInfo){
+                            var _tikuCode = tikuCodeInfo[i].tiku_code;
+                            var _tikuName = tikuCodeInfo[i].tiku_name; %>
+                            <option value=<%= _tikuCode %>><%= _tikuName %></option>
+                        <%}%>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-4 padding-left-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">タグ</span>
+                        <select class="form-control input-sm" name="tag">
+                        <option value=0>---</option>
+                        <% for(var i in tagCodeInfo){
+                            var _tagCode = tagCodeInfo[i].tags_id;
+                            var _tagName = tagCodeInfo[i].tags; %>
+                            <option value=<%= _tagName %>><%= _tagName %></option>
+                        <%}%>
+                    </select>
+                    </div>
+                </div>
+                <div id="style-filter-button" class="col col-sm-2 padding-side-zero">
+                    <button class="btn btn-success btn-sm">フィルタ</button>
+                    <!-- /input-group -->
+                </div>
           </div>
-            <div id="inner_filter_main_button">
-                <button id="test" type="submit">フィルタ</button>
-            </div>
       </div>
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div id="inner_main">
-          <div class="table_main_result">
-            <table>
+          <div id="table_main_result">
+            <table class="table table-bordered table-condensed">
               <thead>
                 <tr>
-                  <th class="table_name_full_th" rowspan="2">氏名</th>
-                  <th class="table_danka_type_th" colspan="2">区分</th>
-                  <th class="table_tiku_name_th" rowspan="2">地区</th>
-                  <th class="table_sewa_name_th" rowspan="2">世話人</th>
-                  <th class="table_name_full_kosyu_th" rowspan="2">戸主</th>
-                  <th class="table_kako_th" rowspan="2">故</th>
-                </tr>
-                <tr>
-                  <th class="table_danka_type_danka_th">檀家</th>
-                  <th class="table_danka_type_shinto_th">信徒</th>
+                    <th id="table_member_id_th">ID</th>
+                    <th id="table_name_full_th">氏名</th>
+                    <th id="table_tiku_name_th">地区</th>
+                    <th id="table_tag_th">タグ</th>
+                    <th id="table_jiin_th">寺院</th>
+                    <th id="table_kako_th">故</th>
                 </tr>
               </thead>
               <tbody>
               <% for(var i in resultRows){
                 var memberId = resultRows[i].member_id;
                 var memberIdKosyu = resultRows[i].member_id_kosyu;
-                var dankaType = resultRows[i].danka_type;
                 var nameSei = resultRows[i].name_sei;
                 var nameNa = resultRows[i].name_na;
                 var nameFull = nameSei + "  " + nameNa;
-                var nameSeiKosyu = resultRows[i].name_sei_kosyu;
-                var nameNaKosyu = resultRows[i].name_na_kosyu;
-                var nameFullKosyu = nameSeiKosyu + "  " + nameNaKosyu;
                 var tikuCode = resultRows[i].tiku_code;
-                var sewaCode = resultRows[i].sewa_code;
                 var tagCode = resultRows[i].tags;
                 var isArive = resultRows[i].is_arive;
                 var tikuName = tikuInfoJson[tikuCode];
-                var sewaName = sewaInfoJson[sewaCode];
-                var tagName = tagInfoJson[tagCode];
-                var dankaTypeDanka = "○";
-                var dankaTypeShinto = "-";
-                if (dankaType === 1){
-                    dankaTypeDanka = "-";
-                    dankaTypeShinto = "○";
+                var jiin = resultRows[i].jiin;
+                var jiinName = "長伝寺";
+                if (jiin == "2"){
+                    jiinName = "水月寺";
                 }
                 var kako = "-";
                 if (isArive == 0){
                     kako = "○";
                 }
               %>
-              <tr id="<%= memberId %>">
+              <tr id="<%= memberId %>" class="table-selectable">
+                <td class="table_member_id"><%= memberId %></td>
                 <td class="table_name_full"><%= nameFull %></td>
-                <td class="table_danka_type_danka"><%= dankaTypeDanka %></td>
-                <td class="table_danka_type_shinto"><%= dankaTypeShinto %></td>
                 <td id="<%= tikuCode %>" class="table_tiku_name"><%= tikuName %></td>
-                <td id="<%= sewaCode %>" class="table_sewa_name"><%= sewaName %></td>
-                <td id="<%= tagCode %>" class="table_tag_name hide_fix"><%= tagCode %></td>
-                <td id="<%= memberIdKosyu %>" class="table_name_full_kosyu"><%= nameFullKosyu %></td>
+                <td id="<%= tagCode %>" class="table_tag_name"><%= tagCode %></td>
+                <td id="<%= jiin %>" class="table_jiin_name"><%= jiinName %></td>
+                <td id="<%= memberIdKosyu %>" class="table_name_full_kosyu hide_fix"></td>
                 <td class="table_kako"><%= kako %></td>
                 </tr>
               <%}%>
@@ -280,3 +285,5 @@
 </div>
 </body>
 </html>
+
+

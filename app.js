@@ -52,44 +52,22 @@ app.get('/schedule_month', routes.getScheduleMonth);
 app.get('/schedule_day', routes.getScheduleDay);
 
 // 2.檀家検索画面
-app.get('/danka_top', routes.getDankaTop);
 app.get('/db_update_success', routes.getDBUpdateSuccess);
 app.get('/db_update_error', routes.getDBUpdateError);
 app.get('/db_unupdatable', routes.getUnUpdatable);
 
-app.get('/danka_sewa', routes.getDankaSewa);
-app.get('/danka_syosai', routes.getDankaSyosai);
-app.get('/danka_tiku', routes.getDankaTiku);
-
-//***************************************
-// 50音検索画面
-//***************************************
-// 50音別検索画面
-app.get('/danka_50', routes.getDanka50);
-// 50音別検索画面→検索結果画面
-app.get('/danka_result', routes.getDanka50Result);
-
 //***************************************
 // 檀家追加画面
 //***************************************
-// 檀家追加画面
-app.get('/danka_tuika', routes.getDankaTuika);
 // 檀家追加画面→確認画面
 app.post('/danka_tuika_conform', routes.postDankaTuikaConform);
-// 檀家追加画面→確認画面→檀家追加画面
-app.post('/danka_tuika', routes.getDankaTuika);
 // 檀家追加画面→確認画面→檀家情報DB追加処理
 app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 
 //***************************************
 // 詳細検索画面
 //***************************************
-// 檀家詳細検索画面
-app.get('/danka_syosai', routes.getDankaSyosai);
-app.post('/danka_syosai_search', routes.getDankaSyosaiSearch);
-
-
-app.get('/danka_syosai_new', routes.getDankaSyosaiNew);
+app.get('/danka_base', routes.getDankaBase);
 
 //***************************************
 // 檀家検索結果画面
@@ -117,25 +95,10 @@ app.post('/danka_detail_kako_confirm', routes.postDankaDetailKakoConfirm);
 // 檀家詳細TOP画面→過去帳画面→詳細画面→確認画面→DB更新
 app.post('/danka_detail_kako_db_update', routes.postDankaDetailKakoDbUpdate);
 
-// 結果現在帳画面
-//app.post('/danka_detail_genzai', routes.postDankaDetailGenzai);
-// 結果寄附帳画面
-//app.post('/danka_detail_kihu', routes.postDankaDetailKihu);
-// 結果お参り帳画面
-//app.post('/danka_detail_omairi', routes.postDankaDetailOmairi);
-
-
-
-
 // 3.帳票印刷画面
 app.get('/report_top', routes.getReportTop);
 // 檀家詳細TOP画面→基本情報画面→確認画面→DB更新
 app.post('/report_view', routes.postReportView);
-
-
-//app.get('/haraikomi', routes.haraikomi);
-//app.get('/danka_tyohyo', routes.getTyohyoMain);
-
 
 //***************************************
 //********* ルート情報 ******************

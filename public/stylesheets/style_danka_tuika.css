@@ -82,4 +82,17 @@
     vertical-align: top;
     text-align: center;
     height: 60px;
+    cursor: pointer;
 }
+.width_300{
+    width: 300px;
+    padding: 20px 0 0 0;
+    border-style: solid 1px;
+    border-color: #dddddd;
+    background-color: #ffdfbf;
+}
+
+.width_30{
+    width: 30px;
+}
+        

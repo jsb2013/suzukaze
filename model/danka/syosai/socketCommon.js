@@ -34,41 +34,135 @@ exports.getSearchTargetList = function (data, callback) {
     if (!util.isUndefine(searchTag)) {
         for (var i = 0; i < tagArray.length; i++) {
             if (i === 0) {
+                // ～XXの検索
                 if (tagArray[i].substr(0, 1) == "～") {
-                    sql += ' (';
-                    sql += ' name like \'%' + tagArray[i].slice(1) + '\'';
-                    sql += ' or furigana like \'%' + tagArray[i].slice(1) + '\'';
-                    sql += ')';
+                    var searchMoji = tagArray[i].slice(1);
+                    // 英文字検索
+                    if (searchMoji == "英文字") {
+                        sql += ' (';
+                        sql += ' name similar to \'%[A-Za-z]\'';
+                        sql += ' or furigana similar to \'%[A-Za-z]\'';
+                        sql += ')';
+                        // ひらがな、英文字以外の検索
+                    } else if (searchMoji == "その他文字") {
+                        sql += ' (';
+                        sql += ' furigana not similar to \'%[A-Za-zあ-んア-ン]\'';
+                        sql += ')';
+                        // ひらがな検索
+                    } else {
+                        sql += ' (';
+                        sql += ' name like \'%' + searchMoji + '\'';
+                        sql += ' or furigana like \'%' + searchMoji + '\'';
+                        sql += ')';
+                    }
                     isUpdateForSql = true;
+                    // XX～の検索
                 } else if (tagArray[i].substr(-1, 1) == "～") {
-                    sql += ' (';
-                    sql += ' name like \'' + tagArray[i].slice(0,-1) + '%\'';
-                    sql += ' or furigana like \'' + tagArray[i].slice(0,-1) + '%\'';
-                    sql += ')';
+                    var searchMoji = tagArray[i].slice(0, -1);
+                    // 英文字検索
+                    if (searchMoji == "英文字") {
+                        sql += ' (';
+                        sql += ' name similar to \'[A-Za-z]%\'';
+                        sql += ' or furigana similar to \'[A-Za-z]%\'';
+                        sql += ')';
+                        // ひらがな、英文字以外の検索
+                    } else if (searchMoji == "その他文字") {
+                        sql += ' (';
+                        sql += ' furigana not similar to \'[A-Za-zあ-んア-ン]%\'';
+                        sql += ')';
+                        // ひらがな検索
+                    } else {
+                        sql += ' (';
+                        sql += ' name like \'' + searchMoji + '%\'';
+                        sql += ' or furigana like \'' + searchMoji + '%\'';
+                        sql += ')';
+                    }
                     isUpdateForSql = true;
                 } else {
-                    sql += ' (';
-                    sql += ' name like \'%' + tagArray[i] + '%\'';
-                    sql += ' or furigana like \'%' + tagArray[i] + '%\'';
-                    sql += ')';
+                    var searchMoji = tagArray[i];
+                    // 英文字検索
+                    if (searchMoji == "英文字") {
+                        sql += ' (';
+                        sql += ' name similar to \'%[A-Za-z]%\'';
+                        sql += ' or furigana similar to \'%[A-Za-z]%\'';
+                        sql += ')';
+                        // ひらがな、英文字以外の検索
+                    } else if (searchMoji == "その他文字") {
+                        sql += ' (';
+                        sql += ' furigana not similar to \'%[A-Za-zあ-んア-ン]%\'';
+                        sql += ')';
+                        // ひらがな検索
+                    } else {
+                        sql += ' (';
+                        sql += ' name like \'%' + searchMoji + '%\'';
+                        sql += ' or furigana like \'%' + searchMoji + '%\'';
+                        sql += ')';
+                    }
                     isUpdateForSql = true;
                 }
             } else {
+                // ～XXの検索
                 if (tagArray[i].substr(0, 1) == "～") {
-                    sql += ' and (';
-                    sql += ' name like \'%' + tagArray[i].slice(1) + '\'';
-                    sql += ' or furigana like \'%' + tagArray[i].slice(1) + '\'';
-                    sql += ')';
+                    var searchMoji = tagArray[i].slice(1);
+                    // 英文字検索
+                    if (searchMoji == "英文字") {
+                        sql += 'and (';
+                        sql += ' name similar to \'%[A-Za-z]\'';
+                        sql += ' or furigana similar to \'%[A-Za-z]\'';
+                        sql += ')';
+                        // ひらがな、英文字以外の検索
+                    } else if (searchMoji == "その他文字") {
+                        sql += 'and (';
+                        sql += ' furigana not similar to \'%[A-Za-zあ-んア-ン]\'';
+                        sql += ')';
+                        // ひらがな検索
+                    } else {
+                        sql += 'and (';
+                        sql += ' name like \'%' + searchMoji + '\'';
+                        sql += ' or furigana like \'%' + searchMoji + '\'';
+                        sql += ')';
+                    }
+                    // XX～の検索
                 } else if (tagArray[i].substr(-1, 1) == "～") {
-                    sql += ' and (';
-                    sql += ' name like \'' + tagArray[i].slice(0,-1) + '%\'';
-                    sql += ' or furigana like \'' + tagArray[i].slice(0,-1) + '%\'';
-                    sql += ')';
+                    var searchMoji = tagArray[i].slice(0, -1);
+                    // 英文字検索
+                    if (searchMoji == "英文字") {
+                        sql += 'and (';
+                        sql += ' name similar to \'[A-Za-z]%\'';
+                        sql += ' or furigana similar to \'[A-Za-z]%\'';
+                        sql += ')';
+                        // ひらがな、英文字以外の検索
+                    } else if (searchMoji == "その他文字") {
+                        sql += 'and (';
+                        sql += ' furigana not similar to \'[A-Za-zあ-んア-ン]%\'';
+                        sql += ')';
+                        // ひらがな検索
+                    } else {
+                        sql += 'and (';
+                        sql += ' name like \'' + searchMoji + '%\'';
+                        sql += ' or furigana like \'' + searchMoji + '%\'';
+                        sql += ')';
+                    }
                 } else {
-                    sql += ' and (';
-                    sql += ' name like \'%' + tagArray[i] + '%\'';
-                    sql += ' or furigana like \'%' + tagArray[i] + '%\'';
-                    sql += ')';
+                    var searchMoji = tagArray[i];
+                    // 英文字検索
+                    if (searchMoji == "英文字") {
+                        sql += 'and (';
+                        sql += ' name similar to \'%[A-Za-z]%\'';
+                        sql += ' or furigana similar to \'%[A-Za-z]%\'';
+                        sql += ')';
+                        // ひらがな、英文字以外の検索
+                    } else if (searchMoji == "その他文字") {
+                        sql += 'and (';
+                        sql += ' furigana not similar to \'%[A-Za-zあ-んア-ン]%\'';
+                        sql += ')';
+                        // ひらがな検索
+                    } else {
+                        sql += 'and (';
+                        sql += ' name like \'%' + searchMoji + '%\'';
+                        sql += ' or furigana like \'%' + searchMoji + '%\'';
+                        sql += ')';
+                    }
                 }
             }
         }

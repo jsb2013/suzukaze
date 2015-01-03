@@ -1,24 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
-
-  <!-- jQuery JS -->
-  <script src="js/jquery-1.10.2.min.js"></script>
-
-  <!-- Bootstrap JS & CSS -->
-  <script src="/js/bs3.0.3/bootstrap.min.js"></script>
-  <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
-
-  <!-- Default CSS -->
-  <!-- <link rel='stylesheet' href='/css/style.css' /> -->
-  <link rel="stylesheet" href="stylesheets/zen_main_danka2.css" type="text/css" id="zen_main_danka">
-  <link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
-  <link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
-
-  <title>檀家管理システム　禅</title>
-
+<link rel="stylesheet" href="stylesheets/zen_main_danka.css" type="text/css" id="zen_main_danka">
+<link rel="stylesheet" href="stylesheets/zen_parts_danka.css" type="text/css" id="zen_parts_danka">
+<title>檀家管理システム　禅</title>
+<script src="js/jquery-1.10.2.min.js"></script>
 <script>
  <!-- 表中の偶数行の色を変える -->
  $(function(){
@@ -30,7 +18,6 @@
          $("input[name='tiku_name']").val(tikuName);
      });
  });
-
 </script>
 </head>
 <body>
@@ -39,6 +26,7 @@
   <!-- header -->
   <div id="header">
     <div id="headerMain">
+
       <h1>長伝寺様向けカスタマイズ</h1>
     </div>
     <div id="headerLogo">
@@ -55,17 +43,17 @@
       <div id="menu">
         <nav>
           <ul>
-            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
+            <li><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
-            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+            <li><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+            <li><span class="ja">台帳管理</span><span class="en">master</span>
+            <li><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
           </ul>
           <ul>
-            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
+            <li><span class="ja">備品管理</span><span class="en">stock-manage</span>
+            <li><span class="ja">寺院情報</span><span class="en">user-info</span>
           </ul>
         </nav>
       </div>
@@ -91,93 +79,75 @@
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div id="inner_main">
-        <div class="title_comment">
-   	      ★検索したい項目に値を入力して、本ページ下の検索ボタンを押してください。
+        <div class="title_comment_syosai">
+   	      <label>★一部項目のみの入力で検索可能です。</label>
         </div>
         <form action="/danka_syosai_search" method="post">
-          <div class="margin-top-default">
-            <table class="table table-bordered table-condensed">
+          <div class="table_main_syosai">
+            <table>
               <thead>
-                <tr>
-                  <th class="table-header-item-width-default">検索項目</td>
-                  <th class="table-header-naiyo-width-default">検索内容</td>
+                <tr id="header">
+                  <th id="newtype">検索項目</td>
+                  <th id="newnaiyo">検索内容</td>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><label class="padding-default">戸主名</label></td>
-                  <td class="table-selectable">
-                      <div class="col col-sm-1 padding-default">姓</div>
-                      <div class="col col-sm-5 padding-left-zero">
-                        <input type="text" name="name_sei" class="form-control input-sm">
-                      </div>
-                      <div class="col col-sm-1 padding-default">名</div>
-                      <div class="col col-sm-5 padding-left-zero">
-                        <input type="text" name="name_na" class="form-control input-sm">
-                      </div>
+                  <td id="name_type">戸主名</td>
+                  <td id="name" class="table_main_syosai_selectable">
+                      <label for="name_seimei">姓: </label><input type="text" name="name_sei" class="text_size">
+                      <label for="name_seimei">名: </label><input type="text" name="name_na" class="text_size">
                   </td>
                 </tr>
                 <tr>
-                  <td><label class="padding-default">ふりがな</label></td>
-                  <td class="table-selectable">
-                      <div class="col col-sm-1 padding-default">せい</div>
-                      <div class="col col-sm-5 padding-left-zero">
-                        <input type="text" name="furigana_sei" class="form-control input-sm">
-                      </div>
-                      <div class="col col-sm-1 padding-default">めい</div>
-                      <div class="col col-sm-5 padding-left-zero">
-                        <input type="text" name="furigana_na" class="form-control input-sm">
-                      </div>
+                  <td id="furigana_type">ふりがな</td>
+                  <td id="furigana" class="table_main_syosai_selectable">
+                      <label for="furi_seimei">せい: </label><input type="text" name="furigana_sei" class="text_size">
+                      <label for="furi_namae">めい: </label><input type="text" name="furigana_na" class="text_size">
                   </td>
                 </tr>
                 <tr>
-                 <td><label class="padding-default">所属寺</label></td>
-                 <td class="table-selectable padding-default">
-                    <div class="padding-default">
-                      <input type="checkbox" name="jiin" value="1">長伝寺
-                      <input type="checkbox" name="jiin" value="2">水月寺
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label class="padding-default">地区名</label></td>
-                  <td class="table-selectable">
-                    <div class="padding-left-default">
-                        <select id="tiku_list"  name="tiku_code" class="form-control input-sm select-size-default" >
-                        <% for(var i in tikuCodeInfo){
+                  <td id="tiku_type">地区名</td>
+                  <td id="tiku" class="table_main_syosai_selectable">
+                     <select id="tiku_list"  name="tiku_code" >
+                      <% for(var i in tikuCodeInfo){
                          var _tikuCode = tikuCodeInfo[i].tiku_code;
                          var _tikuName = tikuCodeInfo[i].tiku_name; %>
                          <option value=<%= _tikuCode %>><%= _tikuName %></option>
-                        <%}%>
-                        </select>
-                    </div>
+                         <%}%>
+                     </select>
                   </td>
                 </tr>
                 <tr>
-                  <td><label class="padding-default">世話人</label></td>
-                  <td class="table-selectable">
-                    <div class="padding-left-default">
-                        <select id="sewa_list" name="sewa_code" class="form-control input-sm select-size-default" >
-                        <% for(var i in sewaCodeInfo){
+                  <td id="sewa_type">世話人</td>
+                  <td id="sewa" class="table_main_syosai_selectable">
+                     <select id="sewa_list" name="sewa_code" >
+                       <% for(var i in sewaCodeInfo){
                          var _sewaCode = sewaCodeInfo[i].sewa_code;
                          var _sewaName = sewaCodeInfo[i].sewa_name; %>
                          <option value=<%= _sewaCode %>><%= _sewaName %></option>
-                        <%}%>
-                        </select>
-                    </div>
+                         <%}%>
+                     </select>
+                     <label for="furi_namae"></label>
                   </td>
                 </tr>
                 <tr>
-                  <td><label class="padding-default">タグ</label></td>
-                  <td class="table-selectable">
-                    <div class="padding-default">
+                 <td id="jiin_type">所属寺</td>
+                  <td id="jiin" class="table_main_syosai_selectable">
+                      <input type="checkbox" name="jiin" value="1"><label for="jiin_tyodenji">長伝寺</label>
+                      <input type="checkbox" name="jiin" value="2"><label for="jiin_suigetuji">水月寺</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="tags">タグ</td>
+                  <td id="tag" class="table_main_syosai_selectable">
                       <% 
                          var count = 1;
                          for(var i in tagsInfo){
                             count++;
                             var _tagName = tagsInfo[i].tags; 
                             %>
-                            <input type="checkbox" name="tags" value="<%= _tagName %>"><%= _tagName %>
+                            <input type="checkbox" name="tags" value="<%= _tagName %>"><label for="tag_name"><%= _tagName %></label>
                             <%
                             if(count>5){
                                 count=1;
@@ -185,25 +155,18 @@
                             <br>
                             <%}%>                      
                       <%}%>
-                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td><label class="padding-default">生死</label></td>
-                  <td class="table-selectable">
-                    <div class="padding-default">
-                        <input type="checkbox" name="include_kojin" value="1">故人含む
-                    </div>
+                  <td id="isArive">生死</td>
+                  <td id="isArive" class="table_main_syosai_selectable">
+                    <input type="checkbox" name="include_kojin" value="1">故人含む
                   </td>
                 </tr>
               </tbody>
             </table>
-            <div class="row">
-                <div class="col col-sm-12">
-                    <button type="submit" class="btn btn-success btn-lg">　検索　</button>
-                </div>
-            </div>
           </div>
+          <div id="syosai_submit"><input type="submit" value="検索" id="submit"></div>
          </form>
       </div>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
@@ -222,4 +185,3 @@
 </div>
 </body>
 </html>
-
