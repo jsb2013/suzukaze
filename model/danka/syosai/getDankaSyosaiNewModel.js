@@ -14,6 +14,7 @@ var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mMemberDao = require("../../../dao/mMemberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
+var vReportTypeDao = require("../../../dao/vReportType");
 var tDbupdateSetDao = require("../../../dao/tDbupdateSet");
 var fs = require("fs");
 
@@ -23,6 +24,7 @@ exports.main = function (callback) {
     var tikuList = [];
     var sewaList = [];
     var tagList = [];
+    var reportTypeList = [];
     async.series([
 
     // 地区コードマスタを取得する
@@ -36,6 +38,10 @@ exports.main = function (callback) {
     // タグコードマスタを取得する
         function (dbcallback) {
             mTagsDao.getMTags(client, database, tagList, dbcallback);
+        },
+    // 帳票種別を取得する
+        function (dbcallback) {
+            vReportTypeDao.getvReportType(client, database, reportTypeList, dbcallback);
         },
     // DBUpdateステータス初期化
         function (dbcallback) {
@@ -55,7 +61,7 @@ exports.main = function (callback) {
             if (!tagInfoJson) {
                 callback(true);
             }
-            callback(false, tikuInfoJson, tikuList, tagInfoJson, tagList, sewaList);
+            callback(false, tikuInfoJson, tikuList, tagInfoJson, tagList, sewaList, reportTypeList);
             return;
         }
     );

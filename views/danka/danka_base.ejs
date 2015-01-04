@@ -95,6 +95,7 @@
         });
     });
 </script>
+
 <!---------------------------------------------------------------------------------------------------------
 <!-- SCRIPT定義（個別）-検索(簡易)タブの定義
 <!-------------------------------------------------------------------------------------------------------->
@@ -129,12 +130,22 @@
       var filterJiin = $("select[name='jiin']").val();
       var filterTikuCode = $("select[name='tiku_name']").val();
       var filterTag = $("select[name='tag']").val();
-      socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag });
+      var printStatusOn = "0";
+      var printMessage = $("#print_display_flag").text();
+      if(printMessage == "印刷機能ON"){
+          printStatusOn = "1";
+      }
+      socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag, printStatusOn: printStatusOn });
     }
 
     function goDankaDetail(id){
         location.href = "/danka_detail_top?id=" + id;
     }
+
+    function checkOnForCheckbox(id){
+        location.href = "/danka_detail_top?id=" + id;
+    }
+
     // GetTargetListメッセージを受けたとき
     socket.on('GetSearchTargetList', function(data) {
       
@@ -163,101 +174,115 @@
         for(var i=0;i<data.length;i++){
         	var html = "";
             if(i % 2 == 0){
-                html += '<tr class="table-selectable cursor-pointer" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';    
+                html += '<tr class="table-selectable cursor-pointer">';    
             } else{
-                html += '<tr class="even table-selectable cursor-pointer" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+                html += '<tr class="even table-selectable cursor-pointer">';
             }
-            
-            html +=   "<td>";
+
+            if(data[i].report_if_id == ""){
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '"></td>';
+            }else{
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '" checked></td>';
+            }
+
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].name;
             html +=   "</td>";
-            html +=   '<td class="hidden">';
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].furigana;
             html +=   "</td>";
-            html +=   "<td>";
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].tiku_name;
             html +=   "</td>";
-            html +=   "<td>";
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             if(isUndefine(data[i].tiku_number)){
                 html += "-";
             }else{
                 html +=     data[i].tiku_number;
             }
             html +=   "</td>";
-            html +=   "<td>";
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].tags;
             html +=   "</td>";
-            html +=   "<td>";
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].jiin;
             html +=   "</td>";
-            html +=   "<td>";
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].is_arive;
             html +=   "</td>";
-            html +=   '<td class="hidden">';
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].member_id_kosyu;
             html +=   "</td>";
             html +=  "</tr>";
   
           $('#target_list').append(html);
         }
+        updatePrintDanka();
       }
     });
 
  $(function(){
-
-    $("#target_list tr").click(function(){
-        var id = $(this).children(".table_name_full_kosyu").attr("id");
-        location.href = "/danka_detail_top?id=" + id;
-    });
 
     // ソートした表を表示する。（引数に渡した2次元配列から表を作成する。）
     function draw(tds) {
         var html = '';
         var isEven = false;
         $.each(tds, function(i, val) {
-        // val[0]: name
-        // val[1]: furigana(hidden)
-        // val[2]: tiku_name
-        // val[3]: tiku_number
-        // val[4]: tags
-        // val[5]: jiin
-        // val[6]: is_arive
-        // val[7]: member_id_kosyu(hidden)
+        // val[0]: checkbox
+        // val[1]: name
+        // val[2]: furigana(hidden)
+        // val[3]: tiku_name
+        // val[4]: tiku_number
+        // val[5]: tags
+        // val[6]: jiin
+        // val[7]: is_arive
+        // val[8]: member_id_kosyu(hidden)
 
             if(isEven){
-                html += '<tr class="even table-selectable cursor-pointer" onClick="goDankaDetail(' + val[7] + ')">';
+                html += '<tr class="even table-selectable cursor-pointer">';
                 isEven = false; 
             }else{
-                html += '<tr class="table-selectable cursor-pointer" onClick="goDankaDetail(' + val[7] + ')">'; 
+                html += '<tr class="table-selectable cursor-pointer">'; 
                 isEven = true;
             }
-            html +=   "<td>";
-            html +=     val[0];
-            html +=   "</td>";
-            html +=   '<td class="hidden">';
-            html +=     val[1];
-            html +=   "</td>";
-            html +=   "<td>";
-            html +=     val[2];
-            html +=   "</td>";
-            if(val[3] == "0"){
-                html +=   "<td>-</td>";
+
+            if(val[0] == "1"){
+                html +=   '<td class="checkbox_td">';
+                html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '" checked></td>';
+                html +=   "</td>";
             }else{
-                html +=   "<td>";
-                html +=     val[3];
+                html +=   '<td class="checkbox_td">';
+                html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '"></td>';
                 html +=   "</td>";
             }
-            html +=   "<td>";
-            html +=     val[4];
+
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+            html +=     val[1];
             html +=   "</td>";
-            html +=   "<td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ')">';
+            html +=     val[2];
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+            html +=     val[3];
+            html +=   "</td>";
+            if(val[4] == "0"){
+                html +=   '<td onClick="goDankaDetail(' + val[8] + ')">-</div>';
+            }else{
+                html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+                html +=     val[4];
+                html +=   "</td>";
+            }
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
             html +=     val[5];
             html +=   "</td>";
-            html +=   "<td>";
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
             html +=     val[6];
             html +=   "</td>";
-            html +=   '<td class="hidden">';
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
             html +=     val[7];
+            html +=   "</td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ')">';
+            html +=     val[8];
             html +=   "</td>";
             html +=  "</tr>";
         });
@@ -278,7 +303,16 @@
             var testArray = [];
             for( var j=0;j<cells.length;j++){
                 var itemText = cells.eq(j).text();
-                if(j == 3){
+                // チェックボックス
+                if(j == 0){
+                    var checkboxStatus = cells.eq(0).children("input").prop("checked");
+                    if(checkboxStatus){
+                        testArray.push("1");
+                    }else{
+                        testArray.push("0");
+                    }
+                    continue;
+                }else if(j == 4){
                     if(isUndefine(itemText) || itemText == "-"){
                         testArray.push("0");
                         continue;
@@ -296,7 +330,7 @@
 
         // 検索結果が1行も存在しない場合は処理を中断する
         // 結果が1行もない場合、注意文を表記する為、1行目が通常の6列存在しないことをチェックする。
-        if(!isUndefineForList(tableData) && tableData[0].length != 8){
+        if(!isUndefineForList(tableData) && tableData[0].length != 9){
             return false;    
         }
 
@@ -304,8 +338,8 @@
         var arrow = $('span', this);
         var col = $('th').index(this);
         // （個別）"氏名"でソートする場合は、"ふりがな"でソートする。
-        if(col == 0){
-            col = 1;
+        if(col == 1){
+            col = 2;
         }
         var isInteger = $(this).hasClass("isInteger");
 
@@ -329,6 +363,68 @@
     });
  });
 </script>
+
+<script>
+    // SelectReportTypeメッセージを送る
+    function SendSelectReportType() {
+        // report_type_noを送る
+        var data = $("select[id='select_type']").val();
+        socket.emit('SelectReportType', { value: data });
+    }
+    // SelectReportTypeメッセージを受けたとき
+    socket.on('SelectReportType', function (data) {
+        // 選択肢から一度全て取り除く
+        $('#select_template > option').remove();
+        // テンプレートを選択肢に追加
+        $('#select_template').append($('<option>').html("内容を選択").val(9999));
+        for (var i = 0; i < data.length; i++) {
+            $('#select_template').append($('<option>').html(data[i].report_name).val(data[i].report_no));
+        }
+    });
+
+    function updatePrintDanka() {
+        // 検索(簡易)タブのクリック
+        $(".print_checkbox").click(function () {
+            var data = $(this).attr('value');
+
+            if ($(this).prop('checked') == true) {
+                // InsertReportIfメッセージを送る
+                socket.emit('InsertReportIf', { value: data });
+            } else {
+                // DeleteReportIfメッセージを送る
+                socket.emit('DeleteReportIf', { value: data });
+            }
+        });
+    }
+
+    $(function () {
+        // 検索(簡易)タブのクリック
+        $("#print_display_flag").click(function () {
+            var printMessage = $(this).text();
+            if (printMessage == "印刷機能ON") {
+                $("#inner_main_print").addClass("hidden");
+                $(this).text("印刷機能OFF");
+                $("#table_print_ck").addClass("hidden");
+            } else {
+                $("#inner_main_print").removeClass("hidden");
+                $(this).text("印刷機能ON");
+            }
+
+        });
+
+        // 検索(50音)タブのクリック
+        $("#tab_search_50on").click(function () {
+            ChangeTab("50on");
+        });
+
+        // 戸主追加タブのクリック
+        $("#tab_add_kosyu").click(function () {
+            ChangeTab("tuika");
+        });
+    });
+
+</script>
+
 <!---------------------------------------------------------------------------------------------------------
 <!--SCRIPT定義（個別）-検索(50音)タブの定義
 <!-------------------------------------------------------------------------------------------------------->
@@ -493,8 +589,11 @@
     <%}%>
       
           <div id="inner_fiter_sum" class="row">
-              <div class="col col-sm-12">
+              <div class="col col-sm-9">
                 <label id="search_count">[検索件数]：件</label>          
+              </div>
+              <div class="col col-sm-3 text-left">
+                <label id="print_display_flag" class="cursor-pointer">印刷機能ON</label>          
               </div>
           </div>
 
@@ -565,6 +664,47 @@
           </div>
       </div>
 
+
+      <div id="inner_main_print">
+          <div class="row left">
+            <div id="print-comment" class="col col-sm-12 padding-right-zero text-left">
+                <label>[印刷オプション] ※検索表示された檀家に対し、指定した帳票で印刷を行います。</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-sm-4 padding-right-zero left">
+                <div class="input-group">
+                    <span class="input-group-addon">帳票名</span>
+                    <select id="select_type" name="select_type" class="form-control input-sm" onChange="SendSelectReportType()">
+                        <option value=9999 >-</option>
+                            <% for(var i=0; i<page.data.length; i++) {%>
+                            <option value=<%= page.data[i].report_type_no %>><%= page.data[i].report_type_name %></option>
+                            <%}%>
+                    </select>
+                </div>
+            </div>
+            <div class="col col-sm-6 padding-right-zero left">
+                <div class="input-group">
+                    <span class="input-group-addon">種類</span>
+                    <select id="select_template" name="select_template" class="form-control input-sm" onChange="SendSelectReport()">
+                        <option value=9999>-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col col-sm-2 padding-right-zero text-left">
+                <button class="btn btn-warn btn-sm" onclick="GetSearchTargetList()">　印刷　</button>
+                <!-- /input-group -->
+            </div>
+          </div>
+          <div class="row left">
+            <div id="all_checkbox" class="col col-sm-12 padding-left-zero margin-top-default text-left">
+                <input type="checkbox" class="all_check" name="all_check"><label>すべて選択する</label>
+            </div>
+          </div>
+      </div>
+
+
+
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）検索(簡易)タブの検索結果表示部分
     <!-------------------------------------------------------------------------------------------------------->
@@ -580,6 +720,7 @@
                     <thead>
                         <tr>
                             <!-- <th id="table_member_id_th" class="th-sort header-selectable cursor-pointer isInteger">ID<span> ▼</span></th> -->
+                            <th id="table_print_ck" class="th-sort header-selectable cursor-pointer">ck<span> ▽</span></th>
                             <th id="table_name_full_th" class="th-sort header-selectable cursor-pointer">氏名<span> ▽</span></th>
                             <th id="table_name_furigana_th" class="hidden">ふりがな<span></span></th>
                             <th id="table_tiku_name_th" class="th-sort header-selectable cursor-pointer">地区名<span> ▽</span></th>
@@ -597,6 +738,14 @@
           </div>
         </div>
       </div>
+
+
+
+                
+                
+
+
+
 
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）検索(50音)タブ

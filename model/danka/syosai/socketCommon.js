@@ -208,7 +208,7 @@ exports.getSearchTargetList = function (data, callback) {
     }
     // 検索SQL作成（base)
     if (isUpdateForSql) {
-        sql = 'select * from v_search_target where ' + sql;
+        sql = 'select * from v_search_target where report_if_id is not null or ( ' + sql + ' )';
     } else {
         sql = 'select * from v_search_target';
     }

@@ -111,7 +111,7 @@ exports.getDankaBase = function (req, res) {
     var webItemJson = req.body;
     var tabId = req.query.id;
 
-    function authCallback(isError, tikuInfoJson, tikuCodeInfo, tagInfoJson, tagCodeInfo, sewaCodeInfo) {
+    function authCallback(isError, tikuInfoJson, tikuCodeInfo, tagInfoJson, tagCodeInfo, sewaCodeInfo, reportTypeInfo) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -119,7 +119,7 @@ exports.getDankaBase = function (req, res) {
         }
         // ログイン成功画面へ推移
         res.render('danka/danka_base', {
-            page: { url: config.connectionUrl },
+            page:{ url:config.connectionUrl, data:reportTypeInfo},
             webItemJson : webItemJson,
             tikuInfoJson: tikuInfoJson,
             tikuCodeInfo: tikuCodeInfo,

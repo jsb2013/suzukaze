@@ -124,18 +124,18 @@ select
             when '2' then '水月寺'
             when '0' then '不定'
     end as jiin,
+    tr.report_if_id,
     td.yobi_1 as tiku_number
-from (m_member as mm inner join t_danka as td on mm.member_id = td.member_id)
-    inner join m_tiku_code as mtc on td.tiku_code = mtc.tiku_code
+from ((m_member as mm inner join t_danka as td on mm.member_id = td.member_id)
+    inner join m_tiku_code as mtc on td.tiku_code = mtc.tiku_code) left join t_report_if as tr
+    on tr.member_id = mm.member_id
 where 
     mm.is_disabled=false 
     and mm.is_deleted=false 
     and mtc.is_disabled=false 
     and mtc.is_deleted=false 
     and td.is_deleted=false 
-order by mm.member_id;
-
-
+order by report_if_id, mm.member_id;
 
 CREATE VIEW v_member AS
     SELECT *
