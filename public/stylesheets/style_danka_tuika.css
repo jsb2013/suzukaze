@@ -48,7 +48,7 @@
 }
 
 #table_name_full_th{
-    width: 17%;
+    width: 20%;
 }
 
 #table_tiku_name_th{
@@ -60,15 +60,15 @@
 }
    
 #table_tag_th{
-    width: 32%;
+    width: 39%;
 }
       
 #table_jiin_th{
-    width: 12%;
+    width: 10%;
 }
 
 #table_kako_th{
-    width: 8%;
+    width: 7%;
 }
 
 /* 印刷検索部 ------------------------ */

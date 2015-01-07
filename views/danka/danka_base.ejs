@@ -130,10 +130,10 @@
       var filterJiin = $("select[name='jiin']").val();
       var filterTikuCode = $("select[name='tiku_name']").val();
       var filterTag = $("select[name='tag']").val();
-      var printStatusOn = "0";
+      var printStatusOn = false;
       var printMessage = $("#print_display_flag").text();
-      if(printMessage == "印刷機能ON"){
-          printStatusOn = "1";
+      if(printMessage == "印刷オプションを表示する"){
+          printStatusOn = true;
       }
       socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag, printStatusOn: printStatusOn });
     }
@@ -147,7 +147,7 @@
     }
 
     // GetTargetListメッセージを受けたとき
-    socket.on('GetSearchTargetList', function(data) {
+    socket.on('GetSearchTargetList', function(data, param) {
       
       $('#search_count').text('[検索件数]：' + data.length + '件');
       
@@ -178,13 +178,15 @@
             } else{
                 html += '<tr class="even table-selectable cursor-pointer">';
             }
-
-            if(data[i].report_if_id == ""){
-                html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '"></td>';
-            }else{
-                html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '" checked></td>';
+            if(param.printStatusOn){
+                html +=   '<td class="checkbox_td hidden"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '"></td>';
+            } else{
+                if(data[i].report_if_id == ""){
+                    html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '"></td>';
+                }else{
+                    html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '" checked></td>';
+                }
             }
-
             html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].name;
             html +=   "</td>";
@@ -207,9 +209,13 @@
             html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].jiin;
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
-            html +=     data[i].is_arive;
-            html +=   "</td>";
+            if(param.printStatusOn){
+                html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+                html +=     data[i].is_arive;
+                html +=   "</td>";
+            } else{
+                html += '<td class="hidden">' + data[i].is_arive + '</td>';
+            }
             html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
             html +=     data[i].member_id_kosyu;
             html +=   "</td>";
@@ -227,6 +233,13 @@
     function draw(tds) {
         var html = '';
         var isEven = false;
+
+        // 印刷オプション表示していない場合は、チェックボックス表示は行わない（変数定義）
+        var printStatusOn = false;
+        var printMessage = $("#print_display_flag").text();
+        if(printMessage == "印刷オプションを表示する"){
+          printStatusOn = true;
+        }
         $.each(tds, function(i, val) {
         // val[0]: checkbox
         // val[1]: name
@@ -245,15 +258,17 @@
                 html += '<tr class="table-selectable cursor-pointer">'; 
                 isEven = true;
             }
-
-            if(val[0] == "1"){
-                html +=   '<td class="checkbox_td">';
-                html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '" checked></td>';
-                html +=   "</td>";
-            }else{
-                html +=   '<td class="checkbox_td">';
-                html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '"></td>';
-                html +=   "</td>";
+            
+            if(!printStatusOn){
+                if(val[0] == "1"){
+                    html +=   '<td class="checkbox_td">';
+                    html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '" checked></td>';
+                    html +=   "</td>";
+                }else{
+                    html +=   '<td class="checkbox_td">';
+                    html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '"></td>';
+                    html +=   "</td>";
+                }
             }
 
             html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
@@ -401,15 +416,19 @@
         // 検索(簡易)タブのクリック
         $("#print_display_flag").click(function () {
             var printMessage = $(this).text();
-            if (printMessage == "印刷機能ON") {
+            if (printMessage == "印刷オプションを閉じる") {
                 $("#inner_main_print").addClass("hidden");
-                $(this).text("印刷機能OFF");
+                $(this).text("印刷オプションを表示する");
                 $("#table_print_ck").addClass("hidden");
+                $("#table_kako_th").removeClass("hidden");
+                $('#target_list > tr').remove();
             } else {
                 $("#inner_main_print").removeClass("hidden");
-                $(this).text("印刷機能ON");
+                $(this).text("印刷オプションを閉じる");
+                $("#table_print_ck").removeClass("hidden");
+                $("#table_kako_th").addClass("hidden");
+                $('#target_list > tr').remove();
             }
-
         });
 
         // 検索(50音)タブのクリック
@@ -589,11 +608,11 @@
     <%}%>
       
           <div id="inner_fiter_sum" class="row">
-              <div class="col col-sm-9">
+              <div class="col col-sm-8">
                 <label id="search_count">[検索件数]：件</label>          
               </div>
-              <div class="col col-sm-3 text-left">
-                <label id="print_display_flag" class="cursor-pointer">印刷機能ON</label>          
+              <div class="col col-sm-4 text-left">
+                <label id="print_display_flag" class="cursor-pointer text-underline">印刷オプションを表示する</label>          
               </div>
           </div>
 
@@ -665,7 +684,7 @@
       </div>
 
 
-      <div id="inner_main_print">
+      <div id="inner_main_print" class="hidden">
           <div class="row left">
             <div id="print-comment" class="col col-sm-12 padding-right-zero text-left">
                 <label>[印刷オプション] ※検索表示された檀家に対し、指定した帳票で印刷を行います。</label>
@@ -720,7 +739,7 @@
                     <thead>
                         <tr>
                             <!-- <th id="table_member_id_th" class="th-sort header-selectable cursor-pointer isInteger">ID<span> ▼</span></th> -->
-                            <th id="table_print_ck" class="th-sort header-selectable cursor-pointer">ck<span> ▽</span></th>
+                            <th id="table_print_ck" class="hidden th-sort header-selectable cursor-pointer">ck<span> ▽</span></th>
                             <th id="table_name_full_th" class="th-sort header-selectable cursor-pointer">氏名<span> ▽</span></th>
                             <th id="table_name_furigana_th" class="hidden">ふりがな<span></span></th>
                             <th id="table_tiku_name_th" class="th-sort header-selectable cursor-pointer">地区名<span> ▽</span></th>

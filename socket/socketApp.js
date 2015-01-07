@@ -190,7 +190,7 @@ exports.receiveMassages = function(server,callback){
                 if (isError) {
                     return; // [TBA]定義要
                 }
-                io.sockets.emit("GetSearchTargetList", resultRows);
+                io.sockets.emit("GetSearchTargetList", resultRows, data);
                 return;
             }
             socketCommon.getSearchTargetList(data, callback);

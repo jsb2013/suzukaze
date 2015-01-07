@@ -191,6 +191,10 @@ textarea{
     cursor: pointer;
 }
 
+.text-underline{
+    text-decoration: underline;
+}
+
 /* DB登録完了メッセージ */ 
 .succcess_comment{
     color: black;

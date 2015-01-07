@@ -23,6 +23,7 @@ exports.getSearchTargetList = function (data, callback) {
     var filterJiin = data.filterJiin;
     var filterTikuCode = data.filterTikuCode;
     var filterTag = data.filterTag;
+    var printStatusOn = data.printStatusOn;
 
     // work変数定義
     var tagArray = searchTag.split("　");
@@ -208,7 +209,11 @@ exports.getSearchTargetList = function (data, callback) {
     }
     // 検索SQL作成（base)
     if (isUpdateForSql) {
-        sql = 'select * from v_search_target where report_if_id is not null or ( ' + sql + ' )';
+        if (printStatusOn){
+            sql = 'select * from v_search_target where ' + sql;    
+        } else{
+            sql = 'select * from v_search_target where report_if_id is not null or ( ' + sql + ' )';    
+        }
     } else {
         sql = 'select * from v_search_target';
     }
