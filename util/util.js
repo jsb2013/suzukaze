@@ -42,7 +42,7 @@ exports.convertJsonNullToBlankForAllItem = function (json) {
     }
 };
 
-// ¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+// ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
 exports.getErrorMsg = function(error){
     return sys.inspect(error);
 };
@@ -70,11 +70,11 @@ exports.convertBlankToNull = function(value){
     return value;
 }
 
-/* ¿¿¿¿¿¿¿¿¿¿¿                                               */
+/* ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿                                               */
 /*                                                                      */
-/* @baseList:    config¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿(json¿) */
-/* @webItemList: web¿¿¿¿¿¿¿¿¿¿¿(json¿)                      */
-/* @errorList:   ¿¿¿¿¿¿¿¿¿¿¿(json¿)                         */
+/* @baseList:    configï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿(jsonï¿½ï¿½ï½¿) */
+/* @webItemList: webï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿(jsonï¿½ï¿½ï½¿)                      */
+/* @errorList:   ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿(jsonï¿½ï¿½ï½¿)                         */
 function validateDataType(validTypeJson, webItemJson, errorJson){
     var isError = false;
     for(var itemName in validTypeJson){
@@ -84,55 +84,55 @@ function validateDataType(validTypeJson, webItemJson, errorJson){
             var webItemType = webItemJson[itemName];
             if(type == "require"){
                 if(util.isUndefine(webItemType)){
-                  // Error¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+                  // Errorï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
                   isError = true;
                   logger.error('XXXXX', 'info =>'+ itemName + ', ' + webItemJson[itemName]);
                   break;
                 }
                 continue;
             }
-            // NULL¿¿¿¿¿¿¿NULL¿¿OK¿
+            // NULLï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿NULLï¿½ï¿½ï½¿ï¿½ï¿½ï½¿OKï¿½ï¿½ï½¿
             if(util.isUndefine(webItemType)){
                 continue; // OK
             }
-            // STRING¿¿¿¿
+            // STRINGï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
             if(type == "string"){
                 if(!isNaN(webItemType)){
-                  // Error¿¿¿¿¿¿¿¿¿¿¿¿¿
+                  // Errorï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
                   isError = true;
                   logger.error('XXXXX', 'info =>'+ itemName + ', ' + webItemJson[itemName]);
                   break;
                 }
                 continue;
             }
-            // INTEGER¿¿¿¿
+            // INTEGERï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
             if(type == "integer"){
                 if(isNaN(webItemType)){
-                    // Error¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+                    // Errorï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
                     isError = true;
                     logger.error('XXXXX', 'info =>'+ itemName + ', ' + webItemJson[itemName]);
                     break;
                 }
                 continue;
             }
-            // Error¿STRING¿/INTEGER¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+            // Errorï¿½ï¿½ï½¿STRINGï¿½ï¿½ï½¿/INTEGERï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
             isError = true;
             logger.error('XXXXX', 'info =>'+ itemName + ', ' + type);
             break;
         }
     }
-    // ¿¿¿¿¿
+    // ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
     if (isError){
         errorJson[isError] = true;
         return;
     }
 }
 
-/* ¿¿¿¿¿¿¿¿¿¿¿¿¿¿                                             */
+/* ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿                                             */
 /*                                                                          */
-/* @baseList:    config¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿(json¿) */
-/* @webItemList: web¿¿¿¿¿¿¿¿¿¿¿(json¿)                          */
-/* @errorList:   ¿¿¿¿¿¿¿¿¿¿¿(json¿)                             */
+/* @baseList:    configï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿(jsonï¿½ï¿½ï½¿) */
+/* @webItemList: webï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿(jsonï¿½ï¿½ï½¿)                          */
+/* @errorList:   ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿(jsonï¿½ï¿½ï½¿)                             */
 function validateDataSize(validSizeJson, webItemJson, errorJson){
     var isError = false;
     for(var itemName in validSizeJson){
@@ -142,16 +142,34 @@ function validateDataSize(validSizeJson, webItemJson, errorJson){
             continue;
         }
         if(webItemValue.length < itemSize){
-            // Error¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+            // Errorï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
             isError = true;
             logger.error('XXXXX', 'info =>'+ itemName + ', ' + itemSize);
             continue;
         }
     }
-    // ¿¿¿¿¿
+    // ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿ï¿½ï¿½ï½¿
     if (isError){
         errorJson[isError] = true;
         return;
     }
 }
+
+function paddingBlank(value){
+    var _value = value.replace(/^\s+/g, "").replace(/\s+$/g, "");
+    return _value;
+}
+
+exports.getSplitBlancList = function (value) {
+    var _value = value.replace("ã€€", " ");
+    var _valueList = _value.split(" ");
+    var valueList = [];
+
+    for (var i in _valueList) {
+        if (!isUndefine(_valueList[i])) {
+            valueList.push(paddingBlank(_valueList[i]));
+        }
+    }
+    return valueList;
+};
 

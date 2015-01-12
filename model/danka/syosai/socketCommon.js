@@ -26,7 +26,9 @@ exports.getSearchTargetList = function (data, callback) {
     var printStatusOn = data.printStatusOn;
 
     // work変数定義
-    var tagArray = searchTag.split("　");
+    //var _searchTag = searchTag.replace("　", " ");
+    //var tagArray = _searchTag.split(" ");
+    var tagArray = util.getSplitBlancList(searchTag);
     var sql = "";
     var isUpdateForSql = false;
     var rows = [];
@@ -209,10 +211,10 @@ exports.getSearchTargetList = function (data, callback) {
     }
     // 検索SQL作成（base)
     if (isUpdateForSql) {
-        if (printStatusOn){
-            sql = 'select * from v_search_target where ' + sql;    
-        } else{
-            sql = 'select * from v_search_target where report_if_id is not null or ( ' + sql + ' )';    
+        if (printStatusOn) {
+            sql = 'select * from v_search_target where ' + sql;
+        } else {
+            sql = 'select * from v_search_target where report_if_id is not null or ( ' + sql + ' )';
         }
     } else {
         sql = 'select * from v_search_target';

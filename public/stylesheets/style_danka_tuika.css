@@ -72,7 +72,7 @@
 }
 
 /* 印刷検索部 ------------------------ */
-#inner_main_print{
+#inner_main_print {
     margin: 8px 10px 0 0;
     height: 73px;
     padding: 0px 10px 10px 10px;
@@ -92,11 +92,6 @@
     color: red;
 }
 
-.all_check{
-    width: 20px;
-    height: 20px;
-}
-
 #all_checkbox{
     margin: 15px 0 0 5px;    
 }
@@ -108,9 +103,19 @@
     padding: 4px 0 0 5px;
 }
 
-.print_checkbox{
-    width: 20px;
-    height: 20px;
+#checkbox_kojin{
+    margin-top: 5px;    
+}
+
+#checkbox_kojin input{
+    margin-top: 0;    
+}
+
+#checkbox_kojin label{
+    font-size: 13px;
+    font-weight: normal;
+    vertical-align: top;
+    padding: 4px 0 0 5px;    
 }
 
 #target_list .checkbox_td{

@@ -46,7 +46,7 @@
 
 <!---------------------------------------------------------------------------------------------------------
 <!--SCRIPT定義（個別）-全タブ共通の定義
-<!-------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------->  
 <script>
     // タブ選択時の画面切り替え
     function ChangeTab(tabName) {
@@ -100,12 +100,118 @@
 <!-- SCRIPT定義（個別）-検索(簡易)タブの定義
 <!-------------------------------------------------------------------------------------------------------->
 <script>
-    <!-- 表中の偶数行の色を変える -->
     // ソケット通信の開始
     var socket = io.connect("http://<%= page.url %>");
 
+    // 帳票名リストを選択した場合に、種類リストを作成する。
+    // （送信機能）
+    function SendSelectReportType() {
+        // report_type_noを送る
+        var data = $("select[id='select_type']").val();
+        socket.emit('SelectReportType', { value: data });
+    }
+    // （受信機能）
+    socket.on('SelectReportType', function (data) {
+        // 選択肢から一度全て取り除く
+        $('#select_template > option').remove();
+        // テンプレートを選択肢に追加
+        $('#select_template').append($('<option>').html("内容を選択").val(9999));
+        for (var i = 0; i < data.length; i++) {
+            $('#select_template').append($('<option>').html(data[i].report_name).val(data[i].report_no));
+        }
+    });
+
+    // 印刷画面の表示
+    function submit(){
+      if($('#select_type').val() == 9999 || $('#select_template').val() == 9999){
+        alert("帳票とテンプレートを正しく選択してください。");
+      }else{
+        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
+
+      $('#preview_flag').val(0);
+      $("form[name='print_report_type']").submit();
+      }
+    }
+
+    // 印刷オプションボタンを押下した場合の定義
+    // (送信機能）
+    function updatePrintDanka() {
+        $(".print_checkbox").click(function () {
+            var data = $(this).attr('value');
+
+            if ($(this).prop('checked') == true) {
+                // InsertReportIfメッセージを送る
+                socket.emit('InsertReportIf', { value: data });
+            } else {
+                // DeleteReportIfメッセージを送る
+                socket.emit('DeleteReportIf', { value: data });
+            }
+        });
+    }
+
+    // （画面操作時の機能）
+    $(function () {
+        $("#print_display_flag").click(function () {
+            var printMessage = $(this).text();
+            if (printMessage == "印刷オプションを閉じる") {
+                $("#inner_main_print").addClass("hidden");
+                $(this).text("印刷オプションを表示する");
+                $("#table_print_ck").addClass("hidden");
+                $("#table_kako_th").removeClass("hidden");
+                $('#target_list > tr').remove();
+                $('#checkbox_kojin').removeClass("hidden");
+                $('#search_count').text("[検索件数]：件");
+            } else {
+                $("#inner_main_print").removeClass("hidden");
+                $(this).text("印刷オプションを閉じる");
+                $("#table_print_ck").removeClass("hidden");
+                $("#table_kako_th").addClass("hidden");
+                $('#target_list > tr').remove();
+                $('#checkbox_kojin').addClass("hidden");
+                $('#search_count').text("[検索件数]：件");
+            }
+        });
+
+        $("input[name='all_check']").click(function () {
+            var target_member_id = [];
+            //var elem = document.getElementsByName("target");
+            var elem = $("input[name='target']");
+            if (elem.length == 0){
+                return false;
+            }
+            var isChecked = $(this).prop('checked');
+            if (isChecked) {
+                for (var i = 0; i < elem.length; i++) {
+                    elem[i].checked = "checked";
+                    target_member_id[i] = elem[i].value;
+                }
+                socket.emit('AllInsertReportIf', { value: target_member_id, flag: true });
+            } else {
+                for (var i = 0; i < elem.length; i++) {
+                    elem[i].checked = "";
+                    target_member_id[i] = elem[i].value;
+                }
+                socket.emit('AllDeleteReportIf', { value: target_member_id, flag: false });
+            }
+        });
+    });
+
+    <!-- 表中の偶数行の色を変える -->
     // GetTargetListメッセージを送る
     function GetSearchTargetList() {
+      
+      // 検索の連続実施チェック
+      var updatable = $("input[name='search_updatable']").val();
+      if (updatable == "0"){
+        return false;
+      }
+      
+      // 検索実施後1秒間は、検索ボタンによる処理を実行しない。 
+      $("input[name='search_updatable']").val("0");
+      setTimeout(function(){
+        $("input[name='search_updatable']").val("1");
+      },1000);
+      
       // バリデーションチェック
       var isError = $("#serch_tag").formUtil("validationCheck");
       if(isError){
@@ -379,71 +485,6 @@
  });
 </script>
 
-<script>
-    // SelectReportTypeメッセージを送る
-    function SendSelectReportType() {
-        // report_type_noを送る
-        var data = $("select[id='select_type']").val();
-        socket.emit('SelectReportType', { value: data });
-    }
-    // SelectReportTypeメッセージを受けたとき
-    socket.on('SelectReportType', function (data) {
-        // 選択肢から一度全て取り除く
-        $('#select_template > option').remove();
-        // テンプレートを選択肢に追加
-        $('#select_template').append($('<option>').html("内容を選択").val(9999));
-        for (var i = 0; i < data.length; i++) {
-            $('#select_template').append($('<option>').html(data[i].report_name).val(data[i].report_no));
-        }
-    });
-
-    function updatePrintDanka() {
-        // 検索(簡易)タブのクリック
-        $(".print_checkbox").click(function () {
-            var data = $(this).attr('value');
-
-            if ($(this).prop('checked') == true) {
-                // InsertReportIfメッセージを送る
-                socket.emit('InsertReportIf', { value: data });
-            } else {
-                // DeleteReportIfメッセージを送る
-                socket.emit('DeleteReportIf', { value: data });
-            }
-        });
-    }
-
-    $(function () {
-        // 検索(簡易)タブのクリック
-        $("#print_display_flag").click(function () {
-            var printMessage = $(this).text();
-            if (printMessage == "印刷オプションを閉じる") {
-                $("#inner_main_print").addClass("hidden");
-                $(this).text("印刷オプションを表示する");
-                $("#table_print_ck").addClass("hidden");
-                $("#table_kako_th").removeClass("hidden");
-                $('#target_list > tr').remove();
-            } else {
-                $("#inner_main_print").removeClass("hidden");
-                $(this).text("印刷オプションを閉じる");
-                $("#table_print_ck").removeClass("hidden");
-                $("#table_kako_th").addClass("hidden");
-                $('#target_list > tr').remove();
-            }
-        });
-
-        // 検索(50音)タブのクリック
-        $("#tab_search_50on").click(function () {
-            ChangeTab("50on");
-        });
-
-        // 戸主追加タブのクリック
-        $("#tab_add_kosyu").click(function () {
-            ChangeTab("tuika");
-        });
-    });
-
-</script>
-
 <!---------------------------------------------------------------------------------------------------------
 <!--SCRIPT定義（個別）-検索(50音)タブの定義
 <!-------------------------------------------------------------------------------------------------------->
@@ -457,6 +498,7 @@
         });
     });
 </script>
+
 <!---------------------------------------------------------------------------------------------------------
 <!--SCRIPT定義（個別）-戸主追加タブの定義
 <!-------------------------------------------------------------------------------------------------------->
@@ -505,6 +547,18 @@
         // EnterKeyをclick()イベントに変換する。(本当はメソッドチェーンしたいけど無理・・）
         $("#zip-code-search").formUtil("convertEnterToClick");
 
+
+//        $('#dialogtest').dialog({
+//  autoOpen: false,
+//  title: 'jQuery Dialog Demo',
+//  closeOnEscape: false,
+//  modal: true,
+//  buttons: {
+//    "OK": function(){
+//      $(this).dialog('close');
+//    }
+//  }
+//});
         // 登録ボタン押下時
         $("form").submit(function(){
             // formのバリデーションチェックを行う。
@@ -612,15 +666,19 @@
                 <label id="search_count">[検索件数]：件</label>          
               </div>
               <div class="col col-sm-4 text-left">
-                <label id="print_display_flag" class="cursor-pointer text-underline">印刷オプションを表示する</label>          
+                <label id="print_display_flag" class="cursor-pointer text-underline">印刷オプションを表示する</label>
               </div>
+              <input type="hidden" name="search_updatable" value="1">
           </div>
 
+          <!---------------------------------------------------------------------------------------------------------
+          <!-- 検索フィルタ部分
+          <!-------------------------------------------------------------------------------------------------------->
           <div id="inner_filter_main_easy_search">
             <div class="row">
                 <div class="col col-sm-10 padding-right-zero">
                     <!-- TOP検索tag -->
-                    <div class="input-group">
+                    <div class="input-group margin-bottom-default">
                         <span class="input-group-addon">名前</span>
                         <% if (tabId == "0"){ %>
                             <input type="text" id="serch_tag" class="form-control sp_check input-sm" placeholder="名前の一部を入力して下さい（フリガナ、漢字どちらでも入力できます）" onkeydown="if(event.keyCode == 13){GetSearchTargetList();}" autofocus>
@@ -630,8 +688,8 @@
                     </div>
                 </div>
                 <div class="col col-sm-2 padding-right-zero text-left">
-                    <div class="checkbox margin-bottom-zero">
-                        <input type="checkbox" class="is_kako">故人含む
+                    <div id="checkbox_kojin" class="checkbox margin-bottom-zero">
+                        <input type="checkbox" id="id_2" class="is_kako checkbox_default"><label for="id_2">故人含む</label>
                     </div>
                 </div>
             </div>
@@ -681,48 +739,51 @@
                 </div>
              </div>
           </div>
-      </div>
 
 
-      <div id="inner_main_print" class="hidden">
-          <div class="row left">
-            <div id="print-comment" class="col col-sm-12 padding-right-zero text-left">
-                <label>[印刷オプション] ※検索表示された檀家に対し、指定した帳票で印刷を行います。</label>
+          <!---------------------------------------------------------------------------------------------------------
+          <!-- 印刷オプション部分
+          <!-------------------------------------------------------------------------------------------------------->
+          <div id="inner_main_print" class="hidden">
+            <div class="row left">
+                <div id="print-comment" class="col col-sm-12 padding-right-zero text-left">
+                    <label>[印刷オプション] ※検索表示された檀家に対し、指定した帳票で印刷を行います。</label>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col col-sm-4 padding-right-zero left">
-                <div class="input-group">
-                    <span class="input-group-addon">帳票名</span>
-                    <select id="select_type" name="select_type" class="form-control input-sm" onChange="SendSelectReportType()">
-                        <option value=9999 >-</option>
+            <div class="row">
+                <div class="col col-sm-4 padding-right-zero left">
+                    <div class="input-group">
+                        <span class="input-group-addon">帳票名</span>
+                        <select id="select_type" name="select_type" class="form-control input-sm" onChange="SendSelectReportType()">
+                            <option value=9999 >-</option>
                             <% for(var i=0; i<page.data.length; i++) {%>
                             <option value=<%= page.data[i].report_type_no %>><%= page.data[i].report_type_name %></option>
                             <%}%>
-                    </select>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-6 padding-right-zero left">
+                    <div class="input-group">
+                        <span class="input-group-addon">種類</span>
+                        <select id="select_template" name="select_template" class="form-control input-sm">
+                            <option value=9999>-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-2 padding-right-zero text-left">
+                    <button class="btn btn-warn btn-sm" onclick="GetSearchTargetList()">　印刷　</button>
                 </div>
             </div>
-            <div class="col col-sm-6 padding-right-zero left">
-                <div class="input-group">
-                    <span class="input-group-addon">種類</span>
-                    <select id="select_template" name="select_template" class="form-control input-sm" onChange="SendSelectReport()">
-                        <option value=9999>-</option>
-                    </select>
+            <div class="row left">
+                <div id="all_checkbox" class="col col-sm-12 padding-left-zero margin-top-default text-left">
+                    <input type="checkbox" id="id_1" class="checkbox_default" name="all_check"><label for="id_1" class="cursor-pointer">すべて選択する</label>
                 </div>
             </div>
-            <div class="col col-sm-2 padding-right-zero text-left">
-                <button class="btn btn-warn btn-sm" onclick="GetSearchTargetList()">　印刷　</button>
-                <!-- /input-group -->
-            </div>
-          </div>
-          <div class="row left">
-            <div id="all_checkbox" class="col col-sm-12 padding-left-zero margin-top-default text-left">
-                <input type="checkbox" class="all_check" name="all_check"><label>すべて選択する</label>
-            </div>
-          </div>
+              <div id="dialogtest">
+              <p>test</p>
+              </div>
+        </div>
       </div>
-
-
 
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）検索(簡易)タブの検索結果表示部分
@@ -757,14 +818,6 @@
           </div>
         </div>
       </div>
-
-
-
-                
-                
-
-
-
 
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）検索(50音)タブ

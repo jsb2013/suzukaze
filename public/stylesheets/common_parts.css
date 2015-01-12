@@ -62,6 +62,10 @@
     margin-right: 0;
 }
 
+.margin-bottom-default{
+    margin-bottom: 11px;
+}
+
 .margin-zero{
     margin: 0;
 }
@@ -225,3 +229,9 @@ textarea{
 .clear_both{
     clear: both;
 }
+
+.checkbox_default{
+    width: 20px;
+    height: 20px;
+}
+
