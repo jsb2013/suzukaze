@@ -74,8 +74,10 @@ app.get('/danka_base', routes.getDankaBase);
 //***************************************
 // 檀家詳細TOP画面
 app.get('/danka_detail_top', routes.getDankaDetailTop);
+// 檀家詳細TOP画面
+app.get('/danka_detail_kihon', routes.getDankaDetailKihon);
 // 檀家詳細TOP画面→基本情報画面
-app.post('/danka_detail_kihon', routes.postDankaDetailKihon);
+//app.post('/danka_detail_kihon', routes.postDankaDetailKihon);
 // 檀家詳細TOP画面→基本情報画面→確認画面
 app.post('/danka_detail_kihon_confirm', routes.postDankaDetailKihonConfirm);
 // 檀家詳細TOP画面→基本情報画面→確認画面→DB更新

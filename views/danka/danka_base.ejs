@@ -9,7 +9,14 @@
 <!-- SCRIPT呼出定義
 <!---------------------------------------------------------------------------------------------------------
 <!-- jQuery定義 -->
-<script src="/js/jquery-1.10.2.min.js"></script>
+<!-- <script src="/js/jquery-1.10.2.min.js"></script>
+　<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/start/jquery-ui.css" rel="stylesheet">
+  <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+-->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+  
 
 <!-- ブートストラップ定義 -->
 <script src="/js/bs3.0.3/bootstrap.min.js"></script>
@@ -23,7 +30,7 @@
 
 <!-- socket.IO定義 -->
 <script src="/socket.io/socket.io.js"></script>
-
+        
 <!-- 個別定義 -->
 <script src="/js/util.js"></script>
 <script src="/js/jquery.formUtil.js"></script>
@@ -136,7 +143,7 @@
     // 印刷オプションボタンを押下した場合の定義
     // (送信機能）
     function updatePrintDanka() {
-        $(".print_checkbox").click(function () {
+        $(".checkbox_default").click(function () {
             var data = $(this).attr('value');
 
             if ($(this).prop('checked') == true) {
@@ -196,6 +203,19 @@
         });
     });
 
+    // 印刷画面の表示
+    function PrintTyohyo(){
+      var selectType = $('#select_type').val();
+      var selectTemplate = $('#select_template').val();
+      if(selectType == 9999 || selectTemplate == 9999){
+        alert("帳票とテンプレートを正しく選択してください。");
+      }else{
+        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
+        // var kakunin = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectTemplate + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectType + "&p2=" + selectTemplate + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG"
+      }
+    }
+
     <!-- 表中の偶数行の色を変える -->
     // GetTargetListメッセージを送る
     function GetSearchTargetList() {
@@ -245,11 +265,7 @@
     }
 
     function goDankaDetail(id){
-        location.href = "/danka_detail_top?id=" + id;
-    }
-
-    function checkOnForCheckbox(id){
-        location.href = "/danka_detail_top?id=" + id;
+        location.href = "/danka_detail_kihon?id=" + id;
     }
 
     // GetTargetListメッセージを受けたとき
@@ -285,12 +301,12 @@
                 html += '<tr class="even table-selectable cursor-pointer">';
             }
             if(param.printStatusOn){
-                html +=   '<td class="checkbox_td hidden"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '"></td>';
+                html +=   '<td class="checkbox_td hidden"><input type="checkbox" class="checkbox_default" name="target" value="' +data[i].member_id_kosyu + '"></td>';
             } else{
                 if(data[i].report_if_id == ""){
-                    html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '"></td>';
+                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default" name="target" value="' +data[i].member_id_kosyu + '"></td>';
                 }else{
-                    html +=   '<td class="checkbox_td"><input type="checkbox" class="print_checkbox" name="target" value="' +data[i].member_id_kosyu + '" checked></td>';
+                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default" name="target" value="' +data[i].member_id_kosyu + '" checked></td>';
                 }
             }
             html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
@@ -368,11 +384,11 @@
             if(!printStatusOn){
                 if(val[0] == "1"){
                     html +=   '<td class="checkbox_td">';
-                    html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '" checked></td>';
+                    html +=   '<input type="checkbox" class="checkbox_default" name="target" value="' +val[8] + '" checked></td>';
                     html +=   "</td>";
                 }else{
                     html +=   '<td class="checkbox_td">';
-                    html +=   '<input type="checkbox" class="print_checkbox" name="target" value="' +val[8] + '"></td>';
+                    html +=   '<input type="checkbox" class="checkbox_default" name="target" value="' +val[8] + '"></td>';
                     html +=   "</td>";
                 }
             }
@@ -548,17 +564,21 @@
         $("#zip-code-search").formUtil("convertEnterToClick");
 
 
-//        $('#dialogtest').dialog({
-//  autoOpen: false,
-//  title: 'jQuery Dialog Demo',
-//  closeOnEscape: false,
-//  modal: true,
-//  buttons: {
-//    "OK": function(){
-//      $(this).dialog('close');
-//    }
-//  }
-//});
+
+
+        $("#test").click(function(){
+            　　    $( "#dialog" ).dialog({
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+            //location.href = "http://54.64.43.110/Reportserver?/hurikomi_request&p1=1&p2=1&p3=1&p3=2&rc:Parameters=True&rc:Parameters=True&rs:Format=PDF&rc:OutputFormat=JPEG"
+
+        });
+
         // 登録ボタン押下時
         $("form").submit(function(){
             // formのバリデーションチェックを行う。
@@ -771,7 +791,7 @@
                     </div>
                 </div>
                 <div class="col col-sm-2 padding-right-zero text-left">
-                    <button class="btn btn-warn btn-sm" onclick="GetSearchTargetList()">　印刷　</button>
+                    <button class="btn btn-warn btn-sm" onclick="PrintTyohyo()">　印刷　</button>
                 </div>
             </div>
             <div class="row left">
@@ -818,7 +838,9 @@
           </div>
         </div>
       </div>
-
+      <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
+        <input type="hidden" class="test_aaa" name="member_id" value="aaa">
+      </form>
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）検索(50音)タブ
     <!-------------------------------------------------------------------------------------------------------->
@@ -1203,14 +1225,14 @@
                 <tr>
                   <td><label class="padding-default">タグ</label></td>
                   <td class="table-selectable">
-                    <div class="padding-default">
+                    <div id="danka_tuika_tag" class="padding-default">
                       <% 
                          var count = 1;
                          for(var i in tagCodeInfo){
                             count++;
                             var _tagName = tagCodeInfo[i].tags; 
                             %>
-                            <input type="checkbox" name="tags" value="<%= _tagName %>"><%= _tagName %>
+                            <input type="checkbox" name="tags" class="checkbox_default" value="<%= _tagName %>"><label><%= _tagName %></label>
                             <%
                             if(count>5){
                                 count=1;
@@ -1235,7 +1257,13 @@
                 <div class="col col-sm-12">
                     <button type="submit" class="btn btn-success btn-lg">　登録　</button>
                 </div>
+                <div class="col col-sm-12">
+                    <button id="test" type="button" class="btn btn-success btn-lg">　テスト　</button>
+                </div>
             </div>
+　<div id="dialog" title="コメントの投稿ありがとうございます">
+　<p>コメントを受け付けました。<br />コメントは管理人の承認後、表示されます。</p>
+　</div>
           </div>
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">

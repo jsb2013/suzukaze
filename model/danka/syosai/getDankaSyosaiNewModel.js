@@ -42,11 +42,11 @@ exports.main = function (callback) {
     // 帳票種別を取得する
         function (dbcallback) {
             vReportTypeDao.getvReportType(client, database, reportTypeList, dbcallback);
-        },
+        }],
     // DBUpdateステータス初期化
-        function (dbcallback) {
-            tDbupdateSetDao.updateStatusToUpdatable(client, database, 1, dbcallback);
-        } ],
+//        function (dbcallback) {
+//            tDbupdateSetDao.updateStatusToUpdatable(client, database, 1, dbcallback);
+//        } ],
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {
             if (err) {

@@ -11,6 +11,7 @@ var util = require("../../../util/util");
 //var validateBaseJson = require("../../../conf/web_item_info");
 var mMemberDao = require("../../../dao/mMemberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
+var tDbupdateSetDao = require("../../../dao/tDbupdateSet");
 var async = require('async');
 
 /* 檀家追加画面メイン（post処理） */
@@ -44,6 +45,9 @@ exports.main = function (webItemJson, callback) {
     // 名前でM_Memberを検索
         function (dbcallback) {
             mMemberDao.getMMemberByName(client, database, webItemJson, memberInfo, dbcallback);
+        },
+        function (dbcallback) {
+            tDbupdateSetDao.updateStatusToUpdatable(client, database, 1, dbcallback);  
         },
     // タグ情報を取得（戸主情報）
         function (dbcallback) {

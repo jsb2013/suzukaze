@@ -60,45 +60,9 @@ exports.login.post = function (req, res) {
 };
 
 //***************************************
-// スケジュール管理画面
+// 檀家管理画面
 //***************************************
-// スケジュールTOP画面（get:/schedule_top）
-exports.getScheduleTop = function(req, res){
-    // sessionが無い場合はloginへ
-    if(req.session.user === undefined){
-        res.redirect('/login');
-    return;
-    }
-    res.render('schedule_top', {
-        loginFailed: false
-    });
-};
-
-// スケジュール画面（カレンダー指定）（get:/schedule_month）
-exports.getScheduleMonth = function(req, res){
-    // sessionが無い場合はloginへ
-    if(req.session.user === undefined){
-        res.redirect('/login');
-    return;
-    }
-    res.render('schedule_month', {
-        loginFailed: false
-    });
-};
-
-// スケジュール画面（日指定）（get:/schedule_day）
-exports.getScheduleDay = function(req, res){
-    // sessionが無い場合はloginへ
-    if(req.session.user === undefined){
-        res.redirect('/login');
-    return;
-    }
-    res.render('schedule_day', {
-        loginFailed: false
-    });
-};
-
-// ★テスト中
+// 檀家管理ベース
 exports.getDankaBase = function (req, res) {
     // sessionが無い場合はloginへ
     if(req.session.user === undefined){
@@ -119,7 +83,7 @@ exports.getDankaBase = function (req, res) {
         }
         // ログイン成功画面へ推移
         res.render('danka/danka_base', {
-            page:{ url:config.connectionUrl, data:reportTypeInfo},
+            page:{ url:config.connectionUrl, data:reportTypeInfo, urlPrintServ:config.connectionPrintServUrl },
             webItemJson : webItemJson,
             tikuInfoJson: tikuInfoJson,
             tikuCodeInfo: tikuCodeInfo,
@@ -132,18 +96,6 @@ exports.getDankaBase = function (req, res) {
     }
 
     getDankaBaseModel.main(authCallback);
-};
-
-// 2-6.檀家追加画面（get:/danka_tuika）
-exports.getTyohyoMain = function(req, res){
-    // sessionが無い場合はloginへ
-    if(req.session.user === undefined){
-        res.redirect('/login');
-    return;
-    }
-    res.render('danka_tyohyo', {
-        loginFailed: false
-    });
 };
 
 //***************************************
@@ -316,7 +268,7 @@ exports.getDankaDetailTop = function(req, res) {
 };
 
 // 檀家詳細TOP画面→基本情報画面
-exports.postDankaDetailKihon = function (req, res) {
+exports.getDankaDetailKihon = function (req, res) {
 
     // sessionが無い場合はloginへ
     if(req.session.user === undefined){
@@ -325,8 +277,8 @@ exports.postDankaDetailKihon = function (req, res) {
     }
 
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var postDankaDetailKihonModel = require("../model/danka_detail/kihon/postDankaDetailKihonModel");
-    var webItemJson = req.body;
+    var getDankaDetailKihonModel = require("../model/danka_detail/kihon/getDankaDetailKihonModel");
+    var memberId = req.query.id;
 
     function authCallback(isError, kosyuInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
@@ -348,7 +300,7 @@ exports.postDankaDetailKihon = function (req, res) {
         return;
     }
 
-    postDankaDetailKihonModel.main(webItemJson, authCallback);
+    getDankaDetailKihonModel.main(memberId, authCallback);
 };
 
 // 檀家詳細TOP画面→基本情報画面→確認画面
@@ -816,3 +768,53 @@ exports.postReportView = function (req, res) {
 
 };
 
+//***************************************
+// スケジュール管理画面
+//***************************************
+// スケジュールTOP画面（get:/schedule_top）
+exports.getScheduleTop = function(req, res){
+    // sessionが無い場合はloginへ
+    if(req.session.user === undefined){
+        res.redirect('/login');
+    return;
+    }
+    res.render('schedule_top', {
+        loginFailed: false
+    });
+};
+
+// スケジュール画面（カレンダー指定）（get:/schedule_month）
+exports.getScheduleMonth = function(req, res){
+    // sessionが無い場合はloginへ
+    if(req.session.user === undefined){
+        res.redirect('/login');
+    return;
+    }
+    res.render('schedule_month', {
+        loginFailed: false
+    });
+};
+
+// スケジュール画面（日指定）（get:/schedule_day）
+exports.getScheduleDay = function(req, res){
+    // sessionが無い場合はloginへ
+    if(req.session.user === undefined){
+        res.redirect('/login');
+    return;
+    }
+    res.render('schedule_day', {
+        loginFailed: false
+    });
+};
+
+// 2-6.檀家追加画面（get:/danka_tuika）
+//exports.getTyohyoMain = function(req, res){
+//    // sessionが無い場合はloginへ
+//    if(req.session.user === undefined){
+//        res.redirect('/login');
+//    return;
+//    }
+//    res.render('danka_tyohyo', {
+//        loginFailed: false
+//    });
+//};

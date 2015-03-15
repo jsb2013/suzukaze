@@ -151,4 +151,10 @@
 .width_30{
     width: 30px;
 }
-        
+
+#danka_tuika_tag label{
+    font-size: 13px;
+    font-weight: normal;
+    vertical-align: top;
+    padding: 5px 11px 0 2px;        
+}

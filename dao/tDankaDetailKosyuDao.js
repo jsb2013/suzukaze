@@ -89,6 +89,40 @@ exports.updateTDankaDetailKosyuForDeleteFlag = function(client, database, member
     });
 }
 
+exports.deleteTDankaDetailKosyuBymemberId = function(client, database, memberId, dbcallback){
+    var isDbError = false;
+    var query = client.query('delete from t_danka_detail_kosyu_info where member_id = $1',
+                    [memberId]);
+    
+    query.on('end', function(row,err) {
+        // session out
+        client.end();
+
+        if (err){
+            logger.error('xxxx', 'err =>'+ err);
+            dbcallback(err);
+            return;
+        }
+        if (isDbError) {
+            return;
+        }
+        dbcallback(null);
+        return;
+    });
+    
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}
+
 exports.insertTDankaDetailKosyuInfo = function (client, database, memberId, baseInfo, dbcallback) {
 
     // varchar型 or boolean型の値を取得。
