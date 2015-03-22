@@ -138,6 +138,57 @@
             return this;
         },
 
+        // 比較を
+        diffTextList: function(beforeTextList){
+
+            // 比較対象のTEXTLIST
+            var elements = this;
+
+            // テキスト項目の差分チェックを実施
+            var isChange = false;
+            $(elements).each(function(){
+                var key = $(this).attr("name");
+                var value = $(this).val();
+                //$(".chenge_check_bk").each(function(){
+                $(beforeTextList).each(function(){
+                    if($(this).hasClass(key)){
+                        var valueBk = $(this).val();
+                        if(value !== valueBk){
+                            isChange = true;
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            
+                if(isChange){
+                    return true;
+                }
+            });
+            return isChange;
+        },
+
+        // 比較を
+        changeTagsToString: function(){
+
+            // 比較対象のTEXTLIST
+            var elements = this;
+            var checkTags = "";
+
+            $(elements).each(function () {
+                var _tagName = $(this).val();
+                //var _tagName = $(this)[0].nextSibling.nodeValue;
+                var _tagNameTrim = jQuery.trim(_tagName);
+                if (isUndefine(checkTags)) {
+                    checkTags = _tagNameTrim;
+                    return true;
+                }
+                checkTags = checkTags + "," + _tagNameTrim;
+                return true;
+            });
+            return checkTags;
+        },
+
         // formのバリデーションチェックを行う。
         validationCheck: function(formInfoJson, nestNo){
             var elements = this;

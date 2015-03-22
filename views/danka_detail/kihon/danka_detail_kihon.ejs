@@ -189,34 +189,17 @@
         }
 
         // テキスト項目の差分チェックを実施
-        var isChange = false;
-        $(".validate").each(function(){
-            var key = $(this).attr("name");
-            var value = $(this).val();
-            $(".chenge_check_bk").each(function(){
-                if($(this).hasClass(key)){
-                    var valueBk = $(this).val();
-                    if(value !== valueBk){
-                        isChange = true;
-                        return false;
-                    }
-                    return true;
-                }
-            });
-            
-            if(isChange){
-                return true;
-            }
-        });
+        var beforeDiffList = $(".chenge_check_bk");
+        var isChange =  $(".validate").formUtil("diffTextList", beforeDiffList);
         
         // select項目の差分比較
+        $(".validate").formUtil("diffTextList", beforeDiffList);
         var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
         var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
         var jiinCodeAfter = $("select[name='jiin_code'] option:selected").val();
         var tikuCodeBk = $("input[name='tiku_code_bk']").val();
         var sewaCodeBk = $("input[name='sewa_code_bk']").val();
         var jiinCodeBk = $("input[name='jiin_code_bk']").val();
-
         if(tikuCodeAfter !== tikuCodeBk || sewaCodeAfter !== sewaCodeBk || jiinCodeAfter !== jiinCodeBk){
             isChange = true;
         }
@@ -224,7 +207,6 @@
         // radio項目の差分比較
         var dankaTypeAfter = $("input[name='danka_type']:checked").val();
         var dankaTypeBk = $("input[name='danka_type_bk']").val();
-
         if(dankaTypeAfter !== dankaTypeBk){
             isChange = true;
         }
@@ -232,36 +214,23 @@
         // テキストエリアの差分比較
         var commentAfter = $("textarea[name='comment']").val();
         var commentBk = $("input[name='comment_bk']").val();
-
         if(commentAfter !== commentBk){
             isChange = true;
         }
 
         // チェックボックスの差分比較
-        var checkTags = "";
-        $("input[name='tags']:checked").each(function () {
-            var _tagName = $(this).val();
-            //var _tagName = $(this)[0].nextSibling.nodeValue;
-            var _tagNameTrim = jQuery.trim(_tagName);
-            if (isUndefine(checkTags)) {
-                checkTags = _tagNameTrim;
-                return true;
-            }
-            checkTags = checkTags + "," + _tagNameTrim;
-            return true;
-        });
-
+        var checkTags =  $("input[name='tags']:checked").formUtil("changeTagsToString");
         var tagsBk = $("input[name='tags_bk']").val();
         if (checkTags !== tagsBk) {
             isChange = true;
         }
-        $("input[name='tags_after']").val(checkTags);
 
         // 値が何も変更されていない場合は、ポップアップを出力する。
         if(!isChange){
             alert("変更されていません。");
             return false;
         }
+
         // 変更有無チェック
         var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
         var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
@@ -269,6 +238,7 @@
         $("input[name='tiku_name']").val(tikuNameAfter);
         $("input[name='sewa_name']").val(sewaNameAfter);
         $("input[name='jiin_name']").val(jiinAfter);
+        $("input[name='tags_after']").val(checkTags);
     });
 });
 </script>
@@ -343,14 +313,14 @@
           <ul>
             <li class="menu_sub_kihon selected"><label>基本情報 </label>
             <li class="menu_sub_kako"><label>過去帳</label>
-            <li class="menu_sub_nenkaiki_dummy"><label>年回忌</label>
           </ul>
         </div>
       </div>
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div class="inner_main">
-        <form action="danka_detail_kihon_confirm" id="main_form" method="post">
+        <form action="danka_detail_kihon_confirm" 
+          id="main_form" method="post">
           <div class="table_main_kihon">
             <table class="table table-bordered table-condensed">
               <thead>

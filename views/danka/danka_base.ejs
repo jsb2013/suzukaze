@@ -212,7 +212,7 @@
       }else{
         alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
         // var kakunin = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectTemplate + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
-        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectType + "&p2=" + selectTemplate + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG"
+        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectType + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
       }
     }
 
