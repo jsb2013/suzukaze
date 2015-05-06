@@ -99,7 +99,7 @@
         </div>
         <div id="menu_sub">
           <ul>
-            <li class="menu_sub_kihon selected"><label>基本情報 </label>
+            <li class="menu_sub_kihon"><label>基本情報 </label>
             <li class="menu_sub_kako"><label>過去帳</label>
           </ul>
         </div>
@@ -108,13 +108,8 @@
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div class="inner_main">
           <div class="row succcess_comment">
-            <div class="col col-sm-12"><h3>登録しました</h3></div>
+            <div class="col col-sm-12"><label>登録しました</label></div>
           </div>
-            <div class="row">
-                <div class="col col-sm-12">
-                    <button type="button" id="return" class="btn btn-primary btn-sm">TOPへ戻る</button>
-                </div>
-            </div>
       </div>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>

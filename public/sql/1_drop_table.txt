@@ -1,9 +1,10 @@
+drop view v_member;
+drop view v_report;
 drop view v_report_target;
 drop view v_report_target_preview;
-drop view v_typeahead;
 drop view v_report_type;
-drop view v_report;
 drop view v_search_target;
+drop view v_typeahead;
 drop table m_account;
 drop table m_address;
 drop table m_job_code;
@@ -21,3 +22,19 @@ drop table t_danka_detail_kosyu_info;
 drop table t_report_if;
 drop table m_report_type;
 drop table m_report;
+drop table t_dbupdateset;
+
+----
+drop view v_report_target_old;
+drop view v_report_target_all;
+drop view v_member;
+drop view v_report;
+drop view v_report_target;
+drop view v_report_target_preview;
+drop view v_report_type;
+drop view v_search_target;
+drop view v_typeahead;
+drop table m_member;
+drop table m_tiku_code;
+drop table t_danka;
+drop table t_danka_detail_kosyu_info;

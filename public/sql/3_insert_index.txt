@@ -51,3 +51,17 @@ on m_tags (tags,is_disabled,is_deleted) where not is_deleted and not is_disabled
 
 create unique index t_report_if_valid_constraint
 on t_report_if (member_id, create_user, update_user) 
+
+
+---
+create unique index m_member_valid_constraint
+on m_member (member_id,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index m_tiku_code_valid_constraint
+on m_tiku_code (tiku_code,is_disabled,is_deleted) where not is_deleted and not is_disabled;
+
+create unique index t_danka_detail_kosyu_info_valid_constraint
+on t_danka_detail_kosyu_info (member_id,is_deleted) where not is_deleted;
+
+create unique index t_danka_valid_constraint
+on t_danka (member_id,is_deleted) where not is_deleted;

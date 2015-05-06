@@ -336,3 +336,115 @@ create_date timestamp NOT NULL,
 update_user varchar(50) NOT NULL,
 update_date timestamp NOT NULL,
 primary key (dbcode));
+
+
+------
+
+create table m_member
+(
+id serial NOT NULL,
+member_id serial NOT NULL,
+name_sei varchar(50) NOT NULL,
+name_na varchar(50) NOT NULL,
+furigana_sei varchar(50) ,
+furigana_na varchar(50) ,
+sex integer NOT NULL,
+job varchar(100) ,
+birthday_y varchar(4) ,
+birthday_m varchar(2) ,
+birthday_d varchar(2) ,
+meinichi_y varchar(4) ,
+meinichi_m varchar(2) ,
+meinichi_d varchar(2) ,
+tags varchar(400) ,
+is_arive integer NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table m_tiku_code
+(
+id serial NOT NULL,
+tiku_code integer NOT NULL,
+tiku_name varchar(50) NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_disabled boolean NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table t_danka
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+danka_type integer NOT NULL,
+sewa_code integer NOT NULL,
+tiku_code integer NOT NULL,
+member_id_kosyu integer ,
+member_id_sou integer ,
+kaimyo varchar(100) ,
+kaimyo_furigana varchar(100) ,
+relation varchar(100) ,
+sesyu_sei varchar(100) ,
+sesyu_na varchar(100) ,
+kyonen varchar(100) ,
+jiin integer ,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table t_danka_detail_kosyu_info
+(
+id serial NOT NULL,
+member_id integer NOT NULL,
+danka_type integer NOT NULL,
+name_sei varchar(50) NOT NULL,
+name_na varchar(50) NOT NULL,
+furigana_sei varchar(50) NOT NULL,
+furigana_na varchar(50) NOT NULL,
+job varchar(100) ,
+birthday_y varchar(4) ,
+birthday_m varchar(2) ,
+birthday_d varchar(2) ,
+tiku_code integer NOT NULL,
+tiku_name varchar(50) NOT NULL,
+sewa_code integer NOT NULL,
+sewa_name varchar(50) NOT NULL,
+member_id_sou integer ,
+tags varchar(400) ,
+jiin integer ,
+yobi_1 varchar(100) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+is_deleted boolean NOT NULL,
+primary key (id));
+
+create table t_dbupdate_set
+(
+dbcode integer NOT NULL,
+updatable integer NOT NULL,
+yobi_1 varchar(10) ,
+yobi_2 varchar(10) ,
+create_user varchar(50) NOT NULL,
+create_date timestamp NOT NULL,
+update_user varchar(50) NOT NULL,
+update_date timestamp NOT NULL,
+primary key (dbcode));
