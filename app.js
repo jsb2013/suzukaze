@@ -68,12 +68,11 @@ app.post('/danka_tuika_update', routes.postDankaTuikaDBUpdate);
 // 詳細検索画面
 //***************************************
 app.get('/danka_base', routes.getDankaBase);
+app.post('/danka_base', routes.postDankaBase);
 
 //***************************************
 // 檀家検索結果画面
 //***************************************
-// 檀家詳細TOP画面
-app.get('/danka_detail_top', routes.getDankaDetailTop);
 // 檀家詳細TOP画面
 app.get('/danka_detail_kihon', routes.getDankaDetailKihon);
 // 檀家詳細TOP画面→基本情報画面

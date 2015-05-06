@@ -74,8 +74,9 @@ exports.getDankaBase = function (req, res) {
     var getDankaBaseModel = require("../model/danka/syosai/getDankaSyosaiNewModel");
     var webItemJson = req.body;
     var tabId = req.query.id;
+    var memberId = req.query.memberId;
 
-    function authCallback(isError, tikuInfoJson, tikuCodeInfo, tagInfoJson, tagCodeInfo, sewaCodeInfo, reportTypeInfo) {
+    function authCallback(isError, tikuInfoJson, tikuCodeInfo, tagInfoJson, tagCodeInfo, sewaCodeInfo, reportTypeInfo, serchMoji, optionId) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -90,14 +91,54 @@ exports.getDankaBase = function (req, res) {
             sewaCodeInfo : sewaCodeInfo,
             tagInfoJson: tagInfoJson,
             tagCodeInfo: tagCodeInfo,
-            tabId: tabId
+            tabId: tabId,
+            optionId: optionId,
+            serchMoji: serchMoji
         });
         return;
     }
 
-    getDankaBaseModel.main(authCallback);
+    getDankaBaseModel.main(memberId, authCallback);
 };
 
+// 檀家管理ベース
+exports.postDankaBase = function (req, res) {
+    // sessionが無い場合はloginへ
+    if(req.session.user === undefined){
+        res.redirect('/login');
+    return;
+    }
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var config = require("../conf/common_config");
+    var getDankaBaseModel = require("../model/danka/syosai/getDankaSyosaiNewModel");
+    var webItemJson = req.body;
+    var tabId = req.query.id;
+    var memberId = req.query.memberId;
+
+    function authCallback(isError, tikuInfoJson, tikuCodeInfo, tagInfoJson, tagCodeInfo, sewaCodeInfo, reportTypeInfo, serchMoji, optionId) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka/danka_base', {
+            page:{ url:config.connectionUrl, data:reportTypeInfo, urlPrintServ:config.connectionPrintServUrl },
+            webItemJson : webItemJson,
+            tikuInfoJson: tikuInfoJson,
+            tikuCodeInfo: tikuCodeInfo,
+            sewaCodeInfo : sewaCodeInfo,
+            tagInfoJson: tagInfoJson,
+            tagCodeInfo: tagCodeInfo,
+            tabId: tabId,
+            optionId: optionId,
+            serchMoji: serchMoji
+        });
+        return;
+    }
+
+    getDankaBaseModel.main(memberId, authCallback);
+};
 //***************************************
 // 檀家追加画面
 //***************************************
@@ -238,35 +279,6 @@ exports.getUnUpdatable = function(req, res){
 //***************************************
 // 檀家検索結果画面
 //***************************************
-// 檀家詳細TOP画面
-exports.getDankaDetailTop = function(req, res) {
-    
-    // sessionが無い場合はloginへ
-    if(req.session.user === undefined){
-        res.redirect('/login');
-    return;
-    }
-
-    // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var getDankaDetailTopModel = require("../model/danka_detail/common/getDankaDetailTopModel");
-    var memberId = req.query.id;
-    
-    function authCallback(isError, resultRows) {
-        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
-        if (isError) {
-            res.render('dummy', {});
-            return;
-        }
-        // ログイン成功画面へ推移
-        res.render('danka_detail/common/danka_detail_top', {
-            resultRows: resultRows
-        });
-        return;
-    }
-
-    getDankaDetailTopModel.main(memberId, authCallback);
-};
-
 // 檀家詳細TOP画面→基本情報画面
 exports.getDankaDetailKihon = function (req, res) {
 
@@ -279,6 +291,8 @@ exports.getDankaDetailKihon = function (req, res) {
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
     var getDankaDetailKihonModel = require("../model/danka_detail/kihon/getDankaDetailKihonModel");
     var memberId = req.query.id;
+    var serchMoji = req.query.sm;
+    var optionId = req.query.optionId;
 
     function authCallback(isError, kosyuInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
@@ -291,7 +305,7 @@ exports.getDankaDetailKihon = function (req, res) {
             kosyuInfo: kosyuInfo[0],
             tikuCodeInfo: tikuCodeInfo,
             sewaCodeInfo: sewaCodeInfo,
-            addressInfo: addressInfo,
+            addressInfo: addressInfo,   
             mailInfo: mailInfo,
             telnumberInfo: telnumberInfo,
             tagsInfo: tagsInfo,
@@ -300,7 +314,7 @@ exports.getDankaDetailKihon = function (req, res) {
         return;
     }
 
-    getDankaDetailKihonModel.main(memberId, authCallback);
+    getDankaDetailKihonModel.main(memberId, optionId, serchMoji, authCallback);
 };
 
 // 檀家詳細TOP画面→基本情報画面→確認画面

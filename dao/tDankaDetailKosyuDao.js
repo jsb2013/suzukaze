@@ -123,7 +123,7 @@ exports.deleteTDankaDetailKosyuBymemberId = function(client, database, memberId,
     });
 }
 
-exports.insertTDankaDetailKosyuInfo = function (client, database, memberId, baseInfo, dbcallback) {
+exports.insertTDankaDetailKosyuInfo = function (client, database, memberId, baseInfo, serchMoji, optionId, dbcallback) {
 
     // varchar型 or boolean型の値を取得。
     var isDbError = false;
@@ -144,8 +144,8 @@ exports.insertTDankaDetailKosyuInfo = function (client, database, memberId, base
     var birthdayD = baseInfo.birthday_d;
     var jiin = baseInfo.jiin;
 
-    var query = client.query('INSERT INTO t_danka_detail_kosyu_info(member_id, danka_type, name_sei, name_na, furigana_sei, furigana_na, job, birthday_y, birthday_m, birthday_d, tiku_code, tiku_name, sewa_code, sewa_name, member_id_sou, tags, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, null, null, $18, now(), $19, now(), false)',
-                    [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, job, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, jiin, 'yamashita0284', 'yamashita0284']);
+    var query = client.query('INSERT INTO t_danka_detail_kosyu_info(member_id, danka_type, name_sei, name_na, furigana_sei, furigana_na, job, birthday_y, birthday_m, birthday_d, tiku_code, tiku_name, sewa_code, sewa_name, member_id_sou, tags, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, now(), $21, now(), false)',
+                    [memberId, dankaType, nameSei, nameNa, furiganaSei, furiganaNa, job, birthdayY, birthdayM, birthdayD, tikuCode, tikuName, sewaCode, sewaName, memberIdSou, tags, jiin, serchMoji, optionId, 'yamashita0284', 'yamashita0284']);
 
     query.on('end', function (row, err) {
         // session out

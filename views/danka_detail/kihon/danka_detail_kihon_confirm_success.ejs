@@ -41,26 +41,12 @@
     $(function(){
 
     // ページ遷移定義
-        $("#return").click(function () {
-            $("#return_danka_detail_top_form").submit();
-        });
         $(".menu_sub_kihon").click(function () {
-            $("#danka_detail_kihon_form").submit();
+            var a = $("#danka_detail_kihon_form input[name='member_id']").val();
+            location.href = "/danka_detail_kihon?id=" + a;
         });
         $(".menu_sub_kako").click(function () {
             $("#danka_detail_kako_form").submit();
-        });
-        $(".menu_sub_genzai").click(function () {
-            $("#danka_detail_genzai_form").submit();
-        });
-        $(".menu_sub_nenkaiki").click(function () {
-            $("#danka_detail_nenkaiki_form").submit();
-        });
-        $(".menu_sub_kihu").click(function () {
-            $("#danka_detail_kihu_form").submit();
-        });
-        $(".menu_sub_omairi").click(function () {
-            $("#danka_detail_omairi_form").submit();
         });
     })
 </script>
@@ -111,33 +97,10 @@
         <div id="title">
    	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
         </div>
-        <div class="kosyu_info">
-   	      <table class="table table-bordered table-condensed">
-              <thead>
-                <tr>
-                  <th class="kosyu_info_kosyu_th">戸主名</th>
-                  <th class="kosyu_info_type_danka_th">檀家</th>
-                  <th class="kosyu_info_type_shinto_th">信徒</th>
-                  <th class="kosyu_info_tiku_th">地区</th>
-                  <th class="kosyu_info_sewa_th">世話人</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="<%= memberId %>">
-                <td class="table_name_full"><div class="padding-default"><%= nameFull %></div></td>
-                <td class="table_danka_type_danka"><div class="padding-default text-center"><%= dankaTypeDanka %></div></td>
-                <td class="table_danka_type_shinto"><div class="padding-default text-center"><%= dankaTypeShinto %></div></td>
-                <td id="<%= tikuCode %>" class="table_tiku_name"><div class="padding-default"><%= tikuName %></div></td>
-                <td id="<%= sewaCode %>" class="table_sewa_name"><div class="padding-default"><%= sewaName %></div></td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-        <div class="menu_sub">
+        <div id="menu_sub">
           <ul>
-            <li class="menu_sub_kihon">基本情報
-            <li class="menu_sub_kako">過去帳
-            <li class="menu_sub_nenkaiki_dummy">年回忌
+            <li class="menu_sub_kihon selected"><label>基本情報 </label>
+            <li class="menu_sub_kako"><label>過去帳</label>
           </ul>
         </div>
       </div>
@@ -153,23 +116,10 @@
                 </div>
             </div>
       </div>
-
-      <form action="/return_danka_detail_top" method="post" id="return_danka_detail_top_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>
       <form action="/danka_detail_kako" method="post" id="danka_detail_kako_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
-      <form action="/danka_detail_nenkaiki" method="post" id="danka_detail_nenkaiki_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
-      <form action="/danka_detail_kihu" method="post" id="danka_detail_kihu_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
-      <form action="/danka_detail_omairi" method="post" id="danka_detail_omairi_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->

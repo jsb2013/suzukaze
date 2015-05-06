@@ -143,7 +143,7 @@
     // 印刷オプションボタンを押下した場合の定義
     // (送信機能）
     function updatePrintDanka() {
-        $(".checkbox_default").click(function () {
+        $(".checkbox_default_list").click(function () {
             var data = $(this).attr('value');
 
             if ($(this).prop('checked') == true) {
@@ -159,6 +159,20 @@
     // （画面操作時の機能）
     $(function () {
         $("#print_display_flag").click(function () {
+
+            // 検索の連続実施チェック
+            var updatable = $("input[name='printflg_updatable']").val();
+            if (updatable == "0"){
+                return false;
+            }
+      
+            // 検索実施後1秒間は、検索ボタンによる処理を実行しない。 
+            $("input[name='printflg_updatable']").val("0");
+            setTimeout(function(){
+                $("input[name='printflg_updatable']").val("1");
+            },1000);
+        
+            var serchMoji = $("#serch_tag").val();
             var printMessage = $(this).text();
             if (printMessage == "印刷オプションを閉じる") {
                 $("#inner_main_print").addClass("hidden");
@@ -176,6 +190,9 @@
                 $('#target_list > tr').remove();
                 $('#checkbox_kojin').addClass("hidden");
                 $('#search_count').text("[検索件数]：件");
+            }
+            if (!isUndefine(serchMoji)){
+                GetSearchTargetList();
             }
         });
 
@@ -265,7 +282,13 @@
     }
 
     function goDankaDetail(id){
-        location.href = "/danka_detail_kihon?id=" + id;
+        var serchMoji = $("#serch_tag").val();
+        var optionMoji = $("#print_display_flag").text();
+        var optionId = 0;
+        if (optionMoji == "印刷オプションを閉じる") {
+            optionId = 1;
+        }
+        location.href = '/danka_detail_kihon?id=' + id + '&optionId=' + optionId + '&sm=' + serchMoji;
     }
 
     // GetTargetListメッセージを受けたとき
@@ -301,12 +324,12 @@
                 html += '<tr class="even table-selectable cursor-pointer">';
             }
             if(param.printStatusOn){
-                html +=   '<td class="checkbox_td hidden"><input type="checkbox" class="checkbox_default" name="target" value="' +data[i].member_id_kosyu + '"></td>';
+                html +=   '<td class="checkbox_td hidden"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id_kosyu + '></td>';
             } else{
                 if(data[i].report_if_id == ""){
-                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default" name="target" value="' +data[i].member_id_kosyu + '"></td>';
+                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id_kosyu + '></td>';
                 }else{
-                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default" name="target" value="' +data[i].member_id_kosyu + '" checked></td>';
+                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id_kosyu + ' checked></td>';
                 }
             }
             html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
@@ -350,7 +373,6 @@
     });
 
  $(function(){
-
     // ソートした表を表示する。（引数に渡した2次元配列から表を作成する。）
     function draw(tds) {
         var html = '';
@@ -384,13 +406,17 @@
             if(!printStatusOn){
                 if(val[0] == "1"){
                     html +=   '<td class="checkbox_td">';
-                    html +=   '<input type="checkbox" class="checkbox_default" name="target" value="' +val[8] + '" checked></td>';
+                    html +=   '<input type="checkbox" class="checkbox_default_list" name="target" value=' +val[8] + ' checked></td>';
                     html +=   "</td>";
                 }else{
                     html +=   '<td class="checkbox_td">';
-                    html +=   '<input type="checkbox" class="checkbox_default" name="target" value="' +val[8] + '"></td>';
+                    html +=   '<input type="checkbox" class="checkbox_default_list" name="target" value=' +val[8] + '></td>';
                     html +=   "</td>";
                 }
+            }else{
+                html +=   '<td class="checkbox_td hidden">';
+                html +=   '<input type="checkbox" class="checkbox_default_list" name="target" value=' +val[8] + '></td>';
+                html +=   "</td>";
             }
 
             html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
@@ -415,9 +441,16 @@
             html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
             html +=     val[6];
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
-            html +=     val[7];
-            html +=   "</td>";
+
+            if(!printStatusOn){
+                html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ')">';
+                html +=     val[7];
+                html +=   "</td>";
+            }else{
+                html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+                html +=     val[7];
+                html +=   "</td>";
+            }
             html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ')">';
             html +=     val[8];
             html +=   "</td>";
@@ -605,7 +638,20 @@
         });
     });
 </script>
-
+<script>
+    $(function () {
+        var optionId = $("#option_id").val();
+        if(optionId == "1"){
+            var b = $("#serch_moji").val();
+            $("#serch_tag").val(b);
+            $("#print_display_flag").click();
+        }else if(optionId == "0"){
+            var b = $("#serch_moji").val();
+            $("#serch_tag").val(b);
+            GetSearchTargetList();            
+        }
+    });
+</script>
 </head>
 <body>
 <div id="container">
@@ -689,6 +735,7 @@
                 <label id="print_display_flag" class="cursor-pointer text-underline">印刷オプションを表示する</label>
               </div>
               <input type="hidden" name="search_updatable" value="1">
+              <input type="hidden" name="printflg_updatable" value="1">
           </div>
 
           <!---------------------------------------------------------------------------------------------------------
@@ -1257,13 +1304,7 @@
                 <div class="col col-sm-12">
                     <button type="submit" class="btn btn-success btn-lg">　登録　</button>
                 </div>
-                <div class="col col-sm-12">
-                    <button id="test" type="button" class="btn btn-success btn-lg">　テスト　</button>
-                </div>
             </div>
-　<div id="dialog" title="コメントの投稿ありがとうございます">
-　<p>コメントを受け付けました。<br />コメントは管理人の承認後、表示されます。</p>
-　</div>
           </div>
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
@@ -1275,7 +1316,9 @@
           <input type="hidden" id="sewa_code_bak" value="<%= webItemJson.sewa_code %>">          
         </form>
       </div>
-
+      <input type="hidden" id="option_id" value=<%= optionId %>>
+      <input type="hidden" id="serch_moji" value="<%= serchMoji %>">
+            
     </div>
   </div>
 

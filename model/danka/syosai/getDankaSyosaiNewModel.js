@@ -16,15 +16,17 @@ var mMemberDao = require("../../../dao/mMemberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
 var vReportTypeDao = require("../../../dao/vReportType");
 var tDbupdateSetDao = require("../../../dao/tDbupdateSet");
+var tDankaDetailKosyuDao = require("../../../dao/tDankaDetailKosyuDao");
 var fs = require("fs");
 
 /* 檀家追加画面メイン（post処理） */
-exports.main = function (callback) {
+exports.main = function (memberId, callback) {
 
     var tikuList = [];
     var sewaList = [];
     var tagList = [];
     var reportTypeList = [];
+    var tDankaDetailKosyuList = [];
     async.series([
 
     // 地区コードマスタを取得する
@@ -37,16 +39,24 @@ exports.main = function (callback) {
         },
     // タグコードマスタを取得する
         function (dbcallback) {
+            if (!util.isUndefine(memberId)) {
+                tDankaDetailKosyuDao.getTDankaDetailKosyuInfoByMemberId(client, database, memberId, tDankaDetailKosyuList, dbcallback);
+                return;
+            }
+            dbcallback(null);
+        },
+    // タグコードマスタを取得する
+        function (dbcallback) {
             mTagsDao.getMTags(client, database, tagList, dbcallback);
         },
     // 帳票種別を取得する
         function (dbcallback) {
             vReportTypeDao.getvReportType(client, database, reportTypeList, dbcallback);
-        }],
+        } ],
     // DBUpdateステータス初期化
-//        function (dbcallback) {
-//            tDbupdateSetDao.updateStatusToUpdatable(client, database, 1, dbcallback);
-//        } ],
+    //        function (dbcallback) {
+    //            tDbupdateSetDao.updateStatusToUpdatable(client, database, 1, dbcallback);
+    //        } ],
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {
             if (err) {
@@ -61,7 +71,13 @@ exports.main = function (callback) {
             if (!tagInfoJson) {
                 callback(true);
             }
-            callback(false, tikuInfoJson, tikuList, tagInfoJson, tagList, sewaList, reportTypeList);
+            var serchMoji = null;
+            var optionId = null;
+            if (!util.isUndefineForList(tDankaDetailKosyuList)) {
+                serchMoji = tDankaDetailKosyuList[0].yobi_1;
+                optionId = tDankaDetailKosyuList[0].yobi_2;
+            }
+            callback(false, tikuInfoJson, tikuList, tagInfoJson, tagList, sewaList, reportTypeList, serchMoji, optionId);
             return;
         }
     );

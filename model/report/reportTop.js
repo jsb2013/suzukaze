@@ -330,18 +330,26 @@ exports.updateAllReportIf = function(target_member_id, flag, callback){
 function insertAllReportIf(target_member_id, callback){
 
     var sql;
+    var tmp;
     var isDbError = false;
 
-  sql = 'insert into t_report_if  (member_id, yobi_1, yobi_2, create_user, create_date, update_user, update_date) select member_id, null, null, \'system\', now(), \'system\', now() from v_member where ';
+  //sql = 'insert into t_report_if  (member_id, yobi_1, yobi_2, create_user, create_date, update_user, update_date) select member_id, null, null, \'system\', now(), \'system\', now() from v_member where ';
+  sql = 'insert into t_report_if  (member_id, yobi_1, yobi_2, create_user, create_date, update_user, update_date) select member_id, null, null, \'system\', now(), \'system\', now() from m_member where is_disabled = false and is_deleted = false and (';
+  
   for(var i = 0 ; i < target_member_id.length ; i++){
     if(i===0){
       sql += ' member_id = ' + target_member_id[i];
+      tmp += ' member_id = ' + target_member_id[i];
     }else{
       sql += ' or member_id = ' + target_member_id[i];
+      tmp += ' or member_id = ' + target_member_id[i];
     }
-  } 
-//  console.log(sql);
+  }
 
+  sql += ')';
+  tmp += ')';
+
+//  console.log(sql);
   var query = client.query(sql);
 
 //   query.on('end', function(row,err) {

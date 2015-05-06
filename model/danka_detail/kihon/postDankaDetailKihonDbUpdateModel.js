@@ -16,6 +16,7 @@ var mAddressDao = require("../../../dao/mAddressDao");
 var mMailDao = require("../../../dao/mMailDao");
 var mTelnumberDao = require("../../../dao/mTelnumberDao");
 var tDankaDetailKosyuDao = require("../../../dao/tDankaDetailKosyuDao");
+var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var util = require("../../../util/util");
 
 /* 檀家追加画面メイン（post処理） */
@@ -36,6 +37,7 @@ exports.main = function (webItemJson, callback) {
     var ratestMMemberInfo = [];
     var ratestTDankaInfo = [];
     var ratestTDankaDetailKosyuInfo = [];
+    var isTikuCodeUpdate = false;
 
     async.series([
     // 【START】トランザクション開始
@@ -188,6 +190,18 @@ exports.main = function (webItemJson, callback) {
                 dbcallback(null);
             }
         },
+    // 地区コードマスタ(update m_tiku_code)
+        function (dbcallback) {
+            var tikuCode = webItemJson.tiku_code;
+            var tikuCodeBk = webItemJson.tiku_code_bk;
+
+            if (!util.isUndefine(tikuCode) && !util.isUndefine(tikuCodeBk) && tikuCode != 0 && tikuCode != tikuCodeBk) {
+                isTikuCodeUpdate = true;
+                mTikuCodeDao.updateMTikuCodeForTikuNumber(client, database, tikuCode, dbcallback);
+                return;
+            }
+            dbcallback(null);
+        },
     // 檀家マスタ削除（deleteFlag = true)
         function (dbcallback) {
             if (isUpdateTDanka === "true") {
@@ -205,6 +219,14 @@ exports.main = function (webItemJson, callback) {
                 dbcallback(null);
             }
         },
+    // 檀家間関係管理のyobi_1を更新(update t_danka)
+        function (dbcallback) {
+            if (isTikuCodeUpdate) {
+                tDankaDao.updateTDankaForTikuNumber(client, database, memberId, dbcallback);
+                return;
+            }
+            dbcallback(null);
+        },
     // コメントマスタ削除（deleteFlag = true)
         function (dbcallback) {
             if (isUpdateTComment === "true") {
@@ -220,15 +242,15 @@ exports.main = function (webItemJson, callback) {
             } else {
                 dbcallback(null);
             }
-        },
+        } ],
     // メンバーマスタ追加
-        function (dbcallback) {
-            tDankaDetailKosyuDao.updateTDankaDetailKosyuForDeleteFlag(client, database, memberId, dbcallback);
-        },
+    //        function (dbcallback) {
+    //            tDankaDetailKosyuDao.updateTDankaDetailKosyuForDeleteFlag(client, database, memberId, dbcallback);
+    //        },
     // メンバーマスタ追加
-        function (dbcallback) {
-            tDankaDetailKosyuDao.insertTDankaDetailKosyuInfo(client, database, memberId, webItemJson, dbcallback);
-        }],
+    //        function (dbcallback) {
+    //            tDankaDetailKosyuDao.insertTDankaDetailKosyuInfo(client, database, memberId, webItemJson, dbcallback);
+    //        }],
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {
             if (err) {
@@ -281,5 +303,6 @@ function mergeTDankaInfo(ratestTDankaInfo, webItemJson){
     // 最新のレコードに更新した可能性のある項目をマージ
     ratestTdanka.danka_type = dankaType;
     ratestTdanka.sewa_code = sewaCode;
+    ratestTdanka.tiku_code = tikuCode;
     ratestTdanka.jiin = jiin;
 }

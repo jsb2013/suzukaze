@@ -155,92 +155,80 @@
 </script>
 
 <script>
- $(function(){
-    
+    $(function () {
 
-    // ページ遷移定義
-    $("#return").click(function () {
-        $("#return_danka_detail_top_form").submit();
-    });
-    $(".menu_sub_kihon").click(function () {
-        $("#danka_detail_kihon_form").submit();
-    });
-    $(".menu_sub_kako").click(function () {
-        $("#danka_detail_kako_form").submit();
-    });
-    $(".menu_sub_genzai").click(function () {
-        $("#danka_detail_genzai_form").submit();
-    });
-    $(".menu_sub_nenkaiki").click(function () {
-        $("#danka_detail_nenkaiki_form").submit();
-    });
-    $(".menu_sub_kihu").click(function () {
-        $("#danka_detail_kihu_form").submit();
-    });
-    $(".menu_sub_omairi").click(function () {
-        $("#danka_detail_omairi_form").submit();
-    });
+        // ページ遷移定義
+        $("#return").click(function () {
+            var a = $("#danka_detail_kihon_form input[name='member_id']").val();
+            location.href = "/danka_base?id=0&memberId=" + a;
+        });
+//        $(".menu_sub_kihon").click(function () {
+//            $("#danka_detail_kihon_form").submit();
+//        });
+        $(".menu_sub_kako").click(function () {
+            $("#danka_detail_kako_form").submit();
+        });
 
-    // 更新時のバリデーションチェック
-    $("#main_form").submit(function(){
-        // エラーチェック
-        if($("p.error").length > 0){
-            return false;
-        }
+        // 更新時のバリデーションチェック
+        $("#main_form").submit(function () {
+            // エラーチェック
+            if ($("p.error").length > 0) {
+                return false;
+            }
 
-        // テキスト項目の差分チェックを実施
-        var beforeDiffList = $(".chenge_check_bk");
-        var isChange =  $(".validate").formUtil("diffTextList", beforeDiffList);
-        
-        // select項目の差分比較
-        $(".validate").formUtil("diffTextList", beforeDiffList);
-        var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
-        var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
-        var jiinCodeAfter = $("select[name='jiin_code'] option:selected").val();
-        var tikuCodeBk = $("input[name='tiku_code_bk']").val();
-        var sewaCodeBk = $("input[name='sewa_code_bk']").val();
-        var jiinCodeBk = $("input[name='jiin_code_bk']").val();
-        if(tikuCodeAfter !== tikuCodeBk || sewaCodeAfter !== sewaCodeBk || jiinCodeAfter !== jiinCodeBk){
-            isChange = true;
-        }
+            // テキスト項目の差分チェックを実施
+            var beforeDiffList = $(".chenge_check_bk");
+            var isChange = $(".validate").formUtil("diffTextList", beforeDiffList);
 
-        // radio項目の差分比較
-        var dankaTypeAfter = $("input[name='danka_type']:checked").val();
-        var dankaTypeBk = $("input[name='danka_type_bk']").val();
-        if(dankaTypeAfter !== dankaTypeBk){
-            isChange = true;
-        }
-        
-        // テキストエリアの差分比較
-        var commentAfter = $("textarea[name='comment']").val();
-        var commentBk = $("input[name='comment_bk']").val();
-        if(commentAfter !== commentBk){
-            isChange = true;
-        }
+            // select項目の差分比較
+            $(".validate").formUtil("diffTextList", beforeDiffList);
+            var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
+            var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
+            var jiinCodeAfter = $("select[name='jiin_code'] option:selected").val();
+            var tikuCodeBk = $("input[name='tiku_code_bk']").val();
+            var sewaCodeBk = $("input[name='sewa_code_bk']").val();
+            var jiinCodeBk = $("input[name='jiin_code_bk']").val();
+            if (tikuCodeAfter !== tikuCodeBk || sewaCodeAfter !== sewaCodeBk || jiinCodeAfter !== jiinCodeBk) {
+                isChange = true;
+            }
 
-        // チェックボックスの差分比較
-        var checkTags =  $("input[name='tags']:checked").formUtil("changeTagsToString");
-        var tagsBk = $("input[name='tags_bk']").val();
-        if (checkTags !== tagsBk) {
-            isChange = true;
-        }
+            // radio項目の差分比較
+            var dankaTypeAfter = $("input[name='danka_type']:checked").val();
+            var dankaTypeBk = $("input[name='danka_type_bk']").val();
+            if (dankaTypeAfter !== dankaTypeBk) {
+                isChange = true;
+            }
 
-        // 値が何も変更されていない場合は、ポップアップを出力する。
-        if(!isChange){
-            alert("変更されていません。");
-            return false;
-        }
+            // テキストエリアの差分比較
+            var commentAfter = $("textarea[name='comment']").val();
+            var commentBk = $("input[name='comment_bk']").val();
+            if (commentAfter !== commentBk) {
+                isChange = true;
+            }
 
-        // 変更有無チェック
-        var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
-        var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
-        var jiinAfter = $("select[name='jiin_code'] option:selected").text();
-        $("input[name='tiku_name']").val(tikuNameAfter);
-        $("input[name='sewa_name']").val(sewaNameAfter);
-        $("input[name='jiin_name']").val(jiinAfter);
-        $("input[name='tags_after']").val(checkTags);
+            // チェックボックスの差分比較
+            var checkTags = $("input[name='tags']:checked").formUtil("changeTagsToString");
+            var tagsBk = $("input[name='tags_bk']").val();
+            if (checkTags !== tagsBk) {
+                isChange = true;
+            }
+
+            // 値が何も変更されていない場合は、ポップアップを出力する。
+            if (!isChange) {
+                alert("変更されていません。");
+                return false;
+            }
+
+            // 変更有無チェック
+            var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
+            var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
+            var jiinAfter = $("select[name='jiin_code'] option:selected").text();
+            $("input[name='tiku_name']").val(tikuNameAfter);
+            $("input[name='sewa_name']").val(sewaNameAfter);
+            $("input[name='jiin_name']").val(jiinAfter);
+            $("input[name='tags_after']").val(checkTags);
+        });
     });
-});
 </script>
 </head>
 <body>
@@ -286,28 +274,6 @@
       <div class="inner_title">
         <div id="title">
    	      <h2><span class="ja">檀家管理詳細</span><span class="en">danka detail infomation</span></h2>
-        </div>
-        <div class="kosyu_info">
-   	      <table class="table table-bordered table-condensed">
-              <thead>
-                <tr>
-                  <th class="kosyu_info_kosyu_th">戸主名</th>
-                  <th class="kosyu_info_type_danka_th">檀家</th>
-                  <th class="kosyu_info_type_shinto_th">信徒</th>
-                  <th class="kosyu_info_tiku_th">地区</th>
-                  <th class="kosyu_info_sewa_th">世話人</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="<%= memberId %>">
-                <td class="table_name_full"><div class="padding-default"><%= nameFull %></div></td>
-                <td class="table_danka_type_danka"><div class="padding-default text-center"><%= dankaTypeDanka %></div></td>
-                <td class="table_danka_type_shinto"><div class="padding-default text-center"><%= dankaTypeShinto %></div></td>
-                <td id="<%= tikuCode %>" class="table_tiku_name"><div class="padding-default"><%= tikuName %></div></td>
-                <td id="<%= sewaCode %>" class="table_sewa_name"><div class="padding-default"><%= sewaName %></div></td>
-                </tr>
-              </tbody>
-            </table>
         </div>
         <div id="menu_sub">
           <ul>
@@ -632,7 +598,7 @@
             </table>
             <div class="row">
                 <div class="col col-sm-3 text-left">
-                    <button type="button" id="return" class="btn btn-primary btn-sm">TOPに戻る</button>
+                    <button type="button" id="return" class="btn btn-primary btn-sm">検索画面に戻る</button>
                 </div>
                 <div class="col col-sm-6">
                     <button type="submit" id="register" class="btn btn-success btn-lg">　変更内容確認　</button>
@@ -694,24 +660,13 @@
         </form>
       </div> 
 
-      <form action="/return_danka_detail_top" method="post" id="return_danka_detail_top_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>
       <form action="/danka_detail_kako" method="post" id="danka_detail_kako_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>
-      <form action="/danka_detail_nenkaiki" method="post" id="danka_detail_nenkaiki_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
-      <form action="/danka_detail_kihu" method="post" id="danka_detail_kihu_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
-      <form action="/danka_detail_omairi" method="post" id="danka_detail_omairi_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
+
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
     </div>
     <!-- wrapper end -->

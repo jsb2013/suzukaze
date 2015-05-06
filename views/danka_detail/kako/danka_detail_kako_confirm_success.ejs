@@ -94,7 +94,8 @@
             $("#return_danka_detail_top_form").submit();
         });
         $(".menu_sub_kihon").click(function () {
-            $("#danka_detail_kihon_form").submit();
+            var a = $("#danka_detail_kihon_form input[name='member_id']").val();
+            location.href = "/danka_detail_kihon?id=" + a;
         });
         $(".menu_sub_kako").click(function () {
             $("#danka_detail_kako_form").submit();
@@ -133,23 +134,23 @@
     <div id="menu_box">
       <div id="temple_img"><img src="img/tyo-denji.jpg" alt="temple-image" width="198" height="132" border=0></div>
       <!-- menu -->
-      <div id="menu">
-        <nav>
-          <ul>
-            <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
-          </ul>
-          <ul>
-            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
-            <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
-            <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
-            <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
-          </ul>
-          <ul>
-            <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
-            <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
-          </ul>
-        </nav>
-      </div>
+            <div id="menu">
+                <nav>
+                    <ul>
+                        <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
+                    </ul>
+                    <ul>
+                        <li class="menu_enable"><a href="/danka_base?id=0"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>
+                        <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
+                        <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
+                        <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>
+                    </ul>
+                    <ul>
+                        <li class="menu_disable"><span class="ja">備品管理</span><span class="en">stock-manage</span>
+                        <li class="menu_disable"><span class="ja">寺院情報</span><span class="en">user-info</span>
+                    </ul>
+                </nav>
+            </div>
       <!-- menu end -->
     </div>
     <!-- menu_box end -->
@@ -182,11 +183,10 @@
               </tbody>
             </table>
         </div>
-        <div class="menu_sub">
+        <div id="menu_sub">
           <ul>
-            <li class="menu_sub_kihon">基本情報 
-            <li class="menu_sub_kako">過去帳
-            <li class="menu_sub_nenkaiki_dummy">年回忌
+            <li class="menu_sub_kihon"><label>基本情報 </label>
+            <li class="menu_sub_kako selected"><label>過去帳</label>
           </ul>
         </div>
       </div>

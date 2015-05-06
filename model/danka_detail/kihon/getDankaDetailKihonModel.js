@@ -20,7 +20,7 @@ var mTelnumberDao = require("../../../dao/mTelnumberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
 
 /* 檀家追加画面メイン（post処理） */
-exports.main = function (memberId, callback) {
+exports.main = function (memberId, optionId, serchMoji, callback) {
     // いったんはpostで入ってきたデータは正しい想定で作る
     //var memberId = webItemJson.member_id;
     var resultRows = [];
@@ -68,7 +68,7 @@ exports.main = function (memberId, callback) {
             // 地区名と世話名をresultRowsにAdd
             addTikuNameAndSewaName2(tikuCodeInfo, sewaCodeInfo, resultRows);
             // メイン処理
-            tDankaDetailKosyuDao.insertTDankaDetailKosyuInfo(client, database, memberId, resultRows[0], dbcallback);
+            tDankaDetailKosyuDao.insertTDankaDetailKosyuInfo(client, database, memberId, resultRows[0], serchMoji, optionId, dbcallback);
         },
     // T_xxxマスタを取得
         function (dbcallback) {
