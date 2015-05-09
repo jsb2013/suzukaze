@@ -291,10 +291,52 @@ exports.getDankaDetailKihon = function (req, res) {
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
     var getDankaDetailKihonModel = require("../model/danka_detail/kihon/getDankaDetailKihonModel");
     var memberId = req.query.id;
+    var memberIdkosyu = req.query.kosyuid;
     var serchMoji = req.query.sm;
     var optionId = req.query.optionId;
 
-    function authCallback(isError, kosyuInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
+    function authCallback(isError, kosyuInfo, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.render('danka_detail/kihon/danka_detail_kihon', {
+            kosyuInfo: kosyuInfo[0],
+            tikuCodeInfo: tikuCodeInfo,
+            sewaCodeInfo: sewaCodeInfo,
+            addressInfo: addressInfo,   
+            mailInfo: mailInfo,
+            telnumberInfo: telnumberInfo,
+            tagsInfo: tagsInfo,
+            tagNameListInMM: tagNameListInMM,
+            kosyuIdlistIsArive: kosyuIdlistIsArive,
+            kosyuIdlistIsAriveNot: kosyuIdlistIsAriveNot
+        });
+        return;
+    }
+
+    getDankaDetailKihonModel.main(memberId, memberIdkosyu, optionId, serchMoji, authCallback);
+};
+
+exports.postDankaDetailKihon = function (req, res) {
+
+    // sessionが無い場合はloginへ
+    if(req.session.user === undefined){
+        res.redirect('/login');
+    return;
+    }
+
+    // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var getDankaDetailKihonModel = require("../model/danka_detail/kihon/getDankaDetailKihonModel");
+    var memberId = req.query.id;
+    var memberIdkosyu = req.query.kosyuid;
+    var serchMoji = req.query.sm;
+    var optionId = req.query.optionId;
+    var webItemJson = req.body;
+
+    function authCallback(isError, kosyuInfo, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -314,7 +356,7 @@ exports.getDankaDetailKihon = function (req, res) {
         return;
     }
 
-    getDankaDetailKihonModel.main(memberId, optionId, serchMoji, authCallback);
+    getDankaDetailKihonModel.main(memberId, memberIdkosyu, optionId, serchMoji, authCallback);
 };
 
 // 檀家詳細TOP画面→基本情報画面→確認画面

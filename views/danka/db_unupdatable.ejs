@@ -15,16 +15,26 @@
 <link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
 
 <title>檀家管理システム　禅</title>
-
 <script>
- <!-- 表中の偶数行の色を変える -->
- $(function(){
-   $("td").click(function(){
-     var id = $(this).parent().attr("id");
-     location.href = "dummy";
-   });
-   $("tr:nth-child(even)").addClass("even");
- });
+    // History API が使えるブラウザかどうかをチェック
+    if (window.history && window.history.pushState) {
+        //. ブラウザ履歴に１つ追加
+        history.pushState("nohb", null);
+        $(window).on("popstate", function (event) {
+            //. このページで「戻る」を実行
+            var a = event.originalEvent.state;
+            var b = event.state;
+
+            history.pushState("nohb", null);
+            //location.href = "/db_unupdatable";
+            //if (!event.originalEvent.state) {
+                //. もう一度履歴を操作して終了
+                //history.pushState("nohb", null);
+                //location.href = "http://www.google.com/";
+                return;
+            //}
+        });
+    }
 </script>
 </head>
 <body>
@@ -78,7 +88,7 @@
           <ul>
             <li id="tab_search_easy"><a href="/danka_base?id=0"><label>検索(簡易)</label></a>
             <li id="tab_search_50on"><a href="/danka_base?id=1"><label>検索(50音)</label></a>
-            <li id="tab_add_kosyu" class="selected"><a href="/danka_base?id=2"><label>戸主追加</label></a>
+            <li id="tab_add_kosyu"><a href="/danka_base?id=2"><label>戸主追加</label></a>
           </ul>
         </div>
       </div>
@@ -87,7 +97,7 @@
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
       <div id="inner_main">
           <div class="row db_error_comment">
-            <div class="col col-sm-12"><label>ブラウザの戻るボタンを使用した為、登録に失敗しました。</label><label>※戸主追加タブを押して最初から登録をやり直してください。</label></div>
+            <div class="col col-sm-12"><label>ブラウザの戻るボタンは使用できません。</label><label>※申し訳ありませんが、作業のやり直しをお願いします。</label></div>
           </div>
       </div>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->

@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_common.css" type="text/css" id="danka_detail_common">
 <link rel="stylesheet" href="stylesheets/danka_detail/danka_detail_kihon.css" type="text/css">
 <link rel="stylesheet" href="stylesheets/common_parts.css" type="text/css">
+<link rel="stylesheet" href="stylesheets/style_danka_detail.css" type="text/css">
 
 <!-- 住所変換定義 -->
 <script src="http://api.zipaddress.net/sdk/zipaddr.min.js"></script>
@@ -26,36 +27,18 @@
 <title>檀家管理システム　禅</title>
 
 <%
+    var isArive = kosyuInfo.is_arive;
     var memberId = kosyuInfo.member_id;
     var dankaType = kosyuInfo.danka_type;
-	var dankaTypeDanka = "○";
-	var dankaTypeShinto = "-";
-	if (dankaType === 1){
-	    dankaTypeDanka = "-";
-	    dankaTypeShinto = "○";
-    }
     var nameSei = kosyuInfo.name_sei;
     var nameNa = kosyuInfo.name_na;
     var nameFull = nameSei + "　" + nameNa;
-    var tikuName = kosyuInfo.tiku_name;
-    var sewaName = kosyuInfo.sewa_name;
     var furiganaSei = kosyuInfo.furigana_sei;
     var furiganaNa = kosyuInfo.furigana_na;
-    var job = kosyuInfo.job;
-    var tikuCode = kosyuInfo.tiku_code;
-    var sewaCode = kosyuInfo.sewa_code;
-    var birthdayY = kosyuInfo.birthday_y;
-    var birthdayM = kosyuInfo.birthday_m;
-    var birthdayD = kosyuInfo.birthday_d;
-    var comment = kosyuInfo.comment;
-    var tags = kosyuInfo.tags;
-    var jiin = kosyuInfo.jiin;
-    var jiinName = "---";
-    if (jiin == "1"){
-        jiinName = "長伝寺";
-    } else if(jiin == "2"){
-        jiinName = "水月寺";
-    }
+
+    var kaimyo = kosyuInfo.kaimyo;
+    var kaimyoFurigana = kosyuInfo.kaimyo_furigana;
+
     var addressPri1 = addressInfo[0];
     var zipCodePre = addressPri1.zip_code_pre;
     var zipCodeLast = addressPri1.zip_code_last;
@@ -64,15 +47,20 @@
     var addressLine1 = addressPri1.address_line1;
     var addressLine2 = addressPri1.address_line2;
 
-    var mailAddressPri1 = mailInfo[0];
-    var mailAddressPri2 = mailInfo[1];
-    var mailAddressPri3 = mailInfo[2];
-    var mailAddress1 = mailAddressPri1.mail_address;
-    var mailYoto1 = mailAddressPri1.yoto;
-    var mailAddress2 = mailAddressPri2.mail_address;
-    var mailYoto2 = mailAddressPri2.yoto;
-    var mailAddress3 = mailAddressPri3.mail_address;
-    var mailYoto3 = mailAddressPri3.yoto;
+    var birthdayY = kosyuInfo.birthday_y;
+    var birthdayM = kosyuInfo.birthday_m;
+    var birthdayD = kosyuInfo.birthday_d;
+
+    var meinichiY = kosyuInfo.meinichi_y;
+    var meinichiM = kosyuInfo.meinichi_m;
+    var meinichiD = kosyuInfo.meinichi_d;
+
+    var kyonen = kosyuInfo.kyonen;
+
+    var sesyuSei = kosyuInfo.sesyu_sei;
+    var sesyuNa = kosyuInfo.sesyu_na;
+
+    var relation = kosyuInfo.relation;
 
     var telnumberInfoPri1 = telnumberInfo[0];
     var telnumberInfoPri2 = telnumberInfo[1];
@@ -89,6 +77,34 @@
     var telNumberMid3 = telnumberInfoPri3.tel_number_mid;
     var telNumberLast3 = telnumberInfoPri3.tel_number_last;
     var telNumberYoto3 = telnumberInfoPri3.yoto;
+
+    var mailAddressPri1 = mailInfo[0];
+    var mailAddressPri2 = mailInfo[1];
+    var mailAddressPri3 = mailInfo[2];
+    var mailAddress1 = mailAddressPri1.mail_address;
+    var mailYoto1 = mailAddressPri1.yoto;
+    var mailAddress2 = mailAddressPri2.mail_address;
+    var mailYoto2 = mailAddressPri2.yoto;
+    var mailAddress3 = mailAddressPri3.mail_address;
+    var mailYoto3 = mailAddressPri3.yoto;
+
+    var job = kosyuInfo.job;
+
+    var jiin = kosyuInfo.jiin;
+    var jiinName = "---";
+    if (jiin == "1"){
+        jiinName = "長伝寺";
+    } else if(jiin == "2"){
+        jiinName = "水月寺";
+    }
+
+    var tikuCode = kosyuInfo.tiku_code;
+    var tikuName = kosyuInfo.tiku_name;
+    var sewaCode = kosyuInfo.sewa_code;
+    var sewaName = kosyuInfo.sewa_name;
+    var tags = kosyuInfo.tags;
+    var comment = kosyuInfo.comment;
+    
 %>
 <script>
     <!-- 表中の偶数行の色を変える -->
@@ -151,6 +167,15 @@
                 return false;
             }
         });
+
+        var isArive = $("input[name='is_arive']").val();
+        if(isArive == "0"){
+            $(".only_kako").removeClass("hidden");
+            $(".only_gen").addClass("hidden");            
+        }else{
+            $(".only_kako").addClass("hidden");
+            $(".only_gen").removeClass("hidden");
+        }
     });
 </script>
 
@@ -278,13 +303,13 @@
         <div id="menu_sub">
           <ul>
             <li class="menu_sub_kihon selected"><label>基本情報 </label>
-            <li class="menu_sub_kako"><label>過去帳</label>
+            <li class="menu_sub_kako"><label>現在帳/過去帳</label>
           </ul>
         </div>
       </div>
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
-      <div class="inner_main">
+      <div class="hidden inner_main_kihon">
         <form action="danka_detail_kihon_confirm" 
           id="main_form" method="post">
           <div class="table_main_kihon">
@@ -296,7 +321,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">登録区分</label></td>
                   <td class="table_main_tuika_selectable">
                     <div class="style-danka-type">
@@ -351,7 +376,26 @@
                       </div>
                   </td>
                 </tr>
-                <tr>
+
+                <tr class="only_kako">
+                  <td><label class="padding-default">戒名</label></td>
+                  <td class="table-selectable">
+                    <div class="col col-sm-12 padding-default">
+                      <input type="text" name="kaimyo" value="<%= kaimyo %>" class="form-control input-sm validate sp_check enter-mv">
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="only_kako">
+                  <td><label class="padding-default">戒名(ふりがな)</label></td>
+                  <td class="table-selectable">
+                    <div class="col col-sm-12 padding-default">
+                      <input type="text" name="kaimyo_furigana" value="<%= kaimyoFurigana %>" class="form-control input-sm validate sp_check enter-mv">
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="only_gen">
                   <td><label class="padding-default">郵便番号</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-3 padding-default">
@@ -367,7 +411,7 @@
 
                   </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">都道府県</label></td>
                   <td class="table-selectable">
                   <div class="col col-sm-3 padding-default">
@@ -375,7 +419,7 @@
                   </div>
                   </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">市区町村</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-4 padding-default">
@@ -383,7 +427,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">番地</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-12 padding-default">
@@ -391,7 +435,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">ビル名等</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-12 padding-default">
@@ -404,20 +448,73 @@
                   <td><label class="padding-default">生年月日</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="birthday_y" id="birthday_y" value="<%= birthdayY %>" class="form-control input-sm chenge_check validate number duplicate enter-mv">
+                        <input type="text" name="birthday_y" id="birthday_y" value="<%= birthdayY %>" class="form-control input-sm validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">年</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="birthday_m" id="birthday_m" value="<%= birthdayM %>" class="form-control input-sm chenge_check validate number duplicate enter-mv">
+                        <input type="text" name="birthday_m" id="birthday_m" value="<%= birthdayM %>" class="form-control input-sm validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">月</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="birthday_d" id="birthday_d" value="<%= birthdayD %>" class="form-control input-sm chenge_check validate number duplicate_end enter-mv">
+                        <input type="text" name="birthday_d" id="birthday_d" value="<%= birthdayD %>" class="form-control input-sm validate number duplicate_end enter-mv">
                       </div>
                       <div class="col col-sm-4 style-string-in-table">日</div>
                   </td>
                 </tr>
-                <tr>
+
+                <tr class="only_kako">
+                  <td><label class="padding-default">命日</label></td>
+                  <td class="table-selectable">
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="meinichi_y" value="<%= meinichiY %>" class="form-control input-sm validate number duplicate enter-mv">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">年</div>
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="meinichi_m" value="<%= meinichiM %>" class="form-control input-sm validate number duplicate enter-mv">
+                      </div>
+                      <div class="col col-sm-1 style-string-in-table">月</div>
+                      <div class="col col-sm-2 padding-default">
+                        <input type="text" name="meinichi_d" value="<%= meinichiD %>" class="form-control input-sm validate number duplicate_end enter-mv">
+                      </div>
+                      <div class="col col-sm-4 style-string-in-table">日</div>
+                  </td>
+                </tr>
+
+                <tr class="only_kako">
+                  <td><label class="padding-default">享年</label></td>
+                  <td class="table-selectable">
+                    <div class="col col-sm-3 padding-default">
+                        <input type="text" name="kyonen" value="<%= kyonen %>" class="form-control input-sm validate number enter-mv">
+                    </div>
+                    <div class="col col-sm-1 style-string-in-table">歳</div>
+                  </td>
+                </tr>
+
+                <tr class="only_kako">
+                  <td><label class="padding-default">施主</label></td>
+                  <td class="table-selectable">
+                      <div class="col col-sm-1 style-name-in-table">姓</div>
+                      <div class="col col-sm-5 padding-left-zero padding-top-bottom-default">
+                        <input type="text" name="sesyu_sei" value="<%= sesyuSei %>" class="form-control input-sm validate sp_check duplicate enter-mv">
+                      </div>
+                      <div class="col col-sm-1 style-name-in-table">名</div>
+
+                      <div class="col col-sm-5 padding-left-zero padding-top-bottom-default">
+                        <input type="text" name="sesyu_na" value="<%= sesyuNa %>" class="form-control input-sm validate sp_check duplicate_end enter-mv">
+                      </div>
+                  </td>
+                </tr>
+
+                <tr class="only_kako">
+                  <td><label class="padding-default">施主から見た続柄</label></td>
+                  <td class="table-selectable">
+                    <div class="col col-sm-3 padding-default">
+                        <input type="text" name="relation" value="<%= relation %>" class="form-control input-sm validate sp_check enter-mv">
+                    </div>
+                  </td>
+                </tr>
+
+                <tr class="only_gen">
                   <td><label class="padding-default">電話番号(優先1)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
@@ -437,7 +534,7 @@
                       </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">電話番号(優先2)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
@@ -458,7 +555,7 @@
                       </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">電話番号(優先3)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
@@ -479,7 +576,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">Email(優先1)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-7 padding-default">
@@ -491,7 +588,7 @@
                       </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">Email(優先2)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-7 padding-default">
@@ -503,7 +600,7 @@
                       </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">Email(優先3)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-7 padding-default">
@@ -516,7 +613,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">職業</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-4 padding-default">
@@ -524,7 +621,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                  <td><label class="padding-default">所属寺</label></td>
                  <td class="table-selectable padding-default">
                     <div class="padding-left-default">
@@ -537,7 +634,7 @@
                   </td>
                 </tr>
 
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">地区名</label></td>
                   <td class="table-selectable">
                     <div class="padding-left-default">
@@ -551,7 +648,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">世話人</label></td>
                   <td class="table-selectable">
                     <div class="padding-left-default">
@@ -565,7 +662,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <tr class="only_gen">
                   <td><label class="padding-default">タグ</label></td>
                   <td class="table-selectable">
                     <div id="danka_tuika_tag" class="padding-default">
@@ -606,29 +703,42 @@
              </div>
           </div>
           <!-- サマリ画面表示情報 -->
+          <input type="hidden" name="is_arive" value=<%= isArive %>>
           <input type="hidden" name="member_id" value=<%= memberId %>>
-          <input type="hidden" name="danka_type_danka_bk" value=<%= dankaTypeDanka %>>
-          <input type="hidden" name="danka_type_shinto_bk" value=<%= dankaTypeShinto %>>
-          <input type="hidden" name="name_full_bk" value=<%= nameFull %>>
-          <input type="hidden" name="tiku_name_bk" value=<%= tikuName %>>
-          <input type="hidden" name="sewa_name_bk" value=<%= sewaName %>>
-          <input type="hidden" name="tiku_code_bk" value=<%= tikuCode %>>
-          <input type="hidden" name="sewa_code_bk" value=<%= sewaCode %>>
+          
           <!-- 変更前の情報 -->
           <input type="hidden" name="danka_type_bk" value=<%= dankaType %>>
           <input type="hidden" name="name_sei_bk" class="chenge_check_bk name_sei" value=<%= nameSei %>>
           <input type="hidden" name="name_na_bk" class="chenge_check_bk name_na" value=<%= nameNa %>>
           <input type="hidden" name="furigana_sei_bk" class="chenge_check_bk furigana_sei" value=<%= furiganaSei %>>
           <input type="hidden" name="furigana_na_bk" class="chenge_check_bk furigana_na" value=<%= furiganaNa %>>
+          <input type="hidden" name="name_full_bk" value=<%= nameFull %>>
+
+          <input type="hidden" name="kaimyo_bk" class="chenge_check_bk kaimyo" value=<%= kaimyo %>>
+          <input type="hidden" name="kaimyo_furigana_bk" class="chenge_check_bk kaimyo_furigana" value=<%= kaimyoFurigana %>>
+
           <input type="hidden" name="zip_code_pre_bk" class="chenge_check_bk zip_code_pre" value=<%= zipCodePre %>>
           <input type="hidden" name="zip_code_last_bk" class="chenge_check_bk zip_code_last" value=<%= zipCodeLast %>>
           <input type="hidden" name="region_bk" class="chenge_check_bk region" value=<%= region %>>
           <input type="hidden" name="city_bk" class="chenge_check_bk city" value=<%= city %>>
           <input type="hidden" name="address_line1_bk" class="chenge_check_bk address_line1" value=<%= addressLine1 %>>
           <input type="hidden" name="address_line2_bk" class="chenge_check_bk address_line2" value=<%= addressLine2 %>>
+
           <input type="hidden" name="birthday_y_bk" class="chenge_check_bk birthday_y" value=<%= birthdayY %>>
           <input type="hidden" name="birthday_m_bk" class="chenge_check_bk birthday_m" value=<%= birthdayM %>>
           <input type="hidden" name="birthday_d_bk" class="chenge_check_bk birthday_d" value=<%= birthdayD %>>
+
+          <input type="hidden" name="meinichi_y_bk" class="chenge_check_bk meinichi_y" value=<%= meinichiY %>>
+          <input type="hidden" name="meinichi_m_bk" class="chenge_check_bk meinichi_m" value=<%= meinichiM %>>
+          <input type="hidden" name="meinichi_d_bk" class="chenge_check_bk meinichi_d" value=<%= meinichiD %>>
+
+          <input type="hidden" name="kyonen_bk" class="chenge_check_bk kyonen" value=<%= kyonen %>>
+
+          <input type="hidden" name="sesyu_sei_bk" class="chenge_check_bk sesyu_sei" value=<%= sesyuSei %>>
+          <input type="hidden" name="sesyu_na_bk" class="chenge_check_bk sesyu_na" value=<%= sesyuNa %>>
+
+          <input type="hidden" name="relation_bk" class="chenge_check_bk relation" value=<%= relation %>>
+
           <input type="hidden" name="telno_pre_1_bk" class="chenge_check_bk telno_pre_1" value=<%= telNumberPre1 %>>
           <input type="hidden" name="telno_mid_1_bk" class="chenge_check_bk telno_mid_1" value=<%= telNumberMid1 %>>
           <input type="hidden" name="telno_last_1_bk" class="chenge_check_bk telno_last_1" value=<%= telNumberLast1 %>>
@@ -648,16 +758,135 @@
           <input type="hidden" name="mail_address_3_bk" class="chenge_check_bk mail_address_3" value=<%= mailAddress3 %>>
           <input type="hidden" name="mail_yoto_3_bk" class="chenge_check_bk mail_yoto_3" value=<%= mailYoto3 %>>
           <input type="hidden" name="job_bk" value=<%= job %>>
-          <input type="hidden" name="comment_bk" value=<%= comment %>>
-          <input type="hidden" name="tags_bk" value=<%= tags %>>
-          <input type="hidden" name="jiin_code_bk" value=<%= jiin %>>
+          <input type="hidden" name="jiin_bk" value=<%= jiin %>>
           <input type="hidden" name="jiin_name_bk" value=<%= jiinName %>>
+          <input type="hidden" name="tiku_code_bk" value=<%= tikuCode %>>
+          <input type="hidden" name="tiku_name_bk" value=<%= tikuName %>>
+          <input type="hidden" name="sewa_code_bk" value=<%= sewaCode %>>
+          <input type="hidden" name="sewa_name_bk" value=<%= sewaName %>>
+          <input type="hidden" name="tags_bk" value=<%= tags %>>
+          <input type="hidden" name="comment_bk" value=<%= comment %>>
+
           <!-- 変更後の情報 -->
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
           <input type="hidden" name="tags_after" value="dummy">
           <input type="hidden" name="jiin_name" value="dummy">
         </form>
+      </div> 
+
+      <div id="inner_main_genkako">
+          <div class="title_comment">
+            <label>現在帳</label>
+          </div>
+          <div class="margin-table-top">
+            <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th id="table_main_kosyu_th" class="th-sort header-selectable cursor-pointer">戸主<span> ▽</span></th>
+                            <th id="table_main_gen_name_th" class="th-sort header-selectable cursor-pointer">氏名<span> ▽</span></th>
+                            <th id="table_main_tiku_code_th" class="th-sort header-selectable cursor-pointer">地区名<span> ▽</span></th>
+                            <th id="table_main_tiku_number_th" class="th-sort header-selectable cursor-pointer">地区番号<span> ▽</span></th>
+                            <th id="table_main_tags_th" class="th-sort header-selectable cursor-pointer">タグ名<span> ▽</span></th>
+                            <th id="table_main_jiin_th" class="th-sort header-selectable cursor-pointer">寺院<span> ▽</span></th>
+                        </tr>
+                    </thead>
+              <tbody>
+                  <%
+                    for(var i in kosyuIdlistIsArive){
+                        var _nameSei = kosyuIdlistIsArive[i].name_sei;
+                        var _nameNa = kosyuIdlistIsArive[i].name_na;
+                        var _fullName = _nameSei + "　" + _nameNa;
+                        var _tikuCode = kosyuIdlistIsArive[i].tiku_code;
+                        var _tikuNumber = kosyuIdlistIsArive[i].yobi_1;
+                        var _tags = kosyuIdlistIsArive[i].tags;
+                        var _jiin = kosyuIdlistIsArive[i].jiin;
+                        var _memberId = kosyuIdlistIsArive[i].member_id;
+                        var _memberIdKosyu = kosyuIdlistIsArive[i].member_id_kosyu;
+                        var _isKosyu = "";
+                        if(_memberId == _memberIdKosyu){
+                            var _isKosyu = "●";
+                        }
+                        var _isOriginal = false;
+                        if(_memberId == memberId){
+                            var _isOriginal = true;
+                        }
+                  %>
+                  <%
+                    if(_isOriginal){
+                  %>
+                        <tr class="even">
+                  <%}else{%>
+                        <tr>
+                  <%}%>
+                        <td><%= _isKosyu %></td>
+                        <td><%= _fullName %></td>
+                        <td><%= _tikuCode %></td>
+                        <td><%= _tikuNumber %></td>
+                        <td><%= _tags %></td>
+                        <td><%= _jiin %></td>
+                    </tr>
+                  <% } %>
+              </tbody>
+            </table>
+          </div>
+          <div class="title_comment">
+            <label>過去帳</label>
+          </div>
+          <div class="margin-table-top">
+            <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                          <th id="table_main_kako_zokumei" class="table_main_kako_header">俗名</th>
+                          <th id="table_main_kako_kaimyo" class="table_main_kako_header">戒名</th>
+                          <th id="table_main_kako_meinichi" class="table_main_kako_header">命日</th>
+                          <th id="table_main_kako_kyonen" class="table_main_kako_header">享年</th>
+                          <th id="table_main_kako_sesyu" class="table_main_kako_header">施主</th>
+                          <th id="table_main_kako_relation" class="table_main_kako_header">続柄</th>
+                        </tr>
+                    </thead>
+              <tbody>
+                  <%
+                    for(var i in kosyuIdlistIsAriveNot){
+                        var _nameSei = kosyuIdlistIsAriveNot[i].name_sei;
+                        var _nameNa = kosyuIdlistIsAriveNot[i].name_na;
+                        var _fullName = _nameSei + "　" + _nameNa;
+                        var _kaimyo = kosyuIdlistIsAriveNot[i].kaimyo;
+                        var _meinichiY = kosyuIdlistIsAriveNot[i].meinichi_y;
+                        var _meinichiM = kosyuIdlistIsAriveNot[i].meinichi_m;
+                        var _meinichiD = kosyuIdlistIsAriveNot[i].meinichi_d;
+                        var _meinichiFull = _meinichiY + "年" + _meinichiM + "月" + _meinichiD;
+                        var _kyonen = kosyuIdlistIsAriveNot[i].kyonen;
+                        var _sesyuSei = kosyuIdlistIsAriveNot[i].sesyu_sei;
+                        var _sesyuNa = kosyuIdlistIsAriveNot[i].sesyu_na;
+                        var _sesyuFull = _sesyuSei + "　" + _sesyuNa;
+                        var _relation = kosyuIdlistIsAriveNot[i].relation;
+                        var _memberId = kosyuIdlistIsAriveNot[i].member_id;
+                        var _isOriginal = false;
+                        if(_memberId == memberId){
+                            var _isOriginal = true;
+                        }
+                  %>
+                  <%
+                    if(_isOriginal){
+                  %>
+                        <tr class="even cursor-pointer">
+                  <%}else{%>
+                        <tr>
+                  <%}%>
+                        <td class="cursor-pointer"><%= _fullName %></td>
+                        <td><%= _kaimyo %></td>
+                        <td><%= _meinichiFull %></td>
+                        <td><%= _kyonen %></td>
+                        <td><%= _sesyuFull %></td>
+                        <td><%= _relation %></td>
+
+                    </tr>
+                  <% } %>
+              </tbody>
+            </table>
+          </div>
+
       </div> 
 
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">

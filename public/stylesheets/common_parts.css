@@ -53,6 +53,11 @@
     margin-top: 8px;
 }
 
+/* margin定義 */
+.margin-table-top{
+    margin-top: 3px;
+}
+
 .margin-side-zero{
     margin-left: 0;
     margin-right: 0;

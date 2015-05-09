@@ -235,7 +235,50 @@ exports.getMmemberAndTDankaByFurigana = function(client, database, searchMoji, r
 exports.getMmemberAndTDankaByMemberId = function(client, database, memberId, rows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job, mm.birthday_y, mm.birthday_m, mm.birthday_d, td.danka_type, td.tiku_code, td.sewa_code, td.member_id_sou, mm.tags, td.jiin from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mm.member_id = $1',
+    var query = client.query('select mm.member_id, mm.name_sei, mm.name_na, mm.furigana_sei, mm.furigana_na, mm.sex, mm.job, mm.birthday_y, mm.birthday_m, mm.birthday_d, mm.meinichi_y, mm.meinichi_m, mm.meinichi_d, mm.tags, mm.is_arive, td.danka_type, td.tiku_code, td.sewa_code, td.member_id_sou, td.member_id_kosyu, td.kaimyo, td.kaimyo_furigana, td.relation, td.sesyu_sei, td.sesyu_na, td.kyonen, td.jiin, td.yobi_1 from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mm.member_id = $1',
+                [memberId]);
+
+    query.on('row', function(row) {
+        rows.push(row);
+    });
+    
+    query.on('end', function (row, err) {
+        // session out
+        client.end();
+
+        // database error
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            dbcallback(err);
+            return;
+        }
+        // database error(structure)
+        if (isDbError) {
+            return;
+        }
+        // callback(normal end)
+        util.convertJsonNullToBlankForAllItem(rows);
+        dbcallback(null);
+        return;
+    });
+    
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}
+
+exports.getMmemberAndTDankaByMemberIdKosyu = function(client, database, memberId, rows, dbcallback){
+    // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
+    var isDbError = false;
+    var query = client.query('select * from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and td.member_id_kosyu = $1',
                 [memberId]);
 
     query.on('row', function(row) {

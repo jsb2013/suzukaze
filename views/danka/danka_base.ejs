@@ -104,7 +104,7 @@
 </script>
 
 <!---------------------------------------------------------------------------------------------------------
-<!-- SCRIPT定義（個別）-検索(簡易)タブの定義
+<!-- SCRIPT定義（個別）-検索(簡易)タブの定義 ※印刷関連
 <!-------------------------------------------------------------------------------------------------------->
 <script>
     // ソケット通信の開始
@@ -156,49 +156,48 @@
         });
     }
 
-    // （画面操作時の機能）
-    $(function () {
-        $("#print_display_flag").click(function () {
+    // 印刷画面の表示
+    function PrintTyohyo(){
+      var selectType = $('#select_type').val();
+      var selectTemplate = $('#select_template').val();
+      if(selectType == 9999 || selectTemplate == 9999){
+        alert("帳票とテンプレートを正しく選択してください。");
+      }else{
+        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
+        // var kakunin = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectTemplate + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectType + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+      }
+    }
+</script>
 
-            // 検索の連続実施チェック
-            var updatable = $("input[name='printflg_updatable']").val();
-            if (updatable == "0"){
-                return false;
-            }
-      
-            // 検索実施後1秒間は、検索ボタンによる処理を実行しない。 
-            $("input[name='printflg_updatable']").val("0");
-            setTimeout(function(){
-                $("input[name='printflg_updatable']").val("1");
-            },1000);
-        
+<!---------------------------------------------------------------------------------------------------------
+<!-- SCRIPT定義（個別）-検索(簡易)タブの定義 ※印刷以外
+<!-------------------------------------------------------------------------------------------------------->
+<script>
+    $(function () {
+        // 「印刷オプションボタン」の定義
+        $("#print_display_flag").click(function () {
             var serchMoji = $("#serch_tag").val();
             var printMessage = $(this).text();
             if (printMessage == "印刷オプションを閉じる") {
                 $("#inner_main_print").addClass("hidden");
                 $(this).text("印刷オプションを表示する");
-                $("#table_print_ck").addClass("hidden");
                 $("#table_kako_th").removeClass("hidden");
-                $('#target_list > tr').remove();
+                $(".is_arive_tmp").removeClass("hidden");
                 $('#checkbox_kojin').removeClass("hidden");
-                $('#search_count').text("[検索件数]：件");
             } else {
                 $("#inner_main_print").removeClass("hidden");
                 $(this).text("印刷オプションを閉じる");
                 $("#table_print_ck").removeClass("hidden");
                 $("#table_kako_th").addClass("hidden");
-                $('#target_list > tr').remove();
+                $(".is_arive_tmp").addClass("hidden");
                 $('#checkbox_kojin').addClass("hidden");
-                $('#search_count').text("[検索件数]：件");
-            }
-            if (!isUndefine(serchMoji)){
-                GetSearchTargetList();
             }
         });
 
+        // 「全て選択ボタン」の定義
         $("input[name='all_check']").click(function () {
             var target_member_id = [];
-            //var elem = document.getElementsByName("target");
             var elem = $("input[name='target']");
             if (elem.length == 0){
                 return false;
@@ -220,21 +219,7 @@
         });
     });
 
-    // 印刷画面の表示
-    function PrintTyohyo(){
-      var selectType = $('#select_type').val();
-      var selectTemplate = $('#select_template').val();
-      if(selectType == 9999 || selectTemplate == 9999){
-        alert("帳票とテンプレートを正しく選択してください。");
-      }else{
-        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
-        // var kakunin = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectTemplate + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
-        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectType + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
-      }
-    }
-
-    <!-- 表中の偶数行の色を変える -->
-    // GetTargetListメッセージを送る
+    <!--  検索ボタンの定義 -->
     function GetSearchTargetList() {
       
       // 検索の連続実施チェック
@@ -281,14 +266,16 @@
       socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag, printStatusOn: printStatusOn });
     }
 
-    function goDankaDetail(id){
+    function goDankaDetail(id, kosyuId){
         var serchMoji = $("#serch_tag").val();
         var optionMoji = $("#print_display_flag").text();
         var optionId = 0;
         if (optionMoji == "印刷オプションを閉じる") {
             optionId = 1;
         }
-        location.href = '/danka_detail_kihon?id=' + id + '&optionId=' + optionId + '&sm=' + serchMoji;
+        //$("#danka_detail_kihon_form_member_id").val(id);
+        //$("#danka_detail_kihon_form").submit();
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&optionId=' + optionId + '&sm=' + serchMoji;
     }
 
     // GetTargetListメッセージを受けたとき
@@ -318,54 +305,57 @@
       else{
         for(var i=0;i<data.length;i++){
         	var html = "";
+
             if(i % 2 == 0){
                 html += '<tr class="table-selectable cursor-pointer">';    
             } else{
                 html += '<tr class="even table-selectable cursor-pointer">';
             }
-            if(param.printStatusOn){
-                html +=   '<td class="checkbox_td hidden"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id_kosyu + '></td>';
-            } else{
-                if(data[i].report_if_id == ""){
-                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id_kosyu + '></td>';
-                }else{
-                    html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id_kosyu + ' checked></td>';
-                }
+
+
+            if(data[i].report_if_id == ""){
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id + '></td>';
+            }else{
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +data[i].member_id + ' checked></td>';
             }
-            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
             html +=     data[i].name;
             html +=   "</td>";
-            html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
             html +=     data[i].furigana;
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
             html +=     data[i].tiku_name;
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
             if(isUndefine(data[i].tiku_number)){
                 html += "-";
             }else{
                 html +=     data[i].tiku_number;
             }
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
             html +=     data[i].tags;
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+            html +=   '<td onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
             html +=     data[i].jiin;
             html +=   "</td>";
             if(param.printStatusOn){
-                html +=   '<td onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+                html +=   '<td class="is_arive_tmp" onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
                 html +=     data[i].is_arive;
                 html +=   "</td>";
             } else{
                 html += '<td class="hidden">' + data[i].is_arive + '</td>';
             }
-            html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id_kosyu + ')">';
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
+            html +=     data[i].member_id;
+            html +=   "</td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + data[i].member_id + ', ' + data[i].member_id_kosyu + ')">';
             html +=     data[i].member_id_kosyu;
             html +=   "</td>";
             html +=  "</tr>";
-  
+
           $('#target_list').append(html);
         }
         updatePrintDanka();
@@ -393,7 +383,8 @@
         // val[5]: tags
         // val[6]: jiin
         // val[7]: is_arive
-        // val[8]: member_id_kosyu(hidden)
+        // val[8]: member_id(hidden)
+        // val[9]: member_id_kosyu(hidden)
 
             if(isEven){
                 html += '<tr class="even table-selectable cursor-pointer">';
@@ -401,58 +392,55 @@
             }else{
                 html += '<tr class="table-selectable cursor-pointer">'; 
                 isEven = true;
-            }
+            }                
             
-            if(!printStatusOn){
-                if(val[0] == "1"){
-                    html +=   '<td class="checkbox_td">';
-                    html +=   '<input type="checkbox" class="checkbox_default_list" name="target" value=' +val[8] + ' checked></td>';
-                    html +=   "</td>";
-                }else{
-                    html +=   '<td class="checkbox_td">';
-                    html +=   '<input type="checkbox" class="checkbox_default_list" name="target" value=' +val[8] + '></td>';
-                    html +=   "</td>";
-                }
+            if(val[0] == "1"){
+                html +=   '<td class="checkbox_td">';
+                html +=   '<input type="checkbox" class="checkbox_default_list" name="target" value=' +val[8] + ' checked></td>';
+                html +=   "</td>";
             }else{
-                html +=   '<td class="checkbox_td hidden">';
+                html +=   '<td class="checkbox_td">';
                 html +=   '<input type="checkbox" class="checkbox_default_list" name="target" value=' +val[8] + '></td>';
                 html +=   "</td>";
             }
 
-            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
             html +=     val[1];
             html +=   "</td>";
-            html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ')">';
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
             html +=     val[2];
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
             html +=     val[3];
             html +=   "</td>";
             if(val[4] == "0"){
-                html +=   '<td onClick="goDankaDetail(' + val[8] + ')">-</div>';
+                html +=   '<td onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">-</div>';
             }else{
-                html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+                html +=   '<td onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
                 html +=     val[4];
                 html +=   "</td>";
             }
-            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
             html +=     val[5];
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+            html +=   '<td onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
             html +=     val[6];
             html +=   "</td>";
 
             if(!printStatusOn){
-                html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ')">';
+                html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
                 html +=     val[7];
                 html +=   "</td>";
             }else{
-                html +=   '<td onClick="goDankaDetail(' + val[8] + ')">';
+                html +=   '<td class="is_arive_tmp" onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
                 html +=     val[7];
                 html +=   "</td>";
             }
-            html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ')">';
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
             html +=     val[8];
+            html +=   "</td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + val[8] + ', ' + val[9] + ')">';
+            html +=     val[9];
             html +=   "</td>";
             html +=  "</tr>";
         });
@@ -500,7 +488,7 @@
 
         // 検索結果が1行も存在しない場合は処理を中断する
         // 結果が1行もない場合、注意文を表記する為、1行目が通常の6列存在しないことをチェックする。
-        if(!isUndefineForList(tableData) && tableData[0].length != 9){
+        if(!isUndefineForList(tableData) && tableData[0].length != 10){
             return false;    
         }
 
@@ -596,24 +584,8 @@
         // EnterKeyをclick()イベントに変換する。(本当はメソッドチェーンしたいけど無理・・）
         $("#zip-code-search").formUtil("convertEnterToClick");
 
-
-
-
-        $("#test").click(function(){
-            　　    $( "#dialog" ).dialog({
-      modal: true,
-      buttons: {
-        Ok: function() {
-          $( this ).dialog( "close" );
-        }
-      }
-    });
-            //location.href = "http://54.64.43.110/Reportserver?/hurikomi_request&p1=1&p2=1&p3=1&p3=2&rc:Parameters=True&rc:Parameters=True&rs:Format=PDF&rc:OutputFormat=JPEG"
-
-        });
-
         // 登録ボタン押下時
-        $("form").submit(function(){
+        $("#tuika_form").submit(function(){
             // formのバリデーションチェックを行う。
             var formInfoJson;
             $.ajaxSetup({async: false});  //同期通信開始(json取ってくるまで待つ)
@@ -651,6 +623,28 @@
             GetSearchTargetList();            
         }
     });
+
+</script>
+<script>
+    // History API が使えるブラウザかどうかをチェック
+    if (window.history && window.history.pushState) {
+        //. ブラウザ履歴に１つ追加
+        history.pushState("nohb", null);
+        $(window).on("popstate", function (event) {
+            //. このページで「戻る」を実行
+            var a = event.originalEvent.state;
+            var b = event.state;
+
+            history.pushState("nohb", null);
+            location.href = "/db_unupdatable";
+            //if (!event.originalEvent.state) {
+                //. もう一度履歴を操作して終了
+                //history.pushState("nohb", null);
+                //location.href = "http://www.google.com/";
+                return;
+            //}
+        });
+    }
 </script>
 </head>
 <body>
@@ -867,7 +861,7 @@
                     <thead>
                         <tr>
                             <!-- <th id="table_member_id_th" class="th-sort header-selectable cursor-pointer isInteger">ID<span> ▼</span></th> -->
-                            <th id="table_print_ck" class="hidden th-sort header-selectable cursor-pointer">ck<span> ▽</span></th>
+                            <th id="table_print_ck" class="th-sort header-selectable cursor-pointer">ck<span> ▽</span></th>
                             <th id="table_name_full_th" class="th-sort header-selectable cursor-pointer">氏名<span> ▽</span></th>
                             <th id="table_name_furigana_th" class="hidden">ふりがな<span></span></th>
                             <th id="table_tiku_name_th" class="th-sort header-selectable cursor-pointer">地区名<span> ▽</span></th>
@@ -875,6 +869,7 @@
                             <th id="table_tag_th" class="th-sort header-selectable cursor-pointer">タグ<span> ▽</span></th>
                             <th id="table_jiin_th" class="th-sort header-selectable cursor-pointer">寺院<span> ▽</span></th>
                             <th id="table_kako_th" class="th-sort header-selectable cursor-pointer">故<span> ▽</span></th>
+                            <th id="table_member_id_th" class="hidden">ID<span></span></th>
                             <th id="table_member_id_kosyu_th" class="hidden">ID-戸主<span></span></th>
                         </tr>
                     </thead>
@@ -886,8 +881,10 @@
         </div>
       </div>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
-        <input type="hidden" class="test_aaa" name="member_id" value="aaa">
+        <input type="hidden" id="danka_detail_kihon_form_member_id" name="member_id" value="aaa">
+        <input type="hidden" id="danka_detail_kihon_form_member_id_kosyu" name="member_id" value="aaa">
       </form>
+
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）検索(50音)タブ
     <!-------------------------------------------------------------------------------------------------------->
@@ -1003,7 +1000,7 @@
         <div class="title_comment">
    	      ★登録内容を入力し、本ページ一番下の登録ボタンを押してください。
         </div>
-        <form action="/danka_tuika_conform" method="post">
+        <form id="tuika_form" action="/danka_tuika_conform" method="post">
           <div class="margin-top-default">
             <table class="table table-bordered table-condensed">
               <thead>
@@ -1038,7 +1035,7 @@
                       </div>
                       <div class="col col-sm-1 style-name-in-table">名</div>
                       <div class="col col-sm-5 padding-left-zero padding-top-bottom-default">
-                        <input type="text" name="name_na" id="name_na" value="<%= webItemJson.name_na %>" class="form-control input-sm validate require sp_check duplicate_end enter-mv">
+                        <input type="text" name="name_na" value="<%= webItemJson.name_na %>" class="form-control input-sm validate require sp_check duplicate_end enter-mv">
                       </div>
                   </td>
                 </tr>
@@ -1050,11 +1047,11 @@
                   <td class="table-selectable">
                       <div class="col col-sm-1 style-name-in-table">せい</div>
                       <div class="col col-sm-5 padding-left-zero padding-top-bottom-default">
-                        <input type="text" name="furigana_sei" id="furigana_sei" value="<%= webItemJson.furigana_sei %>" class="form-control input-sm validate require sp_check duplicate enter-mv">
+                        <input type="text" name="furigana_sei" value="<%= webItemJson.furigana_sei %>" class="form-control input-sm validate require sp_check duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-name-in-table">めい</div>
                       <div class="col col-sm-5 padding-left-zero padding-top-bottom-default">
-                        <input type="text" name="furigana_na" id="furigana_na" value="<%= webItemJson.furigana_na %>" class="form-control input-sm validate require sp_check duplicate_end enter-mv">
+                        <input type="text" name="furigana_na" value="<%= webItemJson.furigana_na %>" class="form-control input-sm validate require sp_check duplicate_end enter-mv">
                       </div>
                   </td>
                 </tr>
@@ -1062,14 +1059,14 @@
                   <td><label class="padding-default">郵便番号</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-3 padding-default">
-                        <input type="text" name="zip_code_pre" id="zip_code_pre" value="<%= webItemJson.zip_code_pre %>" class="form-control input-sm validate number duplicate enter-mv aaa">
+                        <input type="text" name="zip_code_pre" value="<%= webItemJson.zip_code_pre %>" class="form-control input-sm validate number duplicate enter-mv aaa">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">ー</div>
                       <div class="col col-sm-3 padding-default">
-                        <input type="text" name="zip_code_last" id="zip_code_last" value="<%= webItemJson.zip_code_last %>" class="form-control input-sm validate number duplicate_end enter-mv">
+                        <input type="text" name="zip_code_last" value="<%= webItemJson.zip_code_last %>" class="form-control input-sm validate number duplicate_end enter-mv">
                       </div>
                       <div class="col col-sm-5 style-name-in-table">
-                        <button type="button" id="zip-code-search" class="btn btn-success btn-xs enter-mv">住所検索</button>
+                        <button type="button" class="btn btn-success btn-xs enter-mv">住所検索</button>
                       </div>
 
                   </td>
@@ -1078,7 +1075,7 @@
                   <td><label class="padding-default">都道府県</label></td>
                   <td class="table-selectable">
                   <div class="col col-sm-3 padding-default">
-                    <input type="text" name="region" id="region" value="<%= webItemJson.region %>" class="form-control input-sm validate sp_check enter-mv">
+                    <input type="text" name="region" value="<%= webItemJson.region %>" class="form-control input-sm validate sp_check enter-mv">
                   </div>
                   </td>
                 </tr>
@@ -1086,7 +1083,7 @@
                   <td><label class="padding-default">市区町村</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-4 padding-default">
-                      <input type="text" name="city" id="city" value="<%= webItemJson.city %>" class="form-control input-sm validate sp_check enter-mv">
+                      <input type="text" name="city" value="<%= webItemJson.city %>" class="form-control input-sm validate sp_check enter-mv">
                     </div>
                   </td>
                 </tr>
@@ -1094,7 +1091,7 @@
                   <td><label class="padding-default">番地</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-12 padding-default">
-                      <input type="text" name="address_line1" id="address_line1" value="<%= webItemJson.address_line1 %>" class="form-control input-sm validate sp_check enter-mv">
+                      <input type="text" name="address_line1" value="<%= webItemJson.address_line1 %>" class="form-control input-sm validate sp_check enter-mv">
                     </div>
                   </td>
                 </tr>
@@ -1102,7 +1099,7 @@
                   <td><label class="padding-default">ビル名等</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-12 padding-default">
-                      <input type="text" name="address_line2" id="address_line2" value="<%= webItemJson.address_line2 %>" class="form-control input-sm validate sp_check enter-mv">
+                      <input type="text" name="address_line2" value="<%= webItemJson.address_line2 %>" class="form-control input-sm validate sp_check enter-mv">
                     </div>
                   </td>
                 </tr>
@@ -1110,15 +1107,15 @@
                   <td><label class="padding-default">生年月日</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="birthday_y" id="birthday_y" value="<%= webItemJson.birthday_y %>" class="form-control input-sm chenge_check validate number duplicate enter-mv">
+                        <input type="text" name="birthday_y" value="<%= webItemJson.birthday_y %>" class="form-control input-sm chenge_check validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">年</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="birthday_m" id="birthday_m" value="<%= webItemJson.birthday_m %>" class="form-control input-sm chenge_check validate number duplicate enter-mv">
+                        <input type="text" name="birthday_m" value="<%= webItemJson.birthday_m %>" class="form-control input-sm chenge_check validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">月</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="birthday_d" id="birthday_d" value="<%= webItemJson.birthday_d %>" class="form-control input-sm chenge_check validate number duplicate_end enter-mv">
+                        <input type="text" name="birthday_d" value="<%= webItemJson.birthday_d %>" class="form-control input-sm chenge_check validate number duplicate_end enter-mv">
                       </div>
                       <div class="col col-sm-4 style-string-in-table">日</div>
                   </td>
@@ -1127,19 +1124,19 @@
                   <td><label class="padding-default">電話番号(優先1)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_pre_1" id="telno_pre_1" value="<%= webItemJson.telno_pre_1 %>" class="form-control input-sm validate number tel duplicate enter-mv">
+                        <input type="text" name="telno_pre_1" value="<%= webItemJson.telno_pre_1 %>" class="form-control input-sm validate number tel duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">ー</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_mid_1" id="telno_mid_1" value="<%= webItemJson.telno_mid_1 %>" class="form-control input-sm validate number tel duplicate enter-mv">
+                        <input type="text" name="telno_mid_1" value="<%= webItemJson.telno_mid_1 %>" class="form-control input-sm validate number tel duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">ー</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_last_1" id="telno_last_1" value="<%= webItemJson.telno_last_1 %>" class="form-control input-sm validate number tel duplicate_end enter-mv">
+                        <input type="text" name="telno_last_1" value="<%= webItemJson.telno_last_1 %>" class="form-control input-sm validate number tel duplicate_end enter-mv">
                       </div>
                       <div class="col col-sm-2 style-yoto-string text-right">用途</div>
                       <div class="col col-sm-4 padding-default">
-                        <input type="text" name="telno_yoto_1" id="telno_yoto_1" value="<%= webItemJson.telno_yoto_1 %>" class="form-control input-sm validate sp_check enter-mv">
+                        <input type="text" name="telno_yoto_1" value="<%= webItemJson.telno_yoto_1 %>" class="form-control input-sm validate sp_check enter-mv">
                       </div>
                     </td>
                 </tr>
@@ -1147,20 +1144,20 @@
                   <td><label class="padding-default">電話番号(優先2)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_pre_2" id="telno_pre_2" value="<%= webItemJson.telno_pre_2 %>" class="form-control input-sm validate number duplicate enter-mv">
+                        <input type="text" name="telno_pre_2" value="<%= webItemJson.telno_pre_2 %>" class="form-control input-sm validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">ー</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_mid_2" id="telno_mid_2" value="<%= webItemJson.telno_mid_2 %>" class="form-control input-sm validate number duplicate enter-mv">
+                        <input type="text" name="telno_mid_2" value="<%= webItemJson.telno_mid_2 %>" class="form-control input-sm validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">ー</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_last_2" id="telno_last_2" value="<%= webItemJson.telno_last_2 %>" class="form-control input-sm validate number duplicate_end enter-mv">
+                        <input type="text" name="telno_last_2" value="<%= webItemJson.telno_last_2 %>" class="form-control input-sm validate number duplicate_end enter-mv">
                       </div>
                       </span>
                       <div class="col col-sm-2 style-yoto-string text-right">用途</div>
                       <div class="col col-sm-4 padding-default">
-                        <input type="text" name="telno_yoto_2" id="telno_yoto_2" value="<%= webItemJson.telno_yoto_2 %>" class="form-control input-sm validate sp_check enter-mv">
+                        <input type="text" name="telno_yoto_2" value="<%= webItemJson.telno_yoto_2 %>" class="form-control input-sm validate sp_check enter-mv">
                       </div>
                     </td>
                 </tr>
@@ -1168,19 +1165,19 @@
                   <td><label class="padding-default">電話番号(優先3)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_pre_3" id="telno_pre_3" value="<%= webItemJson.telno_pre_3 %>" class="form-control input-sm validate number duplicate enter-mv">
+                        <input type="text" name="telno_pre_3" value="<%= webItemJson.telno_pre_3 %>" class="form-control input-sm validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">ー</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_mid_3" id="telno_mid_3" value="<%= webItemJson.telno_mid_3 %>" class="form-control input-sm validate number duplicate enter-mv">
+                        <input type="text" name="telno_mid_3" value="<%= webItemJson.telno_mid_3 %>" class="form-control input-sm validate number duplicate enter-mv">
                       </div>
                       <div class="col col-sm-1 style-string-in-table">ー</div>
                       <div class="col col-sm-2 padding-default">
-                        <input type="text" name="telno_last_3" id="telno_last_3" value="<%= webItemJson.telno_last_3 %>" class="form-control input-sm validate number duplicate_end enter-mv">
+                        <input type="text" name="telno_last_3" value="<%= webItemJson.telno_last_3 %>" class="form-control input-sm validate number duplicate_end enter-mv">
                       </div>
                       <div class="col col-sm-2 style-yoto-string text-right">用途</div>
                       <div class="col col-sm-4 padding-default">
-                        <input type="text" name="telno_yoto_3" id="telno_yoto_3" value="<%= webItemJson.telno_yoto_3 %>" class="form-control input-sm validate sp_check enter-mv">
+                        <input type="text" name="telno_yoto_3" value="<%= webItemJson.telno_yoto_3 %>" class="form-control input-sm validate sp_check enter-mv">
                       </div>
                     </td>
                 </tr>
@@ -1189,11 +1186,11 @@
                   <td><label class="padding-default">Email(優先1)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-7 padding-default">
-                        <input type="text" name="mail_address_1" id="mail_address_1" value="<%= webItemJson.mail_address_1 %>" class="form-control input-sm validate mail enter-mv mail">
+                        <input type="text" name="mail_address_1" value="<%= webItemJson.mail_address_1 %>" class="form-control input-sm validate mail enter-mv mail">
                       </div>
                       <div class="col col-sm-2 style-yoto-string text-right">用途</div>
                       <div class="col col-sm-3 padding-default">
-                        <input type="text" name="mail_yoto_1" id="mail_yoto_1" value="<%= webItemJson.mail_yoto_1 %>" class="form-control input-sm validate sp_check style-yoto-input-text enter-mv">
+                        <input type="text" name="mail_yoto_1" value="<%= webItemJson.mail_yoto_1 %>" class="form-control input-sm validate sp_check style-yoto-input-text enter-mv">
                       </div>
                     </td>
                 </tr>
@@ -1201,11 +1198,11 @@
                   <td><label class="padding-default">Email(優先2)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-7 padding-default">
-                        <input type="text" name="mail_address_2" id="mail_address_2" value="<%= webItemJson.mail_address_2 %>" class="form-control input-sm validate mail enter-mv mail">
+                        <input type="text" name="mail_address_2" value="<%= webItemJson.mail_address_2 %>" class="form-control input-sm validate mail enter-mv mail">
                       </div>
                       <div class="col col-sm-2 style-yoto-string text-right">用途</div>
                       <div class="col col-sm-3 padding-default">
-                        <input type="text" name="mail_yoto_2" id="mail_yoto_2" value="<%= webItemJson.mail_yoto_2 %>" class="form-control input-sm validate sp_check style-yoto-input-text enter-mv">
+                        <input type="text" name="mail_yoto_2" value="<%= webItemJson.mail_yoto_2 %>" class="form-control input-sm validate sp_check style-yoto-input-text enter-mv">
                       </div>
                     </td>
                 </tr>
@@ -1213,11 +1210,11 @@
                   <td><label class="padding-default">Email(優先3)</label></td>
                   <td class="table-selectable">
                       <div class="col col-sm-7 padding-default">
-                        <input type="text" name="mail_address_3" id="mail_address_3" value="<%= webItemJson.mail_address_3 %>" class="form-control input-sm validate mail enter-mv mail">
+                        <input type="text" name="mail_address_3" value="<%= webItemJson.mail_address_3 %>" class="form-control input-sm validate mail enter-mv mail">
                       </div>
                       <div class="col col-sm-2 style-yoto-string text-right">用途</div>
                       <div class="col col-sm-3 padding-default">
-                        <input type="text" name="mail_yoto_3" id="mail_yoto_3" value="<%= webItemJson.mail_yoto_3 %>" class="form-control input-sm validate sp_check style-yoto-input-text enter-mv">
+                        <input type="text" name="mail_yoto_3" value="<%= webItemJson.mail_yoto_3 %>" class="form-control input-sm validate sp_check style-yoto-input-text enter-mv">
                       </div>
                     </td>
                 </tr>
@@ -1225,7 +1222,7 @@
                   <td><label class="padding-default">職業</label></td>
                   <td class="table-selectable">
                     <div class="col col-sm-4 padding-default">
-                        <input type="text" name="job" id="job" value="<%= webItemJson.job %>" class="form-control input-sm validate sp_check job_size enter-mv">
+                        <input type="text" name="job" value="<%= webItemJson.job %>" class="form-control input-sm validate sp_check job_size enter-mv">
                     </div>
                   </td>
                 </tr>
@@ -1294,7 +1291,7 @@
                   <td><label class="padding-default">備考<br>※500文字以内</label></td>
                   <td class="table-selectable padding-default">
                      <div class="col col-sm-12 padding-default">
-                        <textarea name="comment" id="comment" class="form-control input-sm validate sp_check enter-mv"><%= webItemJson.comment %></textarea></p>
+                        <textarea name="comment" class="form-control input-sm validate sp_check enter-mv"><%= webItemJson.comment %></textarea></p>
                      </div>
                   </td>
                 </tr>

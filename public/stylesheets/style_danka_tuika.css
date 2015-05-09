@@ -44,31 +44,31 @@
 }
 
 #table_print_ck{
-    width: 7%;
+    width: 45px;
 }
 
 #table_name_full_th{
-    width: 20%;
+    width: 120px;
 }
 
 #table_tiku_name_th{
-    width: 12%;
+    width: 68px;
 }
 
 #table_tiku_number_th{
-    width: 12%;
+    width: 74px;
 }
    
 #table_tag_th{
-    width: 39%;
+    width: 231px;
 }
       
 #table_jiin_th{
-    width: 10%;
+    width: 60px;
 }
 
 #table_kako_th{
-    width: 7%;
+    width: 42px;
 }
 
 /* 印刷検索部 ------------------------ */

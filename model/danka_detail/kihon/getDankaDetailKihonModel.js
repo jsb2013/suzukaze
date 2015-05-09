@@ -9,7 +9,6 @@ var log = require("../../../util/logger");
 var logger = log.createLogger();
 var util = require("../../../util/util");
 var async = require('async');
-var tDankaDetailKosyuDao = require("../../../dao/tDankaDetailKosyuDao");
 var mCommentDao = require("../../../dao/mCommentDao");
 var mMemberDao = require("../../../dao/mMemberDao");
 var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
@@ -20,7 +19,7 @@ var mTelnumberDao = require("../../../dao/mTelnumberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
 
 /* 檀家追加画面メイン（post処理） */
-exports.main = function (memberId, optionId, serchMoji, callback) {
+exports.main = function (memberId, memberIdkosyu, optionId, serchMoji, callback) {
     // いったんはpostで入ってきたデータは正しい想定で作る
     //var memberId = webItemJson.member_id;
     var resultRows = [];
@@ -30,7 +29,9 @@ exports.main = function (memberId, optionId, serchMoji, callback) {
     var mailInfo = [];
     var commentInfo = [];
     var telnumberInfo = [];
-    var kosyuInfo = [];
+    var kosyuIdlist = [];
+    var kosyuIdlistIsArive = [];
+    var kosyuIdlistIsAriveNot = [];
     var tagsInfo = [];
 
     async.series([
@@ -39,8 +40,13 @@ exports.main = function (memberId, optionId, serchMoji, callback) {
         function (dbcallback) {
             mMemberDao.getMmemberAndTDankaByMemberId(client, database, memberId, resultRows, dbcallback);
         },
+    // 檀家検索結果取得（50音検索）
+        function (dbcallback) {
+            mMemberDao.getMmemberAndTDankaByMemberIdKosyu(client, database, memberIdkosyu, kosyuIdlist, dbcallback);
+        },
     // 地区コードマスタを取得
         function (dbcallback) {
+            splitKosyuIdlistToisAriveOrNot(kosyuIdlist, kosyuIdlistIsArive, kosyuIdlistIsAriveNot);
             mTikuCodeDao.getMTikuCode(client, database, tikuCodeInfo, dbcallback);
         },
     // 世話コードマスタを取得
@@ -58,21 +64,6 @@ exports.main = function (memberId, optionId, serchMoji, callback) {
     // 電話番号マスタを取得
         function (dbcallback) {
             mTelnumberDao.getTelnumberInfoByMemberId(client, database, memberId, telnumberInfo, dbcallback);
-        },
-    // T_xxを削除
-        function (dbcallback) {
-            tDankaDetailKosyuDao.deleteTDankaDetailKosyuBymemberId(client, database, memberId, dbcallback);
-        },
-    // T_xxにインサート
-        function (dbcallback) {
-            // 地区名と世話名をresultRowsにAdd
-            addTikuNameAndSewaName2(tikuCodeInfo, sewaCodeInfo, resultRows);
-            // メイン処理
-            tDankaDetailKosyuDao.insertTDankaDetailKosyuInfo(client, database, memberId, resultRows[0], serchMoji, optionId, dbcallback);
-        },
-    // T_xxxマスタを取得
-        function (dbcallback) {
-            tDankaDetailKosyuDao.getTDankaDetailKosyuInfoByMemberId(client, database, memberId, kosyuInfo, dbcallback);
         },
     // コメントマスタを取得
         function (dbcallback) {
@@ -100,11 +91,11 @@ exports.main = function (memberId, optionId, serchMoji, callback) {
 
             // 仕事名称とコメントをwebitemJsonに登録
             // ※本内容は「danka_detail_kihon」内では使用しないが、その後「danka_detail_kihon_confirm」で使用する為、
-            registerNama(kosyuInfo, commentInfo);
+            registerNama(resultRows, commentInfo);
 
-            var tagNameListInMM = util.splitStringByDelimiter(kosyuInfo[0].tags, ",");
+            var tagNameListInMM = util.splitStringByDelimiter(resultRows[0].tags, ",");
 
-            callback(false, kosyuInfo, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM);
+            callback(false, resultRows, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM);
             return;
         }
     );
@@ -167,4 +158,20 @@ function addTikuNameAndSewaName2(tikuCodeInfo, sewaCodeInfo, resultRows) {
         }
     }
     return;
+}
+
+function splitKosyuIdlistToisAriveOrNot(kosyuIdlist, kosyuIdlistIsArive, kosyuIdlistIsAriveNot){
+       
+    for(var key in kosyuIdlist){
+        var line = kosyuIdlist[key];
+        var isArive = line.is_arive;
+        if(isArive == "1"){
+            kosyuIdlistIsArive.push(line);
+            continue;
+        }
+        if(isArive == "0"){
+            kosyuIdlistIsAriveNot.push(line);
+            continue;
+        }
+    }
 }
