@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+/* 共通定義(メイン部分) */
+#inner_main_genkako{
+    margin: 10px 0 0 0;
+    width: 630px;
+}
+
+.title_comment{
+    height: 26px;
+    width: 85px;
+    text-align: left;
+    color: black;
+    padding: 2px 0 0 13px;
+    font-size: large;
+    border-radius: 6px;
+    background-color : rgb(231, 206, 140);
+}
+
+/* 共通定義(メイン部分) */
+#table_main_kihon_gen{
+    margin: 5px 0 0 0;
+}
+
+/* 検索結果画面-個別定義 */
+#inner_main_gen_title{
+    padding: 0;
+    text-align: left;
+    font-size: medium;
+    color: red;
+}
+
+#inner_main_easy_search {
+    margin: 10px 10px 0 0;
+}
+
+#inner_filter_main_easy_search {
+    margin: 0 10px 0 0;
+    padding: 10px;
+    border: solid 1px #BA802F;
+    height: 95px;
+    width: fill-available;
+    font-size: small;
+}
+
+#table_print_ck{
+    width: 45px;
+}
+
+#table_name_full_th{
+    width: 120px;
+}
+
+#table_tiku_name_th{
+    width: 68px;
+}
+
+#table_tiku_number_th{
+    width: 74px;
+}
+   
+#table_tag_th{
+    width: 231px;
+}
+      
+#table_jiin_th{
+    width: 60px;
+}
+
+#table_kako_th{
+    width: 42px;
+}
+
+/* 印刷検索部 ------------------------ */
+#inner_main_print {
+    margin: 8px 10px 0 0;
+    height: 73px;
+    padding: 0px 10px 10px 10px;
+    border: dashed 1px #BA802F;
+}
+
+/* 検索結果画面-個別定義 */
+#print-comment{
+    padding: 3px 0 3px 10px;
+    text-align: left;
+}
+
+/* 検索結果画面-個別定義 */
+#print-comment label{
+    font-weight: normal;
+    font-size: small;
+    color: red;
+}
+
+#all_checkbox{
+    margin: 15px 0 0 5px;    
+}
+
+#all_checkbox label{
+    font-size: 13px;
+    font-weight: normal;
+    vertical-align: top;
+    padding: 4px 0 0 5px;
+}
+
+#checkbox_kojin{
+    margin-top: 5px;    
+}
+
+#checkbox_kojin input{
+    margin-top: 0;    
+}
+
+#checkbox_kojin label{
+    font-size: 13px;
+    font-weight: normal;
+    vertical-align: top;
+    padding: 4px 0 0 5px;    
+}
+
+#target_list .checkbox_td{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+/* 50音別個別定義 ------------------------ */
+#inner_main_50on{
+    margin: 10px 0 0 0;
+    width: 630px;
+}
+
+#table_main_50on{
+    margin: 8px 0 0 0;
+}
+
+#table_main_50on tbody tr td{
+    margin: 0;
+    vertical-align: top;
+    text-align: center;
+    height: 60px;
+    cursor: pointer;
+}
+.width_300{
+    width: 300px;
+    padding: 20px 0 0 0;
+    border-style: solid 1px;
+    border-color: #dddddd;
+    background-color: #ffdfbf;
+}
+
+.width_30{
+    width: 30px;
+}
+
+#danka_tuika_tag label{
+    font-size: 13px;
+    font-weight: normal;
+    vertical-align: top;
+    padding: 5px 11px 0 2px;        
+}
