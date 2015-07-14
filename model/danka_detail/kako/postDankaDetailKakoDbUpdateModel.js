@@ -27,16 +27,11 @@ exports.main = function (webItemJson, callback) {
     var isUpdateTComment = webItemJson.is_update_t_comment;
     var ratestMMemberInfo = [];
     var ratestTDankaInfo = [];
-    var kosyuInfo = [];
 
     async.series([
     // 【START】トランザクション開始
         function (dbcallback) {
             dbcommon.dbBegin(client, database, dbcallback);
-        },
-    // T_xxxマスタを取得（戸主情報）
-        function (dbcallback) {
-            tDankaDetailKosyuDao.getTDankaDetailKosyuInfoByMemberId(client, database, memberIdKosyu, kosyuInfo, dbcallback);
         },
     // メンバーマスタ削除（deleteFlag = true)
         function (dbcallback) {
@@ -115,7 +110,7 @@ exports.main = function (webItemJson, callback) {
                 dbcommon.dbRollback(client, database, callback);
                 return;
             }
-            callback(false, kosyuInfo);
+            callback(false);
             return;
         }
     );

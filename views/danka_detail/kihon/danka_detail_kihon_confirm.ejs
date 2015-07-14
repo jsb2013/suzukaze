@@ -22,7 +22,9 @@
 <title>檀家管理システム　禅</title>
 
 <%
+    var isArive = webItemJson.is_arive;
     var memberId = webItemJson.member_id;
+    var memberIdKosyu = webItemJson.member_id_kosyu;
     var dankaTypeDankaBk = webItemJson.danka_type_danka_bk;
     var dankaTypeShintoBk = webItemJson.danka_type_shinto_bk;
     var nameFullBk = webItemJson.name_full_bk;
@@ -128,6 +130,36 @@
     var tags = webItemJson.tags_after;
     var jiinName = webItemJson.jiin_name;
     var jiinCode = webItemJson.jiin_code;
+
+    var kaimyo = webItemJson.kaimyo;
+    var kaimyoFurigana = webItemJson.kaimyo_furigana;
+    var meinichiY = webItemJson.meinichi_y;
+    var meinichiM = webItemJson.meinichi_m;
+    var meinichiD = webItemJson.meinichi_d;
+    var kyonen = webItemJson.kyonen;
+    var sesyuSei = webItemJson.sesyu_sei;
+    var sesyuNa = webItemJson.sesyu_na;
+    var relation = webItemJson.relation;
+
+    var kaimyoBk = webItemJson.kaimyo_bk;
+    var kaimyoFuriganaBk = webItemJson.kaimyo_furigana_bk;
+    var meinichiYBk = webItemJson.meinichi_y_bk;
+    var meinichiMBk = webItemJson.meinichi_m_bk;
+    var meinichiDBk = webItemJson.meinichi_d_bk;
+    var kyonenBk = webItemJson.kyonen_bk;
+    var sesyuSeiBk = webItemJson.sesyu_sei_bk;
+    var sesyuNaBk = webItemJson.sesyu_na_bk;
+    var relationBk = webItemJson.relation_bk;
+
+    var sesyuFull = sesyuSei + "　" + sesyuNa;
+    var sesyuFullBk = sesyuSeiBk + "　" + sesyuNaBk;
+    var meinichi = meinichiY + "年" + meinichiM + "月" + meinichiD + "日";
+    var meinichiBk = meinichiYBk + "年" + meinichiMBk + "月" + meinichiDBk + "日";
+
+
+
+
+
 %>
 <script>
     $(function(){
@@ -179,16 +211,23 @@
         });
     // ページ遷移定義
     $("#return").click(function () {
-        var a = $("#danka_detail_kihon_form input[name='member_id']").val();
-        location.href = "/danka_detail_kihon?id=" + a;
+        var id = $("#danka_detail_kihon_form input[name='member_id']").val();
+        var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
     });
     $(".menu_sub_kihon").click(function () {
-        var a = $("#danka_detail_kihon_form input[name='member_id']").val();
-        location.href = "/danka_detail_kihon?id=" + a;
+        var id = $("#danka_detail_kihon_form input[name='member_id']").val();
+        var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
     });
     $(".menu_sub_kako").click(function () {
-        $("#danka_detail_kako_form").submit();
+        var id = $("#danka_detail_kihon_form input[name='member_id']").val();
+        var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
     });
+//    $(".menu_sub_kako").click(function () {
+//        $("#danka_detail_kako_form").submit();
+//    });
     $(".menu_sub_genzai").click(function () {
         $("#danka_detail_genzai_form").submit();
     });
@@ -252,8 +291,8 @@
         </div>
         <div id="menu_sub">
           <ul>
-            <li class="menu_sub_kihon selected"><label>基本情報 </label>
-            <li class="menu_sub_kako"><label>過去帳</label>
+            <li id="tab_search_kihon" class="menu_sub_kihon selected"><label>基本情報 </label>
+            <li id="tab_search_genkako" class="menu_sub_kako"><label>現在帳/過去帳</label>
           </ul>
         </div>
       </div>
@@ -272,12 +311,18 @@
                 </tr>
               </thead>
               <tbody>
+                <%
+                    if(isArive == "1"){
+                %>
                 <tr class="t_danka">
                   <td><label class="padding-default">登録区分</label></td>
                   <script>
                       createHtmlByDankaType("<%= dankaTypeBk %>", "<%= dankaType %>");
                   </script>                    
                 </tr>
+                <%
+                    }
+                %>
                 <tr class="m_member">
                   <td><label class="padding-default">戸主名(※必須)</label></td>
                     <script>
@@ -290,6 +335,27 @@
                       createHtml("<%= furiganaFullBk %>", "<%= furiganaFull %>");
                     </script>
                 </tr>
+                <%
+                    if(isArive == "0"){
+                %>
+                <tr class="t_danka">
+                  <td><label class="padding-default">戒名</label></td>
+                    <script>
+                      createHtml("<%= kaimyoBk %>", "<%= kaimyo %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
+                  <td><label class="padding-default">戒名(ふりがな)</label></td>
+                    <script>
+                      createHtml("<%= kaimyoFuriganaBk %>", "<%= kaimyoFurigana %>");
+                    </script>
+                </tr>
+                <%
+                    }
+                %>
+                <%
+                    if(isArive == "1"){
+                %>
                 <tr class="m_address">
                   <td><label class="padding-default">郵便番号</label></td>
                     <script>
@@ -320,12 +386,50 @@
                       createHtml("<%= addressLine2Bk %>", "<%= addressLine2 %>");
                     </script>
                 </tr>
+                <%
+                    }
+                %>
+
                 <tr class="m_member">
                   <td><label class="padding-default">生年月日</label></td>
                     <script>
                       createHtml("<%= birthdayBk %>", "<%= birthday %>");
                     </script>
                 </tr>
+
+                <%
+                    if(isArive == "0"){
+                %>
+                <tr class="t_danka">
+                  <td><label class="padding-default">命日</label></td>
+                    <script>
+                      createHtml("<%= meinichiBk %>", "<%= meinichi %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
+                  <td><label class="padding-default">享年</label></td>
+                    <script>
+                      createHtml("<%= kyonenBk %>", "<%= kyonen %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
+                  <td><label class="padding-default">施主</label></td>
+                    <script>
+                      createHtml("<%= sesyuFullBk %>", "<%= sesyuFull %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
+                  <td><label class="padding-default">施主から見た続柄</label></td>
+                    <script>
+                      createHtml("<%= relationBk %>", "<%= relation %>");
+                    </script>
+                </tr>
+                <%
+                    }
+                %>
+                <%
+                    if(isArive == "1"){
+                %>
                 <tr class="m_telnumber_1">
                   <td><label class="padding-default">電話番号(優先1)</label></td>
                     <script>
@@ -392,6 +496,9 @@
                       createHtml("<%= tagsBk %>", "<%= tags %>");
                     </script>
                 </tr>
+                <%
+                    }
+                %>
                 <tr class="t_comment">
                   <td><label class="padding-default">備考<br>※500文字以内</label></td>
                     <script>
@@ -401,74 +508,89 @@
               </tbody>
             </table>
             <form action="danka_detail_kihon_db_update" method="post">
-            <input type="hidden" name="member_id" value=<%= memberId %>>
-            <input type="hidden" name="danka_type" value=<%= dankaType %>>
-            <input type="hidden" name="name_sei" value=<%= nameSei %>>
-            <input type="hidden" name="name_na" value=<%= nameNa %>>
-            <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
-            <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
-            <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
-            <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
-            <input type="hidden" name="region" value=<%= region %>>
-            <input type="hidden" name="city" value=<%= city %>>
-            <input type="hidden" name="address_line1" value=<%= addressLine1 %>>
-            <input type="hidden" name="address_line2" value=<%= addressLine2 %>>
-            <input type="hidden" name="birthday_y" value=<%= birthdayY %>>
-            <input type="hidden" name="birthday_m" value=<%= birthdayM %>>
-            <input type="hidden" name="birthday_d" value=<%= birthdayD %>>
-            <input type="hidden" name="telno_pre_1" value=<%= telnoPre1 %>>
-            <input type="hidden" name="telno_mid_1" value=<%= telnoMid1 %>>
-            <input type="hidden" name="telno_last_1" value=<%= telnoLast1 %>>
-            <input type="hidden" name="telno_yoto_1" value=<%= telnoYoto1 %>>
-            <input type="hidden" name="telno_pre_2" value=<%= telnoPre2 %>>
-            <input type="hidden" name="telno_mid_2" value=<%= telnoMid2 %>>
-            <input type="hidden" name="telno_last_2" value=<%= telnoLast2 %>>
-            <input type="hidden" name="telno_yoto_2" value=<%= telnoYoto2 %>>
-            <input type="hidden" name="telno_pre_3" value=<%= telnoPre3 %>>
-            <input type="hidden" name="telno_mid_3" value=<%= telnoMid3 %>>
-            <input type="hidden" name="telno_last_3" value=<%= telnoLast3 %>>
-            <input type="hidden" name="telno_yoto_3" value=<%= telnoYoto3 %>>
-            <input type="hidden" name="mail_address_1" value=<%= mailAddress1 %>>
-            <input type="hidden" name="mail_yoto_1" value=<%= mailYoto1 %>>
-            <input type="hidden" name="mail_address_2" value=<%= mailAddress2 %>>
-            <input type="hidden" name="mail_yoto_2" value=<%= mailYoto2 %>>
-            <input type="hidden" name="mail_address_3" value=<%= mailAddress3 %>>
-            <input type="hidden" name="mail_yoto_3" value=<%= mailYoto3 %>>
-            <input type="hidden" name="tiku_name" value=<%= webItemJson.tiku_name %>>
-            <input type="hidden" name="sewa_name" value=<%= webItemJson.sewa_name %>>
-            <input type="hidden" name="job" value=<%= job %>>
-            <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
-            <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
-            <input type="hidden" name="comment" value=<%= webItemJson.comment %>>
-            <input type="hidden" name="tags" value=<%= tags %>>
-            <input type="hidden" name="jiin" value=<%= jiinCode %>>
-            <input type="hidden" name="tiku_code_bk" value=<%= tikuCodeBk %>>
-            <input type="hidden" name="is_update_m_member" value=false>
-            <input type="hidden" name="is_update_m_address" value=false>
-            <input type="hidden" name="is_update_m_telnumber_1" value=false>
-            <input type="hidden" name="is_update_m_telnumber_2" value=false>
-            <input type="hidden" name="is_update_m_telnumber_3" value=false>
-            <input type="hidden" name="is_update_m_mail_1" value=false>
-            <input type="hidden" name="is_update_m_mail_2" value=false>
-            <input type="hidden" name="is_update_m_mail_3" value=false>
-            <input type="hidden" name="is_update_t_danka" value=false>
-            <input type="hidden" name="is_update_t_comment" value=false>
-            <div class="row">
-                <div class="col col-sm-3 text-left">
-                    <button type="button" id="return" class="btn btn-primary btn-sm">基本情報に戻る</button>
-                </div>
-                <div class="col col-sm-6">
-                    <button type="submit" id="register" class="btn btn-success btn-lg">　登録　</button>
-                </div>
-             </div>
+                <input type="hidden" name="is_arive" value=<%= isArive %>>
+                <input type="hidden" name="member_id" value=<%= memberId %>>
+                <input type="hidden" name="member_id_kosyu" value=<%= memberIdKosyu %>>
+                <input type="hidden" name="danka_type" value=<%= dankaType %>>
+                <input type="hidden" name="name_sei" value=<%= nameSei %>>
+                <input type="hidden" name="name_na" value=<%= nameNa %>>
+                <input type="hidden" name="furigana_sei" value=<%= furiganaSei %>>
+                <input type="hidden" name="furigana_na" value=<%= furiganaNa %>>
+
+                <input type="hidden" name="kaimyo" value=<%= kaimyo %>>
+                <input type="hidden" name="kaimyo_furigana" value=<%= kaimyoFurigana %>>
+                <input type="hidden" name="meinichi_y" value=<%= meinichiY %>>
+                <input type="hidden" name="meinichi_m" value=<%= meinichiM %>>
+                <input type="hidden" name="meinichi_d" value=<%= meinichiD %>>
+                <input type="hidden" name="kyonen" value=<%= kyonen %>>
+                <input type="hidden" name="sesyu_sei" value=<%= sesyuSei %>>
+                <input type="hidden" name="sesyu_na" value=<%= sesyuNa %>>
+                <input type="hidden" name="relation" value=<%= relation %>>
+
+                <input type="hidden" name="zip_code_pre" value=<%= zipCodePre %>>
+                <input type="hidden" name="zip_code_last" value=<%= zipCodeLast %>>
+                <input type="hidden" name="region" value=<%= region %>>
+                <input type="hidden" name="city" value=<%= city %>>
+                <input type="hidden" name="address_line1" value=<%= addressLine1 %>>
+                <input type="hidden" name="address_line2" value=<%= addressLine2 %>>
+                <input type="hidden" name="birthday_y" value=<%= birthdayY %>>
+                <input type="hidden" name="birthday_m" value=<%= birthdayM %>>
+                <input type="hidden" name="birthday_d" value=<%= birthdayD %>>
+                <input type="hidden" name="telno_pre_1" value=<%= telnoPre1 %>>
+                <input type="hidden" name="telno_mid_1" value=<%= telnoMid1 %>>
+                <input type="hidden" name="telno_last_1" value=<%= telnoLast1 %>>
+                <input type="hidden" name="telno_yoto_1" value=<%= telnoYoto1 %>>
+                <input type="hidden" name="telno_pre_2" value=<%= telnoPre2 %>>
+                <input type="hidden" name="telno_mid_2" value=<%= telnoMid2 %>>
+                <input type="hidden" name="telno_last_2" value=<%= telnoLast2 %>>
+                <input type="hidden" name="telno_yoto_2" value=<%= telnoYoto2 %>>
+                <input type="hidden" name="telno_pre_3" value=<%= telnoPre3 %>>
+                <input type="hidden" name="telno_mid_3" value=<%= telnoMid3 %>>
+                <input type="hidden" name="telno_last_3" value=<%= telnoLast3 %>>
+                <input type="hidden" name="telno_yoto_3" value=<%= telnoYoto3 %>>
+                <input type="hidden" name="mail_address_1" value=<%= mailAddress1 %>>
+                <input type="hidden" name="mail_yoto_1" value=<%= mailYoto1 %>>
+                <input type="hidden" name="mail_address_2" value=<%= mailAddress2 %>>
+                <input type="hidden" name="mail_yoto_2" value=<%= mailYoto2 %>>
+                <input type="hidden" name="mail_address_3" value=<%= mailAddress3 %>>
+                <input type="hidden" name="mail_yoto_3" value=<%= mailYoto3 %>>
+                <input type="hidden" name="tiku_name" value=<%= webItemJson.tiku_name %>>
+                <input type="hidden" name="sewa_name" value=<%= webItemJson.sewa_name %>>
+                <input type="hidden" name="job" value=<%= job %>>
+                <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
+                <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
+                <input type="hidden" name="comment" value=<%= webItemJson.comment %>>
+                <input type="hidden" name="tags" value=<%= tags %>>
+                <input type="hidden" name="jiin" value=<%= jiinCode %>>
+                <input type="hidden" name="tiku_code_bk" value=<%= tikuCodeBk %>>
+                <input type="hidden" name="is_update_m_member" value=false>
+                <input type="hidden" name="is_update_m_address" value=false>
+                <input type="hidden" name="is_update_m_telnumber_1" value=false>
+                <input type="hidden" name="is_update_m_telnumber_2" value=false>
+                <input type="hidden" name="is_update_m_telnumber_3" value=false>
+                <input type="hidden" name="is_update_m_mail_1" value=false>
+                <input type="hidden" name="is_update_m_mail_2" value=false>
+                <input type="hidden" name="is_update_m_mail_3" value=false>
+                <input type="hidden" name="is_update_t_danka" value=false>
+                <input type="hidden" name="is_update_t_comment" value=false>
+                <div class="row">
+                    <div class="col col-sm-3 text-left">
+                        <button type="button" id="return" class="btn btn-primary btn-sm">基本情報に戻る</button>
+                    </div>
+                    <div class="col col-sm-6">
+                        <button type="submit" id="register" class="btn btn-success btn-lg">　登録　</button>
+                    </div>
+                 </div>
             </form>
           </div>
       </div>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
+          <input type="hidden" name="member_id_kosyu" value=<%= memberIdKosyu %>>
       </form>
       <form action="/danka_detail_kako" method="post" id="danka_detail_kako_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
+          <input type="hidden" name="member_id_kosyu" value=<%= memberIdKosyu %>>
       </form>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
     </div>

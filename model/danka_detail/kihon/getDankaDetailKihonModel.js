@@ -95,6 +95,8 @@ exports.main = function (memberId, memberIdkosyu, optionId, serchMoji, callback)
 
             var tagNameListInMM = util.splitStringByDelimiter(resultRows[0].tags, ",");
 
+            addTikuNameAndSewaName2(tikuCodeInfo, sewaCodeInfo, resultRows);
+
             callback(false, resultRows, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM);
             return;
         }

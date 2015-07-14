@@ -397,8 +397,15 @@ exports.postDankaDetailKihonDbUpdate = function (req, res) {
     return;
     }
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
-    var postDankaDetailKihonDbUpdateModel = require("../model/danka_detail/kihon/postDankaDetailKihonDbUpdateModel");
     var webItemJson = req.body;
+    var isArive = webItemJson.is_arive;
+
+    var postDankaDetailDbUpdateModel;
+    if(isArive == "1"){
+        postDankaDetailDbUpdateModel = require("../model/danka_detail/kihon/postDankaDetailKihonDbUpdateModel");
+    }else{
+        postDankaDetailDbUpdateModel = require("../model/danka_detail/kako/postDankaDetailKakoDbUpdateModel");
+    }
 
     function authCallback(isError) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
@@ -412,8 +419,7 @@ exports.postDankaDetailKihonDbUpdate = function (req, res) {
         });
         return;
     }
-
-    postDankaDetailKihonDbUpdateModel.main(webItemJson, authCallback);
+    postDankaDetailDbUpdateModel.main(webItemJson, authCallback);
 };
 
 // 檀家詳細検索画面（get:/danka_syosai）

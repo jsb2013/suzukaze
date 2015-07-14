@@ -29,6 +29,8 @@
 <%
     var isArive = kosyuInfo.is_arive;
     var memberId = kosyuInfo.member_id;
+    var memberIdKosyu = kosyuInfo.member_id_kosyu;
+
     var dankaType = kosyuInfo.danka_type;
     var nameSei = kosyuInfo.name_sei;
     var nameNa = kosyuInfo.name_na;
@@ -106,77 +108,229 @@
     var comment = kosyuInfo.comment;
     
 %>
+<!---------------------------------------------------------------------------------------------------------
+<!--SCRIPT定義（個別）-全タブ共通の定義
+<!-------------------------------------------------------------------------------------------------------->  
+<script>
+    // タブ選択時の画面切り替え
+    function ChangeTab(tabName) {
+        if (tabName == "kihon") {
+            $("#inner_main_kihon").removeClass("hidden");
+            $("#inner_main_genkako").addClass("hidden");
+            $("#tab_search_kihon").addClass("selected");
+            $("#tab_search_genkako").removeClass("selected");
+        } else if (tabName == "kako") {
+            $("#inner_main_kihon").addClass("hidden");
+            $("#inner_main_genkako").removeClass("hidden");
+            $("#tab_search_genkako").addClass("selected");
+            $("#tab_search_kihon").removeClass("selected");
+        }
+    }
+    $(function () {
+        // 検索(簡易)タブのクリック
+        $(".menu_sub_kihon").click(function () {
+            ChangeTab("kihon");
+        });
+
+        // 検索(50音)タブのクリック
+        $(".menu_sub_kako").click(function () {
+            ChangeTab("kako");
+        });
+    });
+</script>
 <script>
     <!-- 表中の偶数行の色を変える -->
     $(function(){
 
-        // CELLに"undefine"が登録されていたら空白に変換
-        $(".validate").formUtil("undefileToBlank");
-
-        // checkboxのvalueに"checkMojiRetu（カンマ区切り）"が含まれる場合、check=trueにする。
-        // original: 対象となるcheckbox
-        // first: [List|String] : checkboxのvalueリスト
-        // second: boolean : firstがStringならtrue,Listならfalse
-        var tagsMoji = $("input[name='tags_bk']").val();
-        $('[name="tags"]').formUtil("inputCheckbox", tagsMoji, true);
-
-        // selectListのvalueを選択する。
-        var jiinCode = $("input[name='jiin_code_bk']").val();
-        $('[name="jiin_code"]').formUtil("selectList", jiinCode);
-
-        // selectListのvalueを選択する。
-        var sewaCode =  $("input[name='sewa_code_bk']").val();
-        $('[name="sewa_code"]').formUtil("selectList", sewaCode);
-
-        // selectListのvalueを選択する。
-        var tikuCode =  $("input[name='tiku_code_bk']").val();
-        $('[name="tiku_code"]').formUtil("selectList", tikuCode);
-
-        // radioButtonのvalueを選択する。
-        var dankaType = $("#danka_type_bk").val();
-        $('[name="danka_type"]').formUtil("checkRadioButton", dankaType);
-
-        // EnterKeyで次のCELLへ移動
-        $(".enter-mv").formUtil("toNextCell");
-
-        // 数字を入力するCELLからfocusが変わったタイミングで半角に変換する。
-        $(".number").formUtil("convertNumberZenToHan");
-
-        // メールを入力するCELLからfocusが変わったタイミングで半角に変換する。
-        $(".mail").formUtil("convertMailZenToHan");
-
-        // 郵便番号から住所を検索する。
-        $("#zip-code-search").formUtil("searchZipCode");
-
-        // EnterKeyをclick()イベントに変換する。(本当はメソッドチェーンしたいけど無理・・）
-        $("#zip-code-search").formUtil("convertEnterToClick");
-
-        // 登録ボタン押下時
-        $("form").submit(function(){
-            // formのバリデーションチェックを行う。
-            var formInfoJson;
-            $.ajaxSetup({async: false});  //同期通信開始(json取ってくるまで待つ)
-            $.getJSON("conf/danka_tuika_form.json",function(json){
-                formInfoJson = json[0];
-            });  //サーバのpublic/confからバリデーション定義を取得する。
-            $.ajaxSetup({async: true});  //同期通信終了
-            
-            // バリデーションチェックメイン処理
-            var isError = $(".validate").formUtil("validationCheck", formInfoJson, 2);
-            if(isError){
-                return false;
-            }
-        });
-
         var isArive = $("input[name='is_arive']").val();
-        if(isArive == "0"){
-            $(".only_kako").removeClass("hidden");
-            $(".only_gen").addClass("hidden");            
+
+        // バリデーションチェックを実装。
+        if(isArive == "1"){
+            // CELLに"undefine"が登録されていたら空白に変換
+            $(".validate").formUtil("undefileToBlank");
+
+            // checkboxのvalueに"checkMojiRetu（カンマ区切り）"が含まれる場合、check=trueにする。
+            // original: 対象となるcheckbox
+            // first: [List|String] : checkboxのvalueリスト
+            // second: boolean : firstがStringならtrue,Listならfalse
+            var tagsMoji = $("input[name='tags_bk']").val();
+            $('[name="tags"]').formUtil("inputCheckbox", tagsMoji, true);
+
+            // selectListのvalueを選択する。
+            var jiinCode = $("input[name='jiin_code_bk']").val();
+            $('[name="jiin_code"]').formUtil("selectList", jiinCode);
+
+            // selectListのvalueを選択する。
+            var sewaCode =  $("input[name='sewa_code_bk']").val();
+            $('[name="sewa_code"]').formUtil("selectList", sewaCode);
+
+            // selectListのvalueを選択する。
+            var tikuCode =  $("input[name='tiku_code_bk']").val();
+            $('[name="tiku_code"]').formUtil("selectList", tikuCode);
+
+            // radioButtonのvalueを選択する。
+            var dankaType = $("#danka_type_bk").val();
+            $('[name="danka_type"]').formUtil("checkRadioButton", dankaType);
+
+            // EnterKeyで次のCELLへ移動
+            $(".enter-mv").formUtil("toNextCell");
+
+            // 数字を入力するCELLからfocusが変わったタイミングで半角に変換する。
+            $(".number").formUtil("convertNumberZenToHan");
+
+            // メールを入力するCELLからfocusが変わったタイミングで半角に変換する。
+            $(".mail").formUtil("convertMailZenToHan");
+
+            // 郵便番号から住所を検索する。
+            $("#zip-code-search").formUtil("searchZipCode");
+
+            // EnterKeyをclick()イベントに変換する。(本当はメソッドチェーンしたいけど無理・・）
+            $("#zip-code-search").formUtil("convertEnterToClick");
         }else{
-            $(".only_kako").addClass("hidden");
-            $(".only_gen").removeClass("hidden");
+
+            // CELLに"undefine"が登録されていたら空白に変換
+            $(".validate").formUtil("undefileToBlank");
+
+            // EnterKeyで次のCELLへ移動
+            $(".enter-mv").formUtil("toNextCell");
+
+            // 数字を入力するCELLからfocusが変わったタイミングで半角に変換する。
+            $(".number").formUtil("convertNumberZenToHan");
         }
+
+        // バリデーションチェックを実装。
+        if(isArive == "1"){
+            $("form").submit(function(){
+                //////////////////////////////
+                ////  ★バリデーションチェック
+                //////////////////////////////
+                var formInfoJson;
+                $.ajaxSetup({async: false});  //同期通信開始(json取ってくるまで待つ)
+                $.getJSON("conf/danka_detail_form.json",function(json){
+                    formInfoJson = json[0];
+                });  //サーバのpublic/confからバリデーション定義を取得する。
+                $.ajaxSetup({async: true});  //同期通信終了
+            
+                // バリデーションチェックメイン処理
+                var isError = $(".validate").formUtil("validationCheck", formInfoJson, 2);
+                if(isError){
+                    return false;
+                }
+
+                //////////////////////////////
+                ////  ★修正有無チェック
+                //////////////////////////////
+                if ($("p.error").length > 0) {
+                    return false;
+                }
+
+                // テキスト項目の差分チェックを実施
+                var beforeDiffList = $(".chenge_check_bk");
+                var isChange = $(".validate").formUtil("diffTextList", beforeDiffList);
+
+                // select項目の差分比較
+                $(".validate").formUtil("diffTextList", beforeDiffList);
+                var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
+                var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
+                var jiinCodeAfter = $("select[name='jiin_code'] option:selected").val();
+                var tikuCodeBk = $("input[name='tiku_code_bk']").val();
+                var sewaCodeBk = $("input[name='sewa_code_bk']").val();
+                var jiinCodeBk = $("input[name='jiin_code_bk']").val();
+                if (tikuCodeAfter !== tikuCodeBk || sewaCodeAfter !== sewaCodeBk || jiinCodeAfter !== jiinCodeBk) {
+                    isChange = true;
+                }
+
+                // radio項目の差分比較
+                var dankaTypeAfter = $("input[name='danka_type']:checked").val();
+                var dankaTypeBk = $("input[name='danka_type_bk']").val();
+                if (dankaTypeAfter !== dankaTypeBk) {
+                    isChange = true;
+                }
+
+                // テキストエリアの差分比較
+                var commentAfter = $("textarea[name='comment']").val();
+                var commentBk = $("input[name='comment_bk']").val();
+                if (commentAfter !== commentBk) {
+                    isChange = true;
+                }
+
+                // チェックボックスの差分比較
+                var checkTags = $("input[name='tags']:checked").formUtil("changeTagsToString");
+                var tagsBk = $("input[name='tags_bk']").val();
+                if (checkTags !== tagsBk) {
+                    isChange = true;
+                }
+
+                // 値が何も変更されていない場合は、ポップアップを出力する。
+                if (!isChange) {
+                    alert("変更されていません。");
+                    return false;
+                }
+
+                //////////////////////////////
+                ////  ★次のページへデータ連携
+                //////////////////////////////
+                var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
+                var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
+                var jiinAfter = $("select[name='jiin_code'] option:selected").text();
+                $("input[name='tiku_name']").val(tikuNameAfter);
+                $("input[name='sewa_name']").val(sewaNameAfter);
+                $("input[name='jiin_name']").val(jiinAfter);
+                $("input[name='tags_after']").val(checkTags);
+            });            
+         }else{
+
+
+            $("form").submit(function(){
+                //////////////////////////////
+                ////  ★バリデーションチェック
+                //////////////////////////////
+                var formInfoJson;
+                $.ajaxSetup({async: false});  //同期通信開始(json取ってくるまで待つ)
+                $.getJSON("conf/danka_tuika_form.json",function(json){
+                    formInfoJson = json[0];
+                });  //サーバのpublic/confからバリデーション定義を取得する。
+                $.ajaxSetup({async: true});  //同期通信終了
+            
+                // バリデーションチェックメイン処理
+                var isError = $(".validate").formUtil("validationCheck", formInfoJson, 2);
+                if(isError){
+                    return false;
+                }
+
+                //////////////////////////////
+                ////  ★修正有無チェック
+                //////////////////////////////
+                if ($("p.error").length > 0) {
+                    return false;
+                }
+
+                // テキスト項目の差分チェックを実施
+                var beforeDiffList = $(".chenge_check_bk");
+                var isChange = $(".validate").formUtil("diffTextList", beforeDiffList);
+
+                // テキストエリアの差分比較
+                var commentAfter = $("textarea[name='comment']").val();
+                var commentBk = $("input[name='comment_bk']").val();
+                if (commentAfter !== commentBk) {
+                    isChange = true;
+                }
+
+                // 値が何も変更されていない場合は、ポップアップを出力する。
+                if (!isChange) {
+                    alert("変更されていません。");
+                    return false;
+                }
+
+            });  
+         }
     });
+
+    function goDankaDetail(id, kosyuId){
+        //$("#danka_detail_kihon_form_member_id").val(id);
+        //$("#danka_detail_kihon_form").submit();
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
+    }
 </script>
 
 <script>
@@ -185,74 +339,17 @@
         // ページ遷移定義
         $("#return").click(function () {
             var a = $("#danka_detail_kihon_form input[name='member_id']").val();
-            location.href = "/danka_base?id=0&memberId=" + a;
+            //location.href = "/danka_base?id=0&memberId=" + a;
+            location.href = "/danka_base?id=0";
         });
 //        $(".menu_sub_kihon").click(function () {
 //            $("#danka_detail_kihon_form").submit();
 //        });
-        $(".menu_sub_kako").click(function () {
-            $("#danka_detail_kako_form").submit();
-        });
+//        $(".menu_sub_kako").click(function () {
+//            $("#danka_detail_kako_form").submit();
+//        });
 
-        // 更新時のバリデーションチェック
-        $("#main_form").submit(function () {
-            // エラーチェック
-            if ($("p.error").length > 0) {
-                return false;
-            }
 
-            // テキスト項目の差分チェックを実施
-            var beforeDiffList = $(".chenge_check_bk");
-            var isChange = $(".validate").formUtil("diffTextList", beforeDiffList);
-
-            // select項目の差分比較
-            $(".validate").formUtil("diffTextList", beforeDiffList);
-            var tikuCodeAfter = $("select[name='tiku_code'] option:selected").val();
-            var sewaCodeAfter = $("select[name='sewa_code'] option:selected").val();
-            var jiinCodeAfter = $("select[name='jiin_code'] option:selected").val();
-            var tikuCodeBk = $("input[name='tiku_code_bk']").val();
-            var sewaCodeBk = $("input[name='sewa_code_bk']").val();
-            var jiinCodeBk = $("input[name='jiin_code_bk']").val();
-            if (tikuCodeAfter !== tikuCodeBk || sewaCodeAfter !== sewaCodeBk || jiinCodeAfter !== jiinCodeBk) {
-                isChange = true;
-            }
-
-            // radio項目の差分比較
-            var dankaTypeAfter = $("input[name='danka_type']:checked").val();
-            var dankaTypeBk = $("input[name='danka_type_bk']").val();
-            if (dankaTypeAfter !== dankaTypeBk) {
-                isChange = true;
-            }
-
-            // テキストエリアの差分比較
-            var commentAfter = $("textarea[name='comment']").val();
-            var commentBk = $("input[name='comment_bk']").val();
-            if (commentAfter !== commentBk) {
-                isChange = true;
-            }
-
-            // チェックボックスの差分比較
-            var checkTags = $("input[name='tags']:checked").formUtil("changeTagsToString");
-            var tagsBk = $("input[name='tags_bk']").val();
-            if (checkTags !== tagsBk) {
-                isChange = true;
-            }
-
-            // 値が何も変更されていない場合は、ポップアップを出力する。
-            if (!isChange) {
-                alert("変更されていません。");
-                return false;
-            }
-
-            // 変更有無チェック
-            var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
-            var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
-            var jiinAfter = $("select[name='jiin_code'] option:selected").text();
-            $("input[name='tiku_name']").val(tikuNameAfter);
-            $("input[name='sewa_name']").val(sewaNameAfter);
-            $("input[name='jiin_name']").val(jiinAfter);
-            $("input[name='tags_after']").val(checkTags);
-        });
     });
 </script>
 </head>
@@ -302,14 +399,14 @@
         </div>
         <div id="menu_sub">
           <ul>
-            <li class="menu_sub_kihon selected"><label>基本情報 </label>
-            <li class="menu_sub_kako"><label>現在帳/過去帳</label>
+            <li id="tab_search_kihon" class="menu_sub_kihon selected"><label>基本情報 </label>
+            <li id="tab_search_genkako" class="menu_sub_kako"><label>現在帳/過去帳</label>
           </ul>
         </div>
       </div>
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
-      <div class="hidden inner_main_kihon">
+      <div id="inner_main_kihon" class="margin-top-default">
         <form action="danka_detail_kihon_confirm" 
           id="main_form" method="post">
           <div class="table_main_kihon">
@@ -321,26 +418,32 @@
                 </tr>
               </thead>
               <tbody>
+                <%
+                    if(isArive == "1"){
+                %>
                 <tr class="only_gen">
                   <td><label class="padding-default">登録区分</label></td>
                   <td class="table_main_tuika_selectable">
                     <div class="style-danka-type">
                       <%
-                      if(dankaType === 0){
+                        if(dankaType === 0){
                       %>
-                        <input type="radio" name="danka_type" class="dummay" value="0" checked>檀家
-                        <input type="radio" name="danka_type" class="dummay" value="1">信徒
+                            <input type="radio" name="danka_type" class="dummay" value="0" checked>檀家
+                            <input type="radio" name="danka_type" class="dummay" value="1">信徒
                       <%
-                      }else{
+                        }else{
                       %>
-                        <input type="radio" name="danka_type" class="dummay" value="0">檀家
-                        <input type="radio" name="danka_type" class="dummay" value="1" checked>信徒
+                            <input type="radio" name="danka_type" class="dummay" value="0">檀家
+                            <input type="radio" name="danka_type" class="dummay" value="1" checked>信徒
                       <%
-                      }
+                        }
                       %>
                     </div>
                   </td>
                 </tr>
+                <%
+                    }
+                %>
                 <tr>
                   <td>
                       <label class="padding-default">戸主名</label>
@@ -376,7 +479,9 @@
                       </div>
                   </td>
                 </tr>
-
+                <%
+                    if(isArive == "0"){
+                %>
                 <tr class="only_kako">
                   <td><label class="padding-default">戒名</label></td>
                   <td class="table-selectable">
@@ -394,7 +499,12 @@
                     </div>
                   </td>
                 </tr>
-
+                <%
+                    }
+                %>
+                <%
+                    if(isArive == "1"){
+                %>
                 <tr class="only_gen">
                   <td><label class="padding-default">郵便番号</label></td>
                   <td class="table-selectable">
@@ -443,7 +553,9 @@
                     </div>
                   </td>
                 </tr>
-
+                <%
+                    }
+                %>
                 <tr>
                   <td><label class="padding-default">生年月日</label></td>
                   <td class="table-selectable">
@@ -461,7 +573,9 @@
                       <div class="col col-sm-4 style-string-in-table">日</div>
                   </td>
                 </tr>
-
+                <%
+                    if(isArive == "0"){
+                %>
                 <tr class="only_kako">
                   <td><label class="padding-default">命日</label></td>
                   <td class="table-selectable">
@@ -513,7 +627,12 @@
                     </div>
                   </td>
                 </tr>
-
+                <%
+                    }
+                %>
+                <%
+                    if(isArive == "1"){
+                %>
                 <tr class="only_gen">
                   <td><label class="padding-default">電話番号(優先1)</label></td>
                   <td class="table-selectable">
@@ -683,6 +802,9 @@
                     </div>
                   </td>
                 </tr>
+                <%
+                    }
+                %>
                 <tr>
                   <td><label class="padding-default">備考<br>※500文字以内</label></td>
                   <td class="table-selectable padding-default">
@@ -705,7 +827,8 @@
           <!-- サマリ画面表示情報 -->
           <input type="hidden" name="is_arive" value=<%= isArive %>>
           <input type="hidden" name="member_id" value=<%= memberId %>>
-          
+          <input type="hidden" name="member_id_kosyu" value=<%= memberIdKosyu %>>
+
           <!-- 変更前の情報 -->
           <input type="hidden" name="danka_type_bk" value=<%= dankaType %>>
           <input type="hidden" name="name_sei_bk" class="chenge_check_bk name_sei" value=<%= nameSei %>>
@@ -757,8 +880,8 @@
           <input type="hidden" name="mail_yoto_2_bk" class="chenge_check_bk mail_yoto_2" value=<%= mailYoto2 %>>
           <input type="hidden" name="mail_address_3_bk" class="chenge_check_bk mail_address_3" value=<%= mailAddress3 %>>
           <input type="hidden" name="mail_yoto_3_bk" class="chenge_check_bk mail_yoto_3" value=<%= mailYoto3 %>>
-          <input type="hidden" name="job_bk" value=<%= job %>>
-          <input type="hidden" name="jiin_bk" value=<%= jiin %>>
+          <input type="hidden" name="job_bk" class="chenge_check_bk job" value=<%= job %>>
+          <input type="hidden" name="jiin_code_bk" value=<%= jiin %>>
           <input type="hidden" name="jiin_name_bk" value=<%= jiinName %>>
           <input type="hidden" name="tiku_code_bk" value=<%= tikuCode %>>
           <input type="hidden" name="tiku_name_bk" value=<%= tikuName %>>
@@ -775,20 +898,23 @@
         </form>
       </div> 
 
-      <div id="inner_main_genkako">
-          <div class="title_comment">
+      <div id="inner_main_genkako" class="hidden">
+          <div class="title_comment margin-bottom-default">
+            ★表中でオレンジ色の行が現在検索中の檀家となります。
+          </div>
+          <div class="title_name">
             <label>現在帳</label>
           </div>
           <div class="margin-table-top">
             <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th id="table_main_kosyu_th" class="th-sort header-selectable cursor-pointer">戸主<span> ▽</span></th>
-                            <th id="table_main_gen_name_th" class="th-sort header-selectable cursor-pointer">氏名<span> ▽</span></th>
-                            <th id="table_main_tiku_code_th" class="th-sort header-selectable cursor-pointer">地区名<span> ▽</span></th>
-                            <th id="table_main_tiku_number_th" class="th-sort header-selectable cursor-pointer">地区番号<span> ▽</span></th>
-                            <th id="table_main_tags_th" class="th-sort header-selectable cursor-pointer">タグ名<span> ▽</span></th>
-                            <th id="table_main_jiin_th" class="th-sort header-selectable cursor-pointer">寺院<span> ▽</span></th>
+                            <th id="table_main_kosyu_th" class="th-sort header-selectable cursor-pointer">戸主</th>
+                            <th id="table_main_gen_name_th" class="th-sort header-selectable cursor-pointer">氏名</th>
+                            <th id="table_main_tiku_code_th" class="th-sort header-selectable cursor-pointer">地区名</th>
+                            <th id="table_main_tiku_number_th" class="th-sort header-selectable cursor-pointer">地区番号</th>
+                            <th id="table_main_tags_th" class="th-sort header-selectable cursor-pointer">タグ名</th>
+                            <th id="table_main_jiin_th" class="th-sort header-selectable cursor-pointer">寺院</th>
                         </tr>
                     </thead>
               <tbody>
@@ -797,10 +923,17 @@
                         var _nameSei = kosyuIdlistIsArive[i].name_sei;
                         var _nameNa = kosyuIdlistIsArive[i].name_na;
                         var _fullName = _nameSei + "　" + _nameNa;
+                        var _tikuName = kosyuIdlistIsArive[i].tiku_name;
                         var _tikuCode = kosyuIdlistIsArive[i].tiku_code;
                         var _tikuNumber = kosyuIdlistIsArive[i].yobi_1;
                         var _tags = kosyuIdlistIsArive[i].tags;
                         var _jiin = kosyuIdlistIsArive[i].jiin;
+                        var _jiinName = "長伝寺";
+                        if(_jiin == "0"){
+                            _jiinName = "-";
+                        } else if(_jiin == "2"){
+                            _jiinName = "水月寺";
+                        }
                         var _memberId = kosyuIdlistIsArive[i].member_id;
                         var _memberIdKosyu = kosyuIdlistIsArive[i].member_id_kosyu;
                         var _isKosyu = "";
@@ -815,22 +948,22 @@
                   <%
                     if(_isOriginal){
                   %>
-                        <tr class="even">
+                        <tr class="even cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
                   <%}else{%>
-                        <tr>
+                        <tr class="cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
                   <%}%>
-                        <td><%= _isKosyu %></td>
+                        <td class="text-center"><%= _isKosyu %></td>
                         <td><%= _fullName %></td>
-                        <td><%= _tikuCode %></td>
+                        <td><%= _tikuName %></td>
                         <td><%= _tikuNumber %></td>
                         <td><%= _tags %></td>
-                        <td><%= _jiin %></td>
+                        <td><%= _jiinName %></td>
                     </tr>
                   <% } %>
               </tbody>
             </table>
           </div>
-          <div class="title_comment">
+          <div class="title_name">
             <label>過去帳</label>
           </div>
           <div class="margin-table-top">
@@ -862,6 +995,7 @@
                         var _sesyuFull = _sesyuSei + "　" + _sesyuNa;
                         var _relation = kosyuIdlistIsAriveNot[i].relation;
                         var _memberId = kosyuIdlistIsAriveNot[i].member_id;
+                        var _memberIdKosyu = kosyuIdlistIsAriveNot[i].member_id_kosyu;
                         var _isOriginal = false;
                         if(_memberId == memberId){
                             var _isOriginal = true;
@@ -870,23 +1004,21 @@
                   <%
                     if(_isOriginal){
                   %>
-                        <tr class="even cursor-pointer">
+                        <tr class="even cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
                   <%}else{%>
-                        <tr>
+                        <tr class="cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
                   <%}%>
-                        <td class="cursor-pointer"><%= _fullName %></td>
+                        <td><%= _fullName %></td>
                         <td><%= _kaimyo %></td>
                         <td><%= _meinichiFull %></td>
-                        <td><%= _kyonen %></td>
+                        <td><%= _kyonen %>歳</td>
                         <td><%= _sesyuFull %></td>
                         <td><%= _relation %></td>
-
                     </tr>
                   <% } %>
               </tbody>
             </table>
           </div>
-
       </div> 
 
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">

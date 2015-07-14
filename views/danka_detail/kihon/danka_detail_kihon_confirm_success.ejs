@@ -22,32 +22,25 @@
 <title>檀家管理システム　禅</title>
 <%
     var memberId = webItemJson.member_id;
-    var dankaType = webItemJson.danka_type;
-    var dankaTypeDanka = "○";
-    var dankaTypeShinto = "-";
-    if (dankaType === 1){
-        dankaTypeDanka = "-";
-        dankaTypeShinto = "○";
-    }
-    var nameSei = webItemJson.name_sei;
-    var nameNa = webItemJson.name_na;
-    var nameFull = nameSei + "　" + nameNa;
-    var tikuName = webItemJson.tiku_name;
-    var sewaName = webItemJson.sewa_name;
-    var tikuCode = webItemJson.tiku_code;
-    var sewaCode = webItemJson.sewa_code;
+    var memberIdKosyu = webItemJson.member_id_kosyu;
 %>
 <script>
     $(function(){
 
     // ページ遷移定義
         $(".menu_sub_kihon").click(function () {
-            var a = $("#danka_detail_kihon_form input[name='member_id']").val();
-            location.href = "/danka_detail_kihon?id=" + a;
+            var id = $("#danka_detail_kihon_form input[name='member_id']").val();
+            var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
+            location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
         });
         $(".menu_sub_kako").click(function () {
-            $("#danka_detail_kako_form").submit();
+            var id = $("#danka_detail_kihon_form input[name='member_id']").val();
+            var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
+            location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
         });
+//        $(".menu_sub_kako").click(function () {
+//            $("#danka_detail_kako_form").submit();
+//        });
     })
 </script>
 </head>
@@ -99,8 +92,8 @@
         </div>
         <div id="menu_sub">
           <ul>
-            <li class="menu_sub_kihon"><label>基本情報 </label>
-            <li class="menu_sub_kako"><label>過去帳</label>
+            <li id="tab_search_kihon" class="menu_sub_kihon"><label>基本情報 </label>
+            <li id="tab_search_genkako" class="menu_sub_kako"><label>現在帳/過去帳</label>
           </ul>
         </div>
       </div>
@@ -113,9 +106,7 @@
       </div>
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
-      </form>
-      <form action="/danka_detail_kako" method="post" id="danka_detail_kako_form">
-        <input type="hidden" name="member_id" value=<%= memberId %>>
+        <input type="hidden" name="member_id_kosyu" value=<%= memberIdKosyu %>>
       </form>
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
     </div>

@@ -278,7 +278,7 @@ exports.getMmemberAndTDankaByMemberId = function(client, database, memberId, row
 exports.getMmemberAndTDankaByMemberIdKosyu = function(client, database, memberId, rows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select * from m_member as mm inner join t_danka td on mm.member_id = td.member_id where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and td.member_id_kosyu = $1',
+    var query = client.query('select * from (m_member as mm inner join t_danka td on mm.member_id = td.member_id) JOIN m_tiku_code mtc ON td.tiku_code = mtc.tiku_code where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mtc.is_disabled = false and mtc.is_deleted = false and td.member_id_kosyu = $1 order by mm.birthday_y, mm.birthday_m, mm.birthday_d',
                 [memberId]);
 
     query.on('row', function(row) {
