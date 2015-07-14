@@ -1,0 +1,21 @@
+[
+    {
+        "name_sei": 50,
+        "name_na": 50,
+        "furigana_sei": 50,
+        "furigana_na": 50,
+        "kaimyo": 100,
+        "kaimyo_furigana": 100,
+        "birthday_y": 4,
+        "birthday_m": 2,
+        "birthday_d": 2,
+        "meinichi_y": 4,
+        "meinichi_m": 2,
+        "meinichi_d": 2,
+        "kyonen": 100,
+        "sesyu_sei": 100,
+        "sesyu_na": 100,
+        "relation": 100,
+        "comment": 500
+    }
+]
