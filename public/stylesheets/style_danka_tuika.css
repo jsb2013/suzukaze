@@ -158,3 +158,75 @@
     vertical-align: top;
     padding: 5px 11px 0 2px;        
 }
+
+/* 戸主追加 ------------------------ */
+#inner_main_easy_search_inner {
+    margin: 10px 10px 0 0;
+}
+
+#inner_filter_main_easy_search_inner {
+    margin: 0 10px 0 0;
+    padding: 10px;
+    border: solid 1px #BA802F;
+    height: 95px;
+    width: fill-available;
+    font-size: small;
+}
+
+#table_print_ck{
+    width: 45px;
+}
+
+#table_name_full_th_inner{
+    width: 120px;
+}
+
+#table_tiku_name_th_inner{
+    width: 68px;
+}
+
+#table_tiku_number_th_inner{
+    width: 74px;
+}
+   
+#table_tag_th_inner{
+    width: 231px;
+}
+      
+#table_jiin_th_inner{
+    width: 60px;
+}
+
+#table_kako_th_inner{
+    width: 42px;
+}
+
+#inner_filter_main_easy_search_inner_label{
+    margin: 2px 0 5px 0;
+    text-align: left;
+    font-size: medium;
+    color: red;
+}
+
+.dialog-button{
+    font-size: medium !important;
+}
+
+.ui-dialog-title{
+    font-size: medium !important;
+    color: black;
+    text-align: left;
+}
+
+#search_count_inner{
+    text-align: left;
+    font-size: medium;
+    font-weight: bold;
+    color: red;
+    
+}
+
+.test{
+    margin: 3px 0px 0px 0px;
+    
+}

@@ -86,6 +86,11 @@ app.post('/return_danka_search', routes.postReturnDankaSearchResult);
 // 檀家詳細TOP画面への戻り
 app.post('/return_danka_detail_top', routes.postReturnDankaDetailTop);
 
+app.post('/danka_kosyu_change', routes.postDankaKosyuChange);
+app.post('/danka_mv_kako', routes.postDankaMvKako);
+app.post('/danka_mv_gen', routes.postDankaMvGen);
+
+
 
 // 檀家詳細TOP画面→過去帳画面
 app.post('/danka_detail_kako', routes.postDankaDetailKako);

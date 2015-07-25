@@ -139,7 +139,9 @@ function mergeMMemberInfoDefault(baseInfo){
 function mergeTDankaInfoDefault(baseInfo, memberId){
     // 最新のレコード情報
     baseInfo.kaimyo = "";
-    baseInfo.member_id_kosyu = memberId;
+    if(util.isUndefine(baseInfo.member_id_kosyu)){
+        baseInfo.member_id_kosyu = memberId;    
+    }
     baseInfo.kaimyo_furigana = "";
     baseInfo.sesyu_sei = "";
     baseInfo.sesyu_na = "";

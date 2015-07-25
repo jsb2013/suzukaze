@@ -78,6 +78,9 @@
     var jiinCode = webItemJson.jiin_code;
     var jiinName = webItemJson.jiin_name;
     var comment = webItemJson.comment;
+
+    var indicateKosyuName = webItemJson.indicate_kosyu_name;
+    var indicateKosyuId = webItemJson.indicate_kosyu_id;
 %>
 
     $(function () {
@@ -296,6 +299,12 @@
                   </td>
                 </tr>
                 <tr>
+                  <td><label class="padding-default">戸主指定</label></td>
+                  <td>
+                     <p class="padding-margin-default-in-table"><%= indicateKosyuName %></p>
+                  </td>
+                </tr>
+                <tr>
                   <td><label class="padding-default">タグ</label></td>
                   <td>
                      <p class="padding-margin-default-in-table"><%= tags %></p>
@@ -356,6 +365,7 @@
             <input type="hidden" name="jiin" value=<%= jiinCode %>>
             <input type="hidden" name="tags" value=<%= tags %>>
             <input type="hidden" name="comment" value=<%= comment %>>
+            <input type="hidden" name="member_id_kosyu" value=<%= indicateKosyuId %>>
         </form>
         <form action="/danka_base?id=2" method="post" id="danka_tuika_form">
             <input type="hidden" name="danka_type" value=<%= dankaType %>>

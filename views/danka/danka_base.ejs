@@ -12,12 +12,12 @@
 <!-- <script src="/js/jquery-1.10.2.min.js"></script>
 　<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/start/jquery-ui.css" rel="stylesheet">
   <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
--->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+    -->
+  <link rel="stylesheet" href="stylesheets/jquery/jquery-ui.css" type="text/css">
+  <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
   
-
 <!-- ブートストラップ定義 -->
 <script src="/js/bs3.0.3/bootstrap.min.js"></script>
 <link rel='stylesheet' href='/stylesheets/bs3.0.3/bootstrap.css' />
@@ -219,6 +219,37 @@
         });
     });
 
+    <!--  檀家詳細画面への遷移 -->
+    function goDankaDetail(id, kosyuId){
+        var serchMoji = $("#serch_tag").val();
+        var optionMoji = $("#print_display_flag").text();
+        var optionId = 0;
+        if (optionMoji == "印刷オプションを閉じる") {
+            optionId = 1;
+        }
+        //$("#danka_detail_kihon_form_member_id").val(id);
+        //$("#danka_detail_kihon_form").submit();
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&optionId=' + optionId + '&sm=' + serchMoji;
+    }
+
+    <!--  戸主追加画面の戸主検索ダイアログをクローズする -->
+    function closeDialog(){
+        $(".dialog-close-flg").click(function(){
+            $('#jquery-ui-dialog').dialog('close');
+            $('#target_list_inner > tr').remove();
+            $('#search_count_inner').text('[検索件数]：0件');
+            $('#serch_tag_inner').val('');
+            var a = $(this).children(".name_inner").text();
+            $("#kosyu-indicate").text(a);
+            $("input[name='indicate_kosyu_name']").val(a);
+            var b = $(this).children(".member_id").text();
+            $("input[name='indicate_kosyu_id']").val(b);
+        });
+    }
+
+</script>
+
+<script>
     <!--  検索ボタンの定義 -->
     function GetSearchTargetList() {
       
@@ -263,24 +294,24 @@
       if(printMessage == "印刷オプションを表示する"){
           printStatusOn = true;
       }
-      socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag, printStatusOn: printStatusOn });
-    }
-
-    function goDankaDetail(id, kosyuId){
-        var serchMoji = $("#serch_tag").val();
-        var optionMoji = $("#print_display_flag").text();
-        var optionId = 0;
-        if (optionMoji == "印刷オプションを閉じる") {
-            optionId = 1;
-        }
-        //$("#danka_detail_kihon_form_member_id").val(id);
-        //$("#danka_detail_kihon_form").submit();
-        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&optionId=' + optionId + '&sm=' + serchMoji;
+      var addReportIf = true;
+      socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag, printStatusOn: printStatusOn, addReportIf: addReportIf });
     }
 
     // GetTargetListメッセージを受けたとき
-    socket.on('GetSearchTargetList', function(data, param) {
+    //socket.on('GetSearchTargetList', function(data, param) {
       
+      // 檀家検索画面の場合
+      //if(param.addReportIf){
+          //displayDakaSearchList(data, param);
+      //}else{
+      // 戸主追加画面の場合
+          //displayDakaSearchListInner(data, param);
+      //}
+    //});
+
+    function displayDakaSearchList(data, param){
+
       $('#search_count').text('[検索件数]：' + data.length + '件');
       
       // ソート表記をクリア
@@ -291,15 +322,14 @@
       
       // 検索結果がゼロの場合
       if(data.length ===0 ){
-
-        html +=  "<tr>";
-        html +=   "<td colspan = 10>";
-        html +=     "<br>該当する結果が0件です。<br>";
-        html +=     "<br>※1:キーワードが間違っていないか確認して下さい。";
-        html +=     "<br>※2:複数のキーワードがある場合、and検索(全てのキーワードが含まれる)します。キーワードを減らしてみてください。";
-        html +=   "</td>";
-        html +=  "</tr>";
-        $('#target_list').append(html);
+            html +=  "<tr>";
+            html +=   "<td colspan = 10>";
+            html +=     "<br>該当する結果が0件です。<br>";
+            html +=     "<br>※1:キーワードが間違っていないか確認して下さい。";
+            html +=     "<br>※2:複数のキーワードがある場合、and検索(全てのキーワードが含まれる)します。キーワードを減らしてみてください。";
+            html +=   "</td>";
+            html +=  "</tr>";
+            $('#target_list').append(html);
       }
       // 検索結果が有る場合
       else{
@@ -360,10 +390,82 @@
         }
         updatePrintDanka();
       }
-    });
+    }
 
  $(function(){
     // ソートした表を表示する。（引数に渡した2次元配列から表を作成する。）
+    $('.table_main_result .th-sort').click(function() {
+        // 表の2次配列を作成する。
+        var tableData = [];
+        var tr = $(".table_main_result .table-sort tr");
+        for( var i=0;i<tr.length;i++){
+            // headerは処理対象外
+            if(i==0){
+                continue;
+            }
+            var cells = tr.eq(i).children();
+            var testArray = [];
+            for( var j=0;j<cells.length;j++){
+                var itemText = cells.eq(j).text();
+                // チェックボックス
+                if(j == 0){
+                    var checkboxStatus = cells.eq(0).children("input").prop("checked");
+                    if(checkboxStatus){
+                        testArray.push("1");
+                    }else{
+                        testArray.push("0");
+                    }
+                    continue;
+                }else if(j == 4){
+                    if(isUndefine(itemText) || itemText == "-"){
+                        testArray.push("0");
+                        continue;
+                    }
+                }else{
+                    if(isUndefine(itemText)){
+                        testArray.push("-");
+                        continue;
+                    }
+                }
+                testArray.push(itemText);
+            }
+            tableData.push(testArray);
+        }
+
+        // 検索結果が1行も存在しない場合は処理を中断する
+        // 結果が1行もない場合、注意文を表記する為、1行目が通常の6列存在しないことをチェックする。
+        if(!isUndefineForList(tableData) && tableData[0].length != 10){
+            return false;    
+        }
+
+        // 表の2次配列を指定の列でソートする。
+        var arrow = $('span', this);
+        var col = $('.table_main_result th').index(this);
+        // （個別）"氏名"でソートする場合は、"ふりがな"でソートする。
+        if(col == 1){
+            col = 2;
+        }
+        var isInteger = $(this).hasClass("isInteger");
+
+        if (arrow.html() == ' ▼') {
+            arrow.html(' ▲');
+            if (isInteger){
+                tableData.sort(function(a, b) { return Number(a[col]) < Number(b[col]) ? -1 : 1; });
+            }else {
+                tableData.sort(function(a, b) { return a[col] < b[col] ? -1 : 1; });
+            }
+        } else {
+            arrow.html(' ▼');
+            if (isInteger){
+                tableData.sort(function(a, b) { return Number(b[col]) < Number(a[col]) ? -1 : 1; });
+            }else {
+                tableData.sort(function(a, b) { return b[col] < a[col] ? -1 : 1; });
+            }
+        }
+        $(this).siblings().find('span').html(' ▽');
+        draw(tableData);
+    });
+
     function draw(tds) {
         var html = '';
         var isEven = false;
@@ -447,11 +549,146 @@
         $('#target_list > tr').remove();
         $('#target_list').append(html);
     }
+ });
+</script>
 
-    $('.th-sort').click(function() {
+<script>
+    <!--  検索ボタンの定義 -->
+    function GetSearchTargetListInner() {
+      
+      // 検索の連続実施チェック
+      var updatable = $("input[name='search_updatable']").val();
+      if (updatable == "0"){
+        return false;
+      }
+      
+      // 検索実施後1秒間は、検索ボタンによる処理を実行しない。 
+      $("input[name='search_updatable']").val("0");
+      setTimeout(function(){
+        $("input[name='search_updatable']").val("1");
+      },1000);
+      
+      // バリデーションチェック
+      var isError = $("#serch_tag_inner").formUtil("validationCheck");
+      if(isError){
+        // まずは一度全て取り除く
+        $('#target_list_inner > tr').remove();
+
+        // エラーメッセージを表示する
+        var html = "";
+        html +=  "<tr>";
+        html +=   "<td class=\"error\" colspan = 10>";
+        html +=     "<br>名前に特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\|\=\`)";
+        html +=     "<br>特殊文字を全角にするか、他の検索キーワードを入力して下さい。";
+        html +=     "<p>";
+        html +=   "</td>";
+        html +=  "</tr>";
+        $('#target_list_inner').append(html);
+        return false;
+      }
+      // 検索ボックスに入力されたtagsを送る
+      var searchTag = $('#serch_tag_inner').val();
+      var isKako = false;
+      var filterJiin = $("select[name='jiin_inner']").val();
+      var filterTikuCode = $("select[name='tiku_name_inner']").val();
+      var filterTag = $("select[name='tag_inner']").val();
+      var printStatusOn = false;
+      var addReportIf = false;
+      socket.emit('GetSearchTargetList', { searchTag: searchTag, isKako: isKako, filterJiin: filterJiin, filterTikuCode: filterTikuCode, filterTag: filterTag, printStatusOn: printStatusOn, addReportIf: addReportIf });
+    }
+
+    // GetTargetListメッセージを受けたとき
+    socket.on('GetSearchTargetList', function(data, param) {
+      
+      $('#search_count_inner').text('[検索件数]：' + data.length + '件');
+
+      // 檀家検索画面の場合
+      if(param.addReportIf){
+          displayDakaSearchList(data, param);
+      }else{
+      // 戸主追加画面の場合
+          displayDakaSearchListInner(data, param);
+      }
+    });
+
+    function displayDakaSearchListInner(data, param){
+
+      // ソート表記をクリア
+      $('.table_main_result_inner .th-sort span').html(' ▽');
+
+      // まずは一度全て取り除く
+      $('#target_list_inner > tr').remove();
+      
+      // 検索結果がゼロの場合
+      if(data.length ===0 ){
+            html +=  "<tr>";
+            html +=   "<td colspan = 10>";
+            html +=     "<br>該当する結果が0件です。<br>";
+            html +=     "<br>※1:キーワードが間違っていないか確認して下さい。";
+            html +=     "<br>※2:複数のキーワードがある場合、and検索(全てのキーワードが含まれる)します。キーワードを減らしてみてください。";
+            html +=   "</td>";
+            html +=  "</tr>";
+            $('#target_list_inner').append(html);
+      }
+      // 検索結果が有る場合
+      else{
+        for(var i=0;i<data.length;i++){
+        	var html = "";
+
+            if(i % 2 == 0){
+                html += '<tr class="dialog-close-flg table-selectable cursor-pointer">';    
+            } else{
+                html += '<tr class="dialog-close-flg even table-selectable cursor-pointer">';
+            }
+
+            html +=   '<td class="name_inner">';
+            html +=     data[i].name;
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     data[i].furigana;
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     data[i].tiku_name;
+            html +=   "</td>";
+            html +=   '<td>';
+            if(isUndefine(data[i].tiku_number)){
+                html += "-";
+            }else{
+                html +=     data[i].tiku_number;
+            }
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     data[i].tags;
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     data[i].jiin;
+            html +=   "</td>";
+            html +=   '<td class="hidden member_id">';
+            html +=     data[i].member_id;
+            html +=   "</td>";
+            html +=  "</tr>";
+
+          $('#target_list_inner').append(html);
+        }
+      }
+      $("#inner_main_easy_search_inner").removeClass("hidden");
+      closeDialog();
+    }
+
+ $(function(){
+    // ソートした表を表示する。（引数に渡した2次元配列から表を作成する。）
+    $('.table_main_result_inner .th-sort').click(function() {
         // 表の2次配列を作成する。
+        // val[0]: name
+        // val[1]: furigana(hidden)
+        // val[2]: tiku_name
+        // val[3]: tiku_number
+        // val[4]: tags
+        // val[5]: jiin
+        // val[6]: member_id(hidden)
+
         var tableData = [];
-        var tr = $(".table-sort tr");
+        var tr = $(".table_main_result_inner .table-sort tr");
         for( var i=0;i<tr.length;i++){
             // headerは処理対象外
             if(i==0){
@@ -462,15 +699,7 @@
             for( var j=0;j<cells.length;j++){
                 var itemText = cells.eq(j).text();
                 // チェックボックス
-                if(j == 0){
-                    var checkboxStatus = cells.eq(0).children("input").prop("checked");
-                    if(checkboxStatus){
-                        testArray.push("1");
-                    }else{
-                        testArray.push("0");
-                    }
-                    continue;
-                }else if(j == 4){
+                if(j == 3){
                     if(isUndefine(itemText) || itemText == "-"){
                         testArray.push("0");
                         continue;
@@ -488,16 +717,16 @@
 
         // 検索結果が1行も存在しない場合は処理を中断する
         // 結果が1行もない場合、注意文を表記する為、1行目が通常の6列存在しないことをチェックする。
-        if(!isUndefineForList(tableData) && tableData[0].length != 10){
+        if(!isUndefineForList(tableData) && tableData[0].length != 7){
             return false;    
         }
 
         // 表の2次配列を指定の列でソートする。
         var arrow = $('span', this);
-        var col = $('th').index(this);
+        var col = $('.table_main_result_inner th').index(this);
         // （個別）"氏名"でソートする場合は、"ふりがな"でソートする。
-        if(col == 1){
-            col = 2;
+        if(col == 0){
+            col = 1;
         }
         var isInteger = $(this).hasClass("isInteger");
 
@@ -517,8 +746,75 @@
             }
         }
         $(this).siblings().find('span').html(' ▽');
-        draw(tableData);
+        drawInner(tableData);
     });
+
+    function drawInner(tds) {
+        var html = '';
+        var isEven = false;
+
+        // 印刷オプション表示していない場合は、チェックボックス表示は行わない（変数定義）
+        var printStatusOn = false;
+
+        $.each(tds, function(i, val) {
+        // val[0]: checkbox
+        // val[1]: name
+        // val[2]: furigana(hidden)
+        // val[3]: tiku_name
+        // val[4]: tiku_number
+        // val[5]: tags
+        // val[6]: jiin
+        // val[7]: is_arive
+        // val[8]: member_id(hidden)
+        // val[9]: member_id_kosyu(hidden)
+
+        // val[0]: name
+        // val[1]: furigana(hidden)
+        // val[2]: tiku_name
+        // val[3]: tiku_number
+        // val[4]: tags
+        // val[5]: jiin
+        // val[6]: member_id(hidden)
+
+            if(isEven){
+                html += '<tr class="dialog-close-flg even table-selectable cursor-pointer">';
+                isEven = false; 
+            }else{
+                html += '<tr class="dialog-close-flg table-selectable cursor-pointer">'; 
+                isEven = true;
+            }                
+
+            html +=   '<td>';
+            html +=     val[0];
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     val[1];
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     val[2];
+            html +=   "</td>";
+            if(val[3] == "0"){
+                html +=   '<td>-</div>';
+            }else{
+                html +=   '<td>';
+                html +=     val[3];
+                html +=   "</td>";
+            }
+            html +=   '<td>';
+            html +=     val[4];
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     val[5];
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     val[6];
+            html +=   "</td>";
+            html +=  "</tr>";
+        });
+        $('#target_list_inner > tr').remove();
+        $('#target_list_inner').append(html);
+        closeDialog();
+    }
  });
 </script>
 
@@ -623,7 +919,6 @@
             GetSearchTargetList();            
         }
     });
-
 </script>
 <script>
     // History API が使えるブラウザかどうかをチェック
@@ -645,6 +940,32 @@
             //}
         });
     }
+</script>
+
+<script>
+    $(function () {
+
+        $('#jquery-ui-dialog-opener').click( function() {
+            $('#jquery-ui-dialog').dialog( 'open' );
+        });
+    
+        $('#jquery-ui-dialog').dialog({
+            autoOpen: false,
+            width: 700,
+            //show: 'explode',
+            //hide: 'explode',
+            modal: true,
+            title: "戸主検索画面",
+            buttons: [{
+                text: '閉じる',
+                class: 'dialog-button',
+                click: function() {
+                    jQuery( this ) . dialog( 'close' );
+                }
+            }]
+        });
+    });
+
 </script>
 </head>
 <body>
@@ -723,7 +1044,7 @@
       
           <div id="inner_fiter_sum" class="row">
               <div class="col col-sm-8">
-                <label id="search_count">[検索件数]：件</label>          
+                <label id="search_count">[検索件数]：0件</label>          
               </div>
               <div class="col col-sm-4 text-left">
                 <label id="print_display_flag" class="cursor-pointer text-underline">印刷オプションを表示する</label>
@@ -992,6 +1313,107 @@
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）戸主追加タブ
     <!-------------------------------------------------------------------------------------------------------->
+<div id="jquery-ui-dialog" title="戸主検索画面">
+        <div id="inner_filter_main_easy_search_inner_label">★戸主を検索して、対象となる戸主を選択してください。</div>
+        <div id="search_count_inner"><label>[検索件数]：0件</label></div>
+        <div id="inner_filter_main_easy_search_inner">
+            <div class="row">
+                <div class="col col-sm-10 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group margin-bottom-default">
+                        <span class="input-group-addon">名前</span>
+                        <% if (tabId == "0"){ %>
+                            <input type="text" id="serch_tag_inner" class="form-control sp_check input-sm" placeholder="名前の一部を入力して下さい（フリガナ、漢字どちらでも入力できます）" onkeydown="if(event.keyCode == 13){GetSearchTargetListInner();}" autofocus>
+                        <%} else{%>
+                            <input type="text" id="serch_tag_inner" class="form-control sp_check input-sm" placeholder="名前の一部を入力して下さい（フリガナ、漢字どちらでも入力できます）" onkeydown="if(event.keyCode == 13){GetSearchTargetListInner();}">
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row top-margin-sm left">
+                <div class="col col-sm-3 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">寺院</span>
+                        <select class="form-control input-sm" name="jiin_inner">
+                            <option value=0>---</option>
+                            <option value="長伝寺">長伝寺</option>
+                            <option value="水月寺">水月寺</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-3 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">地区</span>
+                        <select class="form-control input-sm" name="tiku_name_inner">
+                        <% for(var i in tikuCodeInfo){
+                            var _tikuCode = tikuCodeInfo[i].tiku_code;
+                            var _tikuName = tikuCodeInfo[i].tiku_name; %>
+                            <option value=<%= _tikuCode %>><%= _tikuName %></option>
+                        <%}%>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-sm-4 padding-right-zero">
+                    <!-- TOP検索tag -->
+                    <div class="input-group">
+                        <span class="input-group-addon">タグ</span>
+                        <select class="form-control input-sm" name="tag_inner">
+                        <option value=0>---</option>
+                        <% for(var i in tagCodeInfo){
+                            var _tagCode = tagCodeInfo[i].tags_id;
+                            var _tagName = tagCodeInfo[i].tags; %>
+                            <option value=<%= _tagName %>><%= _tagName %></option>
+                        <%}%>
+                    </select>
+                    </div>
+                </div>
+                <div class="col col-sm-2 padding-right-zero text-left">
+                    <button class="btn btn-success btn-sm" onclick="GetSearchTargetListInner()">　検索　</button>
+                    <!-- /input-group -->
+                </div>
+             </div>
+        </div>
+
+        <div id="inner_main_easy_search_inner">
+          <div class="table_main_result_inner">
+            <div class="row">
+              <div class="col col-sm-12 left">
+                <table class="table table-sort table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th id="table_name_full_th_inner" class="th-sort header-selectable cursor-pointer">氏名<span> ▽</span></th>
+                            <th id="table_name_furigana_th_inner" class="hidden">ふりがな<span></span></th>
+                            <th id="table_tiku_name_th_inner" class="th-sort header-selectable cursor-pointer">地区名<span> ▽</span></th>
+                            <th id="table_tiku_number_th_inner" class="th-sort header-selectable cursor-pointer isInteger">地区No<span> ▽</span></th>
+                            <th id="table_tag_th_inner" class="th-sort header-selectable cursor-pointer">タグ<span> ▽</span></th>
+                            <th id="table_jiin_th_inner" class="th-sort header-selectable cursor-pointer">寺院<span> ▽</span></th>
+                            <th id="table_member_id_th_inner" class="hidden">ID<span></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="target_list_inner" >
+                        <tr>
+                            <td></td>
+                            <td class="hidden"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="hidden"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+</div>
+
     <% if (tabId == "2"){ %>
         <div id="inner_main_tuika">
     <%} else{%>
@@ -1266,6 +1688,19 @@
                     </div>
                   </td>
                 </tr>
+
+                <tr>
+                  <td><label class="padding-default">戸主指定</label></td>
+                      <td class="table-selectable">
+                          <div class="col col-sm-3 padding-default">
+                            <label id="kosyu-indicate" class="style-name-in-label">指定無し</label>
+                          </div>
+                          <div class="col col-sm-5 style-name-in-buttom-with-label">
+                            <button type="button" id="jquery-ui-dialog-opener" class="btn btn-success btn-xs enter-mv">戸主検索</button>
+                          </div>
+                      </td>
+                </tr>
+
                 <tr>
                   <td><label class="padding-default">タグ</label></td>
                   <td class="table-selectable">
@@ -1303,6 +1738,8 @@
                 </div>
             </div>
           </div>
+          <input type="hidden" name="indicate_kosyu_name" value="dummy">
+          <input type="hidden" name="indicate_kosyu_id" value="dummy">
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
           <input type="hidden" name="jiin_name" value="dummy">

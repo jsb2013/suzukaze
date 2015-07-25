@@ -5,7 +5,9 @@
 <meta name="GENERATOR" content="JustSystems Homepage Builder Version 18.0.3.0 for Windows">
 
   <!-- jQuery JS -->
+  <link rel="stylesheet" href="stylesheets/jquery/jquery-ui.css" type="text/css">
   <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
 
   <!-- Bootstrap JS & CSS -->
   <script src="/js/bs3.0.3/bootstrap.min.js"></script>
@@ -200,7 +202,7 @@
 
         // バリデーションチェックを実装。
         if(isArive == "1"){
-            $("form").submit(function(){
+            $("#main_form").submit(function(){
                 //////////////////////////////
                 ////  ★バリデーションチェック
                 //////////////////////////////
@@ -281,7 +283,7 @@
          }else{
 
 
-            $("form").submit(function(){
+            $("#main_form").submit(function(){
                 //////////////////////////////
                 ////  ★バリデーションチェック
                 //////////////////////////////
@@ -352,6 +354,122 @@
 
     });
 </script>
+
+<script>
+
+    function kosyuChange() {
+        $("#danka_kosyu_change_form").submit();
+    }
+
+    function mvKako() {
+        $("#danka_mv_kako_form").submit();
+    }
+
+    function mvGen() {
+        $("#danka_mv_gen_form").submit();
+    }
+
+    $(function () {
+
+        $('.genkako-td-operation-kosyu-button').click(function () {
+            var a = $(this).parent().children(".genkako-table-member-id").text();
+            var b = $(this).parent().children(".genkako-table-member-id-kosyu").text();
+            $("#danka_kosyu_change_form input[name='member_id']").val(a);
+            $("#danka_kosyu_change_form input[name='member_id_kosyu']").val(b);
+            $('#ui-dialog-change-kosyu').dialog('open');
+        });
+
+        $('.genkako-td-operation-kako-button').click(function () {
+            var a = $(this).parent().children(".genkako-table-member-id").text();
+            var b = $(this).parent().children(".genkako-table-member-id-kosyu").text();
+            $("#danka_mv_kako_form input[name='member_id']").val(a);
+            $("#danka_mv_kako_form input[name='member_id_kosyu']").val(b);
+            $('#ui-dialog-mv-kako').dialog('open');
+        });
+
+        $('.genkako-td-operation-gen-button').click(function () {
+            var a = $(this).parent().children(".genkako-table-member-id").text();
+            var b = $(this).parent().children(".genkako-table-member-id-kosyu").text();
+            $("#danka_mv_gen_form input[name='member_id']").val(a);
+            $("#danka_mv_gen_form input[name='member_id_kosyu']").val(b);
+            $('#ui-dialog-mv-gen').dialog('open');
+        });
+
+        $('#ui-dialog-change-kosyu').dialog({
+            autoOpen: false,
+            width: 350,
+            //show: 'explode',
+            //hide: 'explode',
+            modal: true,
+            buttons: [
+                {
+                    text: '　OK　',
+                    class: 'dialog-button',
+                    click: function () {
+                        kosyuChange();
+                    }
+                },
+                {
+                    text: '閉じる',
+                    class: 'dialog-button',
+                    click: function () {
+                        jQuery(this).dialog('close');
+                    }
+                }
+           ]
+        });
+
+        $('#ui-dialog-mv-kako').dialog({
+            autoOpen: false,
+            width: 350,
+            //show: 'explode',
+            //hide: 'explode',
+            modal: true,
+            buttons: [
+                {
+                    text: '　OK　',
+                    class: 'dialog-button',
+                    click: function () {
+                        mvKako();
+                    }
+                },
+                {
+                    text: '閉じる',
+                    class: 'dialog-button',
+                    click: function () {
+                        jQuery(this).dialog('close');
+                    }
+                }
+           ]
+        });
+
+        $('#ui-dialog-mv-gen').dialog({
+            autoOpen: false,
+            width: 350,
+            //show: 'explode',
+            //hide: 'explode',
+            modal: true,
+            buttons: [
+                {
+                    text: '　OK　',
+                    class: 'dialog-button',
+                    click: function () {
+                        mvGen();
+                    }
+                },
+                {
+                    text: '閉じる',
+                    class: 'dialog-button',
+                    click: function () {
+                        jQuery(this).dialog('close');
+                    }
+                }
+           ]
+        });
+    });
+
+</script>
+
 </head>
 <body>
 <!-- container -->
@@ -909,12 +1027,13 @@
             <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th id="table_main_kosyu_th" class="th-sort header-selectable cursor-pointer">戸主</th>
-                            <th id="table_main_gen_name_th" class="th-sort header-selectable cursor-pointer">氏名</th>
-                            <th id="table_main_tiku_code_th" class="th-sort header-selectable cursor-pointer">地区名</th>
-                            <th id="table_main_tiku_number_th" class="th-sort header-selectable cursor-pointer">地区番号</th>
-                            <th id="table_main_tags_th" class="th-sort header-selectable cursor-pointer">タグ名</th>
-                            <th id="table_main_jiin_th" class="th-sort header-selectable cursor-pointer">寺院</th>
+                            <th id="table_main_kosyu_th" class="">戸主</th>
+                            <th id="table_main_gen_name_th" class="">氏名</th>
+                            <th id="table_main_tiku_code_th" class="">地区名</th>
+                            <th id="table_main_tiku_number_th" class="">地区No</th>
+                            <th id="table_main_tags_th" class="">タグ名</th>
+                            <th id="table_main_jiin_th" class="">寺院</th>
+                            <th id="table_main_operation_kosyu" class="">操作</th>
                         </tr>
                     </thead>
               <tbody>
@@ -948,16 +1067,23 @@
                   <%
                     if(_isOriginal){
                   %>
-                        <tr class="even cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
+                        <tr class="even cursor-pointer table-selectable add-tr-border">
                   <%}else{%>
-                        <tr class="cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
+                        <tr class="cursor-pointer table-selectable add-tr-border">
                   <%}%>
-                        <td class="text-center"><%= _isKosyu %></td>
-                        <td><%= _fullName %></td>
-                        <td><%= _tikuName %></td>
-                        <td><%= _tikuNumber %></td>
-                        <td><%= _tags %></td>
-                        <td><%= _jiinName %></td>
+                        <td class="text-center" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _isKosyu %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _fullName %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _tikuName %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _tikuNumber %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _tags %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _jiinName %></label></td>
+
+                        <td class="genkako-td-operation">
+                            <button class="btn btn-success btn-xs genkako-td-operation-kosyu-button">戸主</button>
+                            <button class="btn btn-danger btn-xs genkako-td-operation-kako-button">過去</button>
+                            <p class="hidden genkako-table-member-id"><%= _memberId %></p>
+                            <p class="hidden genkako-table-member-id-kosyu"><%= _memberIdKosyu %></p>
+                        </td>
                     </tr>
                   <% } %>
               </tbody>
@@ -970,12 +1096,14 @@
             <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
-                          <th id="table_main_kako_zokumei" class="table_main_kako_header">俗名</th>
-                          <th id="table_main_kako_kaimyo" class="table_main_kako_header">戒名</th>
-                          <th id="table_main_kako_meinichi" class="table_main_kako_header">命日</th>
-                          <th id="table_main_kako_kyonen" class="table_main_kako_header">享年</th>
-                          <th id="table_main_kako_sesyu" class="table_main_kako_header">施主</th>
-                          <th id="table_main_kako_relation" class="table_main_kako_header">続柄</th>
+                            
+                          <th id="table_main_kako_kosyu_th" class="">戸主</th>
+                          <th id="table_main_kako_zokumei" class="">俗名</th>
+                          <th id="table_main_kako_kaimyo" class="">戒名</th>
+                          <th id="table_main_kako_meinichi" class="">命日</th>
+                          <th id="table_main_kako_kyonen" class="">享年</th>
+                          <th id="table_main_kako_relation" class="">続柄</th>
+                          <th id="table_main_kako_operation" class="">操作</th>
                         </tr>
                     </thead>
               <tbody>
@@ -996,30 +1124,52 @@
                         var _relation = kosyuIdlistIsAriveNot[i].relation;
                         var _memberId = kosyuIdlistIsAriveNot[i].member_id;
                         var _memberIdKosyu = kosyuIdlistIsAriveNot[i].member_id_kosyu;
+                        var _isKosyu = "";
+                        if(_memberId == _memberIdKosyu){
+                            var _isKosyu = "●";
+                        }
                         var _isOriginal = false;
                         if(_memberId == memberId){
                             var _isOriginal = true;
                         }
-                  %>
+                  %> 
                   <%
                     if(_isOriginal){
                   %>
-                        <tr class="even cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
+                        <tr class="even cursor-pointer table-selectable add-tr-border">
                   <%}else{%>
-                        <tr class="cursor-pointer" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)">
+                        <tr class="cursor-pointer table-selectable add-tr-border">
                   <%}%>
-                        <td><%= _fullName %></td>
-                        <td><%= _kaimyo %></td>
-                        <td><%= _meinichiFull %></td>
-                        <td><%= _kyonen %>歳</td>
-                        <td><%= _sesyuFull %></td>
-                        <td><%= _relation %></td>
+                        <td class="text-center" onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _isKosyu %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _fullName %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _kaimyo %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _meinichiFull %></label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _kyonen %>歳</label></td>
+                        <td onClick="goDankaDetail(<%= _memberId %>, <%= _memberIdKosyu %>)"><label class="genkako-table-td-label"><%= _relation %></label></td>
+                        <td class="genkako-td-operation">
+                            <button type="submit" class="btn btn-success btn-xs genkako-td-operation-kosyu-button">戸主</button>
+                            <button type="submit" class="btn btn-primary btn-xs genkako-td-operation-gen-button">現在</button>
+                            <p class="hidden genkako-table-member-id"><%= _memberId %></p>
+                            <p class="hidden genkako-table-member-id-kosyu"><%= _memberIdKosyu %></p>
+                        </td>
                     </tr>
                   <% } %>
               </tbody>
             </table>
           </div>
       </div> 
+
+      <div id="ui-dialog-change-kosyu" title="戸主変更確認">
+        <label class="kosyu-change-comment">選択した檀家を戸主に変更します。<br>問題なければOKボタンを押して下さい。</label>
+      </div>
+
+      <div id="ui-dialog-mv-kako" title="過去帳への移動確認">
+        <label class="kosyu-change-comment">選択した檀家を過去帳へ移動します。<br>問題なければOKボタンを押して下さい。</label>
+      </div>
+
+      <div id="ui-dialog-mv-gen" title="現在帳への移動確認">
+        <label class="kosyu-change-comment">選択した檀家を現在帳へ移動します。<br>問題なければOKボタンを押して下さい。</label>
+      </div>
 
       <form action="/danka_detail_kihon" method="post" id="danka_detail_kihon_form">
         <input type="hidden" name="member_id" value=<%= memberId %>>
@@ -1028,6 +1178,22 @@
         <input type="hidden" name="member_id" value=<%= memberId %>>
       </form>
 
+      <form action="/danka_kosyu_change" method="post" id="danka_kosyu_change_form">
+        <input type="hidden" name="member_id" value="dummy">
+        <input type="hidden" name="member_id_kosyu" value="dummy">
+      </form>
+
+      <form action="/danka_mv_kako" method="post" id="danka_mv_kako_form">
+        <input type="hidden" name="member_id" value="dummy">
+        <input type="hidden" name="member_id_kosyu" value="dummy">
+      </form>
+
+      <form action="/danka_mv_gen" method="post" id="danka_mv_gen_form">
+        <input type="hidden" name="member_id" value="dummy">
+        <input type="hidden" name="member_id_kosyu" value="dummy">
+      </form>
+
+      <input type="hidden" name="tab_change" value="kihon">
       <!-- inner_main end □□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
     </div>
     <!-- wrapper end -->

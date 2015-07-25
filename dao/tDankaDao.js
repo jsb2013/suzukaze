@@ -175,3 +175,75 @@ exports.updateTDankaForTikuNumber = function(client, database, memberId, dbcallb
     });
 }
 
+exports.updateTDankaForMemberIdKosyu = function(client, database, memberId, dbcallback){
+    var isDbError = false;
+    var query = client.query('update t_danka as td set yobi_1 = mtc.yobi_1 from m_tiku_code as mtc where td.tiku_code = mtc.tiku_code and td.member_id = $1 and td.is_deleted = false and mtc.is_disabled = false and mtc.is_deleted = false;',
+                    [memberId]);
+    
+    query.on('end', function(row,err) {
+        // session out
+        client.end();
+
+        if (err){
+            logger.error('xxxx', 'err =>'+ err);
+            client.end();
+            dbcallback(err);
+            return;
+        }
+        if (isDbError) {
+            return;
+        }
+        client.end();
+        dbcallback(null);
+        return;
+    });
+    
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}
+
+// 本当はForMemberIdKosyuにしないといけないのだけど、上で間違って登録されてるからとりあえずこの名前にする。
+exports.updateTDankaForMemberIdKosyuByMemberId = function(client, database, memberId, memberIdKosyu, dbcallback){
+    var isDbError = false;
+    var query = client.query('update t_danka set member_id_kosyu = $1 where member_id_kosyu = $2 and is_deleted = false;',
+                    [memberId, memberIdKosyu]);
+    
+    query.on('end', function(row,err) {
+        // session out
+        client.end();
+
+        if (err){
+            logger.error('xxxx', 'err =>'+ err);
+            client.end();
+            dbcallback(err);
+            return;
+        }
+        if (isDbError) {
+            return;
+        }
+        client.end();
+        dbcallback(null);
+        return;
+    });
+    
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}

@@ -10,7 +10,6 @@
     height: 23px;
     width: 630px;
     text-align: left;
-    color: black;
     font-size: medium;
     color: red;
 }
@@ -52,118 +51,79 @@
     font-size: small;
 }
 
-#table_print_ck{
-    width: 45px;
+
+/* 検索結果画面-個別定義 */
+
+#table_main_kosyu_th{
+    width: 40px;
 }
 
-#table_name_full_th{
-    width: 120px;
+#table_main_gen_name_th{
+    width: 130px;
 }
 
-#table_tiku_name_th{
-    width: 68px;
-}
-
-#table_tiku_number_th{
-    width: 74px;
-}
-   
-#table_tag_th{
-    width: 231px;
-}
-      
-#table_jiin_th{
+#table_main_tiku_code_th{
     width: 60px;
 }
 
-#table_kako_th{
-    width: 42px;
+#table_main_tiku_number_th{
+    width: 57px;
+}
+   
+#table_main_tags_th{
+    width: 207px;
+}
+      
+#table_main_jiin_th{
+    width: 50px;
 }
 
-/* 印刷検索部 ------------------------ */
-#inner_main_print {
-    margin: 8px 10px 0 0;
-    height: 73px;
-    padding: 0px 10px 10px 10px;
-    border: dashed 1px #BA802F;
-}
-
-/* 検索結果画面-個別定義 */
-#print-comment{
-    padding: 3px 0 3px 10px;
-    text-align: left;
+#table_main_operation_kosyu{
+    width: 91px;
 }
 
 /* 検索結果画面-個別定義 */
-#print-comment label{
+
+#table_main_kako_kosyu_th{
+    width: 40px;
+}
+
+#table_main_kako_zokumei{
+    width: 130px;
+}
+
+#table_main_kako_kaimyo{
+    width: 170px;
+}
+
+#table_main_kako_meinichi{
+    width: 109px;
+}
+   
+#table_main_kako_kyonen{
+    width: 45px;
+}
+      
+#table_main_kako_relation{
+    width: 50px;
+}
+
+#table_main_kako_operation{
+    width: 91px;
+}
+
+.genkako-table-td-label{
+    padding-top: 2px;
     font-weight: normal;
-    font-size: small;
-    color: red;
 }
 
-#all_checkbox{
-    margin: 15px 0 0 5px;    
+.genkako-td-operation{
+    float: left;
+    border: none !important;
 }
 
-#all_checkbox label{
-    font-size: 13px;
+.kosyu-change-comment{
+    font-size: medium;
     font-weight: normal;
-    vertical-align: top;
-    padding: 4px 0 0 5px;
-}
-
-#checkbox_kojin{
-    margin-top: 5px;    
-}
-
-#checkbox_kojin input{
-    margin-top: 0;    
-}
-
-#checkbox_kojin label{
-    font-size: 13px;
-    font-weight: normal;
-    vertical-align: top;
-    padding: 4px 0 0 5px;    
-}
-
-#target_list .checkbox_td{
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-/* 50音別個別定義 ------------------------ */
-#inner_main_50on{
-    margin: 10px 0 0 0;
-    width: 630px;
-}
-
-#table_main_50on{
-    margin: 8px 0 0 0;
-}
-
-#table_main_50on tbody tr td{
-    margin: 0;
-    vertical-align: top;
-    text-align: center;
-    height: 60px;
-    cursor: pointer;
-}
-.width_300{
-    width: 300px;
-    padding: 20px 0 0 0;
-    border-style: solid 1px;
-    border-color: #dddddd;
-    background-color: #ffdfbf;
-}
-
-.width_30{
-    width: 30px;
-}
-
-#danka_tuika_tag label{
-    font-size: 13px;
-    font-weight: normal;
-    vertical-align: top;
-    padding: 5px 11px 0 2px;        
+    padding: 15px 0 5px 0;
 }

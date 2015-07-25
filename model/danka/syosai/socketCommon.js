@@ -24,6 +24,7 @@ exports.getSearchTargetList = function (data, callback) {
     var filterTikuCode = data.filterTikuCode;
     var filterTag = data.filterTag;
     var printStatusOn = data.printStatusOn;
+    var addReportIf = data.addReportIf;
 
     // work変数定義
     //var _searchTag = searchTag.replace("　", " ");
@@ -210,10 +211,18 @@ exports.getSearchTargetList = function (data, callback) {
         }
     }
     // 検索SQL作成（base)
-    if (isUpdateForSql) {
-        sql = 'select * from v_search_target where report_if_id is not null or ( ' + sql + ' )';
-    } else {
-        sql = 'select * from v_search_target';
+    if(addReportIf){
+        if (isUpdateForSql) {
+            sql = 'select * from v_search_target where report_if_id is not null or ( ' + sql + ' )';
+        } else {
+            sql = 'select * from v_search_target';
+        }        
+    }else{
+        if (isUpdateForSql) {
+            sql = 'select * from v_search_target where ' + sql;
+        } else {
+            sql = 'select * from v_search_target';
+        }
     }
 
     async.series([

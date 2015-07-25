@@ -114,6 +114,15 @@ table tbody tr td{
     padding: 8px 5px 0 5px;
 }
 
+.style-name-in-buttom-with-label{
+    padding: 4px 5px 0 5px;
+}
+
+.style-name-in-label{
+    margin: 3px 0px 0px 0px;
+    font-weight: normal;
+}
+
 .style-mark-in-table{
     margin: 5px 5px 0 0;
     float: right;
@@ -243,4 +252,22 @@ textarea{
 .checkbox_default_list{
     width: 20px;
     height: 20px;
+}
+
+.add-tr-border{
+    border: 1px solid #dddddd;    
+}
+
+.font-normal{
+    font-weight: normal;
+}
+
+.dialog-button{
+    font-size: medium !important;
+}
+
+.ui-dialog-title{
+    font-size: medium !important;
+    color: black;
+    text-align: center;
 }

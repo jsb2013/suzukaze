@@ -278,7 +278,7 @@ exports.getMmemberAndTDankaByMemberId = function(client, database, memberId, row
 exports.getMmemberAndTDankaByMemberIdKosyu = function(client, database, memberId, rows, dbcallback){
     // 柔軟にしようと思ったけど、結局運用に乗せても大して変わらない&それほど共通化する要素でもない&配列とかで直感的にわかりづらいことから、自力でがんばる系にした。 
     var isDbError = false;
-    var query = client.query('select * from (m_member as mm inner join t_danka td on mm.member_id = td.member_id) JOIN m_tiku_code mtc ON td.tiku_code = mtc.tiku_code where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mtc.is_disabled = false and mtc.is_deleted = false and td.member_id_kosyu = $1 order by mm.birthday_y, mm.birthday_m, mm.birthday_d',
+    var query = client.query('select mm.member_id, mm.birthday_y, mm.birthday_m, mm.birthday_d, mm.furigana_na, mm.furigana_sei, mm.name_na, mm.name_sei, mm.sex, mm.job, mm.meinichi_y, mm.meinichi_m, mm.meinichi_d, mm.tags, mm.is_arive, td.danka_type, td.sewa_code, td.tiku_code, td.member_id_kosyu, td.member_id_sou, td.kaimyo, td.kaimyo_furigana, td.relation, td.sesyu_sei, td.sesyu_na, td.kyonen, td.jiin, td.yobi_1, mtc.tiku_name from (m_member as mm inner join t_danka td on mm.member_id = td.member_id) JOIN m_tiku_code mtc ON td.tiku_code = mtc.tiku_code where mm.is_disabled=false and mm.is_deleted=false and td.is_deleted=false and mtc.is_disabled = false and mtc.is_deleted = false and td.member_id_kosyu = $1 order by mm.birthday_y, mm.birthday_m, mm.birthday_d',
                 [memberId]);
 
     query.on('row', function(row) {
@@ -464,4 +464,41 @@ exports.getMMemberForMemberIdByName = function(client, database, baseInfo, rows,
     });
 }
 
+exports.updateMMemberForIsArive = function (client, database, memberId, isArive, dbcallback) {
+    var isDbError = false;
+    var isAriveValue = "0";
+    if (isArive) {
+        isAriveValue = "1";
+    }
+    var query = client.query('update m_member set is_arive = $1 where member_id = $2 and is_deleted = false and is_disabled = false;',
+                    [isAriveValue,memberId]);
+
+    query.on('end', function (row, err) {
+        // session out
+        client.end();
+
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            dbcallback(err);
+            return;
+        }
+        if (isDbError) {
+            return;
+        }
+        dbcallback(null);
+        return;
+    });
+
+    query.on('error', function (error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => ' + errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}
 

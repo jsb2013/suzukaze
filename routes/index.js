@@ -449,6 +449,69 @@ exports.postReturnDankaSearchResult = function(req, res){
     postReturnDankaSearchResultModel.main(webItemJson, authCallback);
 };
 
+// 檀家詳細検索画面（post:/danka_kosyu_change）
+exports.postDankaKosyuChange = function(req, res){
+
+    var postDankaKosyuChangeModel = require("../model/danka_detail/kihon/postDankaKosyuChangeModel");
+    var webItemJson = req.body;
+    var memberId = webItemJson.member_id;
+    var memberIdKosyu = webItemJson.member_id_kosyu;
+    function authCallback(isError){
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberId);
+        return;
+    }
+
+    postDankaKosyuChangeModel.main(webItemJson, authCallback);
+};
+
+// 檀家詳細検索画面（post:/danka_mv_kako）
+exports.postDankaMvKako = function(req, res){
+
+    var postDankaMvGenKakoModel = require("../model/danka_detail/kihon/postDankaMvGenKakoModel");
+    var webItemJson = req.body;
+    var memberId = webItemJson.member_id;
+    var memberIdKosyu = webItemJson.member_id_kosyu;
+    function authCallback(isError){
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberIdKosyu);
+        return;
+    }
+
+    postDankaMvGenKakoModel.main(webItemJson, false, authCallback);
+};
+
+// 檀家詳細検索画面（post:/danka_mv_gen）
+exports.postDankaMvGen = function(req, res){
+
+    var postDankaMvGenKakoModel = require("../model/danka_detail/kihon/postDankaMvGenKakoModel");
+    var webItemJson = req.body;
+    var memberId = webItemJson.member_id;
+    var memberIdKosyu = webItemJson.member_id_kosyu;
+    function authCallback(isError){
+        // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
+        if (isError) {
+            res.render('dummy', {});
+            return;
+        }
+        // ログイン成功画面へ推移
+        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberIdKosyu);
+        return;
+    }
+
+    postDankaMvGenKakoModel.main(webItemJson, true, authCallback);
+};
+
 // 檀家詳細検索画面（get:/danka_syosai）
 exports.postReturnDankaDetailTop = function(req, res){
 
