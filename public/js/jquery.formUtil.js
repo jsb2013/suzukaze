@@ -216,7 +216,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★入力して下さい。（入力必須項目です）</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]入力して下さい。（入力必須項目です）</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                             return;
@@ -232,7 +232,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★入力して下さい。（入力必須項目です）</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]入力して下さい。（入力必須項目です）</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                             isDuplicateForRequire = false;
@@ -251,7 +251,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                         // 重複フラグ考慮要のCELLで、重複フラグTRUEの場合
@@ -264,7 +264,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]特殊文字は入力できません。(対象文字： \'\"\\\*\+\.\?\{\}\[\]\&\(\)\^\$\-\|\=\`)</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                             isDuplicateForSpecial = false;
@@ -276,7 +276,7 @@
                 if($(this).hasClass("name_check")){
                     if(!isUndefine(value) && !value.match(/^[ぁ-んァ-ヶー一-龠a-zA-Z0-9 　\r\n\t\-]+$/)){
                         isError = true;
-                        $(this).parent().parent().append("<p class='clear_both'>★[漢字/ひらがな/カタカナ/数字/空白/スペース]の何れかを入力して下さい。</p>");
+                        $(this).parent().parent().append("<p class='clear_both'>★[ERROR][漢字/ひらがな/カタカナ/数字/空白/スペース]の何れかを入力して下さい。</p>");
                         $(this).parent().parent().addClass("error");
                     }
                 }
@@ -285,7 +285,7 @@
                 if($(this).hasClass("furigana_check")){
                     if(!isUndefine(value) && !value.match(/^[ぁ-んァ-ヶー一a-zA-Z0-9 　\r\n\t\-]+$/)){
                         isError = true;
-                        $(this).parent().parent().append("<p class='clear_both'>★[ひらがな、かたかな、ー、スペース]を入力して下さい。</p>");
+                        $(this).parent().parent().append("<p class='clear_both'>★[ERROR][ひらがな、かたかな、ー、スペース]を入力して下さい。</p>");
                         $(this).parent().parent().addClass("error");
                     }
                 }
@@ -294,7 +294,7 @@
                 if($(this).hasClass("mail")){
                     if(!isUndefine(value) && !value.match((/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/))){
                         isError = true;
-                        $(this).parent().parent().append("<p class='clear_both'>★[アルファベット、数字、@、.、_、-]を入力して下さい。</p>");
+                        $(this).parent().parent().append("<p class='clear_both'>★[ERROR][アルファベット、数字、@、.、_、-]を入力して下さい。</p>");
                         $(this).parent().parent().addClass("error");
                     }
                 }
@@ -309,7 +309,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★数値を入力して下さい。</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]数値を入力して下さい。</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                         // 重複フラグ考慮要のCELLで、重複フラグTRUEの場合
@@ -322,7 +322,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★数値を入力して下さい。</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]数値を入力して下さい。</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                             isDuplicateForNumber = false;
@@ -348,7 +348,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                         // 重複フラグ考慮要のCELLで、重複フラグTRUEの場合
@@ -363,7 +363,7 @@
                             if(isUndefine(nestNo)){
                                 //何もしない
                             } else{
-                                $(this).parent().parent().append("<p class='clear_both'>★桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
+                                $(this).parent().parent().append("<p class='clear_both'>★[ERROR]桁数が長すぎます（上限桁数：" + limitNum + "桁 / 設定桁数：" + valueLength + "桁）</p>");
                                 $(this).parent().parent().addClass("error");
                             }
                             isDuplicateForValueLimit = false;

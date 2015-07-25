@@ -123,6 +123,13 @@ table tbody tr td{
     font-weight: normal;
 }
 
+.style-comment-in-label{
+    margin: 0px 0px 0px 5px;
+    font-weight: normal;
+    font-size: 12px;
+    color: red;
+}
+
 .style-mark-in-table{
     margin: 5px 5px 0 0;
     float: right;
@@ -139,8 +146,18 @@ table tbody tr td{
     text-align: right;
 }
 
+.style-tikuno-string{
+    padding: 12px 0 0 10px;
+    width: 62px;
+    text-align: right;
+}
+
 .style-yoto-input-text{
     width: 133px;
+}
+
+.style-tikuno-input-text{
+    width: 50px;
 }
 
 .style-danka-type{
@@ -161,6 +178,12 @@ table tbody tr td{
 
 /* バリデーションエラー */
 .error{
+    clear: both;
+    color: #f00;
+    background-color: orange;
+}
+
+.error_kobetu{
     clear: both;
     color: #f00;
     background-color: orange;
@@ -241,6 +264,10 @@ textarea{
 
 /* clear both */ 
 .clear_both{
+    clear: both;
+}
+
+.clear_both_kobetu{
     clear: both;
 }
 

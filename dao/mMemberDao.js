@@ -501,4 +501,3 @@ exports.updateMMemberForIsArive = function (client, database, memberId, isArive,
         return;
     });
 }
-

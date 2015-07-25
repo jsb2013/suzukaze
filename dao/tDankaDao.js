@@ -55,6 +55,45 @@ exports.getTDankaByMemberId = function(client, database, memberId, rows, dbcallb
     });
 }
 
+/* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
+exports.getTDankaByTikuCodeAndTikuNumber = function(client, database, tikuCode, tikuNumber, rows, dbcallback){
+    var isDbError = false;
+    var query = client.query('select * from t_danka where is_deleted=false and tiku_code = $1 and yobi_1 = $2;',
+            [tikuCode, tikuNumber]);
+
+    query.on('row', function(row) {
+        rows.push(row);
+    });
+
+    query.on('end', function (row, err) {
+        // session out
+        client.end();
+
+        // database error
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            dbcallback(err);
+            return;
+        }
+        // callback(normal end)
+        util.convertJsonNullToBlankForAllItem(rows);
+        dbcallback(null);
+        return;
+    });
+
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}
+
 exports.updateTDankaForDeleteFlag = function(client, database, memberId, dbcallback){
     var isDbError = false;
     var query = client.query('update t_danka set is_deleted=true, update_date=now(), update_user=$1 where member_id=$2',

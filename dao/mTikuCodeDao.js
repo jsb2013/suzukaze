@@ -54,6 +54,55 @@ exports.getMTikuCode = function (client, database, rows, dbcallback) {
     });
 }
 
+/* 地区番号の最新番号を取得する。 */
+exports.getMTikuCodeForTikuNumberByTikuCode = function (client, database, tikuCode, rows, dbcallback) {
+    var isDbError = false;
+    var query = client.query('select yobi_1 from m_tiku_code where tiku_code = $1 and is_disabled=false and is_deleted=false',
+                [tikuCode]);
+
+    query.on('row', function (row) {
+        rows.push(row);
+    });
+
+    query.on('end', function (row, err) {
+        // session out
+        client.end();
+
+        // database error
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
+            dbcallback(err);
+            return;
+        }
+        // callback(normal end)
+        if (rows.length > 0) {
+            util.convertJsonNullToBlankForAllItem(rows);
+            dbcallback(null);
+            return;
+        }
+        // database error(structure)
+        if (isDbError) {
+            return;
+        }
+        // unexpected error
+        logger.error('xxxx', 'err =>' + err);
+        dbcallback(new Error());
+        return;
+    });
+
+    query.on('error', function(error) {
+        // session out
+        client.end();
+
+        // database error(structure)
+        var errorMsg = database.getErrorMsg(error);
+        logger.error('xxxx', 'error => '+errorMsg);
+        dbcallback(new Error());
+        isDbError = true;
+        return;
+    });
+}
+
 /* 檀家追加画面でtiku&sewaninボックスの表示の利用（get処理） */
 exports.getMTikuCodeForTikuNameByTikuCode = function(client, database, rows, tikuCode, dbcallback){
     var isDbError = false;

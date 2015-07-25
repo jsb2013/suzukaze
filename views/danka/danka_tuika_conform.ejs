@@ -32,6 +32,7 @@
     if (dankaType === '1'){
         var dankaTypeName = "信徒";
     }
+    var tikuNumber = webItemJson.tiku_number;
     var nameSei = webItemJson.name_sei;
     var nameNa = webItemJson.name_na;
     var nameFull = nameSei + "　" + nameNa;
@@ -290,6 +291,7 @@
                   <td><label class="padding-default">地区名</label></td>
                   <td>
                      <p class="padding-margin-default-in-table"><%= tikuName %></p>
+                     <p class="padding-margin-default-in-table">地区番号：(<%= tikuNumber %>)</p>
                   </td>
                 </tr>
                 <tr>

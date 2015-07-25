@@ -135,7 +135,7 @@ where
     and mtc.is_disabled=false 
     and mtc.is_deleted=false 
     and td.is_deleted=false 
-order by report_if_id, mm.member_id;
+order by report_if_id, jiin, td.tiku_code, td.yobi_1, mm.member_id;
 
 CREATE VIEW v_member AS
     SELECT *

@@ -12,6 +12,8 @@ var util = require("../../../util/util");
 var async = require("async");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mTagsDao = require("../../../dao/mTagsDao");
+var mMemberDao = require("../../../dao/mMemberDao");
+var tDankaDao = require("../../../dao/tDankaDao");
 var vSearchTargetDao = require("../../../dao/vSearchTarget");
 
 /* 印刷対象の情報を取得 */
@@ -243,4 +245,54 @@ exports.getSearchTargetList = function (data, callback) {
     );
 };
 
+exports.getMaxTikuNumber = function (tikuCode, callback) {
+    // いったんはpostで入ってきたデータは正しい想定で作る
 
+    var maxTikuNumber = [];
+
+    async.series([
+    // 名前でM_Memberを検索
+        function (dbcallback) {
+            mTikuCodeDao.getMTikuCodeForTikuNumberByTikuCode(client, database, tikuCode, maxTikuNumber, dbcallback);
+            return;
+        } ],
+    // 【END】トランザクション完了(commit or rollback)
+        function (err, results) {
+            if (err) {
+                callback(true);
+                return;
+            }
+            callback(false, maxTikuNumber);
+            return;
+        }
+    );
+
+};
+
+exports.getMMemberByTikuCodeAndTikuNumber = function (tikuCode, tikuNumber, callback) {
+    // いったんはpostで入ってきたデータは正しい想定で作る
+
+    var row = [];
+
+    async.series([
+    // 名前でM_Memberを検索
+        function (dbcallback) {
+            tDankaDao.getTDankaByTikuCodeAndTikuNumber(client, database, tikuCode, tikuNumber, row, dbcallback);
+            return;
+        } ],
+    // 【END】トランザクション完了(commit or rollback)
+        function (err, results) {
+            if (err) {
+                callback(true);
+                return;
+            }
+            var isExist = true;
+            if (util.isUndefineForList(row)) {
+                isExist = false;
+            }
+            callback(false, isExist);
+            return;
+        }
+    );
+
+};

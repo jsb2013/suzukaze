@@ -196,6 +196,34 @@ exports.receiveMassages = function(server,callback){
             socketCommon.getSearchTargetList(data, callback);
         });
 
+        socket.on('GetMaxTikuNumber', function (data) {
+            var socketCommon = require("../model/danka/syosai/socketCommon");
+            var tikuCode = data.tikuCode;
+
+            function callback(isError, resultRows) {
+                if (isError) {
+                    return; // [TBA]定義要
+                }
+                io.sockets.emit("GetMaxTikuNumber", resultRows);
+                return;
+            }
+            socketCommon.getMaxTikuNumber(tikuCode, callback);
+        });
+
+        socket.on('GetTikuNumber', function (data) {
+            var socketCommon = require("../model/danka/syosai/socketCommon");
+            var tikuCode = data.tikuCode;
+            var tikuNumber = data.tikuNumber;
+
+            function callback(isError, isExist) {
+                if (isError) {
+                    return; // [TBA]定義要
+                }
+                io.sockets.emit("GetTikuNumber", isExist);
+                return;
+            }
+            socketCommon.getMMemberByTikuCodeAndTikuNumber(tikuCode, tikuNumber, callback);
+        });
         // ************************************************* //
         // *****  ページ毎のソケット通信内容を記述END  ***** //
         // ************************************************* //
