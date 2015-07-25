@@ -86,8 +86,15 @@ exports.main = function (webItemJson, callback) {
     // 地区コードマスタ(update m_tiku_code)
     function (dbcallback) {
         var tikuCode = webItemJson.tiku_code;
+        var tikuNumber = parseInt(webItemJson.tiku_number, 10);
+        var tikuNumberAuto = parseInt(webItemJson.tiku_number_auto, 10);
+
         if (!util.isUndefine(tikuCode) && tikuCode != 0) {
-            mTikuCodeDao.updateMTikuCodeForTikuNumber(client, database, tikuCode, dbcallback);
+            if(tikuNumber <= tikuNumberAuto){
+                mTikuCodeDao.updateMTikuCodeForTikuNumber(client, database, tikuCode, dbcallback);
+            }else{
+                mTikuCodeDao.updateMTikuCodeForTikuNumberSugest(client, database, tikuCode, tikuNumber, dbcallback);
+            }
             return;
         }
         dbcallback(null);
@@ -99,14 +106,14 @@ exports.main = function (webItemJson, callback) {
         return;
     },
     // 檀家間関係管理のyobi_1を更新(update t_danka)
-    function (dbcallback) {
-        var tikuCode = webItemJson.tiku_code;
-        if (!util.isUndefine(tikuCode) && tikuCode != 0) {
-            tDankaDao.updateTDankaForTikuNumber(client, database, memberId, dbcallback);
-            return;
-        }
-        dbcallback(null);
-    },
+    //    function (dbcallback) {
+    //        var tikuCode = webItemJson.tiku_code;
+    //        if (!util.isUndefine(tikuCode) && tikuCode != 0) {
+    //            tDankaDao.updateTDankaForTikuNumber(client, database, memberId, dbcallback);
+    //            return;
+    //        }
+    //        dbcallback(null);
+    //    },
     // 檀家間関係管理追加(insert t_danka)
     function (dbcallback) {
         mCommentDao.insertTComment(client, database, memberId, webItemJson, dbcallback);
@@ -139,8 +146,11 @@ function mergeMMemberInfoDefault(baseInfo){
 function mergeTDankaInfoDefault(baseInfo, memberId){
     // 最新のレコード情報
     baseInfo.kaimyo = "";
-    if(util.isUndefine(baseInfo.member_id_kosyu)){
+    if(util.isUndefine(baseInfo.member_id_kosyu) || baseInfo.member_id_kosyu == "dummy"){
         baseInfo.member_id_kosyu = memberId;    
+    }
+    if(util.isUndefine(baseInfo.tiku_number)){
+        baseInfo.tiku_number = "";
     }
     baseInfo.kaimyo_furigana = "";
     baseInfo.sesyu_sei = "";

@@ -221,9 +221,9 @@ exports.getSearchTargetList = function (data, callback) {
         }        
     }else{
         if (isUpdateForSql) {
-            sql = 'select * from v_search_target where ' + sql;
+            sql = 'select * from v_search_target where member_id = member_id_kosyu and ' + sql;
         } else {
-            sql = 'select * from v_search_target';
+            sql = 'select * from v_search_target where member_id = member_id_kosyu';
         }
     }
 

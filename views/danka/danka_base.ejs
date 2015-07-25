@@ -161,7 +161,10 @@
     function PrintTyohyo(){
       var selectType = $('#select_type').val();
       var selectTemplate = $('#select_template').val();
-      if(selectType == 9999 || selectTemplate == 9999){
+      if(selectType == 6){
+        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
+        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/eko_huto&rc:Parameters=False&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+      }else if(selectType == 9999 || selectTemplate == 9999){
         alert("帳票とテンプレートを正しく選択してください。");
       }else{
         alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
@@ -1077,10 +1080,11 @@
             }
 
             var tikuNumber = $("#input_tiku_number").val();
-            if(isUndefine(tikuNumber)){
-                var tikuNumberAuto = $('#tikuno-comment-max-number').text();    
+            var tikuNumberAuto = $('#tikuno-comment-max-number').text();
+            if(isUndefine(tikuNumber)){  
                 $("#input_tiku_number").val(tikuNumberAuto);
             }
+            $("input[name='tiku_number_auto']").val(tikuNumberAuto);
 
             // hiddenに世話人、地区名、担当[僧]を設定する
             var sewaName = $("select[name='sewa_code'] option:selected").text();
@@ -1943,6 +1947,7 @@
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
           <input type="hidden" name="jiin_name" value="dummy">
+          <input type="hidden" name="tiku_number_auto" value="dummy">
           <input type="hidden" id="danka_type_bak" value="<%= webItemJson.danka_type %>">
           <input type="hidden" id="tags_bak" value="<%= webItemJson.tags %>">
           <input type="hidden" id="jiin_bak" value="<%= webItemJson.jiin %>">

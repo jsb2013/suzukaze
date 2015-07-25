@@ -130,8 +130,8 @@ exports.updateTDankaForDeleteFlag = function(client, database, memberId, dbcallb
     });
 }
 
-exports.insertTDanka = function(client, database, memberId, baseInfo, dbcallback){
-    
+exports.insertTDanka = function (client, database, memberId, baseInfo, dbcallback) {
+
     var isDbError = false;
     var dankaType = baseInfo.danka_type;
     var memberIdKosyu = baseInfo.member_id_kosyu;
@@ -145,16 +145,17 @@ exports.insertTDanka = function(client, database, memberId, baseInfo, dbcallback
     var sesyuNa = baseInfo.sesyu_na;
     var jiin = baseInfo.jiin;
     var kyonen = baseInfo.kyonen;
-    
-    var query = client.query('INSERT INTO t_danka(member_id, danka_type, sewa_code, tiku_code, member_id_kosyu, member_id_sou, kaimyo, kaimyo_furigana, relation, sesyu_sei, sesyu_na, kyonen, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13, null, null,$14,now(),$15,now(),FALSE)',
-                    [memberId, dankaType, sewaCode, tikuCode, memberIdKosyu, memberIdSou, kaimyo, kaimyoFurigana, relation, sesyuSei, sesyuNa, kyonen, jiin, 'yamashita0284', 'yamashita0284']);
-    
-    query.on('end', function(row,err) {
+    var tikuNumber = baseInfo.tiku_number;
+
+    var query = client.query('INSERT INTO t_danka(member_id, danka_type, sewa_code, tiku_code, member_id_kosyu, member_id_sou, kaimyo, kaimyo_furigana, relation, sesyu_sei, sesyu_na, kyonen, jiin, yobi_1, yobi_2, create_user, create_date, update_user, update_date, is_deleted) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14, null,$15,now(),$16,now(),FALSE)',
+                    [memberId, dankaType, sewaCode, tikuCode, memberIdKosyu, memberIdSou, kaimyo, kaimyoFurigana, relation, sesyuSei, sesyuNa, kyonen, jiin, tikuNumber, 'yamashita0284', 'yamashita0284']);
+
+    query.on('end', function (row, err) {
         // session out
         client.end();
 
-        if (err){
-            logger.error('xxxx', 'err =>'+ err);
+        if (err) {
+            logger.error('xxxx', 'err =>' + err);
             dbcallback(err);
             return;
         }
@@ -164,14 +165,14 @@ exports.insertTDanka = function(client, database, memberId, baseInfo, dbcallback
         dbcallback(null);
         return;
     });
-    
-    query.on('error', function(error) {
+
+    query.on('error', function (error) {
         // session out
         client.end();
 
         // database error
         var errorMsg = database.getErrorMsg(error);
-        logger.error('xxxx', 'error => '+errorMsg);
+        logger.error('xxxx', 'error => ' + errorMsg);
         dbcallback(new Error());
         isDbError = true;
         return;
