@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="GENERATOR" content="SunForest Danka System Zen">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache,no-store">
+<meta http-equiv="Expires" content="0">
 <title>檀家管理システム　禅</title>
 
 <!---------------------------------------------------------------------------------------------------------
@@ -162,16 +165,68 @@
       var selectType = $('#select_type').val();
       var selectTemplate = $('#select_template').val();
       if(selectType == 6){
-        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
-        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/eko_huto&rc:Parameters=False&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+        socket.emit('getReportFileNameKey', { select_type: selectType, select_template:selectTemplate});
       }else if(selectType == 9999 || selectTemplate == 9999){
-        alert("帳票とテンプレートを正しく選択してください。");
+        $('#jquery-ui-dialog-for-print-warning').dialog( 'open' );
       }else{
-        alert("印刷用ページを開きます。\n新しく開いたページをそのまま印刷して下さい。");
-        // var kakunin = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectTemplate + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
-        location.href = "http://<%= page.urlPrintServ %>/Reportserver?/hurikomi&p1=" + selectTemplate + "&p2=" + selectType + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+        socket.emit('getReportFileNameKey', { select_type: selectType, select_template:selectTemplate});
       }
     }
+
+    // （受信機能）
+    socket.on('getReportFileNameKey', function (result, data) {
+        var reportFileNameKey = result[0].value;
+        var selectType = data.select_type;
+        var selectTemplate = data.select_template;
+
+        var url = "http://<%= page.urlPrintServ %>/Reportserver?/ekohuto_" + reportFileNameKey + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+        if (selectType != "6"){
+            url = "http://<%= page.urlPrintServ %>/Reportserver?/hurkomi_" + reportFileNameKey + "&p1=" + selectTemplate + "&p2=" + selectType + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+        }
+        var time = new Date().getTime();
+        var isUpdatable = $("input[name='print_process_updatable']").val();
+        if (isUpdatable == "1"){
+            $('#jquery-ui-dialog-for-print').dialog( 'open' );
+            location.href = url + "";
+            socket.emit('updateReportFileNameKey', { value: time });
+        }else{
+            $('#jquery-ui-dialog-for-print-wait').dialog( 'open' );
+            setTimeout(function(){
+                var isUpdatable = $("input[name='print_process_updatable']").val();
+                if (isUpdatable == "1"){
+                    $('#jquery-ui-dialog-for-print-wait').dialog( 'close' );
+                    $('#jquery-ui-dialog-for-print').dialog( 'open' );
+                    location.href = url + "";
+                    socket.emit('updateReportFileNameKey', { value: time });
+                }else{
+                    setTimeout(function(){
+                        var isUpdatable = $("input[name='print_process_updatable']").val();
+                        if (isUpdatable == "1"){
+                            $('#jquery-ui-dialog-for-print-wait').dialog( 'close' );
+                            $('#jquery-ui-dialog-for-print').dialog( 'open' );
+                            location.href = url + "";
+                            socket.emit('updateReportFileNameKey', { value: time });
+                        } else{
+                            setTimeout(function(){
+                                $('#jquery-ui-dialog-for-print-wait').dialog( 'close' );
+                                $('#jquery-ui-dialog-for-print').dialog( 'open' );
+                                //location.href = "http://<%= page.urlPrintServ %>/Reportserver?/ekohuto_" + reportFileNameKey + "&rc:Parameters=False&rs:Format=PDF&rc:OutputFormat=JPEG";
+                                location.href = url + "";
+                                socket.emit('updateReportFileNameKey', { value: time });
+                            },3000);
+                        }
+                    },3000);
+                }
+            },3000);
+        }
+    });
+
+    socket.on('updateReportFileNameKey', function () {
+        $("input[name='print_process_updatable']").val("0");
+        setTimeout(function(){
+            $("input[name='print_process_updatable']").val("1");
+        },10000);
+    });
 </script>
 
 <!---------------------------------------------------------------------------------------------------------
@@ -337,13 +392,25 @@
       }
       // 検索結果が有る場合
       else{
-        var tikuZeroList = [];
+        var tikuZeroListJiinZero = [];
+        var tikuZeroListNotJiinZero = [];
+        var jiinZeroList = [];
         for(var i=0;i<data.length;i++){
         	var html = "";
-
+            
             // 地区番号がゼロの場合、
             if(data[i].tiku_name == "---"){
-                tikuZeroList.push(data[i]);
+                if(data[i].jiin == "不定"){
+                    tikuZeroListJiinZero.push(data[i]);
+                    continue;
+                }
+                tikuZeroListNotJiinZero.push(data[i]);
+                continue;
+            }
+
+            // 寺院がゼロの場合、
+            if(data[i].jiin == "不定"){
+                jiinZeroList.push(data[i]);
                 continue;
             }
 
@@ -400,7 +467,7 @@
           $('#target_list').append(html);
         }
 
-        for(var i=0;i<tikuZeroList.length;i++){
+        for(var i=0;i<jiinZeroList.length;i++){
         	var html = "";
 
             if(i % 2 == 0){
@@ -410,51 +477,164 @@
             }
 
 
-            if(tikuZeroList[i].report_if_id == ""){
-                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +tikuZeroList[i].member_id + '></td>';
+            if(jiinZeroList[i].report_if_id == ""){
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +jiinZeroList[i].member_id + '></td>';
             }else{
-                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +tikuZeroList[i].member_id + ' checked></td>';
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +jiinZeroList[i].member_id + ' checked></td>';
             }
 
-            html +=   '<td onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            html +=     tikuZeroList[i].name;
+            html +=   '<td onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            html +=     jiinZeroList[i].name;
             html +=   "</td>";
-            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            html +=     tikuZeroList[i].furigana;
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            html +=     jiinZeroList[i].furigana;
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            html +=     tikuZeroList[i].tiku_name;
+            html +=   '<td onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            html +=     jiinZeroList[i].tiku_name;
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            if(isUndefine(tikuZeroList[i].tiku_number)){
+            html +=   '<td onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            if(isUndefine(jiinZeroList[i].tiku_number)){
                 html += "-";
             }else{
-                html +=     tikuZeroList[i].tiku_number;
+                html +=     jiinZeroList[i].tiku_number;
             }
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            html +=     tikuZeroList[i].tags;
+            html +=   '<td onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            html +=     jiinZeroList[i].tags;
             html +=   "</td>";
-            html +=   '<td onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            html +=     tikuZeroList[i].jiin;
+            html +=   '<td onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            html +=     jiinZeroList[i].jiin;
             html +=   "</td>";
             if(param.printStatusOn){
-                html +=   '<td class="is_arive_tmp" onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-                html +=     tikuZeroList[i].is_arive;
+                html +=   '<td class="is_arive_tmp" onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+                html +=     jiinZeroList[i].is_arive;
                 html +=   "</td>";
             } else{
-                html += '<td class="hidden">' + tikuZeroList[i].is_arive + '</td>';
+                html += '<td class="hidden">' + jiinZeroList[i].is_arive + '</td>';
             }
-            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            html +=     tikuZeroList[i].member_id;
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            html +=     jiinZeroList[i].member_id;
             html +=   "</td>";
-            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroList[i].member_id + ', ' + tikuZeroList[i].member_id_kosyu + ')">';
-            html +=     tikuZeroList[i].member_id_kosyu;
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + jiinZeroList[i].member_id + ', ' + jiinZeroList[i].member_id_kosyu + ')">';
+            html +=     jiinZeroList[i].member_id_kosyu;
             html +=   "</td>";
             html +=  "</tr>";
 
           $('#target_list').append(html);
         }
+
+        for(var i=0;i<tikuZeroListNotJiinZero.length;i++){
+        	var html = "";
+
+            if(i % 2 == 0){
+                html += '<tr class="table-selectable cursor-pointer">';    
+            } else{
+                html += '<tr class="even table-selectable cursor-pointer">';
+            }
+
+
+            if(tikuZeroListNotJiinZero[i].report_if_id == ""){
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +tikuZeroListNotJiinZero[i].member_id + '></td>';
+            }else{
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +tikuZeroListNotJiinZero[i].member_id + ' checked></td>';
+            }
+
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListNotJiinZero[i].name;
+            html +=   "</td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListNotJiinZero[i].furigana;
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListNotJiinZero[i].tiku_name;
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            if(isUndefine(tikuZeroListNotJiinZero[i].tiku_number)){
+                html += "-";
+            }else{
+                html +=     tikuZeroListNotJiinZero[i].tiku_number;
+            }
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListNotJiinZero[i].tags;
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListNotJiinZero[i].jiin;
+            html +=   "</td>";
+            if(param.printStatusOn){
+                html +=   '<td class="is_arive_tmp" onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+                html +=     tikuZeroListNotJiinZero[i].is_arive;
+                html +=   "</td>";
+            } else{
+                html += '<td class="hidden">' + tikuZeroListNotJiinZero[i].is_arive + '</td>';
+            }
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListNotJiinZero[i].member_id;
+            html +=   "</td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroListNotJiinZero[i].member_id + ', ' + tikuZeroListNotJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListNotJiinZero[i].member_id_kosyu;
+            html +=   "</td>";
+            html +=  "</tr>";
+
+          $('#target_list').append(html);
+        }
+
+        for(var i=0;i<tikuZeroListJiinZero.length;i++){
+        	var html = "";
+
+            if(i % 2 == 0){
+                html += '<tr class="table-selectable cursor-pointer">';    
+            } else{
+                html += '<tr class="even table-selectable cursor-pointer">';
+            }
+
+
+            if(tikuZeroListJiinZero[i].report_if_id == ""){
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +tikuZeroListJiinZero[i].member_id + '></td>';
+            }else{
+                html +=   '<td class="checkbox_td"><input type="checkbox" class="checkbox_default_list" name="target" value=' +tikuZeroListJiinZero[i].member_id + ' checked></td>';
+            }
+
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListJiinZero[i].name;
+            html +=   "</td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListJiinZero[i].furigana;
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListJiinZero[i].tiku_name;
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            if(isUndefine(tikuZeroListJiinZero[i].tiku_number)){
+                html += "-";
+            }else{
+                html +=     tikuZeroListJiinZero[i].tiku_number;
+            }
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListJiinZero[i].tags;
+            html +=   "</td>";
+            html +=   '<td onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListJiinZero[i].jiin;
+            html +=   "</td>";
+            if(param.printStatusOn){
+                html +=   '<td class="is_arive_tmp" onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+                html +=     tikuZeroListJiinZero[i].is_arive;
+                html +=   "</td>";
+            } else{
+                html += '<td class="hidden">' + tikuZeroListJiinZero[i].is_arive + '</td>';
+            }
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListJiinZero[i].member_id;
+            html +=   "</td>";
+            html +=   '<td class="hidden" onClick="goDankaDetail(' + tikuZeroListJiinZero[i].member_id + ', ' + tikuZeroListJiinZero[i].member_id_kosyu + ')">';
+            html +=     tikuZeroListJiinZero[i].member_id_kosyu;
+            html +=   "</td>";
+            html +=  "</tr>";
+
+          $('#target_list').append(html);
+        }
+
         updatePrintDanka();
       }
     }
@@ -700,13 +880,25 @@
       // 検索結果が有る場合
       else{
 
-        var tikuZeroList = [];
+        var tikuZeroListJiinZero = [];
+        var tikuZeroListNotJiinZero = [];
+        var jiinZeroList = [];
         for(var i=0;i<data.length;i++){
         	var html = "";
             
             // 地区番号がゼロの場合、
             if(data[i].tiku_name == "---"){
-                tikuZeroList.push(data[i]);
+                if(data[i].jiin == "不定"){
+                    tikuZeroListJiinZero.push(data[i]);
+                    continue;
+                }
+                tikuZeroListNotJiinZero.push(data[i]);
+                continue;
+            }
+
+            // 寺院がゼロの場合、
+            if(data[i].jiin == "不定"){
+                jiinZeroList.push(data[i]);
                 continue;
             }
 
@@ -746,7 +938,7 @@
           $('#target_list_inner').append(html);
         }
 
-        for(var i=0;i<tikuZeroList.length;i++){
+        for(var i=0;i<jiinZeroList.length;i++){
         	var html = "";
 
             if(i % 2 == 0){
@@ -756,29 +948,107 @@
             }
 
             html +=   '<td class="name_inner">';
-            html +=     tikuZeroList[i].name;
+            html +=     jiinZeroList[i].name;
             html +=   "</td>";
             html +=   '<td class="hidden">';
-            html +=     tikuZeroList[i].furigana;
+            html +=     jiinZeroList[i].furigana;
             html +=   "</td>";
             html +=   '<td>';
-            html +=     tikuZeroList[i].tiku_name;
+            html +=     jiinZeroList[i].tiku_name;
             html +=   "</td>";
             html +=   '<td>';
-            if(isUndefine(tikuZeroList[i].tiku_number)){
+            if(isUndefine(jiinZeroList[i].tiku_number)){
                 html += "-";
             }else{
-                html +=     tikuZeroList[i].tiku_number;
+                html +=     jiinZeroList[i].tiku_number;
             }
             html +=   "</td>";
             html +=   '<td>';
-            html +=     tikuZeroList[i].tags;
+            html +=     jiinZeroList[i].tags;
             html +=   "</td>";
             html +=   '<td>';
-            html +=     tikuZeroList[i].jiin;
+            html +=     jiinZeroList[i].jiin;
             html +=   "</td>";
             html +=   '<td class="hidden member_id">';
-            html +=     tikuZeroList[i].member_id;
+            html +=     jiinZeroList[i].member_id;
+            html +=   "</td>";
+            html +=  "</tr>";
+
+          $('#target_list_inner').append(html);
+        }
+
+        for(var i=0;i<tikuZeroListNotJiinZero.length;i++){
+        	var html = "";
+
+            if(i % 2 == 0){
+                html += '<tr class="dialog-close-flg table-selectable cursor-pointer">';    
+            } else{
+                html += '<tr class="dialog-close-flg even table-selectable cursor-pointer">';
+            }
+
+            html +=   '<td class="name_inner">';
+            html +=     tikuZeroListNotJiinZero[i].name;
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     tikuZeroListNotJiinZero[i].furigana;
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     tikuZeroListNotJiinZero[i].tiku_name;
+            html +=   "</td>";
+            html +=   '<td>';
+            if(isUndefine(tikuZeroListNotJiinZero[i].tiku_number)){
+                html += "-";
+            }else{
+                html +=     tikuZeroListNotJiinZero[i].tiku_number;
+            }
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     tikuZeroListNotJiinZero[i].tags;
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     tikuZeroListNotJiinZero[i].jiin;
+            html +=   "</td>";
+            html +=   '<td class="hidden member_id">';
+            html +=     tikuZeroListNotJiinZero[i].member_id;
+            html +=   "</td>";
+            html +=  "</tr>";
+
+          $('#target_list_inner').append(html);
+        }
+
+        for(var i=0;i<tikuZeroListJiinZero.length;i++){
+        	var html = "";
+
+            if(i % 2 == 0){
+                html += '<tr class="dialog-close-flg table-selectable cursor-pointer">';    
+            } else{
+                html += '<tr class="dialog-close-flg even table-selectable cursor-pointer">';
+            }
+
+            html +=   '<td class="name_inner">';
+            html +=     tikuZeroListJiinZero[i].name;
+            html +=   "</td>";
+            html +=   '<td class="hidden">';
+            html +=     tikuZeroListJiinZero[i].furigana;
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     tikuZeroListJiinZero[i].tiku_name;
+            html +=   "</td>";
+            html +=   '<td>';
+            if(isUndefine(tikuZeroListJiinZero[i].tiku_number)){
+                html += "-";
+            }else{
+                html +=     tikuZeroListJiinZero[i].tiku_number;
+            }
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     tikuZeroListJiinZero[i].tags;
+            html +=   "</td>";
+            html +=   '<td>';
+            html +=     tikuZeroListJiinZero[i].jiin;
+            html +=   "</td>";
+            html +=   '<td class="hidden member_id">';
+            html +=     tikuZeroListJiinZero[i].member_id;
             html +=   "</td>";
             html +=  "</tr>";
 
@@ -1154,7 +1424,48 @@
                 }
             }]
         });
+
+        $('#jquery-ui-dialog-for-print').dialog({
+            autoOpen: false,
+            width: 350,
+            //show: 'explode',
+            //hide: 'explode',
+            modal: false,
+            buttons: [{
+                text: '閉じる',
+                class: 'dialog-button',
+                click: function() {
+                    jQuery( this ) . dialog( 'close' );
+                }
+            }]
+        });
+
+        $('#jquery-ui-dialog-for-print-wait').dialog({
+            autoOpen: false,
+            width: 350,
+            //show: 'explode',
+            //hide: 'explode',
+            modal: false
+        });
+
+        $('#jquery-ui-dialog-for-print-warning').dialog({
+            autoOpen: false,
+            width: 350,
+            //show: 'explode',
+            //hide: 'explode',
+            modal: false,
+            buttons: [{
+                text: '閉じる',
+                class: 'dialog-button',
+                click: function() {
+                    jQuery( this ) . dialog( 'close' );
+                }
+            }]
+        });
+
     });
+
+
 
 </script>
 </head>
@@ -1240,7 +1551,7 @@
                 <label id="print_display_flag" class="cursor-pointer text-underline">印刷オプションを表示する</label>
               </div>
               <input type="hidden" name="search_updatable" value="1">
-              <input type="hidden" name="printflg_updatable" value="1">
+              <input type="hidden" name="print_process_updatable" value="1">
           </div>
 
           <!---------------------------------------------------------------------------------------------------------
@@ -1355,6 +1666,16 @@
               <p>test</p>
               </div>
         </div>
+
+          <div id="jquery-ui-dialog-for-print" title="ご連絡">
+            <label class="dialog-comment">印刷用ページを開きます。<br>新しく開いたページをそのまま印刷して下さい。</label>
+          </div>
+          <div id="jquery-ui-dialog-for-print-wait" title="ご連絡">
+            <label class="dialog-comment">ただ今、帳票出力処理を実施しています。<br>しばらくお待ちください。</label>
+          </div>
+          <div id="jquery-ui-dialog-for-print-warning" title="注意">
+            <label class="dialog-comment">帳票のテンプレートを正しく選択してください。</label>
+          </div>
       </div>
 
     <!---------------------------------------------------------------------------------------------------------
@@ -1503,7 +1824,7 @@
     <!---------------------------------------------------------------------------------------------------------
     <!--（メイン部）戸主追加タブ
     <!-------------------------------------------------------------------------------------------------------->
-<div id="jquery-ui-dialog" title="戸主検索画面">
+    <div id="jquery-ui-dialog" title="戸主検索画面">
         <div id="inner_filter_main_easy_search_inner_label">★戸主を検索して、対象となる戸主を選択してください。</div>
         <div id="search_count_inner"><label>[検索件数]：0件</label></div>
         <div id="inner_filter_main_easy_search_inner">

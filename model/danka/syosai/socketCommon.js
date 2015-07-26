@@ -11,9 +11,8 @@ var logger = log.createLogger();
 var util = require("../../../util/util");
 var async = require("async");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
-var mTagsDao = require("../../../dao/mTagsDao");
-var mMemberDao = require("../../../dao/mMemberDao");
 var tDankaDao = require("../../../dao/tDankaDao");
+var mConfDao = require("../../../dao/mConfDao");
 var vSearchTargetDao = require("../../../dao/vSearchTarget");
 
 /* 印刷対象の情報を取得 */
@@ -291,6 +290,54 @@ exports.getMMemberByTikuCodeAndTikuNumber = function (tikuCode, tikuNumber, call
                 isExist = false;
             }
             callback(false, isExist);
+            return;
+        }
+    );
+
+};
+
+exports.getReportFileNameKey = function (callback) {
+    // いったんはpostで入ってきたデータは正しい想定で作る
+
+    var rows = [];
+
+    async.series([
+    // 名前でM_Memberを検索
+        function (dbcallback) {
+            mConfDao.getMConfForValue(client, database, rows, dbcallback);
+            return;
+        } ],
+    // 【END】トランザクション完了(commit or rollback)
+        function (err, results) {
+            if (err) {
+                callback(true);
+                return;
+            }
+            callback(false, rows);
+            return;
+        }
+    );
+
+};
+
+exports.updateReportFileNameKey = function (data, callback) {
+    // いったんはpostで入ってきたデータは正しい想定で作る
+
+    var value = data.value;
+
+    async.series([
+    // 名前でM_Memberを検索
+        function (dbcallback) {
+            mConfDao.updateMConfForValue(client, database, value, dbcallback);
+            return;
+        } ],
+    // 【END】トランザクション完了(commit or rollback)
+        function (err, results) {
+            if (err) {
+                callback(true);
+                return;
+            }
+            callback(false);
             return;
         }
     );

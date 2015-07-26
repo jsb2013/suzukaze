@@ -224,6 +224,32 @@ exports.receiveMassages = function(server,callback){
             }
             socketCommon.getMMemberByTikuCodeAndTikuNumber(tikuCode, tikuNumber, callback);
         });
+
+        socket.on('getReportFileNameKey', function (data) {
+            var socketCommon = require("../model/danka/syosai/socketCommon");
+
+            function callback(isError, resultRows) {
+                if (isError) {
+                    return; // [TBA]定義要
+                }
+                io.sockets.emit("getReportFileNameKey", resultRows, data);
+                return;
+            }
+            socketCommon.getReportFileNameKey(callback);
+        });
+
+        socket.on('updateReportFileNameKey', function (data) {
+            var socketCommon = require("../model/danka/syosai/socketCommon");
+
+            function callback(isError, resultRows) {
+                if (isError) {
+                    return; // [TBA]定義要
+                }
+                io.sockets.emit("updateReportFileNameKey");
+                return;
+            }
+            socketCommon.updateReportFileNameKey(data, callback);
+        });
         // ************************************************* //
         // *****  ページ毎のソケット通信内容を記述END  ***** //
         // ************************************************* //

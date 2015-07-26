@@ -124,7 +124,10 @@ select
             when '2' then '水月寺'
             when '0' then '不定'
     end as jiin,
-    cast(td.yobi_1 as integer) as tikunumber,
+    case td.yobi_1
+            when '' then ''
+            else cast(td.yobi_1 as integer)
+    end as tikunumber,
     tr.report_if_id,
     td.yobi_1 as tiku_number
 from ((m_member as mm inner join t_danka as td on mm.member_id = td.member_id)

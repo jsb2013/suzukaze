@@ -296,5 +296,11 @@ textarea{
 .ui-dialog-title{
     font-size: medium !important;
     color: black;
-    text-align: center;
+    text-align: left;
+}
+
+.dialog-comment{
+    font-size: medium;
+    font-weight: normal;
+    padding: 15px 0 5px 0;
 }
