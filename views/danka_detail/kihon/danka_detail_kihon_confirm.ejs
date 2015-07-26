@@ -208,17 +208,17 @@
     $("#return").click(function () {
         var id = $("#danka_detail_kihon_form input[name='member_id']").val();
         var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
-        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&tabId=1';
     });
     $(".menu_sub_kihon").click(function () {
         var id = $("#danka_detail_kihon_form input[name='member_id']").val();
         var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
-        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&tabId=1';
     });
     $(".menu_sub_kako").click(function () {
         var id = $("#danka_detail_kihon_form input[name='member_id']").val();
         var kosyuId = $("#danka_detail_kihon_form input[name='member_id_kosyu']").val();
-        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&tabId=2';
     });
 //    $(".menu_sub_kako").click(function () {
 //        $("#danka_detail_kako_form").submit();
@@ -263,7 +263,7 @@
             <li class="menu_disable"><span class="ja">スケジュール</span><span class="en">schedule</span>
           </ul>
           <ul>
-            <li class="menu_enable"><a href="/danka_top"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>  
+            <li class="menu_enable"><a href="/danka_base?id=0"><span class="ja">檀家管理</span><span class="en">danke-manage</span></a>
             <li class="menu_disable"><span class="ja">僧・世話人管理</span><span class="en">so-manage</span>
             <li class="menu_disable"><span class="ja">台帳管理</span><span class="en">master</span>
             <li class="menu_enable"><a href="/report_top"><span class="ja">帳票出力</span><span class="en">out-tyohyo</span></a>

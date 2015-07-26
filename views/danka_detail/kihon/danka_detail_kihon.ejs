@@ -331,7 +331,7 @@
     function goDankaDetail(id, kosyuId){
         //$("#danka_detail_kihon_form_member_id").val(id);
         //$("#danka_detail_kihon_form").submit();
-        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId;
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&tabId=1';
     }
 </script>
 
@@ -517,14 +517,26 @@
         </div>
         <div id="menu_sub">
           <ul>
-            <li id="tab_search_kihon" class="menu_sub_kihon selected"><label>基本情報 </label>
-            <li id="tab_search_genkako" class="menu_sub_kako"><label>現在帳/過去帳</label>
+            <% if (tabId == "1"){ %>
+                <li id="tab_search_kihon" class="menu_sub_kihon selected"><label>基本情報 </label>
+                <li id="tab_search_genkako" class="menu_sub_kako"><label>現在帳/過去帳</label>
+            <%} else{%>
+                <li id="tab_search_kihon" class="menu_sub_kihon"><label>基本情報 </label>
+                <li id="tab_search_genkako" class="menu_sub_kako selected"><label>現在帳/過去帳</label>
+            <%}%>
           </ul>
         </div>
       </div>
       <!-- title end-->
       <!-- inner_main □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□ -->
-      <div id="inner_main_kihon" class="margin-top-default">
+
+    <% if (tabId == "1"){ %>
+        <div id="inner_main_kihon" class="margin-top-default">
+    <%} else{%>
+        <div id="inner_main_kihon" class="hidden margin-top-default">
+    <%}%>
+
+      
         <form action="danka_detail_kihon_confirm" 
           id="main_form" method="post">
           <div class="table_main_kihon">
@@ -1016,7 +1028,11 @@
         </form>
       </div> 
 
-      <div id="inner_main_genkako" class="hidden">
+    <% if (tabId == "2"){ %>
+        <div id="inner_main_genkako">
+    <%} else{%>
+        <div id="inner_main_genkako" class="hidden">
+    <%}%>
           <div class="title_comment margin-bottom-default">
             ★表中でオレンジ色の行が現在検索中の檀家となります。
           </div>

@@ -288,7 +288,7 @@
         }
         //$("#danka_detail_kihon_form_member_id").val(id);
         //$("#danka_detail_kihon_form").submit();
-        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&optionId=' + optionId + '&sm=' + serchMoji;
+        location.href = '/danka_detail_kihon?id=' + id + '&kosyuid=' + kosyuId + '&optionId=' + optionId + '&sm=' + serchMoji +'&tabId=1';
     }
 
     <!--  戸主追加画面の戸主検索ダイアログをクローズする -->
@@ -846,14 +846,14 @@
 
     // GetTargetListメッセージを受けたとき
     socket.on('GetSearchTargetList', function(data, param) {
-      
-      $('#search_count_inner').text('[検索件数]：' + data.length + '件');
-
+     
       // 檀家検索画面の場合
       if(param.addReportIf){
+          $('#search_count').text('[検索件数]：' + data.length + '件');
           displayDakaSearchList(data, param);
       }else{
       // 戸主追加画面の場合
+          $('#search_count_inner').text('[検索件数]：' + data.length + '件');
           displayDakaSearchListInner(data, param);
       }
     });

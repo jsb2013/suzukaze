@@ -292,6 +292,7 @@ exports.getDankaDetailKihon = function (req, res) {
     var getDankaDetailKihonModel = require("../model/danka_detail/kihon/getDankaDetailKihonModel");
     var memberId = req.query.id;
     var memberIdkosyu = req.query.kosyuid;
+    var tabId = req.query.tabId;
     var serchMoji = req.query.sm;
     var optionId = req.query.optionId;
 
@@ -310,6 +311,7 @@ exports.getDankaDetailKihon = function (req, res) {
             mailInfo: mailInfo,
             telnumberInfo: telnumberInfo,
             tagsInfo: tagsInfo,
+            tabId: tabId,
             tagNameListInMM: tagNameListInMM,
             kosyuIdlistIsArive: kosyuIdlistIsArive,
             kosyuIdlistIsAriveNot: kosyuIdlistIsAriveNot
@@ -463,7 +465,7 @@ exports.postDankaKosyuChange = function(req, res){
             return;
         }
         // ログイン成功画面へ推移
-        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberId);
+        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberId + '&tabId=2');
         return;
     }
 
@@ -484,7 +486,7 @@ exports.postDankaMvKako = function(req, res){
             return;
         }
         // ログイン成功画面へ推移
-        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberIdKosyu);
+        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberIdKosyu + '&tabId=2');
         return;
     }
 
@@ -505,7 +507,7 @@ exports.postDankaMvGen = function(req, res){
             return;
         }
         // ログイン成功画面へ推移
-        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberIdKosyu);
+        res.redirect('/danka_detail_kihon?id=' + memberId + '&kosyuid=' + memberIdKosyu + '&tabId=2');
         return;
     }
 
