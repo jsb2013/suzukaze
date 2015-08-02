@@ -289,6 +289,7 @@ exports.getDankaDetailKihon = function (req, res) {
     }
 
     // 画面項目情報一覧（檀家追加）をconfigから取得する。
+    var config = require("../conf/common_config");
     var getDankaDetailKihonModel = require("../model/danka_detail/kihon/getDankaDetailKihonModel");
     var memberId = req.query.id;
     var memberIdkosyu = req.query.kosyuid;
@@ -296,7 +297,7 @@ exports.getDankaDetailKihon = function (req, res) {
     var serchMoji = req.query.sm;
     var optionId = req.query.optionId;
 
-    function authCallback(isError, kosyuInfo, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM) {
+    function authCallback(isError, kosyuInfo, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM, reportTypeInfo) {
         // 想定外のエラー（詳細はログを見るとして、ひとまずシステムエラー画面を表示）
         if (isError) {
             res.render('dummy', {});
@@ -304,6 +305,7 @@ exports.getDankaDetailKihon = function (req, res) {
         }
         // ログイン成功画面へ推移
         res.render('danka_detail/kihon/danka_detail_kihon', {
+            page:{ url:config.connectionUrl, data:reportTypeInfo, urlPrintServ:config.connectionPrintServUrl },
             kosyuInfo: kosyuInfo[0],
             tikuCodeInfo: tikuCodeInfo,
             sewaCodeInfo: sewaCodeInfo,

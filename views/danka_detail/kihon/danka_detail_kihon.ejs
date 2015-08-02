@@ -22,6 +22,8 @@
 <!-- 住所変換定義 -->
 <script src="http://api.zipaddress.net/sdk/zipaddr.min.js"></script>
 
+<script src="/socket.io/socket.io.js"></script>
+
 <!-- 個別定義 -->
 <script src="/js/util.js"></script>
 <script src="/js/jquery.formUtil.js"></script>
@@ -104,6 +106,7 @@
 
     var tikuCode = kosyuInfo.tiku_code;
     var tikuName = kosyuInfo.tiku_name;
+    var tikuNumber = kosyuInfo.yobi_1;
     var sewaCode = kosyuInfo.sewa_code;
     var sewaName = kosyuInfo.sewa_name;
     var tags = kosyuInfo.tags;
@@ -112,7 +115,92 @@
 %>
 <!---------------------------------------------------------------------------------------------------------
 <!--SCRIPT定義（個別）-全タブ共通の定義
-<!-------------------------------------------------------------------------------------------------------->  
+<!-------------------------------------------------------------------------------------------------------->
+<script>
+    var socket = io.connect("http://<%= page.url %>");
+
+
+
+    $(function () {
+
+        $("#tiku_code_select").change(function(){
+            var tikuCode = $("#tiku_code_select option:selected").val();
+            $('#tikuno-comment').addClass("hidden");
+            $('#tiku-name-detail-td').removeClass("error_kobetu");
+            $('#tiku-name-detail-td').removeClass("error-flg");
+            $("#tiku-name-detail-td p.clear_both_kobetu").remove();
+            $("#input_tiku_number").val("");
+            if(tikuCode == "0"){
+                return true;
+            }else{
+                SelectTikuList(tikuCode);
+            }
+        });
+
+        $("#input_tiku_number").change(function(){
+            var tikuCode = $("#tiku_code_select option:selected").val();
+            var tikuNumber = $(this).val();
+            var tikuCodeBk = $("input[name='tiku_code_bk']").val();
+            var tikuNumberBk = $("input[name='tiku_number_bk']").val();
+            
+            if(tikuCode == tikuCodeBk && tikuNumber == tikuNumberBk){
+                $('#tiku-name-detail-td').removeClass("error_kobetu");
+                $('#tiku-name-detail-td').removeClass("error-flg");
+                $("#tiku-name-detail-td p.clear_both_kobetu").remove();
+                return true;
+            }
+            if(tikuCode == "0"){
+                if(!$('#tiku-name-detail-td').hasClass("error-flg")){
+                    $('#tiku-name-detail-td').addClass("error_kobetu");
+                    $('#tiku-name-detail-td').addClass("error-flg");
+                    $('#tiku-name-detail-td').append("<p class='clear_both_kobetu'>★[ERROR]地区名を選択していない為、地区番号の指定は出来ません。</p>");    
+                }
+            }else if(!isUndefine(tikuNumber)){
+                CheckTikuNumber(tikuCode, tikuNumber);   
+            }
+        });
+
+    });
+
+    function SelectTikuList(tikuCode) {
+        // tikuCodeを送る
+        socket.emit('GetMaxTikuNumber', { tikuCode: tikuCode });
+    }
+
+    // （受信機能）
+    socket.on('GetMaxTikuNumber', function (data) {
+        // 選択肢から一度全て取り除く
+        var tikuNumber = data[0].yobi_1;
+        var tikuNumberMax = parseInt(tikuNumber) + 1;
+        //var tikuNoComment = '★地区番号を指定しない場合は、自動で"' + tikuNumber + '"番が設定されます。';
+        $('#tikuno-comment-max-number').text(tikuNumberMax);
+        $('#tikuno-comment').removeClass("hidden");
+    });
+
+    function CheckTikuNumber(tikuCode, tikuNumber) {
+        // tikuCodeを送る
+        socket.emit('GetTikuNumber', { tikuCode: tikuCode, tikuNumber:tikuNumber });
+    }
+
+    // （受信機能）
+    socket.on('GetTikuNumber', function (isExist) {
+        // 選択肢から一度全て取り除く
+        if(isExist){
+            if(!$('#tiku-name-detail-td').hasClass("error-flg")){
+                $('#tiku-name-detail-td').addClass("error_kobetu");
+                $('#tiku-name-detail-td').addClass("error-flg");
+                $('#tiku-name-detail-td').append("<p class='clear_both_kobetu'>★[ERROR]入力した地区番号は既に登録されています。</p>");    
+            }
+        }else{
+            $('#tiku-name-detail-td').removeClass("error_kobetu");
+            $('#tiku-name-detail-td').removeClass("error-flg");
+            $("#tiku-name-detail-td p.clear_both_kobetu").remove();
+        }
+    });
+
+
+</script>
+
 <script>
     // タブ選択時の画面切り替え
     function ChangeTab(tabName) {
@@ -215,6 +303,9 @@
             
                 // バリデーションチェックメイン処理
                 var isError = $(".validate").formUtil("validationCheck", formInfoJson, 2);
+                if($('#tiku-name-detail-td').hasClass("error-flg")){
+                    isError = true;
+                }
                 if(isError){
                     return false;
                 }
@@ -272,6 +363,7 @@
                 //////////////////////////////
                 ////  ★次のページへデータ連携
                 //////////////////////////////
+
                 var tikuNameAfter = $("select[name='tiku_code'] option:selected").text();
                 var sewaNameAfter = $("select[name='sewa_code'] option:selected").text();
                 var jiinAfter = $("select[name='jiin_code'] option:selected").text();
@@ -885,9 +977,9 @@
 
                 <tr class="only_gen">
                   <td><label class="padding-default">地区名</label></td>
-                  <td class="table-selectable">
-                    <div class="padding-left-default">
-                        <select id="tiku_code" name="tiku_code" class="form-control input-sm select-size-default enter-mv" >
+                  <td id="tiku-name-detail-td" class="table-selectable">
+                    <div class="col col-sm-3 padding-default">
+                        <select id="tiku_code_select" name="tiku_code" class="form-control input-sm select-size-default enter-mv" >
                         <% for(var i in tikuCodeInfo){
                             var _tikuCode = tikuCodeInfo[i].tiku_code;
                             var _tikuName = tikuCodeInfo[i].tiku_name; %>
@@ -895,8 +987,18 @@
                         <% } %>
                         </select>
                     </div>
+                    <div class="col col-sm-3 style-tikuno-string text-right">地区番号</div>
+                    <div class="col col-sm-3 padding-default">
+                        <input type="text" id="input_tiku_number" name="tiku_number" value="<%= tikuNumber %>" class="form-control number style-tikuno-input-text input-sm validate sp_check enter-mv">
+                    </div>
+                    <div id="tikuno-comment" class="hidden row padding-left-default">
+                        <div class="col col-sm-12 style-name-in-buttom-with-label">
+                            <label class="style-comment-in-label">※登録可能な最新の地区番号は<span id="tikuno-comment-max-number"></span>番です。</label>
+                        </div>
+                    </div>
                   </td>
                 </tr>
+
                 <tr class="only_gen">
                   <td><label class="padding-default">世話人</label></td>
                   <td class="table-selectable">
@@ -1014,6 +1116,7 @@
           <input type="hidden" name="jiin_code_bk" value=<%= jiin %>>
           <input type="hidden" name="jiin_name_bk" value=<%= jiinName %>>
           <input type="hidden" name="tiku_code_bk" value=<%= tikuCode %>>
+          <input type="hidden" name="tiku_number_bk" class="chenge_check_bk tiku_number"  value=<%= tikuNumber %>>
           <input type="hidden" name="tiku_name_bk" value=<%= tikuName %>>
           <input type="hidden" name="sewa_code_bk" value=<%= sewaCode %>>
           <input type="hidden" name="sewa_name_bk" value=<%= sewaName %>>
@@ -1021,6 +1124,7 @@
           <input type="hidden" name="comment_bk" value=<%= comment %>>
 
           <!-- 変更後の情報 -->
+          <input type="hidden" name="tiku_number_auto" value="dummy">
           <input type="hidden" name="tiku_name" value="dummy">
           <input type="hidden" name="sewa_name" value="dummy">
           <input type="hidden" name="tags_after" value="dummy">

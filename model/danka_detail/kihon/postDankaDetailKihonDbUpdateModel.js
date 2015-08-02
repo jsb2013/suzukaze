@@ -37,6 +37,7 @@ exports.main = function (webItemJson, callback) {
     var ratestMMemberInfo = [];
     var ratestTDankaInfo = [];
     var ratestTDankaDetailKosyuInfo = [];
+    var maxTikuNumberList = [];
     var isTikuCodeUpdate = false;
 
     async.series([
@@ -190,15 +191,24 @@ exports.main = function (webItemJson, callback) {
                 dbcallback(null);
             }
         },
+    // 最新の地区番号を取得する。
+        function (dbcallback) {
+            var tikuCode = webItemJson.tiku_code;
+            mTikuCodeDao.getMTikuCodeForTikuNumberByTikuCode(client, database, tikuCode, maxTikuNumberList, dbcallback);
+        },
     // 地区コードマスタ(update m_tiku_code)
         function (dbcallback) {
             var tikuCode = webItemJson.tiku_code;
-            var tikuCodeBk = webItemJson.tiku_code_bk;
+            var maxTikuNumber = maxTikuNumberList[0].yobi_1;
+            var tikuNumber = webItemJson.tiku_number;
 
-            if (!util.isUndefine(tikuCode) && !util.isUndefine(tikuCodeBk) && tikuCode != 0 && tikuCode != tikuCodeBk) {
-                isTikuCodeUpdate = true;
-                mTikuCodeDao.updateMTikuCodeForTikuNumber(client, database, tikuCode, dbcallback);
-                return;
+            if (!util.isUndefine(tikuCode) && tikuCode != 0 && !util.isUndefine(tikuNumber)) {
+                var tikuNumberInt = parseInt(tikuNumber, 10);
+                var maxTikuNumber = parseInt(maxTikuNumber, 10);
+                if (maxTikuNumber < tikuNumberInt) {
+                    mTikuCodeDao.updateMTikuCodeForTikuNumberSugest(client, database, tikuCode, tikuNumberInt, dbcallback);
+                    return;
+                }
             }
             dbcallback(null);
         },
@@ -299,10 +309,12 @@ function mergeTDankaInfo(ratestTDankaInfo, webItemJson){
     var sewaCode = webItemJson.sewa_code;
     var tikuCode = webItemJson.tiku_code;
     var jiin = webItemJson.jiin;
+    var tikuNumber = webItemJson.tiku_number;
 
     // 最新のレコードに更新した可能性のある項目をマージ
     ratestTdanka.danka_type = dankaType;
     ratestTdanka.sewa_code = sewaCode;
     ratestTdanka.tiku_code = tikuCode;
     ratestTdanka.jiin = jiin;
+    ratestTdanka.tiku_number = tikuNumber;
 }

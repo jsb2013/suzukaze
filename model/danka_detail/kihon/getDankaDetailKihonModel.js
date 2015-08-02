@@ -14,6 +14,7 @@ var mMemberDao = require("../../../dao/mMemberDao");
 var mSewaCodeDao = require("../../../dao/mSewaCodeDao");
 var mTikuCodeDao = require("../../../dao/mTikuCodeDao");
 var mAddressDao = require("../../../dao/mAddressDao");
+var vReportTypeDao = require("../../../dao/vReportType");
 var mMailDao = require("../../../dao/mMailDao");
 var mTelnumberDao = require("../../../dao/mTelnumberDao");
 var mTagsDao = require("../../../dao/mTagsDao");
@@ -33,6 +34,7 @@ exports.main = function (memberId, memberIdkosyu, optionId, serchMoji, callback)
     var kosyuIdlistIsArive = [];
     var kosyuIdlistIsAriveNot = [];
     var tagsInfo = [];
+    var reportTypeList = [];
 
     async.series([
 
@@ -72,7 +74,13 @@ exports.main = function (memberId, memberIdkosyu, optionId, serchMoji, callback)
     // タグ情報を取得（戸主情報）
         function (dbcallback) {
             mTagsDao.getMTags(client, database, tagsInfo, dbcallback);
+        },
+    // 帳票種別を取得する
+        function (dbcallback) {
+            vReportTypeDao.getvReportType(client, database, reportTypeList, dbcallback);
         } ],
+
+
     // 【END】トランザクション完了(commit or rollback)
         function (err, results) {
             if (err) {
@@ -97,7 +105,7 @@ exports.main = function (memberId, memberIdkosyu, optionId, serchMoji, callback)
 
             addTikuNameAndSewaName2(tikuCodeInfo, sewaCodeInfo, resultRows);
 
-            callback(false, resultRows, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM);
+            callback(false, resultRows, kosyuIdlistIsArive, kosyuIdlistIsAriveNot, tikuCodeInfo, sewaCodeInfo, addressInfo, mailInfo, telnumberInfo, tagsInfo, tagNameListInMM, reportTypeList);
             return;
         }
     );
@@ -106,10 +114,16 @@ exports.main = function (memberId, memberIdkosyu, optionId, serchMoji, callback)
 function registerNama(kosyuInfo, commentInfo){
     // コメントを登録
     var comment = "";
+    var kosyuNewList = [];
     if(!util.isUndefineForList(commentInfo)){
         comment = commentInfo[0].comment;
     }
-    kosyuInfo[0].comment = comment;
+    if (util.isUndefine(comment)) {
+        comment = "";
+    }
+    if(!util.isUndefine(kosyuInfo[0])){
+        kosyuInfo[0].comment = comment;
+    }
 }
 
 function convertInfoByPriority(infoJson){

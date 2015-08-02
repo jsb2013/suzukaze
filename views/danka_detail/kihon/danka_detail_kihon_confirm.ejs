@@ -29,6 +29,7 @@
     var dankaTypeShintoBk = webItemJson.danka_type_shinto_bk;
     var nameFullBk = webItemJson.name_full_bk;
     var tikuNameBk = webItemJson.tiku_name_bk;
+    var tikuNumberBk = webItemJson.tiku_number_bk;
     var sewaNameBk = webItemJson.sewa_name_bk;
     var tikuCodeBk = webItemJson.tiku_code_bk;
     var sewaCodeBk = webItemJson.sewa_code_bk;
@@ -126,6 +127,8 @@
     var sewaName = webItemJson.sewa_name;
     var comment = webItemJson.comment;
     var tikuCode = webItemJson.tiku_code;
+    var tikuNumber = webItemJson.tiku_number;
+    var tikuNumberAuto = webItemJson.tiku_number_auto;
     var sewaCode = webItemJson.sewa_code;
     var tags = webItemJson.tags_after;
     var jiinName = webItemJson.jiin_name;
@@ -474,6 +477,12 @@
                     </script>
                 </tr>
                 <tr class="t_danka">
+                  <td><label class="padding-default">地区番号</label></td>
+                    <script>
+                      createHtml("<%= tikuNumberBk %>", "<%= tikuNumber %>");
+                    </script>
+                </tr>
+                <tr class="t_danka">
                   <td><label class="padding-default">世話人</label></td>
                     <script>
                       createHtml("<%= sewaNameBk %>", "<%= sewaName %>");
@@ -554,6 +563,8 @@
                 <input type="hidden" name="job" value=<%= job %>>
                 <input type="hidden" name="sewa_code" value=<%= sewaCode %>>
                 <input type="hidden" name="tiku_code" value=<%= tikuCode %>>
+                <input type="hidden" name="tiku_number" value=<%= tikuNumber %>>
+                <input type="hidden" name="tiku_number_auto" value=<%= tikuNumberAuto %>>
                 <input type="hidden" name="comment" value=<%= webItemJson.comment %>>
                 <input type="hidden" name="tags" value=<%= tags %>>
                 <input type="hidden" name="jiin" value=<%= jiinCode %>>
